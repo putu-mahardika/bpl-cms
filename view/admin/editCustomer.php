@@ -422,25 +422,25 @@
                 <label>email PIC :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" required>
                 <div class="form-group">
-                      <label>Sales :</label>
-                      <select class="select2-single-placeholder form-control" name="sales" id="sales" required>
-                      <option value="" disabled>Pilih</option>
-                      <?php
-                        while($dataUser = mysqli_fetch_array($fetchUser)){
-                          // print_r($dataUser);
-							            if($dataUser['aktif']==1){
-                            if($dataUser['UserId'] == $data['UserId']){
-                      ?>
-                      <option value="<?php echo $dataUser['UserId'];?>" selected><?php echo $dataUser['nama'];?></option>
-                          <?php }else{?>
-                      <option value="<?php echo $dataUser['UserId'];?>"><?php echo $dataUser['nama'];?></option>
-                        <?php } } else {
-                          continue;
-                          }
-                        }
-                      ?>
-                      </select>
-                    </div>
+                  <label>Sales :</label>
+                  <select class="select2-single-placeholder form-control" name="sales" id="sales" required>
+                  <option value="" disabled>Pilih</option>
+                  <?php
+                    while($dataUser = mysqli_fetch_array($fetchUser)){
+                      // print_r($dataUser);
+                      if($dataUser['aktif']==1){
+                        if($dataUser['UserId'] == $data['UserId']){
+                  ?>
+                  <option value="<?php echo $dataUser['UserId'];?>" selected><?php echo $dataUser['nama'];?></option>
+                      <?php }else{?>
+                  <option value="<?php echo $dataUser['UserId'];?>"><?php echo $dataUser['nama'];?></option>
+                    <?php } } else {
+                      continue;
+                      }
+                    }
+                  ?>
+                  </select>
+                </div>
                 <label>Keterangan :</label>
                 <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" ><?php echo $data['keterangan'];?></textarea>
                 <label>Aktif :</label>
