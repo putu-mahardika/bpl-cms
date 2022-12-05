@@ -31,37 +31,34 @@
   $fetch_t = mysqli_query($koneksi, $query_t);
 
   while($data_t = mysqli_fetch_array($fetch_t)){
-
     $t_hdid = $data_t['HdId'];
-
     $t_custid = $data_t['CustId'];
-
     $t_nopo = $data_t['NoPO'];
-
     $t_tglpo = $data_t['tgl_po'];
-
     $t_tglpo1 = date('d/m/Y', strtotime($t_tglpo));
-
     $t_nospk = $data_t['NoSPK'];
-
     $t_tglspk = $data_t['tgl_spk'];
-
     $t_tglspk1 = date('d/m/Y', strtotime($t_tglspk));
-
     $t_armada = $data_t['total_armada'];
-
     $t_asal = $data_t['kota_kirim'];
-
     $t_tujuan = $data_t['kota_tujuan'];
-
     $t_barang = $data_t['Barang'];
-
     $t_keterangan = $data_t['keterangan'];
-
     $t_onclose = $data_t['OnClose'];
-
+    $t_DateOnClose = $data_t['DateOnClose'];
+    $t_cancelDate = $data_t['cancel_date'];
     $t_user = $data_t['UserId'];
+    $t_closedById = $data_t['closedById'];
+  }
 
+  if (!is_null($t_closedById)) {
+    $query_u = "select UserId, nama from master_user where UserId = ".$t_closedById;
+    $fetch_u = mysqli_query($koneksi, $query_u);
+    
+    while ($data_u = mysqli_fetch_array($fetch_u)) {
+      $u_id = $data_u['UserId'];
+      $u_namaUser = $data_u['nama'];
+    }
   }
 
 
@@ -1172,6 +1169,17 @@
                       </div>
 
                     </div>
+                    <?php 
+                      if($t_onclose == 1 && is_null($t_cancelDate)) {
+                    ?>
+                      <p>Ditutup Oleh <b><?php echo $u_namaUser?></b> tanggal <b><?php echo $t_DateOnClose?></b></p>
+                    <?php    
+                      } elseif (!is_null($t_cancelDate)) {
+                    ?>
+                      <p>Dibatalkan Oleh <b><?php echo $u_namaUser?></b> tanggal <b><?php echo $t_cancelDate?></b></p>
+                    <?php
+                      }
+                    ?>
 
                   </form>
 

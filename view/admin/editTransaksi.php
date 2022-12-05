@@ -14,6 +14,7 @@
   $t_id = $_GET['id'];
 
   $query_t = "select * from trans_hd where HdId='$t_id'"; 
+  // $query_t = "select a.*, b.UserId, b.nama as namaUser from trans_hd a, master_user b where a.closedById = b.UserId and a.HdId='$t_id'"; 
   $fetch_t = mysqli_query($koneksi, $query_t);
 
   while($data_t = mysqli_fetch_array($fetch_t)){
@@ -31,7 +32,20 @@
     $t_barang = $data_t['Barang'];
     $t_keterangan = $data_t['keterangan'];
     $t_onclose = $data_t['OnClose'];
+    $t_DateOnClose = $data_t['DateOnClose'];
+    $t_cancelDate = $data_t['cancel_date'];
     $t_user = $data_t['UserId'];
+    $t_closedById = $data_t['closedById'];
+  }
+
+  if (!is_null($t_closedById)) {
+    $query_u = "select UserId, nama from master_user where UserId = ".$t_closedById;
+    $fetch_u = mysqli_query($koneksi, $query_u);
+    
+    while ($data_u = mysqli_fetch_array($fetch_u)) {
+      $u_id = $data_u['UserId'];
+      $u_namaUser = $data_u['nama'];
+    }
   }
 
   $query_c = "select * from master_customer where CustId='$t_custid'";
@@ -625,6 +639,17 @@
                         <input type="submit" value="Submit" name="editTransaksi" style="width:100%;height:100%;" class="btn btn-md btn-primary" id="submit" >
                       </div>
                     </div>
+                    <?php 
+                      if($t_onclose == 1 && is_null($t_cancelDate)) {
+                    ?>
+                      <p>Ditutup Oleh <b><?php echo $u_namaUser?></b> tanggal <b><?php echo $t_DateOnClose?></b></p>
+                    <?php    
+                      } elseif (!is_null($t_cancelDate)) {
+                    ?>
+                      <p>Dibatalkan Oleh <b><?php echo $u_namaUser?></b> tanggal <b><?php echo $t_cancelDate?></b></p>
+                    <?php
+                      }
+                    ?>
                   </form>
                 </div>
               </div>

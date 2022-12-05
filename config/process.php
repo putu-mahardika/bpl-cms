@@ -629,13 +629,13 @@
             $nospk = $data['NoSPK'];
         }
 
-        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', UserId='$s_id', cancel_date='$datetime', atr1=1 where HdId=$hdid");
+        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', closedById='$s_id', cancel_date='$datetime', atr1=1 where HdId=$hdid");
         $query2 = mysqli_query($koneksi, "select count(*) as jumlah from trans_detail where HdId='$hdid'");
         $data2 = mysqli_fetch_array($query2);
 
         if($data2['jumlah']!=0){
             for($i=1;$i<=$armada;$i++){
-                $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime', UserId='$s_id' where HdId=$hdid and turunan='$i'");
+                $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime', closedById='$s_id' where HdId=$hdid and turunan='$i'");
             }
         }
 
@@ -668,7 +668,7 @@
             $nospk = $data['NoSPK'];
         }
 
-        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', UserId='$s_id' where NoSPK='$nospk'");
+        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', closedById='$s_id' where NoSPK='$nospk'");
 
         if($query1){
             if($akses == "Admin"){
