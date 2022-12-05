@@ -1,18 +1,15 @@
 <?php
   session_save_path('../../tmp');
   session_start();
-  // echo session_id();
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
   }
-
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-	// $query = 'select * from master_customer';
-	$query = 'select a.*, b.nama as namaUser from master_customer a, master_user b where a.UserId = b.UserId';
-	$fetch = mysqli_query($koneksi,$query);
+  //$query = 'select * from master_user where ...';
+  //$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,18 +21,17 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Customer - PT Berkah Permata Logistik</title>
+  <title>Tambah Customer - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.phpl">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php">
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
@@ -51,63 +47,18 @@
       <div class="sidebar-heading">
         Master
       </div>
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
           <i class="fas fa-fw fa-table"></i>
           <span>Customer</span>
         </a>
-        <div id="collapseForm" class="collapse show" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item active" href="customer.php">List Customer</a>
+            <a class="collapse-item" href="customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
-        </a>
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
@@ -145,19 +96,19 @@
           </div>
         </a>
       </li>-->
-      <!--<li class="nav-item">
+      <!--<li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
           <span>Pages</span>
         </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Example Pages</h6>
             <a class="collapse-item" href="login.html">Login</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <a class="collapse-item active" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -178,13 +129,13 @@
         </a>
       </li>
       <hr class="sidebar-divider">
-      <!--<div class="version" id="version-ruangadmin"></div>-->
-	  <li class="nav-item">
+	    <li class="nav-item">
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
+      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -361,7 +312,7 @@
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>-->
-                <a class="dropdown-item" href="editPassword.php">
+				<a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -375,129 +326,59 @@
           </ul>
         </nav>
         <!-- Topbar -->
+
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">List Customer</h1>
-			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportcustomer.php"><i class="fas fa-print"></i></a>
+          <div class="d-sm-flex align-items-center justify-content-start mb-4">
+            <a href="customer.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Customer</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
+              <li class="breadcrumb-item">Pages</li>
+              <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
-
-          <div class="row">
-
-            <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-                  <a href="inputCustomer.php" class="btn btn-primary btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Tambah Customer</span>
-                  </a>
-				  
-                </div>
-                <div class="table-responsive p-3">
-				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Tanggal</th>
-						            <th>Kode</th>
-                        <th>NPWP</th>
-                        <th>Customer</th>
-                        <th>Alamat</th>
-                        <!--<th>Telp</th>-->
-                        <!--<th>e-mail</th>-->
-                        <th>Bidang Usaha</th>
-                        <th>PIC</th>
-                        <th>PIC Telp</th>
-                        <th>Sales</th>
-                        <!--<th>Keterangan</th>-->
-                        <th>Aktif</th>
-                        <!--<th>Create Date</th>-->
-                        <!--<th>Last Update</th>-->
-                        <th style="padding-left:10px; padding-right:44px;">Action</th>
-                      </tr>
-                    </thead>
-                    
-                    <tbody>
-                    <?php
-                      while($data = mysqli_fetch_array($fetch)){
-                        $id = $data['CustId'];
-                        $tgl = date("d-M-Y H:i:s", strtotime($data['create_date']));
-                    ?>
-                      <tr>
-                        <!--<td><a href="#" class="btn btn-primary btn-md" id="detail">
-                        <i class="fas fa-chevron-circle-up"></i></a>
-                        </td>-->
-                        <td style="font-size:13px;"><?php echo $tgl?></td>
-						            <td style="font-size:13px;"><?php echo $data['kode_customer']?></td>
-                        <td style="font-size:13px;"><?php echo $data['npwp']?></td>
-                        <td style="font-size:13px;"><?php echo $data['nama']?></td>
-                        <td style="font-size:13px;"><?php echo $data['alamat']?></td>
-                        <!--<td><?php echo $data['telp']?></td>-->
-                        <!--<td><?php echo $data['email']?></td>-->
-                        <td style="font-size:13px;"><?php echo $data['bidang_usaha']?></td>
-                        <td style="font-size:13px;"><?php echo $data['PIC']?></td>
-                        <td style="font-size:13px;"><?php echo $data['PIC_telp']?></td>
-                        <td style="font-size:13px;"><?php echo $data['namaUser']?></td>
-                        <!--<td><?php echo $data['PIC_email']?></td>-->
-                        <!--<td><?php echo $data['keterangan']?></td>-->
-                      <?php 
-                        if($data['aktif'] == 1){
-                      ?>
-						            <td><span class="badge badge-success">Aktif</span></td>
-                      <?php } else{ ?>
-                        <td><span class="badge badge-danger">Tidak Aktif</span></td>
-                      <?php } ?>	
-                        <!--<td><?php echo $data['create_date']?></td>-->
-                        <!--<td><?php echo $data['last_update']?></td>-->
-                        <!--<td><span class="badge badge-success">Aktif</span></td>-->
-                        <td style="padding-left:10px; padding-right:10px;"><a title="edit" href="editCustomer.php?id=<?php echo $id?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                            <!--<button title="detail" data-id="<?php echo $id?>" class="btn btn-info btn-sm custinfo"><i class="fas fa-search"></i></button>-->
-                            <button title="detail" onclick="custinfo(<?php echo $id?>)" class="btn btn-info btn-sm"><i class="fas fa-search"></i></button>
-
-                            <!--<button data-id='".$id."' class='userinfo'>Info</button>-->
-						            </td>
-                      </tr>
-                    <?php
-                      }
-                    ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+			
+          <div class="card-body">
+              <form class="form group" method="post" action="../../config/process.php">
+                <label>Kode Customer :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" required>
+                <label>Nama Customer :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" required>
+                <label>Bidang Usaha :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="bidang" required>
+                <label>NPWP :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="npwp" required>
+                <label>Alamat :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="alamat" required>
+                <label>Telp :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="telp" required>
+                <label>email :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="email" required>
+                <label>Nama PIC :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="pic" required>
+                <label>Telp PIC :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="pic_telp" required>
+                <label>email PIC :</label>
+                <input type="email" class="form-control form-control-sm mb-3" name="pic_email" required>
+                <label>Keterangan :</label>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" ></textarea>
+                <label>Aktif :</label>
+                <!--<select name="aktif" class="form-control form-control-sm mb-3">
+                  <option disabled selected> Pilih </option>
+                  <option value=1> Ya </option>
+                  <option value=0> Tidak </option>
+                </select>-->
+                <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
+                <br>
+                <input type="reset" value="Reset" class="btn btn-md btn-danger " style="width:22%;">
+                <input type="submit" value="Submit" name="inputCustomer" class="btn btn-md btn-primary " style="width:77%;">
+              </form>
             </div>
-          </div>
-          <!--Row-->
-          
-
-          <!-- Modal Detail -->
-          <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Detail Customer</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
-                </div>
-              </div>
-            </div>
-          </div>              
-
+		  <!--<div class="text-center">
+            <img src="img/think.svg" style="max-height: 90px">
+            <h4 class="pt-3">save your <b>imagination</b> here!</h4>
+          </div>-->
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
@@ -547,66 +428,6 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
-  <script src="../../vendor/datatables1/datatables.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable({
-        "scrollX": true,
-        // "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
-        "order": [[0, "desc"]]
-        //"columnDefs": [
-        //    {
-        //        "targets": [ 0 ],
-        //        "visible": true,
-        //        "searchable": false,
-        //        "order": "desc"
-        //    },
-        //  ]
-      }); // ID From dataTable with Hover
-
-      //$('.custinfo').click(function(){
-      //  var custid = $(this).data('id');
-
-        // AJAX request\
-        //$.ajax({
-        //  url: '../../config/viewCustomer.php',
-        //  type: 'post',
-        //  data: {custid: custid},
-        //  success: function(response){
-            // Add response in Modal body
-        //    $('.modal-body').html(response);
-            // Display Modal
-        //    $('#detailModal').modal('show');
-        //  }
-        //});
-      //});
-    });
-  </script>
-
-<script>
-    function custinfo(id){
-      var custid = id;
-      // AJAX request\
-      $.ajax({
-        url: '../../config/viewCustomer.php',
-        type: 'post',
-        data: {custid: custid},
-        success: function(response){
-          // Add response in Modal body
-          $('.modal-body').html(response);
-          // Display Modal
-          $('#detailModal').modal('show');
-        }
-      });
-    }
-  </script>
-
 
 </body>
 

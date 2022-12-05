@@ -10,7 +10,8 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-	$query = 'select * from master_user where atr1=0';
+	// $query = 'select * from master_user where atr1=0';
+	$query = 'select * from master_user';
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 

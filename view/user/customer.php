@@ -2,16 +2,17 @@
   session_save_path('../../tmp');
   session_start();
   // echo session_id();
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
   }
 
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
+  $id = $_SESSION['id'];
   $datetime = date('Y');
 	// $query = 'select * from master_customer';
-	$query = 'select a.*, b.nama as namaUser from master_customer a, master_user b where a.UserId = b.UserId';
+	$query = 'select a.*, b.nama as namaUser from master_customer a, master_user b where a.UserId = b.UserId and a.UserId = '.$id;
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
@@ -51,24 +52,6 @@
       <div class="sidebar-heading">
         Master
       </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
-      </li>
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
@@ -80,34 +63,6 @@
             <h6 class="collapse-header">Customer</h6>
             <a class="collapse-item active" href="customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
-        </a>
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
@@ -416,7 +371,6 @@
                         <th>Bidang Usaha</th>
                         <th>PIC</th>
                         <th>PIC Telp</th>
-                        <th>Sales</th>
                         <!--<th>Keterangan</th>-->
                         <th>Aktif</th>
                         <!--<th>Create Date</th>-->
@@ -445,7 +399,6 @@
                         <td style="font-size:13px;"><?php echo $data['bidang_usaha']?></td>
                         <td style="font-size:13px;"><?php echo $data['PIC']?></td>
                         <td style="font-size:13px;"><?php echo $data['PIC_telp']?></td>
-                        <td style="font-size:13px;"><?php echo $data['namaUser']?></td>
                         <!--<td><?php echo $data['PIC_email']?></td>-->
                         <!--<td><?php echo $data['keterangan']?></td>-->
                       <?php 
@@ -458,8 +411,7 @@
                         <!--<td><?php echo $data['create_date']?></td>-->
                         <!--<td><?php echo $data['last_update']?></td>-->
                         <!--<td><span class="badge badge-success">Aktif</span></td>-->
-                        <td style="padding-left:10px; padding-right:10px;"><a title="edit" href="editCustomer.php?id=<?php echo $id?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                            <!--<button title="detail" data-id="<?php echo $id?>" class="btn btn-info btn-sm custinfo"><i class="fas fa-search"></i></button>-->
+                        <td style="padding-left:10px; padding-right:10px;">
                             <button title="detail" onclick="custinfo(<?php echo $id?>)" class="btn btn-info btn-sm"><i class="fas fa-search"></i></button>
 
                             <!--<button data-id='".$id."' class='userinfo'>Info</button>-->

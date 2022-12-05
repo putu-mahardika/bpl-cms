@@ -24,6 +24,7 @@
   <title>Edit Customer - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
 </head>
 
@@ -388,7 +389,12 @@
             $id = $_GET['id'];
             $fetch = mysqli_query($koneksi, "select * from master_customer where CustId='$id'");
             $data = mysqli_fetch_array($fetch);
-            //echo $id;
+
+            $fetchUser = mysqli_query($koneksi, "select UserId, nama, aktif from master_user where atr1=0");
+            // $dataUser = mysqli_fetch_array($fetchUser);
+            // while($dataUser = mysqli_fetch_array($fetchUser)) {
+            //   print_r($dataUser);
+            // }
           ?>
 			
           <div class="card-body">
@@ -415,6 +421,26 @@
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" required>
                 <label>email PIC :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" required>
+                <div class="form-group">
+                      <label>Sales :</label>
+                      <select class="select2-single-placeholder form-control" name="sales" id="sales" required>
+                      <option value="" disabled>Pilih</option>
+                      <?php
+                        while($dataUser = mysqli_fetch_array($fetchUser)){
+                          // print_r($dataUser);
+							            if($dataUser['aktif']==1){
+                            if($dataUser['UserId'] == $data['UserId']){
+                      ?>
+                      <option value="<?php echo $dataUser['UserId'];?>" selected><?php echo $dataUser['nama'];?></option>
+                          <?php }else{?>
+                      <option value="<?php echo $dataUser['UserId'];?>"><?php echo $dataUser['nama'];?></option>
+                        <?php } } else {
+                          continue;
+                          }
+                        }
+                      ?>
+                      </select>
+                    </div>
                 <label>Keterangan :</label>
                 <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" ><?php echo $data['keterangan'];?></textarea>
                 <label>Aktif :</label>
@@ -486,6 +512,17 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/select2/dist/js/select2.min.js"></script>
+
+  <script>
+    $(documrnt).ready(function () {
+      // Select2 Single  with Placeholder
+      $('#sales').select2({
+        placeholder: "Pilih",
+        allowClear: true
+      });
+    });
+  </script>
 
 </body>
 

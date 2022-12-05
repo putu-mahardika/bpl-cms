@@ -105,6 +105,7 @@
         $nama = $_POST['nama'];
         $isAdmin = $_POST['isAdmin'];
         $aktif = $_POST['aktif'];
+        // echo $password;
 
         while($data = mysqli_fetch_array($fetch_u)){
             if($username == $data['username'] && $id != $data['UserId']){
@@ -386,6 +387,7 @@
         $pic = $_POST['pic'];
         $pic_telp = $_POST['pic_telp'];
         $pic_email = $_POST['pic_email'];
+        $sales = $_POST['sales'];
         $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
 
@@ -399,7 +401,7 @@
         }
 
         if($k != 1){
-            $query = "update master_customer set kode_customer='$kode', nama='$nama', bidang_usaha='$bidang', npwp='$npwp', alamat='$alamat', telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan='$keterangan', aktif='$aktif', last_update='$datetime', UserId='$s_id' where CustId='$id'";
+            $query = "update master_customer set kode_customer='$kode', nama='$nama', bidang_usaha='$bidang', npwp='$npwp', alamat='$alamat', telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan='$keterangan', aktif='$aktif', last_update='$datetime', UserId='$sales' where CustId='$id'";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/customer.php");
