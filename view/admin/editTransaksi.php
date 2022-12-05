@@ -5,6 +5,7 @@
 	$date = date('d/m/Y');
 	$time = date('H:i');
   $datetime = date('Y');
+  session_save_path('../../tmp');
   session_start();
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../index.php?pesan=belum_login");
@@ -65,6 +66,7 @@
   <link href="../../vendor/clock-picker/clockpicker.css" rel="stylesheet">
   <link href="../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link href="../../css/style.css" rel="stylesheet">
 </head>
 
@@ -126,6 +128,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span>
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item " href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 
       <hr class="sidebar-divider">
 
@@ -135,7 +151,7 @@
       <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -151,7 +167,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -370,7 +386,7 @@
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
             <a href="transaksi.php?tahun=<?php echo $datetime?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Barang</h1>
+            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Truck</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
@@ -460,7 +476,7 @@
             </div>-->
 
             <!-- Area Chart -->
-            <div class="col-xl-9 col-lg-8">
+            <div class="col-xl-8 col-lg-8">
               <div class="card mb-4">
                 <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Monthly Recap Report</h6>
@@ -569,7 +585,7 @@
                     <br>
                     <div class="row" style="height:70px;">
                       <div class="form-group col-sm-2" >
-                        <input type="reset" value="Reset" style="width:100%;" class="btn btn-danger">
+                        <input type="reset" value="Reset" style="width:100%;height:100%;" class="btn btn-danger">
                       </div>
                       <div class="form-group col-sm-2" style="padding-left:0px;">
                       <?php if($t_onclose!=1){?>
@@ -606,7 +622,7 @@
                       <?php } ?>
                       </div>
                       <div class="form-group col-sm-6" style="padding-left:0px;">
-                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;" class="btn btn-md btn-primary" id="submit" >
+                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;height:100%;" class="btn btn-md btn-primary" id="submit" >
                       </div>
                     </div>
                   </form>
@@ -614,14 +630,14 @@
               </div>
             </div>
             <!-- Pie Chart -->
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-4 col-lg-4">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">No. SPK Turunan</h6>          
                 </div>
                 <!--<div class="card-body">-->
                   <div class="card-body table-responsive p-3">
-                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <table class="table align-items-center table-flush table-hover" id="tableStatusSPK">
                     <thead class="thead-light">
                       <tr>
                       <th style="font-size:16px; padding-right:0px;">No</th>
@@ -1578,11 +1594,21 @@
 
   <script src="../../vendor/select2/dist/js/select2.min.js"></script>
 
+  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables1/datatables.min.js"></script>
+
 
 
   <script>
 
 	$(document).ready(function () {
+
+    $('#tableStatusSPK').DataTable({
+        // searching: false,
+        dom: 'ftip',
+        pageLength: 6,
+        info: false
+      }); // ID From dataTable 
 
 	  $('.select2-single').select2();
 
@@ -1881,7 +1907,8 @@
       document.getElementById('onclose').value = data[x].onclose;
     }
 	};
-  </script>
+
+</script>
 
   
 

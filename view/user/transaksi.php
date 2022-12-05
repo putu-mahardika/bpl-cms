@@ -1,5 +1,6 @@
 <?php
 
+  session_save_path('../../tmp');
   session_start();
 
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
@@ -190,7 +191,7 @@
 
           <i class="fas fa-fw fa-truck"></i>
 
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
 
         </a>
 
@@ -208,7 +209,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>

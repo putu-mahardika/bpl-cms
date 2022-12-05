@@ -3,7 +3,7 @@
 	$datetime = date('Y-m-d H:i:s');
 	
 	include 'konek.php';
-	
+		session_save_path('../tmp');
     session_start();
 	
 	//$s_username = $_SESSION['username'];

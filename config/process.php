@@ -4,6 +4,7 @@
     date_default_timezone_set("Asia/Jakarta");
 	$datetime = date('Y-m-d H:i:s');
 	$year = date('Y', strtotime($datetime));
+    session_save_path('../tmp');
 	session_start();
     //$s_username = $_SESSION['username'];
     $s_id = $_SESSION['id'];
@@ -11,11 +12,13 @@
 
     $u_query = 'select * from master_user';
     $s_query = 'select * from master_status';
+    $k_query = 'select * from master_kota';
     $c_query = 'select * from master_customer';
 	$t_query = 'select * from trans_hd where atr1=0';
 
     $fetch_u = mysqli_query($koneksi,$u_query);
     $fetch_s = mysqli_query($koneksi,$s_query);
+    $fetch_k = mysqli_query($koneksi,$k_query);
     $fetch_c = mysqli_query($koneksi,$c_query);
 	$fetch_t = mysqli_query($koneksi,$t_query);
 
@@ -234,6 +237,97 @@
             $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
         }
     }
+
+    //kota
+    //input kota ===================================================================
+    elseif (isset($_POST['inputKota'])) {
+        $kode = strtoupper($_POST['kode']);
+        $nama = $_POST['namaKota'];
+        // $keterangan = $_POST['keterangan'];
+        $aktif = $_POST['aktif'];
+
+		if($aktif == "Ya"){
+			$aktif1 = 1;
+		} else {
+			$aktif1 = 0;
+		}
+
+        //$querymax = "select max(atr1) as max from master_status";
+        //$fetchmax = mysqli_query($koneksi, $querymax);
+        //$datamax = mysqli_fetch_array($fetchmax);
+        //echo $datamax['max']
+        
+        while($data = mysqli_fetch_array($fetch_k)){
+            if(strtolower($kode) == strtolower($data['Kode']) && strtolower($nama) == strtolower($data['Nama'])){
+                $j=1;
+            }
+        }
+
+        if($j != 1){
+            $query = "insert into master_kota values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                header("location:../view/admin/kota.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+             } else {
+                header("location:../view/admin/kota.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            }
+        } else {
+            header("location:../view/admin/inputKota.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kota sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+    }
+
+    //edit kota ====================================================================
+    elseif (isset($_POST['editKota'])) {
+        $id = $_POST['id'];
+        $kode = $_POST['kode'];
+        $nama = $_POST['namaKota'];
+        // $keterangan = $_POST['keterangan'];
+        $aktif = $_POST['aktif'];
+        // print_r([$id, $kode, $nama, $aktif]);
+        while($data = mysqli_fetch_array($fetch_k)){
+            if((strtolower($kode) == strtolower($data['Kode']) || strtolower($nama) == strtolower($data['Nama'])) && strtolower($id != $data['Id'])){
+                $j=1;
+            } 
+            // elseif(strtolower($id == $data['Id'])){
+            //     $j=0;
+            //     break;
+            // }
+        }
+
+        if($j != 1) {
+            $query = "update master_kota set Kode='$kode', Nama='$nama', last_update='$datetime', aktif='$aktif' where Id=$id";
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                header("location:../view/admin/kota.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            } else {
+                header("location:../view/admin/kota.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            }
+        } else {
+            header("location:../view/admin/editKota.php?id=$id");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+    }
+
+    //delete kota ==================================================================
+    elseif (isset($_GET['Id'])) {
+        $id = $_GET['Id'];
+
+        $query = "delete from master_kota where Id='$id'";
+        $result = mysqli_query($koneksi, $query);
+        if ($result) {
+            header("location:../view/admin/kota.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        } else {
+            header("location:../view/admin/kota.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        }
+    }
+
 
     //customer
     //input customer =================================================================

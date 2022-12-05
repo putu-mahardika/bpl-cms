@@ -2,7 +2,11 @@
 	date_default_timezone_set("Asia/Jakarta");
 	$datetime = date('Y');;
 
-	session_start();
+	 //Setting the session path
+	 session_save_path('../tmp');
+
+	 //Starting the session
+	 session_start();
 
 	include 'koneksi.php';
 	
@@ -25,6 +29,7 @@
 					$_SESSION['nama'] = $data['nama'];
 					$_SESSION['hak_akses'] = "Admin";
 					$_SESSION['id'] = $data['UserId'];
+					// localStorage.setItem('name', $data['nama']);
 					//$sql = mysqli_query($koneksi, $query1);
 					header("location:../view/admin/dashboard-admin.php?tahun=$datetime");
 				} 

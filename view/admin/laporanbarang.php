@@ -1,4 +1,5 @@
 <?php
+  session_save_path('../../tmp');
   session_start();
   date_default_timezone_set("Asia/Jakarta");
   $datetime = date('Y');
@@ -103,6 +104,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span>
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Transaksi
@@ -110,7 +125,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item active">
@@ -126,7 +141,7 @@
              <i class="fas fa-fw fa-file-invoice"></i>
            </div>
            <div>
-             <span>Laporan Pergerakan Barang</span>
+             <span>Laporan Pergerakan Truck</span>
            </div>
          </div>
        </a>
@@ -367,7 +382,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> Laporan Pergerakan Barang</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Laporan Pergerakan Truck</h1>
             <?php if($fill == 1){?>
             <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportlaporantransaksi.php?start=<?php echo $start?>&end=<?php echo $end?>"><i class="fas fa-print"></i></a>
             <?php }else{?>

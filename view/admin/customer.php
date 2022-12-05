@@ -1,5 +1,7 @@
 <?php
+  session_save_path('../../tmp');
   session_start();
+  // echo session_id();
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../index.php?pesan=belum_login");
   }
@@ -94,6 +96,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span>
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
@@ -107,7 +123,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -123,7 +139,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>

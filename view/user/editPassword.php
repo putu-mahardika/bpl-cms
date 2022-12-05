@@ -1,4 +1,6 @@
 <?php
+  session_save_path('../../tmp');
+
   session_start();
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
@@ -51,7 +53,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -67,7 +69,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>

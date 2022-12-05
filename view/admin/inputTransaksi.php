@@ -1,5 +1,5 @@
 <?php
-
+  session_save_path('../../tmp');
   session_start();
 
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
@@ -172,6 +172,20 @@
         </div>
 
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span>
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 
       <!--<li class="nav-item">
 
@@ -199,7 +213,7 @@
 
           <i class="fas fa-fw fa-truck"></i>
 
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
 
         </a>
 
@@ -217,7 +231,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -636,7 +650,7 @@
 
           <a href="transaksi.php?tahun=<?php echo $datetime?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
 
-            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Barang</h1>
+            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Truck</h1>
 
             <!--<ol class="breadcrumb">
 
