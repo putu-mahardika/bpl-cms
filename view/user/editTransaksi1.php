@@ -93,6 +93,20 @@
 
   $fetch_s = mysqli_query($koneksi, $query_s);
 
+  $query_b = "select * from trans_biayaturunan where HdId='$t_id'";
+  $fetch_b = mysqli_query($koneksi, $query_b);
+  $arrayBiayaTambahans = array();
+  while($rowbiaya = $fetch_b->fetch_assoc()) {
+    $arrayBiayaTambahans[] = $rowbiaya;
+  }
+
+  $arrayBiayaTambahanLength = count($arrayBiayaTambahans);
+
+  $queryGetGrandTotal = "select (sum(Biaya_transport)+sum(Biaya_inap)+sum(Biaya_lain)) as totalBiaya from trans_biayaturunan where HdId='$t_id'";
+  $fetchGetGrandTotal = mysqli_query($koneksi, $queryGetGrandTotal);
+  $arrayGetGrandTotal = mysqli_fetch_array($fetchGetGrandTotal);
+  $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
+
 
 
 ?>
@@ -1057,7 +1071,17 @@
                               <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
                             </select> -->
                             <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" required>
-                              <option value="" disabled>Pilih</option>
+                            <?php 
+                                if (is_null($t_asalId)) {
+                              ?>
+                                  <option value="" selected disabled>Pilih</option>
+                              <?php
+                                } else {
+                              ?>
+                                  <option value="" disabled>Pilih</option>
+                              <?php
+                                }
+                              ?>
                               <?php
                                 while($dataKotaAsal = mysqli_fetch_array($fetch_k)){
                                   // print_r($dataUser);
@@ -1087,7 +1111,17 @@
                               <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
                             </select> -->
                             <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" required>
-                              <option value="" disabled>Pilih</option>
+                            <?php 
+                                if (is_null($t_tujuanId)) {
+                              ?>
+                                  <option value="" selected disabled>Pilih</option>
+                              <?php
+                                } else {
+                              ?>
+                                  <option value="" disabled>Pilih</option>
+                              <?php
+                                }
+                              ?>
                               <?php
                                 while($dataKotaTujuan = mysqli_fetch_array($fetch_k1)){
                                   // print_r($dataUser);
@@ -1144,6 +1178,11 @@
 
                     </select>-->
 
+                    <div class="mb-3">
+                      <label>Total Biaya :</label>
+                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
+                    </div>
+
                     <br>
 
 					<div class="row" style="height:70px;">
@@ -1175,11 +1214,13 @@
                         for($i=1;$i<=$t_armada;$i++){
                           $query_close = mysqli_query($koneksi, "select OnClose from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')");
                           $close1=mysqli_fetch_array($query_close);
-                          if($close1['OnClose'] == 1){
-                            $close = 0;
-                          } elseif($close1['OnClose'] == 0){
-                            $close = 1;
-                            break;
+                          if(!is_null($close1)) {
+                            if($close1['OnClose'] == 1){
+                              $close = 0;
+                            } elseif($close1['OnClose'] == 0){
+                              $close = 1;
+                              break;
+                            }
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where NoSPK='$t_nospk' and OnClose=0");
@@ -1823,6 +1864,45 @@
             </div>
           </div>
 
+          <!-- Modal Form Ubah Biaya Turunan -->
+          <div class="modal fade" id="biayaTurunanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Ubah Biaya Turunan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="../../config/process.php" method="post" role="form">
+                    <p><b>No. SPK Turunan : <span id="spkturunan"></span></b></p>
+                    <input type="hidden" class="form-control" id="biayaTurunanId" name="biayaTurunanId">
+                    <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
+                    <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
+                    <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
+                    <div class="form-group">
+                      <label for="biayaTransport">Biaya Transport</label>
+                      <input type="number" min="0" class="form-control" id="biayaTransport" name="biayaTransport">
+                    </div>
+                    <div class="form-group">
+                      <label for="biayaInap">Biaya Inap</label>
+                      <input type="number" min="0" class="form-control" id="biayaInap" name="biayaInap">
+                    </div>
+                    <div class="form-group">
+                      <label for="biayaLain">Biaya Lain-lain</label>
+                      <input type="number" min="0" class="form-control" id="biayaLain" name="biayaLain">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                  <button type="submit" class="btn btn-primary" name="editBiayaTurunan">Simpan</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
 
         
@@ -2088,6 +2168,43 @@
 
     }
 
+  </script>
+
+  <script>
+    function openFormBiayaTurunan(id) {
+      $biayaId = document.getElementById('biayaTurunanId');
+      $biayaHdid = document.getElementById('biayaTurunanHdid');
+      $biayaTurunanSPK = document.getElementById('biayaTurunanSPK');
+      $biayaTurunanTurunan = document.getElementById('biayaTurunanTurunan');
+      $spkTurunan = document.getElementById('spkturunan');
+      $biayaTransportInput = document.getElementById('biayaTransport');
+      $biayaInapInput = document.getElementById('biayaInap');
+      $biayaLainInput = document.getElementById('biayaLain');
+
+      $.ajax({
+        url: '../../config/process.php',
+        type: 'get',
+        data: {
+          biayaTurunanId: id
+        },
+        dataType: 'json',
+        success: function(responsetemp) {
+          // Add response in Modal body
+          console.log('res get biaya', responsetemp);
+          $response = responsetemp[0];
+          $biayaId.value = $response.Id;
+          $biayaHdid.value = $response.HdId;
+          $spkTurunan.innerHTML = $response.NoSPK + "-" + $response.Turunan;
+          $biayaTransportInput.value = $response.Biaya_transport;
+          $biayaInapInput.value = $response.Biaya_inap;
+          $biayaLainInput.value = $response.Biaya_lain;
+          $biayaTurunanSPK.value = $response.NoSPK;
+          $biayaTurunanTurunan.value = $response.Turunan; 
+          // Display Modal
+          $('#biayaTurunanModal').modal('show');
+        }
+      });
+    }
   </script>
 
   
