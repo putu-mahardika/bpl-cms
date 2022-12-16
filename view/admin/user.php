@@ -36,7 +36,7 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
@@ -44,7 +44,7 @@
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php">
+        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>

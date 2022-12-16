@@ -17,6 +17,7 @@
   date_default_timezone_set("Asia/Jakarta");
   $datetime = date('Y');
   $tahun = $_GET['tahun'];
+  
 	
 
 ?>
@@ -45,14 +46,14 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
-        <a class="nav-link" href="dashboard-admin.php">
+        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -554,7 +555,7 @@
 
 
         <!-- Container Fluid-->
-        <div class="container-fluid" id="container-wrapper" style="min-height:100%">
+        <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <!--<h5>Tahun : <?php echo $datetime?></h5>-->
@@ -679,14 +680,40 @@
 
             <!-- Area Chart -->
 
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Monthly Recap Report</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Penjualan</h6>
                 </div>
-                <div class="card-body">
+                <div class="card-body pt-0">
                   <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
+                    <canvas id="Chart1"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya</h6>
+                </div>
+                <div class="card-body pt-0">
+                  <div class="chart-area">
+                    <canvas id="Chart2"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Transaksi Setiap Sales</h6>
+                </div>
+                <div class="card-body pt-0">
+                  <div class="chart-area">
+                    <canvas id="Chart3"></canvas>
                   </div>
                 </div>
               </div>
@@ -837,13 +864,346 @@
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
   <script src="../../vendor/chart.js/Chart.min.js"></script>
-  <script src="../../js/demo/chart-area-demo.js"></script>  
+  <!-- <script src="../../js/demo/chart-area-demo.js"></script>   -->
 
   <script>
     function tahunUbah(){
       var tahun = document.getElementById("tahun").value;
       $('#tahunGo').attr("href", "dashboard-admin.php?tahun="+tahun);
     }
+  </script>
+
+  <script>
+    var dataChart1 = [];
+    var openChart1 = [];
+    var closeChart1 = [];
+    var labelChart1 = [];
+
+    // get data chart 1
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getDataChart1: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('res', response[0].length);
+        dataChart1 = response;
+        for(let i=0;i<dataChart1[0].length;i++) {
+          openChart1.push(Number(dataChart1[0][i]))
+        }
+        for(let i=0;i<dataChart1[1].length;i++) {
+          closeChart1.push(Number(dataChart1[1][i]))
+        }
+        for(let i=0;i<dataChart1[2].length;i++) {
+          labelChart1.push((dataChart1[2][i]))
+        }
+        console.log('open', labelChart1);
+
+        // Chart 1
+        var ctx = document.getElementById("Chart1");
+        var myLineChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labelChart1,
+            datasets: [
+              {
+                label: "Transaksi Open",
+                lineTension: 0.3,
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: openChart1,
+                fill: false,
+                backgroundColor: "rgba(78, 115, 223, 1)",
+              },
+              {
+                label: "Transaksi Close",
+                lineTension: 0.3,
+                borderColor: "rgba(255, 51, 51, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointBorderColor: "rgba(255, 51, 51, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointHoverBorderColor: "rgba(255, 51, 51, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: closeChart1,
+                fill: false,
+                backgroundColor: "rgba(255, 51, 51, 1)",
+              }
+            ],
+          },
+          options: {
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  maxTicksLimit: 7
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5
+                }
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      }
+    });
+  </script>
+
+  
+
+  <script>
+    var dataChart2 = [];
+    var openChart2 = [];
+    var closeChart2 = [];
+    var labelChart2 = [];
+
+    // get data chart 2
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getDataChart2: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('res', response);
+        dataChart2 = response;
+        for(let i=0;i<dataChart2[0].length;i++) {
+          openChart2.push(Number(dataChart2[0][i]))
+        }
+        for(let i=0;i<dataChart2[1].length;i++) {
+          closeChart2.push(Number(dataChart2[1][i]))
+        }
+        for(let i=0;i<dataChart2[2].length;i++) {
+          labelChart2.push((dataChart2[2][i]))
+        }
+        console.log('open', labelChart2);
+
+        // Chart 2
+        var ctx1 = document.getElementById("Chart2");
+        var myLineChart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: labelChart2,
+            datasets: [
+              {
+                label: "Transaksi Open",
+                lineTension: 0.3,
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: openChart2,
+                fill: false,
+                backgroundColor: "rgba(78, 115, 223, 1)",
+              },
+              {
+                label: "Transaksi Close",
+                lineTension: 0.3,
+                borderColor: "rgba(255, 51, 51, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointBorderColor: "rgba(255, 51, 51, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointHoverBorderColor: "rgba(255, 51, 51, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: closeChart2,
+                fill: false,
+                backgroundColor: "rgba(255, 51, 51, 1)",
+              }
+            ],
+          },
+          options: {
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  maxTicksLimit: 7
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5
+                }
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      },
+      error: function(response) {
+        console.log('err', response);
+      }
+    });
+  </script>
+
+
+<script>
+    var dataChart3 = [];
+    var openChart3 = [];
+    var closeChart3 = [];
+    var labelChart3 = [];
+
+    // get data chart 3
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getDataChart3: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('res', response);
+        dataChart3 = response;
+        for(let i=0;i<dataChart3[0].length;i++) {
+          openChart3.push(Number(dataChart3[0][i]))
+        }
+        for(let i=0;i<dataChart3[1].length;i++) {
+          closeChart3.push(Number(dataChart3[1][i]))
+        }
+        for(let i=0;i<dataChart3[2].length;i++) {
+          labelChart3.push((dataChart3[2][i]))
+        }
+        console.log('open', labelChart3);
+
+        // Chart 3
+        var ctx2 = document.getElementById("Chart3");
+        var myLineChart = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labelChart3,
+            datasets: [
+              {
+                label: "Transaksi Open",
+                borderColor: "rgba(78, 115, 223, 1)",
+                backgroundColor: "rgba(78, 115, 223, 1)",
+                data: openChart3,
+              },
+              {
+                label: "Transaksi Close",
+                borderColor: "rgba(255, 51, 51, 1)",
+                backgroundColor: "rgba(255, 51, 51, 1)",
+                data: closeChart3,
+              }
+            ],
+          },
+          options: {
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scaleShowValues: true,
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  // maxTicksLimit: 7,
+                  // autoSkip: false
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5
+                }
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      },
+      error: function(response) {
+        console.log('err', response);
+      }
+    });
   </script>
 
 </body>

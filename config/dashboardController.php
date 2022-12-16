@@ -2,7 +2,11 @@
   include 'koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 	$datetime = date('Y-m-d H:i:s');
-	$year = date('Y', strtotime($datetime));
+  if(isset($_GET['tahun'])) {
+    $year = $_GET['tahun'];
+  } else {
+    $year = date('Y', strtotime($datetime));
+  }
   session_save_path('../tmp');
   session_start();
   //$s_username = $_SESSION['username'];
@@ -23,7 +27,7 @@
 
   } elseif (isset($_GET['getDataChart2'])) {
     $resArrayDataOpenChart2 = getDataOpenChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
-    $resArrayDataCloseChart2 = getDataCloseChart2($koneksi, $year, $arrayMonthLength, $akse, $s_ids);
+    $resArrayDataCloseChart2 = getDataCloseChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
     $resArray = [$resArrayDataOpenChart2, $resArrayDataCloseChart2, $arrayMonth];
 
   } elseif (isset($_GET['getDataChart3'])) {
@@ -31,10 +35,10 @@
     $arrayUserLength = count($arrayUser);
     $resArrayDataOpenChart3 = getDataOpenChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
     $resArrayDataCloseChart3 = getDataCloseChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
-    $resArray = [$resArrayDataOpenChart2, $resArrayDataCloseChart2, $arrayUser[1]];
+    $resArray = [$resArrayDataOpenChart3, $resArrayDataCloseChart3, $arrayUser[1]];
   }
 
-  return json_encode($resArray);
+  echo json_encode($resArray);
 
 
 
@@ -52,8 +56,9 @@
     $arrayId = array();
     $arrayNama = array();
     $tempArray = array();
-    $query = "select UserId, nama from master_user where atr=0";
+    $query = "select UserId, nama from master_user where atr1=0";
     $fetch = mysqli_query($koneksi, $query);
+    // echo $fetch;
     while($row = $fetch->fetch_assoc()) {
       $tempArray[] = $row;
     }
@@ -72,9 +77,9 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."'";
     } else {
-      $query = "month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' AND UserId='".$s_id."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' AND UserId='".$s_id."'";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -95,13 +100,13 @@
 
   }
 
-  function getDatCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
+  function getDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."'";
     } else {
-      $query = "month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' AND UserId='".$s_id."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' AND UserId='".$s_id."'";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -182,11 +187,29 @@
     $tempArray = array();
     $arrayUserLength = count($arrayUserId);
     if ($akses == "Admin") {
-      $query = "select a.HdId, a.UserId, c.nama as namaUser, sum(b.Total) as total from trans_hd a, trans_biayaturunan b, master_user c
-      where a.OnClose=0 and year(a.create_date)='".$year."' and a.UserId=c.UserId";
+      $query = "SELECT 
+      b.HdId,
+      b.UserId,
+      case when b.HdId not in (select HdId from trans_biayaturunan) then '0' else e.Total end as totalBiaya
+    FROM
+      trans_hd b,
+      trans_biayaturunan e
+    WHERE
+      e.HdId = b.HdId and
+      b.OnClose=0 and year(b.create_date)='".$year."'";
     } else {
-      $query = "select a.HdId, a.UserId, c.nama as namaUser, sum(b.Total) as total from trans_hd a, trans_biayaturunan b, master_user c
-      where a.OnClose=0 and year(a.create_date)='".$year."' and a.UserId=c.UserId and a.UserId='".$s_id."'";
+      $query = "SELECT 
+      b.HdId,
+      b.UserId,
+      case when b.HdId not in (select HdId from trans_biayaturunan) then '0' else e.Total end as totalBiaya
+    FROM
+      trans_hd b,
+      trans_biayaturunan e
+    WHERE
+      e.HdId = b.HdId and
+      b.OnClose=0 and 
+      b.UserId='".$s_id."' and 
+      year(b.create_date)='".$year."'";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -198,7 +221,7 @@
       $array[$i] = 0;
       foreach ($tempArray as $data) {
         if($data['UserId'] == $arrayUserId[$i]) {
-          $array[$i] = $data['total'];
+          $array[$i] += (double)$data['totalBiaya'];
         }
       }
     }
@@ -211,11 +234,28 @@
     $tempArray = array();
     $arrayUserLength = count($arrayUserId);
     if ($akses == "Admin") {
-      $query = "select a.HdId, a.UserId, c.nama as namaUser, sum(b.Total) as total from trans_hd a, trans_biayaturunan b, master_user c
-      where a.OnClose=1 and year(a.create_date)='".$year."' and a.UserId=c.UserId";
+      $query = "SELECT 
+      b.HdId,
+      b.UserId,
+      case when b.HdId not in (select HdId from trans_biayaturunan) then '0' else e.Total end as totalBiaya
+    FROM
+      trans_hd b,
+      trans_biayaturunan e
+    WHERE
+      e.HdId = b.HdId and
+      b.OnClose=1 and year(b.create_date)='".$year."'";
     } else {
-      $query = "select a.HdId, a.UserId, c.nama as namaUser, sum(b.Total) as total from trans_hd a, trans_biayaturunan b, master_user c
-      where a.OnClose=1 and year(a.create_date)='".$year."' and a.UserId=c.UserId and a.UserId='".$s_id."'";
+      $query = "SELECT 
+      b.HdId,
+      b.UserId,
+      case when b.HdId not in (select HdId from trans_biayaturunan) then '0' else e.Total end as totalBiaya
+    FROM
+      trans_hd b,
+      trans_biayaturunan e
+    WHERE
+      e.HdId = b.HdId and
+      b.OnClose=1 and year(b.create_date)='".$year."' and
+      a.UserId='".$s_id."'";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -227,12 +267,12 @@
       $array[$i] = 0;
       foreach ($tempArray as $data) {
         if($data['UserId'] == $arrayUserId[$i]) {
-          $array[$i] = $data['total'];
+          $array[$i] += (double)$data['totalBiaya'];
         }
       }
     }
 
-    return $array;
+    return $tempArray;
   }
 
 ?>
