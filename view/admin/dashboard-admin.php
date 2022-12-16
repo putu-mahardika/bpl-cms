@@ -963,7 +963,7 @@
                   drawBorder: false
                 },
                 ticks: {
-                  maxTicksLimit: 7
+                  // maxTicksLimit: 7
                 }
               }],
               yAxes: [{
@@ -1079,7 +1079,7 @@
                   drawBorder: false
                 },
                 ticks: {
-                  maxTicksLimit: 7
+                  // maxTicksLimit: 7
                 }
               }],
               yAxes: [{
