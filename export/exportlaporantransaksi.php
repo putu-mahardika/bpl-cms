@@ -9,18 +9,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laporan Pergerakan Truck - PT Berkah Permata Logistik</title>
+	<title>Laporan Pergerakan Barang - PT Berkah Permata Logistik</title>
 </head>
 <body>
     <?php
 	header("Content-type: application/vnd-ms-excel");
-	header("Content-Disposition: attachment; filename=Laporan Pergerakan Truck - PT Berkah Permata Logistik.xls");
+	header("Content-Disposition: attachment; filename=Laporan Pergerakan Barang - PT Berkah Permata Logistik.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
 	?>
  
 	<center>
-		<h1>Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik</h1>
+		<h1>Laporan Detail Pergerakan Barang - PT Berkah Permata Logistik</h1>
 
 			<p style="font-size:13pt;"><b>Periode : </b><?php echo $start0?> - <?php echo $end0?></p>
 		

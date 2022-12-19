@@ -1,11 +1,10 @@
 <?php
 
     include 'koneksi.php';
-    include 'detailBiayaTurunan.php';
     date_default_timezone_set("Asia/Jakarta");
 	$datetime = date('Y-m-d H:i:s');
 	$year = date('Y', strtotime($datetime));
-    session_save_path('../tmp');
+	session_save_path('../tmp');
 	session_start();
     //$s_username = $_SESSION['username'];
     $s_id = $_SESSION['id'];
@@ -13,13 +12,11 @@
 
     $u_query = 'select * from master_user';
     $s_query = 'select * from master_status';
-    $k_query = 'select * from master_kota';
     $c_query = 'select * from master_customer';
 	$t_query = 'select * from trans_hd where atr1=0';
 
     $fetch_u = mysqli_query($koneksi,$u_query);
     $fetch_s = mysqli_query($koneksi,$s_query);
-    $fetch_k = mysqli_query($koneksi,$k_query);
     $fetch_c = mysqli_query($koneksi,$c_query);
 	$fetch_t = mysqli_query($koneksi,$t_query);
 
@@ -106,7 +103,6 @@
         $nama = $_POST['nama'];
         $isAdmin = $_POST['isAdmin'];
         $aktif = $_POST['aktif'];
-        // echo $password;
 
         while($data = mysqli_fetch_array($fetch_u)){
             if($username == $data['username'] && $id != $data['UserId']){
@@ -240,97 +236,6 @@
         }
     }
 
-    //kota
-    //input kota ===================================================================
-    elseif (isset($_POST['inputKota'])) {
-        $kode = strtoupper($_POST['kode']);
-        $nama = $_POST['namaKota'];
-        // $keterangan = $_POST['keterangan'];
-        $aktif = $_POST['aktif'];
-
-		if($aktif == "Ya"){
-			$aktif1 = 1;
-		} else {
-			$aktif1 = 0;
-		}
-
-        //$querymax = "select max(atr1) as max from master_status";
-        //$fetchmax = mysqli_query($koneksi, $querymax);
-        //$datamax = mysqli_fetch_array($fetchmax);
-        //echo $datamax['max']
-        
-        while($data = mysqli_fetch_array($fetch_k)){
-            if(strtolower($kode) == strtolower($data['Kode']) && strtolower($nama) == strtolower($data['Nama'])){
-                $j=1;
-            }
-        }
-
-        if($j != 1){
-            $query = "insert into master_kota values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
-            $result = mysqli_query($koneksi, $query);
-            if ($result) {
-                header("location:../view/admin/kota.php");
-                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-             } else {
-                header("location:../view/admin/kota.php");
-                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            }
-        } else {
-            header("location:../view/admin/inputKota.php");
-            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kota sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        }
-    }
-
-    //edit kota ====================================================================
-    elseif (isset($_POST['editKota'])) {
-        $id = $_POST['id'];
-        $kode = $_POST['kode'];
-        $nama = $_POST['namaKota'];
-        // $keterangan = $_POST['keterangan'];
-        $aktif = $_POST['aktif'];
-        // print_r([$id, $kode, $nama, $aktif]);
-        while($data = mysqli_fetch_array($fetch_k)){
-            if((strtolower($kode) == strtolower($data['Kode']) || strtolower($nama) == strtolower($data['Nama'])) && strtolower($id != $data['Id'])){
-                $j=1;
-            } 
-            // elseif(strtolower($id == $data['Id'])){
-            //     $j=0;
-            //     break;
-            // }
-        }
-
-        if($j != 1) {
-            $query = "update master_kota set Kode='$kode', Nama='$nama', last_update='$datetime', aktif='$aktif' where Id=$id";
-            $result = mysqli_query($koneksi, $query);
-            if ($result) {
-                header("location:../view/admin/kota.php");
-                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            } else {
-                header("location:../view/admin/kota.php");
-                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            }
-        } else {
-            header("location:../view/admin/editKota.php?id=$id");
-            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        }
-    }
-
-    //delete kota ==================================================================
-    elseif (isset($_GET['Id'])) {
-        $id = $_GET['Id'];
-
-        $query = "delete from master_kota where Id='$id'";
-        $result = mysqli_query($koneksi, $query);
-        if ($result) {
-            header("location:../view/admin/kota.php");
-            $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-        } else {
-            header("location:../view/admin/kota.php");
-            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-        }
-    }
-
-
     //customer
     //input customer =================================================================
     elseif (isset($_POST['inputCustomer'])) {
@@ -388,7 +293,6 @@
         $pic = $_POST['pic'];
         $pic_telp = $_POST['pic_telp'];
         $pic_email = $_POST['pic_email'];
-        $sales = $_POST['sales'];
         $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
 
@@ -402,7 +306,7 @@
         }
 
         if($k != 1){
-            $query = "update master_customer set kode_customer='$kode', nama='$nama', bidang_usaha='$bidang', npwp='$npwp', alamat='$alamat', telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan='$keterangan', aktif='$aktif', last_update='$datetime', UserId='$sales' where CustId='$id'";
+            $query = "update master_customer set kode_customer='$kode', nama='$nama', bidang_usaha='$bidang', npwp='$npwp', alamat='$alamat', telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan='$keterangan', aktif='$aktif', last_update='$datetime', UserId='$s_id' where CustId='$id'";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/customer.php");
@@ -442,14 +346,12 @@
 		$tglspk = $_POST['tglspk'];
 		$armada = $_POST['armada'];
 		$status = $_POST['status'];
-		$kotaAsalId = $_POST['kotaAsal'];
-        $detailKotaAsal = $_POST['detailKotaAsal'];
-		$kotaTujuanId = $_POST['kotaTujuan'];
-        $detailKotaTujuan = $_POST['detailKotaTujuan'];
+		$asal = $_POST['asal'];
+		$tujuan = $_POST['tujuan'];
 		$barang = $_POST['barang'];
 		$keterangan = $_POST['keterangan'];
         //$tglclose = '0000-00-00 00:00:00';
-        $save = array("$cust", "$nopo", "$tglpo", "$nospk", "$tglspk", "$armada", "$kotaAsalId", "$detailKotaAsal", "$kotaTujuanId", "$detailKotaTujuan", "$barang", "$keterangan");
+        $save = array("$cust", "$nopo", "$tglpo", "$nospk", "$tglspk", "$armada", "$asal", "$tujuan", "$barang", "$keterangan");
         $keterangan = str_replace(["\r\n", "\n", "\r"],"%%", $keterangan);
 
 		$tglpo0 = str_replace('/', '-', $tglpo);
@@ -481,26 +383,9 @@
 		//echo $tglspk1;
 
 		if ($t != 1) {
-			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, '0', '', '')";
-            $result = mysqli_query($koneksi, $query);
-            //create biaya turunan ================================================================
-            // $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $datetime, $s_id, $koneksi);
-            
-            $queryGetHdId = "select HdId from trans_hd where NoSPK='$nospk'";
-            $fetchGetHdId = mysqli_query($koneksi, $queryGetHdId);
-            $arrayGetHdId = mysqli_fetch_array($fetchGetHdId);
-            $getHdId = $arrayGetHdId['HdId'];
-            
-            $cekBiayaTurunan = true;
-            for ($i=1; $i <= $armada; $i++) { 
-                $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $i, $getHdId, $datetime, $s_id, $koneksi);
-                if (!$resultCreateBiayaTurunan) {
-                    $cekBiayaTurunan = false;
-                }
-            }
-
-
-			if ($result && $cekBiayaTurunan) {
+			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$asal', '$tujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, '0', '', '')";
+            $result = mysqli_query($koneksi, $query);   			
+			if ($result) {
                 if($akses == 'Admin'){
                     header("location:../view/admin/transaksi.php?tahun=$year");
                     $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
@@ -541,7 +426,6 @@
 		$nospk = $_POST['nospk'];
 		$tglspk = $_POST['tglspk'];
 		$armada = $_POST['armada'];
-        $armadaOld = $_POST['armada_old'];
 		$status = $_POST['status'];
 
         if($status == "OPEN"){
@@ -550,10 +434,8 @@
 			$status1 = 1;
 		}
 
-        $kotaAsalId = $_POST['kotaAsal'];
-        $detailKotaAsal = $_POST['detailKotaAsal'];
-		$kotaTujuanId = $_POST['kotaTujuan'];
-        $detailKotaTujuan = $_POST['detailKotaTujuan'];
+        $asal = $_POST['asal'];
+		$tujuan = $_POST['tujuan'];
 		$barang = $_POST['barang'];
 		$keterangan = $_POST['keterangan'];
         $tglclose = '0000-00-00 00:00:00';
@@ -579,37 +461,16 @@
 
 		if ($t != 1) {
             if($akses == 'Admin'){
-                $query = "update trans_hd set NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim_id='$kotaAsalId', kota_kirim='$detailKotaAsal', kota_tujuan_id='$kotaTujuanId', kota_tujuan='$detailKotaTujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime' where HdId='$id'";
+                $query = "update trans_hd set NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim='$asal', kota_tujuan='$tujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime' where HdId='$id'";
                 $query1 = "update trans_detail set NoSPK='$nospk', last_update='$datetime' where HdId='$id'";
             }else{
-                $query = "update trans_hd set NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim_id='$kotaAsalId', kota_kirim='$detailKotaAsal', kota_tujuan_id='$kotaTujuanId', kota_tujuan='$detailKotaTujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime', UserId='$s_id' where HdId='$id'";
+                $query = "update trans_hd set NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim='$asal', kota_tujuan='$tujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime', UserId='$s_id' where HdId='$id'";
                 $query1 = "update trans_detail set NoSPK='$nospk', last_update='$datetime', UserId='$s_id' where HdId='$id'";
             }
             $result = mysqli_query($koneksi, $query); 
-            $result1 = mysqli_query($koneksi, $query1);   
-            
-            $diffArmada = $armada-$armadaOld;
-            $cekBiayaTurunan = true;
+            $result1 = mysqli_query($koneksi, $query1);       
 
-            if ($diffArmada > 0) {
-                for ($i=1; $i <= $diffArmada; $i++) { 
-                    $addTurunan = $armadaOld+$i;
-                    $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $addTurunan, $id, $datetime, $s_id, $koneksi);
-                    if (!$resultCreateBiayaTurunan) {
-                        $cekBiayaTurunan = false;
-                    }
-                }
-            } elseif ($diffArmada < 0) {
-                for ($i=0; $i < -$diffArmada; $i++) { 
-                    $minTurunan = $armadaOld-$i;
-                    $resultDeleteBiayaTurunan = deleteBiayaTurunan($koneksi, $nospk, $minTurunan);
-                    if (!$resultDeleteBiayaTurunan) {
-                        $cekBiayaTurunan = false;
-                    }
-                }
-            }
-
-			if ($result && $result1 && $cekBiayaTurunan) {
+			if ($result && $result1) {
                 if($akses == 'Admin'){
                     header("location:../view/admin/transaksi.php?tahun=$year");
                     $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
@@ -673,13 +534,13 @@
             $nospk = $data['NoSPK'];
         }
 
-        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', closedById='$s_id', cancel_date='$datetime', atr1=1 where HdId=$hdid");
+        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', UserId='$s_id', cancel_date='$datetime', atr1=1 where HdId=$hdid");
         $query2 = mysqli_query($koneksi, "select count(*) as jumlah from trans_detail where HdId='$hdid'");
         $data2 = mysqli_fetch_array($query2);
 
         if($data2['jumlah']!=0){
             for($i=1;$i<=$armada;$i++){
-                $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime', closedById='$s_id' where HdId=$hdid and turunan='$i'");
+                $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime', UserId='$s_id' where HdId=$hdid and turunan='$i'");
             }
         }
 
@@ -712,7 +573,7 @@
             $nospk = $data['NoSPK'];
         }
 
-        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', closedById='$s_id' where NoSPK='$nospk'");
+        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', UserId='$s_id' where NoSPK='$nospk'");
 
         if($query1){
             if($akses == "Admin"){
@@ -748,22 +609,16 @@
         $tgl = date('Y-m-d H:i:s', strtotime("$tgl2 $waktu"));
 		$onclose = $_POST['onclose'];
         $keterangan = $_POST['keterangan'];
+        //echo $keterangan;
         $keterangan1 = str_replace(["\r\n", "\n", "\r"],"%%", $keterangan);
-        // echo $datetime;
-        // echo $keterangan1;
+        //echo $keterangan;
 
         //echo $tgl1;
         //echo $tgl2;
         //echo $tgl;
-        if ($onclose == 1) {
-    		$query = "insert into trans_detail values (null, '$hdid', '$spk', '$turunan', '$status', '$tgl', '$keterangan1', '$jenis', '$nopol', '', '$onclose', '$datetime', '$datetime', '$s_id', '0', '', '')";
-        } else {
-            $query = "insert into trans_detail values (null, '$hdid', '$spk', '$turunan', '$status', '$tgl', '$keterangan1', '$jenis', '$nopol', '', '$onclose', '$datetime', '$datetime', '$s_id', '0', '', '')";
-        }
-		$result = mysqli_query($koneksi, $query);
-		// $result = mysqli_query($koneksi, "insert into trans_detail values (null, '$hdid', '$spk', '$turunan', '$status', '$tgl', '$keterangan1', '$jenis', '$nopol', '', '$onclose', '$datetime', '$datetime', '$s_id', null, '0', '', '')");
 
-        // echo $result;
+		$query = "insert into trans_detail values (null, '$hdid', '$spk', '$turunan', '$status', '$tgl', '$keterangan1', '$jenis', '$nopol', '', '$onclose', '$datetime', '$datetime', '$s_id', '0', '', '')";
+		$result = mysqli_query($koneksi, $query);
 
         if ($result) {
             if($akses == 'Admin'){
@@ -888,49 +743,6 @@
         }else{
             header("location:../view/admin/editTransaksi.php?id=$hdid");
             $_SESSION['pesan'] = '<p><div class="alert alert-warning">User gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        }
-    }
-
-    //get Biaya Turunan ================================================================
-    elseif(isset($_GET['biayaTurunanId'])){
-        $id = $_GET['biayaTurunanId'];
-        // echo $id;
-        $result = getBiayaTurunan($koneksi, $id);
-
-        echo $result;
-    }
-
-
-    //edit Biaya Turunan ================================================================
-    elseif(isset($_POST['editBiayaTurunan'])){
-        $hdid = $_POST['biayaTurunanHdid'];
-        $request = [
-            'Id' => $_POST['biayaTurunanId'],
-            'NoSPK' => $_POST['biayaTurunanSPK'],
-            'Turunan' => $_POST['biayaTurunanTurunan'],
-            'Biaya_transport' => $_POST['biayaTransport'],
-            'Biaya_inap' => $_POST['biayaInap'],
-            'Biaya_lain' => $_POST['biayaLain']
-        ];
-        // echo json_encode($request);
-        $result = editBiayaTurunan($datetime, $s_id, $koneksi, $request);
-
-        if ($result) {
-            if($akses == 'Admin'){
-                header("location:../view/admin/editTransaksi.php?id=$hdid");
-                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data Biaya Turunan berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            } else {
-                header("location:../view/user/editTransaksi.php?id=$hdid");
-                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data Biaya Turunan berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            }
-        } else {
-            if($akses == 'Admin'){
-				header("location:../view/admin/editTransaksi.php?id=$hdid");
-				$_SESSION['pesan'] = '<p><div class="alert alert-warning">Data Biaya Turunan gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            } else {
-                header("location:../view/user/editTransaksi.php?id=$hdid");
-                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data Biaya Turunan gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            }
         }
     }
 ?>

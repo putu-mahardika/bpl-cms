@@ -2,13 +2,13 @@
 	date_default_timezone_set("Asia/Jakarta");
 	$datetime = date('Y');;
 
-	 //Setting the session path
-	 session_save_path('../tmp');
-
-	 //Starting the session
-	 session_start();
+	session_save_path('../tmp');
+	//Starting the session
+	session_start();		
 
 	include 'koneksi.php';
+	// print_r($session);
+
 	
 	//proses Login
 	if (isset($_POST['doLogin'])) {
@@ -29,9 +29,11 @@
 					$_SESSION['nama'] = $data['nama'];
 					$_SESSION['hak_akses'] = "Admin";
 					$_SESSION['id'] = $data['UserId'];
-					// localStorage.setItem('name', $data['nama']);
+					// print_r([$session, $_SESSION]);
 					//$sql = mysqli_query($koneksi, $query1);
+					// print_r($_SESSION);
 					header("location:../view/admin/dashboard-admin.php?tahun=$datetime");
+					exit();
 				} 
 				elseif ($data['isAdmin'] == '0') {
 					$_SESSION['nama'] = $data['nama'];
@@ -40,6 +42,7 @@
 					//$sql = mysqli_query($koneksi, $query1);
 					//header("location:../views/user/dashboard.php");
 					header("location:../view/user/dashboard.php?tahun=$datetime");
+					exit();
 				} else {
 					header("location:../index.php?pesan=gagal");
 				}

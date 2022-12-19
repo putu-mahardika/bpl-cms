@@ -1,5 +1,4 @@
 <?php
-
   session_save_path('../../tmp');
   session_start();
 
@@ -67,7 +66,7 @@
 
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=".$datetime>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=<?php echo $datetime?>">
 
         <div class="sidebar-brand-icon">
 
@@ -83,7 +82,7 @@
 
       <li class="nav-item">
 
-        <a class="nav-link" href="dashboard.php?tahun=".$datetime>
+        <a class="nav-link" href="dashboard.php?tahun=<?php echo $datetime?>">
 
           <i class="fas fa-fw fa-tachometer-alt"></i>
 
@@ -91,24 +90,6 @@
 
       </li>
 
-      <hr class="sidebar-divider">
-      <div class="sidebar-heading">
-        Master
-      </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-          aria-controls="collapseForm">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Customer</span>
-        </a>
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item" href="customer.php">List Customer</a>
-            <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
       <hr class="sidebar-divider">
 
       <!--<div class="sidebar-heading">
@@ -209,7 +190,7 @@
 
           <i class="fas fa-fw fa-truck"></i>
 
-          <span>Pergerakan Truck</span>
+          <span>Pergerakan Barang</span>
 
         </a>
 
@@ -227,7 +208,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Truck</span>
+              <span>Laporan Pergerakan Barang</span>
             </div>
           </div>
         </a>

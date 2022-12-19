@@ -1,7 +1,7 @@
 <?php
   session_save_path('../../tmp');
   session_start();
-  // echo session_id();
+  // print_r($_SESSION);
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../index.php?pesan=belum_login");
   }
@@ -10,8 +10,7 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-	// $query = 'select * from master_customer';
-	$query = 'select a.*, b.nama as namaUser from master_customer a, master_user b where a.UserId = b.UserId';
+	$query = 'select * from master_customer';
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
@@ -35,7 +34,7 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
@@ -43,7 +42,7 @@
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
+        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -97,20 +96,6 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
-        </a>
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
@@ -124,7 +109,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Truck</span>
+          <span>Pergerakan Barang</span>
         </a>
       </li>
       <li class="nav-item">
@@ -140,7 +125,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Truck</span>
+              <span>Laporan Pergerakan Barang</span>
             </div>
           </div>
         </a>
@@ -406,7 +391,7 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>Tanggal</th>
+                        <th>tgl</th>
 						            <th>Kode</th>
                         <th>NPWP</th>
                         <th>Customer</th>
@@ -416,7 +401,7 @@
                         <th>Bidang Usaha</th>
                         <th>PIC</th>
                         <th>PIC Telp</th>
-                        <th>Sales</th>
+                        <!--<th>PIC e-mail</th>-->
                         <!--<th>Keterangan</th>-->
                         <th>Aktif</th>
                         <!--<th>Create Date</th>-->
@@ -445,7 +430,6 @@
                         <td style="font-size:13px;"><?php echo $data['bidang_usaha']?></td>
                         <td style="font-size:13px;"><?php echo $data['PIC']?></td>
                         <td style="font-size:13px;"><?php echo $data['PIC_telp']?></td>
-                        <td style="font-size:13px;"><?php echo $data['namaUser']?></td>
                         <!--<td><?php echo $data['PIC_email']?></td>-->
                         <!--<td><?php echo $data['keterangan']?></td>-->
                       <?php 
@@ -557,8 +541,7 @@
     $(document).ready(function () {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
-        "scrollX": true,
-        // "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
+        "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
         "order": [[0, "desc"]]
         //"columnDefs": [
         //    {

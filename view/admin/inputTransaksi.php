@@ -17,10 +17,6 @@
 
 	$fetch = mysqli_query($koneksi,$query);
 
-  $query_k = "select * from master_kota where aktif = 1";
-  $fetch_k = mysqli_query($koneksi, $query_k);
-  $fetch_k1 = mysqli_query($koneksi, $query_k);
-
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +63,7 @@
 
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
 
         <div class="sidebar-brand-icon">
 
@@ -83,7 +79,7 @@
 
       <li class="nav-item active">
 
-        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
+        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
 
           <i class="fas fa-fw fa-tachometer-alt"></i>
 
@@ -176,20 +172,6 @@
         </div>
 
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
-        </a>
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
 
       <!--<li class="nav-item">
 
@@ -217,7 +199,7 @@
 
           <i class="fas fa-fw fa-truck"></i>
 
-          <span>Pergerakan Truck</span>
+          <span>Pergerakan Barang</span>
 
         </a>
 
@@ -235,7 +217,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Truck</span>
+              <span>Laporan Pergerakan Barang</span>
             </div>
           </div>
         </a>
@@ -654,7 +636,7 @@
 
           <a href="transaksi.php?tahun=<?php echo $datetime?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
 
-            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Truck</h1>
+            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Barang</h1>
 
             <!--<ol class="breadcrumb">
 
@@ -1037,65 +1019,17 @@
                         <input type="text" class="form-control form-control-sm mb-3" name="status" value="OPEN" readonly>
                       </div>
                     </div>
-                    <div>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label>Kota Asal :</label>
-                            <!-- <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" style="width:100% !important;" required>
-                              <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
-                            </select> -->
-                            <select class="select2-single-placeholder1 form-control" name="kotaAsal" id="kotaAsal" required>
-                              <option value="" selected disabled>Pilih</option>
-                              <?php
-                                while($dataKotaAsal = mysqli_fetch_array($fetch_k)){
-                                  // print_r($dataUser);
-                                  if($dataKotaAsal['aktif']==1){
-                              ?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
-                              <?php
-                                  } else {
-                                    continue;
-                                  }
-                                }
-                              ?>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Detail Kota Asal :</label>
-                            <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
-                          </div>
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="form-group">
-                            <label>Kota Tujuan :</label>
-                            <!-- <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" style="width:100% !important;" required>
-                              <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
-                            </select> -->
-                            <select class="select2-single-placeholder2 form-control" name="kotaTujuan" id="kotaTujuan" required>
-                              <option value="" selected disabled>Pilih</option>
-                              <?php
-                                while($dataKotaTujuan = mysqli_fetch_array($fetch_k1)){
-                                  // print_r($dataUser);
-                                  if($dataKotaTujuan['aktif']==1){
-                              ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
-                              <?php
-                                  } else {
-                                    continue;
-                                  }
-                                }
-                              ?>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Detail Kota Tujuan :</label>
-                            <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required></textarea>
-                          </div>
-                        </div>
-                      <!-- <div class="form-group col-sm-4"> -->
+                    <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-4">
+                        <label>Asal :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" name="asal" id="asal" required>
+                      </div>
+                      <div class="form-group col-sm-4">
+                        <label>Tujuan :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" name="tujuan" id="tujuan" required>
+                      </div>
+                      <div class="form-group col-sm-4">
+                        
                       </div>
                     </div>
                     <div class="form-group">
@@ -1239,17 +1173,6 @@
   		placeholder: "Pilih",
 	  	allowClear: true
 	  });
-
-    $('.select2-single-placeholder1').select2({
-  		placeholder: "Pilih",
-	  	allowClear: true
-	  });
-
-    $('.select2-single-placeholder2').select2({
-  		placeholder: "Pilih",
-	  	allowClear: true
-	  });
-
 	  $('#simple-date1 .input-group.date').datepicker({
       format: 'dd/mm/yyyy',
       todayBtn: 'linked',
