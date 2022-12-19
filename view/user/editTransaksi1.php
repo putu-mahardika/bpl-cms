@@ -2180,7 +2180,7 @@
       $biayaTransportInput = document.getElementById('biayaTransport');
       $biayaInapInput = document.getElementById('biayaInap');
       $biayaLainInput = document.getElementById('biayaLain');
-
+ 
       $.ajax({
         url: '../../config/process.php',
         type: 'get',

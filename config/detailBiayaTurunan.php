@@ -9,7 +9,7 @@
     }
 
     return json_encode($array);
-  }
+  } 
 
   function createBiayaTurunan($nospk, $turunan, $hdid, $datetime, $s_id, $koneksi) {
     // $cek = true;

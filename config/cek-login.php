@@ -50,4 +50,4 @@
 			header("location:../index.php?pesan=gagal");
 		}
 	}
-?>
+?> 

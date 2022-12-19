@@ -36,7 +36,6 @@
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
-        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">

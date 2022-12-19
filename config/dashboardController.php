@@ -6,7 +6,7 @@
     $year = $_GET['tahun'];
   } else {
     $year = date('Y', strtotime($datetime));
-  }
+  } 
   session_save_path('../tmp');
   session_start();
   //$s_username = $_SESSION['username'];

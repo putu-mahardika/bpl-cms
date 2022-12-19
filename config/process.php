@@ -889,7 +889,7 @@
             header("location:../view/admin/editTransaksi.php?id=$hdid");
             $_SESSION['pesan'] = '<p><div class="alert alert-warning">User gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         }
-    }
+    } 
 
     //get Biaya Turunan ================================================================
     elseif(isset($_GET['biayaTurunanId'])){

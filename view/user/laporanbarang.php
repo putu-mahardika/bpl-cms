@@ -92,7 +92,7 @@
   <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
   <link href="../../css/style.css" rel="stylesheet">
 </head>
-
+ 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
