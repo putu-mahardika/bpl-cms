@@ -77,9 +77,9 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' group by month(create_date)";
     } else {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' AND UserId='".$s_id."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -104,9 +104,9 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' group by month(create_date)";
     } else {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' AND UserId='".$s_id."'";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -130,10 +130,10 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select a.hdid, month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
       trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
     } else {
-      $query = "select a.hdid, month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
       trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
     }
 
@@ -158,10 +158,10 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select a.hdid, month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
       trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
     } else {
-      $query = "select a.hdid, month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
       trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
     }
 
