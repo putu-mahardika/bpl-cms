@@ -106,7 +106,7 @@
         </a>
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
+            <h6 class="collapse-header">Kota</h6> 
             <a class="collapse-item" href="kota.php">List Kota</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>

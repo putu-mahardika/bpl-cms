@@ -160,7 +160,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true" aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
+          <span>Kota</span> 
         </a>
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
