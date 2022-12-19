@@ -67,7 +67,7 @@
 
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
 
         <div class="sidebar-brand-icon">
 
@@ -81,7 +81,7 @@
 
       <li class="nav-item active">
 
-        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
+        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
 
           <i class="fas fa-fw fa-tachometer-alt"></i>
 
