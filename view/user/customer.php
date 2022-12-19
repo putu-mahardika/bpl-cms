@@ -1,19 +1,23 @@
 <?php
   session_save_path('../../tmp');
   session_start();
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  // echo session_id();
+  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
   }
+
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
+  $id = $_SESSION['id'];
   $datetime = date('Y');
-  //$query = 'select * from master_user where ...';
-  //$fetch = mysqli_query($koneksi,$query);
+	// $query = 'select * from master_customer';
+	$query = 'select a.*, b.nama as namaUser from master_customer a, master_user b where a.UserId = b.UserId and a.UserId = '.$id;
+	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,24 +25,26 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit User - PT Berkah Permata Logistik</title>
+  <title>Customer - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
+        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -46,49 +52,17 @@
       <div class="sidebar-heading">
         Master
       </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
           <i class="fas fa-fw fa-table"></i>
           <span>Customer</span>
         </a>
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div id="collapseForm" class="collapse show" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item" href="customer.php">List Customer</a>
+            <a class="collapse-item active" href="customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
@@ -105,7 +79,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -121,24 +95,24 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
       </li>-->
-      <!--<li class="nav-item active">
+      <!--<li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
           <span>Pages</span>
         </a>
-        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Example Pages</h6>
             <a class="collapse-item" href="login.html">Login</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item active" href="blank.html">Blank Page</a>
+            <a class="collapse-item" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -159,13 +133,13 @@
         </a>
       </li>
       <hr class="sidebar-divider">
-	    <li class="nav-item">
+      <!--<div class="version" id="version-ruangadmin"></div>-->
+	  <li class="nav-item">
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
-      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -341,10 +315,6 @@
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>-->
                 <a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -360,71 +330,126 @@
           </ul>
         </nav>
         <!-- Topbar -->
-
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="user.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit User</h1>
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">List Customer</h1>
+			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportcustomer.php"><i class="fas fa-print"></i></a>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Pages</li>
-              <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
             </ol>-->
           </div>
 
-          <?php
-            $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_user where UserId='$id'");
-            $data = mysqli_fetch_array($fetch);
-            //echo $id;
-          ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+          <div class="row">
 
-          <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php?">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['UserId'];?>" name="id" readonly>  
-                <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username" required>
-                <label>Password Baru :</label>
-                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" name="password">
-                <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
-                <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" required>
-                <label>isAdmin :</label>
-                <!--<input type="text" class="form-control" name="hak-akses">-->
-                <select name="isAdmin" class="form-control form-control-sm mb-3">
-                <?php if ($data['isAdmin'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editUser" class="btn btn-md btn-primary " style="width:77%;">
-              </form>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
+                  <a href="inputCustomer.php" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tambah Customer</span>
+                  </a>
+				  
+                </div>
+                <div class="table-responsive p-3">
+				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Tanggal</th>
+						            <th>Kode</th>
+                        <th>NPWP</th>
+                        <th>Customer</th>
+                        <th>Alamat</th>
+                        <!--<th>Telp</th>-->
+                        <!--<th>e-mail</th>-->
+                        <th>Bidang Usaha</th>
+                        <th>PIC</th>
+                        <th>PIC Telp</th>
+                        <!--<th>Keterangan</th>-->
+                        <th>Aktif</th>
+                        <!--<th>Create Date</th>-->
+                        <!--<th>Last Update</th>-->
+                        <th style="padding-left:10px; padding-right:44px;">Action</th>
+                      </tr>
+                    </thead>
+                    
+                    <tbody>
+                    <?php
+                      while($data = mysqli_fetch_array($fetch)){
+                        $id = $data['CustId'];
+                        $tgl = date("d-M-Y H:i:s", strtotime($data['create_date']));
+                    ?>
+                      <tr>
+                        <!--<td><a href="#" class="btn btn-primary btn-md" id="detail">
+                        <i class="fas fa-chevron-circle-up"></i></a>
+                        </td>-->
+                        <td style="font-size:13px;"><?php echo $tgl?></td>
+						            <td style="font-size:13px;"><?php echo $data['kode_customer']?></td>
+                        <td style="font-size:13px;"><?php echo $data['npwp']?></td>
+                        <td style="font-size:13px;"><?php echo $data['nama']?></td>
+                        <td style="font-size:13px;"><?php echo $data['alamat']?></td>
+                        <!--<td><?php echo $data['telp']?></td>-->
+                        <!--<td><?php echo $data['email']?></td>-->
+                        <td style="font-size:13px;"><?php echo $data['bidang_usaha']?></td>
+                        <td style="font-size:13px;"><?php echo $data['PIC']?></td>
+                        <td style="font-size:13px;"><?php echo $data['PIC_telp']?></td>
+                        <!--<td><?php echo $data['PIC_email']?></td>-->
+                        <!--<td><?php echo $data['keterangan']?></td>-->
+                      <?php 
+                        if($data['aktif'] == 1){
+                      ?>
+						            <td><span class="badge badge-success">Aktif</span></td>
+                      <?php } else{ ?>
+                        <td><span class="badge badge-danger">Tidak Aktif</span></td>
+                      <?php } ?>	
+                        <!--<td><?php echo $data['create_date']?></td>-->
+                        <!--<td><?php echo $data['last_update']?></td>-->
+                        <!--<td><span class="badge badge-success">Aktif</span></td>-->
+                        <td style="padding-left:10px; padding-right:10px;">
+                            <button title="detail" onclick="custinfo(<?php echo $id?>)" class="btn btn-info btn-sm"><i class="fas fa-search"></i></button>
+
+                            <!--<button data-id='".$id."' class='userinfo'>Info</button>-->
+						            </td>
+                      </tr>
+                    <?php
+                      }
+                    ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-		  <!--<div class="text-center">
-            <img src="img/think.svg" style="max-height: 90px">
-            <h4 class="pt-3">save your <b>imagination</b> here!</h4>
-          </div>-->
+          </div>
+          <!--Row-->
+          
+
+          <!-- Modal Detail -->
+          <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Detail Customer</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                </div>
+              </div>
+            </div>
+          </div>              
+
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
@@ -474,6 +499,66 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables1/datatables.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#dataTable').DataTable(); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "scrollX": true,
+        // "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
+        "order": [[0, "desc"]]
+        //"columnDefs": [
+        //    {
+        //        "targets": [ 0 ],
+        //        "visible": true,
+        //        "searchable": false,
+        //        "order": "desc"
+        //    },
+        //  ]
+      }); // ID From dataTable with Hover
+
+      //$('.custinfo').click(function(){
+      //  var custid = $(this).data('id');
+
+        // AJAX request\
+        //$.ajax({
+        //  url: '../../config/viewCustomer.php',
+        //  type: 'post',
+        //  data: {custid: custid},
+        //  success: function(response){
+            // Add response in Modal body
+        //    $('.modal-body').html(response);
+            // Display Modal
+        //    $('#detailModal').modal('show');
+        //  }
+        //});
+      //});
+    });
+  </script>
+
+<script>
+    function custinfo(id){
+      var custid = id;
+      // AJAX request\
+      $.ajax({
+        url: '../../config/viewCustomer.php',
+        type: 'post',
+        data: {custid: custid},
+        success: function(response){
+          // Add response in Modal body
+          $('.modal-body').html(response);
+          // Display Modal
+          $('#detailModal').modal('show');
+        }
+      });
+    }
+  </script>
+
 
 </body>
 

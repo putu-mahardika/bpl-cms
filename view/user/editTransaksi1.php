@@ -6,6 +6,7 @@
 
 	
   session_save_path('../../tmp');
+
   session_start();
 
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
@@ -32,38 +33,39 @@
   $fetch_t = mysqli_query($koneksi, $query_t);
 
   while($data_t = mysqli_fetch_array($fetch_t)){
-
     $t_hdid = $data_t['HdId'];
-
     $t_custid = $data_t['CustId'];
-
     $t_nopo = $data_t['NoPO'];
-
     $t_tglpo = $data_t['tgl_po'];
-
     $t_tglpo1 = date('d/m/Y', strtotime($t_tglpo));
-
     $t_nospk = $data_t['NoSPK'];
-
     $t_tglspk = $data_t['tgl_spk'];
-
     $t_tglspk1 = date('d/m/Y', strtotime($t_tglspk));
-
     $t_armada = $data_t['total_armada'];
-
     $t_asal = $data_t['kota_kirim'];
-
     $t_tujuan = $data_t['kota_tujuan'];
-
     $t_barang = $data_t['Barang'];
-
     $t_keterangan = $data_t['keterangan'];
-
     $t_onclose = $data_t['OnClose'];
-
+    $t_DateOnClose = $data_t['DateOnClose'];
+    $t_cancelDate = $data_t['cancel_date'];
     $t_user = $data_t['UserId'];
-
+    $t_closedById = $data_t['closedById'];
   }
+
+  if (!is_null($t_closedById)) {
+    $query_u = "select UserId, nama from master_user where UserId = ".$t_closedById;
+    $fetch_u = mysqli_query($koneksi, $query_u);
+    
+    while ($data_u = mysqli_fetch_array($fetch_u)) {
+      $u_id = $data_u['UserId'];
+      $u_namaUser = $data_u['nama'];
+    }
+  }
+
+  $query_k = "select * from master_kota where aktif = 1";
+  $fetch_k = mysqli_query($koneksi, $query_k);
+  $fetch_k1 = mysqli_query($koneksi, $query_k);
 
 
 
@@ -90,6 +92,20 @@
   $query_s = "select * from master_status where aktif='1' ORDER by atr1 asc";
 
   $fetch_s = mysqli_query($koneksi, $query_s);
+
+  $query_b = "select * from trans_biayaturunan where HdId='$t_id'";
+  $fetch_b = mysqli_query($koneksi, $query_b);
+  $arrayBiayaTambahans = array();
+  while($rowbiaya = $fetch_b->fetch_assoc()) {
+    $arrayBiayaTambahans[] = $rowbiaya;
+  }
+
+  $arrayBiayaTambahanLength = count($arrayBiayaTambahans);
+
+  $queryGetGrandTotal = "select (sum(Biaya_transport)+sum(Biaya_inap)+sum(Biaya_lain)) as totalBiaya from trans_biayaturunan where HdId='$t_id'";
+  $fetchGetGrandTotal = mysqli_query($koneksi, $queryGetGrandTotal);
+  $arrayGetGrandTotal = mysqli_fetch_array($fetchGetGrandTotal);
+  $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
 
 
@@ -143,7 +159,7 @@
 
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=".$datetime>
 
         <div class="sidebar-brand-icon">
 
@@ -159,14 +175,31 @@
 
       <li class="nav-item">
 
-        <a class="nav-link" href="dashboard.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard.php?tahun=".$datetime>
 
           <i class="fas fa-fw fa-tachometer-alt"></i>
 
           <span>Dashboard</span></a>
 
       </li>
-
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Master
+      </div>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+          aria-controls="collapseForm">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Customer</span>
+        </a>
+        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Customer</h6>
+            <a class="collapse-item" href="customer.php">List Customer</a>
+            <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
+          </div>
+        </div>
+      </li>
       <hr class="sidebar-divider">
 
       <!--<div class="sidebar-heading">
@@ -267,7 +300,7 @@
 
           <i class="fas fa-fw fa-truck"></i>
 
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
 
         </a>
 
@@ -285,7 +318,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -695,7 +728,7 @@
 
             <a href="transaksi.php?tahun=<?php echo $datetime?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
 
-            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Barang</h1>
+            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Truck</h1>
 
             <!--<ol class="breadcrumb">
 
@@ -1029,30 +1062,90 @@
 
                     </div>
 
-                    <div class="row" style="height: 70px;">
-
-                      <div class="form-group col-sm-4">
-
-                        <label>Asal :</label>
-
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="asal" required>
-
+                    <div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Kota Asal :</label>
+                            <!-- <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" style="width:100% !important;" required>
+                              <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
+                            </select> -->
+                            <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" required>
+                            <?php 
+                                if (is_null($t_asalId)) {
+                              ?>
+                                  <option value="" selected disabled>Pilih</option>
+                              <?php
+                                } else {
+                              ?>
+                                  <option value="" disabled>Pilih</option>
+                              <?php
+                                }
+                              ?>
+                              <?php
+                                while($dataKotaAsal = mysqli_fetch_array($fetch_k)){
+                                  // print_r($dataUser);
+                                  if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $t_asalId){
+                              ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                                  <?php }else{?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                                <?php } } else {
+                                  continue;
+                                  }
+                                }
+                              ?>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label>Detail Kota Asal :</label>
+                            <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="detailKotaAsal" id="detailKotaAsal"> -->
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required><?php echo $t_asal ?></textarea>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Kota Tujuan :</label>
+                            <!-- <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" style="width:100% !important;" required>
+                              <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
+                            </select> -->
+                            <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" required>
+                            <?php 
+                                if (is_null($t_tujuanId)) {
+                              ?>
+                                  <option value="" selected disabled>Pilih</option>
+                              <?php
+                                } else {
+                              ?>
+                                  <option value="" disabled>Pilih</option>
+                              <?php
+                                }
+                              ?>
+                              <?php
+                                while($dataKotaTujuan = mysqli_fetch_array($fetch_k1)){
+                                  // print_r($dataUser);
+                                  if($dataKotaTujuan['aktif']==1){
+                                    if($dataKotaTujuan['Id'] == $t_tujuanId){
+                              ?>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>" selected><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                                  <?php }else{?>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                                <?php } } else {
+                                  continue;
+                                  }
+                                }
+                              ?>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label>Detail Kota Tujuan :</label>
+                            <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required><?php echo $t_asal ?></textarea>
+                          </div>
+                        </div>
+                      <!-- <div class="form-group col-sm-4"> -->
                       </div>
-
-                      <div class="form-group col-sm-4">
-
-                        <label>Tujuan :</label>
-
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="tujuan" required>
-
-                      </div>
-
-                      <div class="form-group col-sm-4">
-
-                        
-
-                      </div>
-
                     </div>
 
                     <div class="form-group">
@@ -1085,6 +1178,11 @@
 
                     </select>-->
 
+                    <div class="mb-3">
+                      <label>Total Biaya :</label>
+                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
+                    </div>
+
                     <br>
 
 					<div class="row" style="height:70px;">
@@ -1116,11 +1214,13 @@
                         for($i=1;$i<=$t_armada;$i++){
                           $query_close = mysqli_query($koneksi, "select OnClose from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')");
                           $close1=mysqli_fetch_array($query_close);
-                          if($close1['OnClose'] == 1){
-                            $close = 0;
-                          } elseif($close1['OnClose'] == 0){
-                            $close = 1;
-                            break;
+                          if(!is_null($close1)) {
+                            if($close1['OnClose'] == 1){
+                              $close = 0;
+                            } elseif($close1['OnClose'] == 0){
+                              $close = 1;
+                              break;
+                            }
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where NoSPK='$t_nospk' and OnClose=0");
@@ -1155,7 +1255,18 @@
 
                       </div>
 
-                    </div>   
+                    </div>
+                    <?php 
+                      if($t_onclose == 1 && is_null($t_cancelDate)) {
+                    ?>
+                      <p>Ditutup Oleh <b><?php echo $u_namaUser?></b> tanggal <b><?php echo $t_DateOnClose?></b></p>
+                    <?php    
+                      } elseif (!is_null($t_cancelDate)) {
+                    ?>
+                      <p>Dibatalkan Oleh <b><?php echo $u_namaUser?></b> tanggal <b><?php echo $t_cancelDate?></b></p>
+                    <?php
+                      }
+                    ?>   
 
                   </form>
 
@@ -1753,6 +1864,45 @@
             </div>
           </div>
 
+          <!-- Modal Form Ubah Biaya Turunan -->
+          <div class="modal fade" id="biayaTurunanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Ubah Biaya Turunan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="../../config/process.php" method="post" role="form">
+                    <p><b>No. SPK Turunan : <span id="spkturunan"></span></b></p>
+                    <input type="hidden" class="form-control" id="biayaTurunanId" name="biayaTurunanId">
+                    <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
+                    <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
+                    <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
+                    <div class="form-group">
+                      <label for="biayaTransport">Biaya Transport</label>
+                      <input type="number" min="0" class="form-control" id="biayaTransport" name="biayaTransport">
+                    </div>
+                    <div class="form-group">
+                      <label for="biayaInap">Biaya Inap</label>
+                      <input type="number" min="0" class="form-control" id="biayaInap" name="biayaInap">
+                    </div>
+                    <div class="form-group">
+                      <label for="biayaLain">Biaya Lain-lain</label>
+                      <input type="number" min="0" class="form-control" id="biayaLain" name="biayaLain">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                  <button type="submit" class="btn btn-primary" name="editBiayaTurunan">Simpan</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
 
         
@@ -2018,6 +2168,43 @@
 
     }
 
+  </script>
+
+  <script>
+    function openFormBiayaTurunan(id) {
+      $biayaId = document.getElementById('biayaTurunanId');
+      $biayaHdid = document.getElementById('biayaTurunanHdid');
+      $biayaTurunanSPK = document.getElementById('biayaTurunanSPK');
+      $biayaTurunanTurunan = document.getElementById('biayaTurunanTurunan');
+      $spkTurunan = document.getElementById('spkturunan');
+      $biayaTransportInput = document.getElementById('biayaTransport');
+      $biayaInapInput = document.getElementById('biayaInap');
+      $biayaLainInput = document.getElementById('biayaLain');
+ 
+      $.ajax({
+        url: '../../config/process.php',
+        type: 'get',
+        data: {
+          biayaTurunanId: id
+        },
+        dataType: 'json',
+        success: function(responsetemp) {
+          // Add response in Modal body
+          console.log('res get biaya', responsetemp);
+          $response = responsetemp[0];
+          $biayaId.value = $response.Id;
+          $biayaHdid.value = $response.HdId;
+          $spkTurunan.innerHTML = $response.NoSPK + "-" + $response.Turunan;
+          $biayaTransportInput.value = $response.Biaya_transport;
+          $biayaInapInput.value = $response.Biaya_inap;
+          $biayaLainInput.value = $response.Biaya_lain;
+          $biayaTurunanSPK.value = $response.NoSPK;
+          $biayaTurunanTurunan.value = $response.Turunan; 
+          // Display Modal
+          $('#biayaTurunanModal').modal('show');
+        }
+      });
+    }
   </script>
 
   

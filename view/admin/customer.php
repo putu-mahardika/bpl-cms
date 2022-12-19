@@ -28,7 +28,7 @@
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
-</head>
+</head> 
 
 <body id="page-top">
   <div id="wrapper">

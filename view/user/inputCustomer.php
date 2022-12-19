@@ -1,7 +1,7 @@
 <?php
   session_save_path('../../tmp');
   session_start();
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
   }
   include '../../config/koneksi.php';
@@ -13,7 +13,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit User - PT Berkah Permata Logistik</title>
+  <title>Tambah Customer - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -31,14 +31,15 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
+        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -46,24 +47,7 @@
       <div class="sidebar-heading">
         Master
       </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
-      </li>
+      
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
@@ -75,20 +59,6 @@
             <h6 class="collapse-header">Customer</h6>
             <a class="collapse-item" href="customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
@@ -105,7 +75,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -121,7 +91,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -341,12 +311,8 @@
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>-->
-                <a class="dropdown-item" href="editPassword.php">
+				<a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -364,61 +330,49 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="user.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit User</h1>
+            <a href="customer.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Customer</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
               <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
-
-          <?php
-            $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_user where UserId='$id'");
-            $data = mysqli_fetch_array($fetch);
-            //echo $id;
-          ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-
+			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php?">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['UserId'];?>" name="id" readonly>  
-                <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username" required>
-                <label>Password Baru :</label>
-                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" name="password">
-                <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
-                <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" required>
-                <label>isAdmin :</label>
-                <!--<input type="text" class="form-control" name="hak-akses">-->
-                <select name="isAdmin" class="form-control form-control-sm mb-3">
-                <?php if ($data['isAdmin'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
+              <form class="form group" method="post" action="../../config/process.php">
+                <label>Kode Customer :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" required>
+                <label>Nama Customer :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" required>
+                <label>Bidang Usaha :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="bidang" required>
+                <label>NPWP :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="npwp" required>
+                <label>Alamat :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="alamat" required>
+                <label>Telp :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="telp" required>
+                <label>email :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="email" required>
+                <label>Nama PIC :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="pic" required>
+                <label>Telp PIC :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="pic_telp" required>
+                <label>email PIC :</label>
+                <input type="email" class="form-control form-control-sm mb-3" name="pic_email" required>
+                <label>Keterangan :</label>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" ></textarea>
                 <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
+                <!--<select name="aktif" class="form-control form-control-sm mb-3">
+                  <option disabled selected> Pilih </option>
                   <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editUser" class="btn btn-md btn-primary " style="width:77%;">
+                  <option value=0> Tidak </option>
+                </select>-->
+                <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
+                <br>
+                <input type="reset" value="Reset" class="btn btn-md btn-danger " style="width:22%;">
+                <input type="submit" value="Submit" name="inputCustomer" class="btn btn-md btn-primary " style="width:77%;">
               </form>
             </div>
 		  <!--<div class="text-center">

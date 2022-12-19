@@ -1,51 +1,83 @@
 <?php
 
-  include '../../config/koneksi.php';
-  date_default_timezone_set("Asia/Jakarta");
-	$date = date('d/m/Y');
-	$time = date('H:i');
-  $datetime = date('Y');
-  session_save_path('../../tmp');
-  session_start();
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
-    header("location:../../index.php?pesan=belum_login");
+include '../../config/koneksi.php';
+date_default_timezone_set("Asia/Jakarta");
+$date = date('d/m/Y');
+$time = date('H:i');
+$datetime = date('Y');
+session_save_path('../../tmp');
+session_start();
+if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  header("location:../../index.php?pesan=belum_login");
+}
+
+$t_id = $_GET['id'];
+
+$query_t = "select * from trans_hd where HdId='$t_id'";
+// $query_t = "select a.*, b.UserId, b.nama as namaUser from trans_hd a, master_user b where a.closedById = b.UserId and a.HdId='$t_id'"; 
+$fetch_t = mysqli_query($koneksi, $query_t);
+
+while ($data_t = mysqli_fetch_array($fetch_t)) {
+  $t_hdid = $data_t['HdId'];
+  $t_custid = $data_t['CustId'];
+  $t_nopo = $data_t['NoPO'];
+  $t_tglpo = $data_t['tgl_po'];
+  $t_tglpo1 = date('d/m/Y', strtotime($t_tglpo));
+  $t_nospk = $data_t['NoSPK'];
+  $t_tglspk = $data_t['tgl_spk'];
+  $t_tglspk1 = date('d/m/Y', strtotime($t_tglspk));
+  $t_armada = $data_t['total_armada'];
+  $t_asalId = $data_t['kota_kirim_id'];
+  $t_asal = $data_t['kota_kirim'];
+  $t_tujuanId = $data_t['kota_tujuan_id'];
+  $t_tujuan = $data_t['kota_tujuan'];
+  $t_barang = $data_t['Barang'];
+  $t_keterangan = $data_t['keterangan'];
+  $t_onclose = $data_t['OnClose'];
+  $t_DateOnClose = $data_t['DateOnClose'];
+  $t_cancelDate = $data_t['cancel_date'];
+  $t_user = $data_t['UserId'];
+  $t_closedById = $data_t['closedById'];
+}
+
+if (!is_null($t_closedById)) {
+  $query_u = "select UserId, nama from master_user where UserId = " . $t_closedById;
+  $fetch_u = mysqli_query($koneksi, $query_u);
+
+  while ($data_u = mysqli_fetch_array($fetch_u)) {
+    $u_id = $data_u['UserId'];
+    $u_namaUser = $data_u['nama'];
   }
+}
 
-  $t_id = $_GET['id'];
+$query_k = "select * from master_kota where aktif = 1";
+$fetch_k = mysqli_query($koneksi, $query_k);
+$fetch_k1 = mysqli_query($koneksi, $query_k);
 
-  $query_t = "select * from trans_hd where HdId='$t_id'"; 
-  $fetch_t = mysqli_query($koneksi, $query_t);
+$query_c = "select * from master_customer where CustId='$t_custid'";
+$fetch_c = mysqli_query($koneksi, $query_c);
 
-  while($data_t = mysqli_fetch_array($fetch_t)){
-    $t_hdid = $data_t['HdId'];
-    $t_custid = $data_t['CustId'];
-    $t_nopo = $data_t['NoPO'];
-    $t_tglpo = $data_t['tgl_po'];
-    $t_tglpo1 = date('d/m/Y', strtotime($t_tglpo));
-    $t_nospk = $data_t['NoSPK'];
-    $t_tglspk = $data_t['tgl_spk'];
-    $t_tglspk1 = date('d/m/Y', strtotime($t_tglspk));
-    $t_armada = $data_t['total_armada'];
-    $t_asal = $data_t['kota_kirim'];
-    $t_tujuan = $data_t['kota_tujuan'];
-    $t_barang = $data_t['Barang'];
-    $t_keterangan = $data_t['keterangan'];
-    $t_onclose = $data_t['OnClose'];
-    $t_user = $data_t['UserId'];
-  }
+while ($data_c = mysqli_fetch_array($fetch_c)) {
+  $c_custid = $data_c['CustId'];
+  $c_nama = $data_c['nama'];
+}
 
-  $query_c = "select * from master_customer where CustId='$t_custid'";
-  $fetch_c = mysqli_query($koneksi, $query_c);
+$query_s = "select * from master_status where aktif='1' ORDER by atr1 asc";
+$fetch_s = mysqli_query($koneksi, $query_s);
 
-  while($data_c=mysqli_fetch_array($fetch_c)){
-    $c_custid = $data_c['CustId'];
-    $c_nama = $data_c['nama'];
-  }
+$query_b = "select * from trans_biayaturunan where HdId='$t_id'";
+$fetch_b = mysqli_query($koneksi, $query_b);
+$arrayBiayaTambahans = array();
+while($rowbiaya = $fetch_b->fetch_assoc()) {
+  $arrayBiayaTambahans[] = $rowbiaya;
+}
 
-  $query_s = "select * from master_status where aktif='1' ORDER by atr1 asc";
-  $fetch_s = mysqli_query($koneksi, $query_s);
+$arrayBiayaTambahanLength = count($arrayBiayaTambahans);
 
-  //echo $datetime;
+$queryGetGrandTotal = "select (sum(Biaya_transport)+sum(Biaya_inap)+sum(Biaya_lain)) as totalBiaya from trans_biayaturunan where HdId='$t_id'";
+$fetchGetGrandTotal = mysqli_query($koneksi, $queryGetGrandTotal);
+$arrayGetGrandTotal = mysqli_fetch_array($fetchGetGrandTotal);
+$grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 ?>
 
 <!DOCTYPE html>
@@ -66,6 +98,7 @@
   <link href="../../vendor/clock-picker/clockpicker.css" rel="stylesheet">
   <link href="../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link href="../../css/style.css" rel="stylesheet">
 </head>
 
@@ -73,14 +106,14 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -89,8 +122,7 @@
         MASTER
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap" aria-expanded="true" aria-controls="collapseBootstrap">
           <i class="fas fa-fw fa-table"></i>
           <span>Akun</span>
         </a>
@@ -102,8 +134,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-          aria-controls="collapseForm">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true" aria-controls="collapseForm">
           <i class="fas fa-fw fa-table"></i>
           <span>Customer</span>
         </a>
@@ -115,8 +146,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
           <span>Status</span>
         </a>
@@ -127,6 +157,19 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true" aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span>
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item " href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 
       <hr class="sidebar-divider">
 
@@ -134,9 +177,9 @@
         TRANSAKSI
       </div>
       <li class="nav-item">
-        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime ?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -152,7 +195,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -338,10 +381,9 @@
             </li>-->
             <div class="topbar-divider d-none d-sm-block"></div>
             <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama']?></span>
-				        <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama'] ?></span>
+                <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px">
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <!--<a class="dropdown-item" href="#">
@@ -370,8 +412,8 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-            <a href="transaksi.php?tahun=<?php echo $datetime?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Barang</h1>
+            <a href="transaksi.php?tahun=<?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Form Pergerakan Truck</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
@@ -461,7 +503,7 @@
             </div>-->
 
             <!-- Area Chart -->
-            <div class="col-xl-9 col-lg-8">
+            <div class="col-xl-8 col-lg-8">
               <div class="card mb-4">
                 <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Monthly Recap Report</h6>
@@ -481,7 +523,9 @@
                   </div>
                 </div>-->
                 <div class="card-body">
-                <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <?php if (isset($_SESSION['pesan'])) { ?><?php echo $_SESSION['pesan'];
+                                                            unset($_SESSION['pesan']);
+                                                          } ?>
                   <form role="form" method="post" action="../../config/process.php">
                     <div class="form-group">
                       <input type="hidden" class="form-control form-control-sm mb-3" name="id" value="<?php echo $t_id ?>" readonly>
@@ -489,9 +533,9 @@
                     <div class="form-group">
                       <label>Customer :</label>
                       <select class="select2-single-placeholder form-control" name="customer" style="width:100% !important;" readonly>
-                        <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
+                        <option value="<?php echo $c_custid ?>" selected><?php echo $c_nama ?></option>
                       </select>
-                    </div>	
+                    </div>
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
@@ -504,7 +548,7 @@
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                           </div>
                           <input type="text" class="form-control" value="<?php echo $t_tglpo1 ?>" id="simpleDataInput" name="tglpo" required>
-                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row" style="height: 70px;">
@@ -526,113 +570,207 @@
                       <div class="form-group col-sm-4">
                         <label>Jumlah Armada :</label>
                         <input type="number" min="1" class="form-control form-control-sm mb-3" value="<?php echo $t_armada ?>" name="armada" id="armada" onchange="armadaUbah()" required>
+                        <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $t_armada ?>" name="armada_old">
                       </div>
                       <div class="form-group col-sm-3">
 
                       </div>
                       <div class="form-group col-sm-5">
                         <label>Status Pengiriman :</label>
-                      <?php if($t_onclose == 0){?>
-                        <input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="OPEN" readonly>
-                      <?php } else { ?>
-                        <input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="CLOSE" readonly>
-                      <?php } ?>
+                        <?php if ($t_onclose == 0) { ?>
+                          <input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="OPEN" readonly>
+                        <?php } else { ?>
+                          <input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="CLOSE" readonly>
+                        <?php } ?>
                       </div>
                     </div>
-                    <div class="row" style="height: 70px;">
-                      <div class="form-group col-sm-4">
-                        <label>Asal :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="asal" required>
-                      </div>
-                      <div class="form-group col-sm-4">
-                        <label>Tujuan :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="tujuan" required>
-                      </div>
-                      <div class="form-group col-sm-4">
+                    <div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Kota Asal :</label>
+                            <!-- <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" style="width:100% !important;" required>
+                              <option value="<?php echo $c_custid ?>" selected><?php echo $c_nama ?></option>
+                            </select> -->
+                            <!-- <?php echo $t_asalId ?> -->
+                            <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" required>
+                              <?php
+                              if (is_null($t_asalId)) {
+                              ?>
+                                <option value="" selected disabled>Pilih</option>
+                              <?php
+                              } else {
+                              ?>
+                                <option value="" disabled>Pilih</option>
+                              <?php
+                              }
+                              ?>
+                              <?php
+                              while ($dataKotaAsal = mysqli_fetch_array($fetch_k)) {
+                                // print_r($dataUser);
+                                if ($dataKotaAsal['aktif'] == 1) {
+                                  if ($dataKotaAsal['Id'] == $t_asalId) {
+                              ?>
+                                    <option value="<?php echo $dataKotaAsal['Id']; ?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama']; ?></option>
+                                  <?php } else { ?>
+                                    <option value="<?php echo $dataKotaAsal['Id']; ?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama']; ?></option>
+                              <?php }
+                                } else {
+                                  continue;
+                                }
+                              }
+                              ?>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label>Detail Kota Asal :</label>
+                            <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="detailKotaAsal" id="detailKotaAsal"> -->
+                            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required><?php echo $t_asal ?></textarea>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Kota Tujuan :</label>
+                            <!-- <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" style="width:100% !important;" required>
+                              <option value="<?php echo $c_custid ?>" selected><?php echo $c_nama ?></option>
+                            </select> -->
+                            <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" required>
+                              <?php
+                              if (is_null($t_tujuanId)) {
+                              ?>
+                                <option value="" selected disabled>Pilih</option>
+                              <?php
+                              } else {
+                              ?>
+                                <option value="" disabled>Pilih</option>
+                              <?php
+                              }
+                              ?>
+                              <?php
+                              while ($dataKotaTujuan = mysqli_fetch_array($fetch_k1)) {
+                                // print_r($dataUser);
+                                if ($dataKotaTujuan['aktif'] == 1) {
+                                  if ($dataKotaTujuan['Id'] == $t_tujuanId) {
+                              ?>
+                                    <option value="<?php echo $dataKotaTujuan['Id']; ?>" selected><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama']; ?></option>
+                                  <?php } else { ?>
+                                    <option value="<?php echo $dataKotaTujuan['Id']; ?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama']; ?></option>
+                              <?php }
+                                } else {
+                                  continue;
+                                }
+                              }
+                              ?>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label>Detail Kota Tujuan :</label>
+                            <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
+                            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required><?php echo $t_asal ?></textarea>
+                          </div>
+                        </div>
+                        <!-- <div class="form-group col-sm-4"> -->
                       </div>
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-					            <textarea type="text" class="form-control form-control-sm mb-3" name="barang" required><?php echo $t_barang ?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" required><?php echo $t_barang ?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
                       <?php
-                        $t_keterangan = str_replace("%%",PHP_EOL, $t_keterangan);
+                      $t_keterangan = str_replace("%%", PHP_EOL, $t_keterangan);
                       ?>
                       <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $t_keterangan ?></textarea>
-                    </div>                 
+                    </div>
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
                       <option disabled> Pilih </option>
                       <option value=1 selected> Ya </option>
                       <option value=0> Tidak </option>
                     </select>-->
+                    <div class="mb-3">
+                      <label>Total Biaya :</label>
+                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
+                    </div>
                     <br>
                     <div class="row" style="height:70px;">
-                      <div class="form-group col-sm-2" >
-                        <input type="reset" value="Reset" style="width:100%;" class="btn btn-danger">
+                      <div class="form-group col-sm-2">
+                        <input type="reset" value="Reset" style="width:100%;height:100%;" class="btn btn-danger">
                       </div>
                       <div class="form-group col-sm-2" style="padding-left:0px;">
-                      <?php if($t_onclose!=1){?>
-                        <button type="button" class="btn btn-warning cancel1" style="width:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Delete Order</button>
-                      <?php } else {?>
-                        <button type="button" class="btn btn-warning" style="width:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#cancelModal" disabled>Delete Order</button>
-                      <?php } ?>
+                        <?php if ($t_onclose != 1) { ?>
+                          <button type="button" class="btn btn-warning cancel1" style="width:100%;padding-left:11px;padding-right:11px;height:100%;" data-id="<?php echo $t_hdid ?>">Delete Order</button>
+                        <?php } else { ?>
+                          <button type="button" class="btn btn-warning" style="width:100%;padding-left:11px;padding-right:11px;height:100%;" data-toggle="modal" data-target="#cancelModal" disabled>Delete Order</button>
+                        <?php } ?>
                       </div>
                       <div class="form-group col-sm-2" style="padding-left:0px;">
-                      <?php
-                      $close=1;
-                        for($i=1;$i<=$t_armada;$i++){
+                        <?php
+                        $close = 1;
+                        for ($i = 1; $i <= $t_armada; $i++) {
                           $query_close = mysqli_query($koneksi, "select OnClose from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')");
-                          $close1=mysqli_fetch_array($query_close);
-                          if($close1['OnClose'] == 1){
-                            $close = 0;
-                          } elseif($close1['OnClose'] == 0){
-                            $close = 1;
-                            break;
+                          $close1 = mysqli_fetch_array($query_close);
+                          if (!is_null($close1)) {
+                            if ($close1['OnClose'] == 1) {
+                              $close = 0;
+                            } elseif ($close1['OnClose'] == 0) {
+                              $close = 1;
+                              break;
+                            }
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='1')");
                         // while($close1=mysqli_fetch_array($query_close)){
                         //   $close = $close1['close'];
                         // }
-                       
-                        if($close == 0 && $t_onclose != 1){
-                      ?>
-                      <button type="button" class="btn btn-success close1" style="width:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
-                      <?php
-                        }else{
-                      ?>
-                      <button type="button" class="btn btn-success" style="width:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
-                      <?php } ?>
+
+                        if ($close == 0 && $t_onclose != 1) {
+                        ?>
+                          <button type="button" class="btn btn-success close1" style="width:100%;padding-left:11px;padding-right:11px;height:100%;" data-id="<?php echo $t_hdid ?>">Close Order</button>
+                        <?php
+                        } else {
+                        ?>
+                          <button type="button" class="btn btn-success" style="width:100%;padding-left:11px;padding-right:11px;height:100%;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
+                        <?php } ?>
                       </div>
                       <div class="form-group col-sm-6" style="padding-left:0px;">
-                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;" class="btn btn-md btn-primary" id="submit" >
+                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;height:100%;" class="btn btn-md btn-primary" id="submit">
                       </div>
                     </div>
+                    <?php
+                    if ($t_onclose == 1 && is_null($t_cancelDate)) {
+                    ?>
+                      <p>Ditutup Oleh <b><?php echo $u_namaUser ?></b> tanggal <b><?php echo $t_DateOnClose ?></b></p>
+                    <?php
+                    } elseif (!is_null($t_cancelDate)) {
+                    ?>
+                      <p>Dibatalkan Oleh <b><?php echo $u_namaUser ?></b> tanggal <b><?php echo $t_cancelDate ?></b></p>
+                    <?php
+                    }
+                    ?>
                   </form>
                 </div>
               </div>
             </div>
             <!-- Pie Chart -->
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-4 col-lg-4">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">No. SPK Turunan</h6>          
+                  <h6 class="m-0 font-weight-bold text-primary">No. SPK Turunan</h6>
                 </div>
                 <!--<div class="card-body">-->
-                  <div class="card-body table-responsive p-3">
-                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                <div class="card-body table-responsive p-3">
+                  <table class="table align-items-center table-flush table-hover" id="tableStatusSPK">
                     <thead class="thead-light">
                       <tr>
-                      <th style="font-size:16px; padding-right:0px;">No</th>
-                      <th style="font-size:16px; padding-left:12px; padding-right:12px;">Status</th>					
+                        <th style="font-size:16px; padding-right:0px;">No</th>
+                        <th style="font-size:16px; padding-left:12px; padding-right:12px;">Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                    <?php
-                      if($t_armada == 1){
-                        $i=1;
+                      <?php
+                      if ($t_armada == 1) {
+                        $i = 1;
                         $query_tdt1 = "select OnClose from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')";
                         // $query_tdt1 = "select count(OnClose) as close from trans_detail where NoSPK='$t_nospk' and OnClose=0";
                         $fetch_tdt1 = mysqli_query($koneksi, $query_tdt1);
@@ -640,34 +778,34 @@
                         // while($onclose=mysqli_fetch_array($fetch_tdt1)){
                         //   $onclose1 = $onclose['close'];
                         // }
-                      ?> 
-                      <tr>
-                      <td style="font-size:12px; "><?php echo $t_nospk ?></td>
-                            <?php if(isset($onclose)){ 
+                      ?>
+                        <tr>
+                          <td style="font-size:12px; "><?php echo $t_nospk ?></td>
+                          <?php if (isset($onclose)) {
 
-                              if($onclose['OnClose'] == 0){?>
-
-                                <td style="font-size:16px;padding-left:12px;"><span class="badge badge-info">open</span></td>
-
-                              <?php } else { ?>
-
-                                <td style="font-size:16px;padding-left:12px;"><span class="badge badge-success">close</span></td>
-
-                              <?php } ?>
-
-                            <?php } else { ?>
+                            if ($onclose['OnClose'] == 0) { ?>
 
                               <td style="font-size:16px;padding-left:12px;"><span class="badge badge-info">open</span></td>
 
+                            <?php } else { ?>
+
+                              <td style="font-size:16px;padding-left:12px;"><span class="badge badge-success">close</span></td>
+
                             <?php } ?>
+
+                          <?php } else { ?>
+
+                            <td style="font-size:16px;padding-left:12px;"><span class="badge badge-info">open</span></td>
+
+                          <?php } ?>
 
                         </tr>
 
-                      <?php   
+                        <?php
 
                       } else {
 
-                        for($i=1;$i<=$t_armada;$i++){
+                        for ($i = 1; $i <= $t_armada; $i++) {
 
                           $query_tdt1 = "select OnClose from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')";
 
@@ -675,15 +813,15 @@
 
                           $onclose = mysqli_fetch_array($fetch_tdt1);
 
-                      ?>
+                        ?>
 
-                      <tr>
+                          <tr>
 
-                      <td style="font-size:12px;"><?php echo $t_nospk ?>-<?php echo $i ?></td>
+                            <td style="font-size:12px;"><?php echo $t_nospk ?>-<?php echo $i ?></td>
 
-					                  <?php if(isset($onclose)){ 
+                            <?php if (isset($onclose)) {
 
-                              if($onclose['OnClose'] == 0){?>
+                              if ($onclose['OnClose'] == 0) { ?>
 
                                 <td style="font-size:16px;padding-left:12px;"><span class="badge badge-info">open</span></td>
 
@@ -699,21 +837,20 @@
 
                             <?php } ?>
 
-                      </tr>
+                          </tr>
 
-                    <?php
+                      <?php
 
                         }
-
                       }
 
-                    ?>
+                      ?>
 
                     </tbody>
 
-                    </table>
+                  </table>
 
-                  </div>
+                </div>
 
                 <!--</div>-->
 
@@ -723,20 +860,20 @@
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
-                  <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>   
-                  <a type="button" href="#" onclick="formUser()" title="ganti user" class="edituser" ><i class="fas fa-edit"></i></a>       
+                  <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>
+                  <a type="button" href="#" onclick="formUser()" title="ganti user" class="edituser"><i class="fas fa-edit"></i></a>
 
                 </div>
 
                 <!--<div class="card-body">-->
-                  <?php
-                    $query1 = mysqli_query($koneksi, "select nama from master_user where UserId='$t_user'");
-                    $data1 = mysqli_fetch_array($query1);
-                  ?>
-                  <div class="card-body" style="padding-top:0;">
-                    <label><b>User Lama :</b></label> 
-                    <input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama']?>" readonly>
-                  </div>
+                <?php
+                $query1 = mysqli_query($koneksi, "select nama from master_user where UserId='$t_user'");
+                $data1 = mysqli_fetch_array($query1);
+                ?>
+                <div class="card-body" style="padding-top:0;">
+                  <label><b>User Lama :</b></label>
+                  <input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama'] ?>" readonly>
+                </div>
 
                 <!--</div>-->
 
@@ -746,59 +883,107 @@
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
-                  <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>   
-                  <a type="button" href="#" onclick="viewUser()" title="ganti user" class="edituser" ><i class="fas fa-edit"></i></a>       
+                  <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>
+                  <a type="button" href="#" onclick="viewUser()" title="ganti user" class="edituser"><i class="fas fa-edit"></i></a>
 
                 </div>
 
                 <!--<div class="card-body">-->
-                  <?php
-                    $query1 = mysqli_query($koneksi, "select * from master_user where UserId='$t_user'");
+                <?php
+                $query1 = mysqli_query($koneksi, "select * from master_user where UserId='$t_user'");
 
-                    $query2 = mysqli_query($koneksi, "select * from master_user");
-                    
-                  ?>
-                  <div class="card-body" style="padding-top:0;">
-                    <form role="form" method="post" action="../../config/process.php">
-                      <div class="form-group">
-                        <input type="hidden" class="form-control form-control-sm mb-3" name="hdid" value="<?php echo $t_hdid?>" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label>User Lama :</label> 
-                        <select class="select2-single-placeholder form-control" name="user" style="width:100% !important;" readonly>
+                $query2 = mysqli_query($koneksi, "select * from master_user");
 
-                          <?php while($data1 = mysqli_fetch_array($query1)){?>
-                          <option value="<?php echo $data1['UserId']?>"><?php echo $data1['nama']?></option>
-                          <?php } ?>  
-                          
-                        </select>
-                        <!--<input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama']?>" readonly>-->
-                      </div>
-                      <div class="form-group">
-                        <label>User Baru :</label>
-                        <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" readonly>
-                          <option disabled="" selected="">Pilih</option>
+                ?>
+                <div class="card-body" style="padding-top:0;">
+                  <form role="form" method="post" action="../../config/process.php">
+                    <div class="form-group">
+                      <input type="hidden" class="form-control form-control-sm mb-3" name="hdid" value="<?php echo $t_hdid ?>" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>User Lama :</label>
+                      <select class="select2-single-placeholder form-control" name="user" style="width:100% !important;" readonly>
 
-                          <?php while($data2 = mysqli_fetch_array($query2)){?>
-                          <option value="<?php echo $data2['UserId']?>"><?php echo $data2['nama']?></option>
-                          <?php } ?>  
-                          
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label>Keterangan :</label>
-                        <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"></textarea>
-                      </div>
-                        <input type="submit" value="Submit" name="gantiUser" class="btn btn-md btn-primary btn-block">
-                      
-                    </form>
-                  </div>
+                        <?php while ($data1 = mysqli_fetch_array($query1)) { ?>
+                          <option value="<?php echo $data1['UserId'] ?>"><?php echo $data1['nama'] ?></option>
+                        <?php } ?>
+
+                      </select>
+                      <!--<input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama'] ?>" readonly>-->
+                    </div>
+                    <div class="form-group">
+                      <label>User Baru :</label>
+                      <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" readonly>
+                        <option disabled="" selected="">Pilih</option>
+
+                        <?php while ($data2 = mysqli_fetch_array($query2)) { ?>
+                          <option value="<?php echo $data2['UserId'] ?>"><?php echo $data2['nama'] ?></option>
+                        <?php } ?>
+
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Keterangan :</label>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"></textarea>
+                    </div>
+                    <input type="submit" value="Submit" name="gantiUser" class="btn btn-md btn-primary btn-block">
+
+                  </form>
+                </div>
 
                 <!--</div>-->
 
               </div>
 
             </div>
+
+
+            <div class="col-xl-12 col-lg-10 mb-9 sm-8">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Biaya</h6>
+                </div>
+                <div class="card-body" id="tabelDetailBiaya">
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush table-hover" id="tableBiayaTurunan">
+                      <thead class="thead-light">
+                        <tr>
+                          <th style="padding-left:8px;">No. SPK Turunan</th>
+                          <th style="padding-left:8px;">Biaya Transport</th>
+                          <th style="padding-left:8px;">Biaya Inap</th>
+                          <th style="padding-left:8px;">Biaya Lain-lain</th>
+                          <th style="padding-left:8px;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php 
+                          foreach ($arrayBiayaTambahans as $arrayBiayaTambahan) {
+                        ?>
+                        <tr>
+                        <?php
+                            if ($arrayBiayaTambahanLength == 1) {
+                        ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] ?></td>
+                        <?php } else { ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] .'-'. $arrayBiayaTambahan['Turunan'] ?></td>
+                        <?php } ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_transport'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_inap'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_lain'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;">
+                            <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                          </td>
+                        </tr>
+                        <?php
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <!-- Invoice Example -->
 
@@ -808,7 +993,7 @@
 
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
-                  <button onclick="add()" class="btn btn-primary btn-icon-split" id="tambah" >
+                  <button onclick="add()" class="btn btn-primary btn-icon-split" id="tambah">
 
                     <span class="icon text-white-50">
 
@@ -818,7 +1003,7 @@
 
                     <span class="text">Tambah Detail Transaksi</span>
 
-                    </button>
+                  </button>
 
                   <button onclick="view()" class="btn btn-primary btn-icon-split lihat hidden" id="lihat">
 
@@ -830,121 +1015,122 @@
 
                     <span class="text">Lihat Detail Transaksi</span>
 
-                    </button>
+                  </button>
 
                 </div>
 
-                
 
-                
+
+
 
                 <div class="card-body" id="tabeldetail">
 
-                <?php for($i=1;$i<=$t_armada;$i++){
+                  <?php for ($i = 1; $i <= $t_armada; $i++) {
 
-                //echo $t_armada;
+                    //echo $t_armada;
 
-                $temp_nospk = explode(" ", $t_nospk);
+                    $temp_nospk = explode(" ", $t_nospk);
 
-                $t_nospk1 = $temp_nospk[0];
+                    $t_nospk1 = $temp_nospk[0];
 
-                ?>
+                  ?>
 
-                  <div class="table-responsive p-3">
+                    <div class="table-responsive p-3">
 
-                    <?php if($t_armada == 1){?>
+                      <?php if ($t_armada == 1) { ?>
 
-                    <label><b>No. SPK Turunan : <?php echo $t_nospk ?></b></label>
+                        <label><b>No. SPK Turunan : <?php echo $t_nospk ?></b></label>
 
-                    <?php } else {?>
+                      <?php } else { ?>
 
-                    <label><b>No. SPK Turunan : <?php echo $t_nospk1 ?>-<?php echo $i ?></b></label>
+                        <label><b>No. SPK Turunan : <?php echo $t_nospk1 ?>-<?php echo $i ?></b></label>
 
-                    <?php } ?>
+                      <?php } ?>
 
-                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                      <table class="table align-items-center table-flush table-hover" id="dataTableHover">
 
-                      <thead class="thead-light">
+                        <thead class="thead-light">
 
-                        <tr>
+                          <tr>
 
-                          <th style="padding-left:8px;">Tgl</th>
+                            <th style="padding-left:8px;">Tgl</th>
 
-                          <th style="padding-left:8px;">Jenis Kendaraan</th>
+                            <th style="padding-left:8px;">Jenis Kendaraan</th>
 
-                          <th style="padding-left:8px;">Nopol/Nama Kendaraan</th>
+                            <th style="padding-left:8px;">Nopol/Nama Kendaraan</th>
 
-                          <th style="padding-left:8px;">Status</th>
+                            <th style="padding-left:8px;">Status</th>
 
-                          <th style="padding-left:8px;">Keterangan Pengiriman</th>
+                            <th style="padding-left:8px;">Keterangan Pengiriman</th>
 
-                          <th style="padding-left:8px;">Action</th>
+                            <th style="padding-left:8px;">Action</th>
 
-                        </tr>
+                          </tr>
 
-                      </thead>
+                        </thead>
 
-                      <tbody>
+                        <tbody>
 
-                        <?php 
-
-                        $query_td = "select * from trans_detail where NoSPK='$t_nospk' and turunan='$i'";
-
-                        $fetch_td = mysqli_query($koneksi, $query_td);
-
-                        while($data_td=mysqli_fetch_array($fetch_td)){
-
-						            	$dtlid = $data_td['DtlId'];
-
-                            if($i == $data_td['turunan']){ 
-
-                            $query_stemp = "select status from master_status where stsId='$data_td[StsId]'";
-
-                            $fetch_stemp = mysqli_query($koneksi, $query_stemp);
-
-                            $data_stemp = mysqli_fetch_array($fetch_stemp);
-
-                            $tgl = date("d-M-Y H:i", strtotime($data_td['datetime_status']));
-
-                        ?>
-
-                        <tr>
-
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $tgl?></td>
-
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $data_td['jenis_armada'];?></td>
-
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $data_td['nopol'];?></td>
-
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $data_stemp['status'];?></td>
                           <?php
-                            $keterangan_td = $data_td['keterangan_kirim'];
-                            $keterangan_td = str_replace("%%",PHP_EOL, $keterangan_td);
+
+                          $query_td = "select * from trans_detail where NoSPK='$t_nospk' and turunan='$i'";
+
+                          $fetch_td = mysqli_query($koneksi, $query_td);
+
+                          while ($data_td = mysqli_fetch_array($fetch_td)) {
+
+                            $dtlid = $data_td['DtlId'];
+
+                            if ($i == $data_td['turunan']) {
+
+                              $query_stemp = "select status from master_status where stsId='$data_td[StsId]'";
+
+                              $fetch_stemp = mysqli_query($koneksi, $query_stemp);
+
+                              $data_stemp = mysqli_fetch_array($fetch_stemp);
+
+                              $tgl = date("d-M-Y H:i", strtotime($data_td['datetime_status']));
+
                           ?>
 
-                          <td style="font-size:13px;padding-left:8px;white-space:pre;"><?php echo $keterangan_td?></td>
+                              <tr>
 
-                          <td style="padding-right:0.5rem;padding-left:8px;">
+                                <td style="font-size:13px;padding-left:8px;"><?php echo $tgl ?></td>
 
-                              <button title="detail" data-id="<?php echo $dtlid?>" class="btn btn-info btn-sm tdinfo"><i class="fas fa-search"></i></button>
+                                <td style="font-size:13px;padding-left:8px;"><?php echo $data_td['jenis_armada']; ?></td>
 
-                              <a href="editTransaksi1.php?id=<?php echo $t_id?>&editId=<?php echo $data_td['DtlId'];?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                            <?php if($t_onclose == 0){?>
-                              <button title="hapus" data-id="<?php echo $dtlid?>" class="btn btn-danger btn-sm tddel"><i class="fas fa-trash"></i></button>
-                            <?php } ?>
-                              
+                                <td style="font-size:13px;padding-left:8px;"><?php echo $data_td['nopol']; ?></td>
 
-                          </td>
+                                <td style="font-size:13px;padding-left:8px;"><?php echo $data_stemp['status']; ?></td>
+                                <?php
+                                $keterangan_td = $data_td['keterangan_kirim'];
+                                $keterangan_td = str_replace("%%", PHP_EOL, $keterangan_td);
+                                ?>
 
-                        </tr>
+                                <td style="font-size:13px;padding-left:8px;white-space:pre;"><?php echo $keterangan_td ?></td>
 
-                        <?php } } ?>
+                                <td style="padding-right:0.5rem;padding-left:8px;">
 
-                      </tbody>
+                                  <button title="detail" data-id="<?php echo $dtlid ?>" class="btn btn-info btn-sm tdinfo"><i class="fas fa-search"></i></button>
 
-                    </table>  
+                                  <a href="editTransaksi1.php?id=<?php echo $t_id ?>&editId=<?php echo $data_td['DtlId']; ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                  <?php if ($t_onclose == 0) { ?>
+                                    <button title="hapus" data-id="<?php echo $dtlid ?>" class="btn btn-danger btn-sm tddel"><i class="fas fa-trash"></i></button>
+                                  <?php } ?>
 
-                  </div>
+
+                                </td>
+
+                              </tr>
+
+                          <?php }
+                          } ?>
+
+                        </tbody>
+
+                      </table>
+
+                    </div>
 
                   <?php } ?>
 
@@ -958,9 +1144,7 @@
 
                   <form role="form" method="post" action="../../config/process.php">
 
-					
-
-                    <div class="form-group" >
+                    <div class="form-group">
 
                       <input type="hidden" class="form-control form-control-sm mb-3" name="hdid" value="<?php echo $t_hdid ?>" readonly>
 
@@ -973,53 +1157,46 @@
 
                         <!--<option value="" disabled selected>Pilih</option>-->
 
-						            <option value="" disabled selected>Pilih</option>
+                        <option value="" disabled selected>Pilih</option>
 
-                        <?php  
+                        <?php
 
-						              $jsArray = "var data = [];\n";
+                        $jsArray = "var data = [];\n";
 
-                          for($i=1;$i<=$t_armada;$i++){
+                        for ($i = 1; $i <= $t_armada; $i++) {
 
-							              $query_tdt = "select * from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')";
+                          $query_tdt = "select * from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='$i')";
 
-							              $fetch_tdt = mysqli_query($koneksi, $query_tdt);
+                          $fetch_tdt = mysqli_query($koneksi, $query_tdt);
 
-                            if($t_armada == 1){
-
-                                      
-
-                              echo "<option value=".$i.">".$t_nospk."</option>";
-
-                          
-
-                              while($data_tdt = mysqli_fetch_array($fetch_tdt)){
-
-                                $jsArray .= "data[".$i."] = {status:'".addslashes($data_tdt['StsId'])."', jenis:'".addslashes($data_tdt['jenis_armada'])."', nopol:'".addslashes($data_tdt['nopol'])."', keterangan:'".addslashes($data_tdt['keterangan_kirim'])."', onclose:'".addslashes($data_tdt['OnClose'])."'};\n";
-
-                              }
+                          if ($t_armada == 1) {
 
 
 
-                            } else { 
+                            echo "<option value=" . $i . ">" . $t_nospk . "</option>";
 
-                              echo "<option value=".$i.">".$t_nospk."-".$i."</option>";
 
-                          
 
-                              while($data_tdt = mysqli_fetch_array($fetch_tdt)){
+                            while ($data_tdt = mysqli_fetch_array($fetch_tdt)) {
 
-                                $jsArray .= "data[".$i."] = {status:'".addslashes($data_tdt['StsId'])."', jenis:'".addslashes($data_tdt['jenis_armada'])."', nopol:'".addslashes($data_tdt['nopol'])."', keterangan:'".addslashes($data_tdt['keterangan_kirim'])."', onclose:'".addslashes($data_tdt['OnClose'])."'};\n";
-
-                              }
-
+                              $jsArray .= "data[" . $i . "] = {status:'" . addslashes($data_tdt['StsId']) . "', jenis:'" . addslashes($data_tdt['jenis_armada']) . "', nopol:'" . addslashes($data_tdt['nopol']) . "', keterangan:'" . addslashes($data_tdt['keterangan_kirim']) . "', onclose:'" . addslashes($data_tdt['OnClose']) . "'};\n";
                             }
+                          } else {
 
-                          } ?>
+                            echo "<option value=" . $i . ">" . $t_nospk . "-" . $i . "</option>";
+
+
+
+                            while ($data_tdt = mysqli_fetch_array($fetch_tdt)) {
+
+                              $jsArray .= "data[" . $i . "] = {status:'" . addslashes($data_tdt['StsId']) . "', jenis:'" . addslashes($data_tdt['jenis_armada']) . "', nopol:'" . addslashes($data_tdt['nopol']) . "', keterangan:'" . addslashes($data_tdt['keterangan_kirim']) . "', onclose:'" . addslashes($data_tdt['OnClose']) . "'};\n";
+                            }
+                          }
+                        } ?>
 
                       </select>
 
-                    </div>	
+                    </div>
 
                     <!--<div class="row" style="height: 70px;">
 
@@ -1057,7 +1234,7 @@
 
                           <div class="input-group-prepend">
 
-                          <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
 
                           </div>
 
@@ -1073,13 +1250,13 @@
 
                         <div class="input-group input-group-sm mb-3 clockpicker" id="clockPicker2">
 
-                          <input type="text" class="form-control" value=<?php echo $time ?> name="waktu" required>                     
+                          <input type="text" class="form-control" value=<?php echo $time ?> name="waktu" required>
 
                           <div class="input-group-append">
 
-                          <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
 
-                          </div>                      
+                          </div>
 
                         </div>
 
@@ -1091,21 +1268,21 @@
 
                       <div class="form-group col-sm-4">
 
-                      <label>Status Pengiriman :</label>
+                        <label>Status Pengiriman :</label>
 
                         <!--<input type="text" class="form-control form-control-sm mb-3" name="status" required>-->
 
                         <select class="form-control form-control-sm mb-3" placeholder="Pilih" name="status" id="status">
 
-						              <option value="" disabled selected hidden>Pilih</option>
+                          <option value="" disabled selected hidden>Pilih</option>
 
                           <?php
 
-                            while($data_s = mysqli_fetch_array($fetch_s)){
+                          while ($data_s = mysqli_fetch_array($fetch_s)) {
 
                           ?>
 
-                          <option value="<?php echo $data_s['stsId'];?>"><?php echo $data_s['status'];?></option>
+                            <option value="<?php echo $data_s['stsId']; ?>"><?php echo $data_s['status']; ?></option>
 
                           <?php } ?>
 
@@ -1131,7 +1308,7 @@
 
                     </div>
 
-					          <div class="row" style="height: 70px;">
+                    <div class="row" style="height: 70px;">
 
                       <div class="form-group col-sm-4">
 
@@ -1141,7 +1318,7 @@
 
                           <option value=0 selected> OPEN </option>
 
-                          <option value=1 > CLOSE </option>
+                          <option value=1> CLOSE </option>
 
                         </select>
 
@@ -1151,7 +1328,7 @@
 
                       </div>
 
-                      <div class="form-group col-sm-4" >
+                      <div class="form-group col-sm-4">
 
                         <!--<label>Tanggal :</label>
 
@@ -1185,7 +1362,7 @@
 
                       <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
 
-                    </div>		
+                    </div>
 
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
 
@@ -1215,39 +1392,39 @@
 
             <!-- Message From Customer-->
 
-            
 
-			<!-- Modal Detail -->
 
-          <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            <!-- Modal Detail -->
 
-            aria-hidden="true">
+            <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
 
-            <div class="modal-dialog" role="document">
+              <div class="modal-dialog" role="document">
 
-              <div class="modal-content">
+                <div class="modal-content">
 
-                <div class="modal-header">
+                  <div class="modal-header">
 
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Detail Transaksi</h5>
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Detail Transaksi</h5>
 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                    <span aria-hidden="true">&times;</span>
+                      <span aria-hidden="true">&times;</span>
 
-                  </button>
+                    </button>
 
-                </div>
+                  </div>
 
-                <div class="modal-body">
+                  <div class="modal-body">
 
-                  
 
-                </div>
 
-                <div class="modal-footer">
+                  </div>
 
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                  <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+
+                  </div>
 
                 </div>
 
@@ -1255,13 +1432,11 @@
 
             </div>
 
-          </div>
 
-		  
 
-			<!-- Modal Cancel -->
+            <!-- Modal Cancel -->
 
-          <!--<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            <!--<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
 
             aria-hidden="true">
 
@@ -1301,85 +1476,41 @@
 
           </div>-->
 
-			
 
-			<!-- Modal close -->
 
-          <div class="modal fade bd-example-modal-xl" id="closeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            <!-- Modal close -->
 
-            aria-hidden="true">
+            <div class="modal fade bd-example-modal-xl" id="closeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
 
-            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+              <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
 
-              <div class="modal-content">
+                <div class="modal-content">
 
-                <div class="modal-header">
+                  <div class="modal-header">
 
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin menyelesaikan data terpilih ?</h5>
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin menyelesaikan data terpilih ?</h5>
 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                    <span aria-hidden="true">&times;</span>
+                      <span aria-hidden="true">&times;</span>
 
-                  </button>
+                    </button>
 
-                </div>
+                  </div>
 
-                <div class="modal-body">
+                  <div class="modal-body">
 
-                  
 
-                </div>
 
-                <div class="modal-footer">
+                  </div>
 
-                <a href="../../config/process.php?closeId=<?php echo $t_id?>" id="cancel" class="btn btn-outline-primary">Ya</a>
+                  <div class="modal-footer">
 
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>  
+                    <a href="../../config/process.php?closeId=<?php echo $t_id ?>" id="cancel" class="btn btn-outline-primary">Ya</a>
 
-                </div>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 
-              </div>
-
-            </div>
-
-          </div>
-
-      
-
-      <!-- Modal cancel -->
-
-          <div class="modal fade bd-example-modal-xl" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-
-            aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-
-              <div class="modal-content">
-
-                <div class="modal-header">
-
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin membatalkan data terpilih ?</h5>
-
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                    <span aria-hidden="true">&times;</span>
-
-                  </button>
-
-                </div>
-
-                <div class="modal-body">
-
-                  
-
-                </div>
-
-                <div class="modal-footer">
-
-                  <a href="../../config/process.php?cancelId=<?php echo $t_id?>" id="cancel" class="btn btn-outline-primary">Ya</a>
-
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
+                  </div>
 
                 </div>
 
@@ -1387,43 +1518,41 @@
 
             </div>
 
-          </div>
 
-      
 
-      <!-- Modal Hapus -->
+            <!-- Modal cancel -->
 
-          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            <div class="modal fade bd-example-modal-xl" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
 
-            aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
 
-            <div class="modal-dialog" role="document">
+                <div class="modal-content">
 
-              <div class="modal-content">
+                  <div class="modal-header">
 
-                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin membatalkan data terpilih ?</h5>
 
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Hapus Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
 
-                    <span aria-hidden="true">&times;</span>
+                    </button>
 
-                  </button>
+                  </div>
 
-                </div>
+                  <div class="modal-body">
 
-                <div class="modal-body">
 
-                  <p>Apakah anda ingin menghapus data terpilih ?</p>
 
-                </div>
+                  </div>
 
-                <div class="modal-footer">
+                  <div class="modal-footer">
 
-                  <a href="" id="del" class="btn btn-outline-primary">Ya</a>
+                    <a href="../../config/process.php?cancelId=<?php echo $t_id ?>" id="cancel" class="btn btn-outline-primary">Ya</a>
 
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
+
+                  </div>
 
                 </div>
 
@@ -1431,91 +1560,41 @@
 
             </div>
 
-          </div>
-
-		  
-
-		    <!-- Modal Ubah Armada -->
-          <div class="modal fade" id="armadaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ubah Jumlah Armada</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-					        <p>Mengubah jumlah armada akan mempengaruhi jumlah SPK Turunan !</p><br>
-                  <p>Apakah anda ingin mengubah data jumlah armada ?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" onclick="afterarmadaUbah()" data-dismiss="modal">Ya</button>
-                  <button onclick="backArmada()" id="ubah" class="btn btn-primary" data-dismiss="modal">Tidak</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
 
-          <!-- Modal Alert After Ubah Armada -->
-          <div class="modal fade" id="afterarmadaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Peringatan !</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Jumlah armada telah diubah !</p>
-                  <p>Tekan tombol Submit untuk menyimpan perubahan !</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Oke</button>
-                  <!--<button onclick="backArmada()" href id="ubah" class="btn btn-primary" data-dismiss="modal">Tidak</button>-->
-                </div>
-              </div>
-            </div>
-          </div>
-		  
+            <!-- Modal Hapus -->
 
-          <!-- Modal Logout -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
 
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+              <div class="modal-dialog" role="document">
 
-            aria-hidden="true">
+                <div class="modal-content">
 
-            <div class="modal-dialog" role="document">
+                  <div class="modal-header">
 
-              <div class="modal-content">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Hapus Data</h5>
 
-                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                      <span aria-hidden="true">&times;</span>
 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
 
-                    <span aria-hidden="true">&times;</span>
+                  </div>
 
-                  </button>
+                  <div class="modal-body">
 
-                </div>
+                    <p>Apakah anda ingin menghapus data terpilih ?</p>
 
-                <div class="modal-body logout-modal">
+                  </div>
 
-                  <p>Are you sure you want to logout?</p>
+                  <div class="modal-footer">
 
-                </div>
+                    <a href="" id="del" class="btn btn-outline-primary">Ya</a>
 
-                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-
-                  <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
+                  </div>
 
                 </div>
 
@@ -1523,372 +1602,407 @@
 
             </div>
 
+
+
+            <!-- Modal Ubah Armada -->
+            <div class="modal fade" id="armadaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Ubah Jumlah Armada</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Mengubah jumlah armada akan mempengaruhi jumlah SPK Turunan !</p><br>
+                    <p>Apakah anda ingin mengubah data jumlah armada ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" onclick="afterarmadaUbah()" data-dismiss="modal">Ya</button>
+                    <button onclick="backArmada()" id="ubah" class="btn btn-primary" data-dismiss="modal">Tidak</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Modal Alert After Ubah Armada -->
+            <div class="modal fade" id="afterarmadaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Peringatan !</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Jumlah armada telah diubah !</p>
+                    <p>Tekan tombol Submit untuk menyimpan perubahan !</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Oke</button>
+                    <!--<button onclick="backArmada()" href id="ubah" class="btn btn-primary" data-dismiss="modal">Tidak</button>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Modal Logout -->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body logout-modal">
+                    <p>Are you sure you want to logout?</p>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                    <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Form Ubah Biaya Turunan -->
+            <div class="modal fade" id="biayaTurunanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Ubah Biaya Turunan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="../../config/process.php" method="post" role="form">
+                      <p><b>No. SPK Turunan : <span id="spkturunan"></span></b></p>
+                      <input type="hidden" class="form-control" id="biayaTurunanId" name="biayaTurunanId">
+                      <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
+                      <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
+                      <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
+                      <div class="form-group">
+                        <label for="biayaTransport">Biaya Transport</label>
+                        <input type="number" min="0" class="form-control" id="biayaTransport" name="biayaTransport">
+                      </div>
+                      <div class="form-group">
+                        <label for="biayaInap">Biaya Inap</label>
+                        <input type="number" min="0" class="form-control" id="biayaInap" name="biayaInap">
+                      </div>
+                      <div class="form-group">
+                        <label for="biayaLain">Biaya Lain-lain</label>
+                        <input type="number" min="0" class="form-control" id="biayaLain" name="biayaLain">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" name="editBiayaTurunan">Simpan</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-
+          <!---Container Fluid-->
 
         </div>
 
-        <!---Container Fluid-->
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white" style="padding:10px 0 10px 0;">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>&copy; <script>
+                  document.write(new Date().getFullYear());
+                </script> - Supported by
+                <img src="../../img/logo-group.png" style="height:45px;">
+              </span>
+            </div>
+          </div>
+        </footer>
+        <!-- Footer -->
 
       </div>
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" style="padding:10px 0 10px 0;">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>&copy; <script> document.write(new Date().getFullYear()); </script> - Supported by
-              <img src="../../img/logo-group.png" style="height:45px;">
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
-
     </div>
 
-  </div>
+
+
+    <!-- Scroll to top -->
+
+    <a class="scroll-to-top rounded" href="#page-top">
+
+      <i class="fas fa-angle-up"></i>
+
+    </a>
 
 
 
-  <!-- Scroll to top -->
-
-  <a class="scroll-to-top rounded" href="#page-top">
-
-    <i class="fas fa-angle-up"></i>
-
-  </a>
-
-
-
-  <script src="../../vendor/jquery/jquery.min.js"></script>
-
-  <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <script src="../../js/ruang-admin.min.js"></script>
-
-  <script src="../../vendor/chart.js/Chart.min.js"></script>
-
-  <script src="../../js/demo/chart-area-demo.js"></script>
-
-  <script src="../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-
-  <script src="../../vendor/clock-picker/clockpicker.js"></script>
-
-  <script src="../../vendor/select2/dist/js/select2.min.js"></script>
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../js/ruang-admin.min.js"></script>
+    <script src="../../vendor/chart.js/Chart.min.js"></script>
+    <script src="../../js/demo/chart-area-demo.js"></script>
+    <script src="../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../../vendor/clock-picker/clockpicker.js"></script>
+    <script src="../../vendor/select2/dist/js/select2.min.js"></script>
+    <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
+    <script src="../../vendor/datatables1/datatables.min.js"></script>
 
 
 
-  <script>
+    <script>
+      $(document).ready(function() {
 
-	$(document).ready(function () {
+        $('#tableStatusSPK').DataTable({
+          // searching: false,
+          dom: 'ftip',
+          pageLength: 6,
+          info: false
+        }); // ID From dataTable 
 
-	  $('.select2-single').select2();
+        $('#tableBiayaTurunan').DataTable({
+          // searching: false,
+          // dom: 'ftip',
+          // pageLength: 5,
+          // info: false
+        }); // ID From dataTable 
 
+        $('.select2-single').select2();
 
-
-	  // Select2 Single  with Placeholder
-
-      $('.select2-single-placeholder').select2({
-
-		placeholder: "Pilih",
-
-		allowClear: true
-
-	  });
-
-	  $('#simple-date1 .input-group.date').datepicker({
-
-        format: 'dd/mm/yyyy',
-
-        todayBtn: 'linked',
-
-        todayHighlight: true,
-
-        autoclose: true,        
-
-	  });
-
-	  
-
-	  $('#clockPicker2').clockpicker({
-
-        autoclose: true
-
-      });
-
-	  	  
-
-	  $('html, body').animate({
-
-      scrollTop: $('#formdetail').offset().top}, 2);
-
-	  
-
-	  $('.tdinfo').click(function(){
-
-        var dtlid = $(this).data('id');
-
-
-
-        // AJAX request\
-
-        $.ajax({
-
-          url: '../../config/viewDetailTransaksi.php',
-
-          type: 'post',
-
-          data: {dtlid: dtlid},
-
-          success: function(response){
-
-            // Add response in Modal body
-
-            $('.modal-body').html(response);
-
-            // Display Modal
-
-            $('#detailModal').modal('show');
-
-          }
-
+        // Select2 Single  with Placeholder
+        $('.select2-single-placeholder').select2({
+          placeholder: "Pilih",
+          allowClear: true
         });
 
-      });
-
-
-
-      $('.cancel1').click(function(){
-
-        var hdid = $(this).data('id');
-
-
-
-        // AJAX request\
-
-        $.ajax({
-
-          url: '../../config/viewTransaksi.php',
-
-          type: 'post',
-
-          data: {hdid: hdid},
-
-          success: function(response){
-
-            // Add response in Modal body
-
-            $('.modal-body').html(response);
-
-            // Display Modal
-
-            $('#cancelModal').modal('show');
-
-          }
-
+        $('#simple-date1 .input-group.date').datepicker({
+          format: 'dd/mm/yyyy',
+          todayBtn: 'linked',
+          todayHighlight: true,
+          autoclose: true,
         });
 
-      });
 
-
-
-      $('.close1').click(function(){
-
-        var hdid = $(this).data('id');
-
-
-
-        // AJAX request\
-
-        $.ajax({
-
-          url: '../../config/viewTransaksi.php',
-
-          type: 'post',
-
-          data: {hdid: hdid},
-
-          success: function(response){
-
-            // Add response in Modal body
-
-            $('.modal-body').html(response);
-
-            // Display Modal
-
-            $('#closeModal').modal('show');
-
-          }
-
+        $('#clockPicker2').clockpicker({
+          autoclose: true
         });
 
+        $('html, body').animate({
+          scrollTop: $('#formdetail').offset().top
+        }, 2);
+
+
+
+        $('.tdinfo').click(function() {
+          var dtlid = $(this).data('id');
+
+          // AJAX request\
+          $.ajax({
+            url: '../../config/viewDetailTransaksi.php',
+            type: 'post',
+            data: {
+              dtlid: dtlid
+            },
+            success: function(response) {
+              // Add response in Modal body
+              $('.modal-body').html(response);
+              // Display Modal
+              $('#detailModal').modal('show');
+            }
+          });
+        });
+
+
+        $('.cancel1').click(function() {
+          var hdid = $(this).data('id');
+
+          // AJAX request\
+          $.ajax({
+            url: '../../config/viewTransaksi.php',
+            type: 'post',
+            data: {
+              hdid: hdid
+            },
+            success: function(response) {
+              // Add response in Modal body
+              $('.modal-body').html(response);
+              // Display Modal
+              $('#cancelModal').modal('show');
+            }
+          });
+        });
+
+        $('.close1').click(function() {
+          var hdid = $(this).data('id');
+          // AJAX request\
+          $.ajax({
+            url: '../../config/viewTransaksi.php',
+            type: 'post',
+            data: {
+              hdid: hdid
+            },
+            success: function(response) {
+              // Add response in Modal body
+              $('.modal-body').html(response);
+              // Display Modal
+              $('#closeModal').modal('show');
+            }
+          });
+        });
+
+        $('.tddel').click(function() {
+          var id = $(this).attr('data-id');
+          $("#del").attr("href", "../../config/process.php?DtlId=" + id);
+          $('#deleteModal').modal('show');
+        });
+
+
+
+        var status = document.getElementById("statuskirim").value;
+        var cancel = document.getElementById("cancel");
+        var submit = document.getElementById("submit");
+        var tambah = document.getElementById("tambah")
+
+        if (status != "OPEN") {
+          submit.disabled = true;
+          cancel.disabled = true;
+          tambah.disabled = true;
+        };
       });
 
-	  
+      var armada = document.getElementById("armada").value;
+
+      function armadaUbah() {
+        $('#armadaModal').modal('show');
+      };
+
+      function afterarmadaUbah() {
+        $('#afterarmadaModal').modal('show');
+      };
+
+      function backArmada() {
+        document.getElementById("armada").value = armada;
+      };
+    </script>
+
+    <script>
+      function view() {
+        var a = document.getElementById("tambah");
+        var b = document.getElementById("lihat");
+        var c = document.getElementById("tabeldetail");
+        var d = document.getElementById("formdetail");
+
+        a.classList.remove("hidden");
+        b.classList.add("hidden");
+        c.classList.remove("hidden");
+        d.classList.add("hidden");
+      };
+
+      function add() {
+        var a = document.getElementById("tambah");
+        var b = document.getElementById("lihat");
+        var c = document.getElementById("tabeldetail");
+        var d = document.getElementById("formdetail");
+
+        a.classList.add("hidden");
+        b.classList.remove("hidden");
+        c.classList.add("hidden");
+        d.classList.remove("hidden");
+      };
+
+      function formUser() {
+        var a = document.getElementById("viewUser");
+        var b = document.getElementById("formUser");
+        a.classList.add("hidden");
+        b.classList.remove("hidden");
+      }
+
+      function viewUser() {
+        var a = document.getElementById("viewUser");
+        var b = document.getElementById("formUser");
+        a.classList.remove("hidden");
+        b.classList.add("hidden");
+      }
+    </script>
+
+    <script type="text/javascript">
+      <?php echo $jsArray; ?>
+
+      function changeValue() {
+        var x = document.getElementById('pilihspk').value;
+        //alert(x);
+        document.getElementById('status').value = data[x].status;
+        document.getElementById('jenis').value = data[x].jenis;
+        document.getElementById('nopol').value = data[x].nopol;
+        var keterangan = data[x].keterangan;
+        var keterangan1 = keterangan.replace(/%%/g, "\n");
+        document.getElementById('keterangan').value = keterangan1;
+        document.getElementById('onclose').value = data[x].onclose;
+      };
+
+      function tmbreset() {
+        var x = document.getElementById('pilihspk').value;
+        //alert(x);
+        if (x != "") {
+          document.getElementById('status').value = data[x].status;
+          document.getElementById('jenis').value = data[x].jenis;
+          document.getElementById('nopol').value = data[x].nopol;
+          var keterangan = data[x].keterangan;
+          var keterangan1 = keterangan.replace(/%%/g, "\n");
+          document.getElementById('keterangan').value = keterangan1;
+          document.getElementById('onclose').value = data[x].onclose;
+        }
+      };
+    </script>
+
+    <script>
+      function openFormBiayaTurunan(id) {
+        $biayaId = document.getElementById('biayaTurunanId');
+        $biayaHdid = document.getElementById('biayaTurunanHdid');
+        $biayaTurunanSPK = document.getElementById('biayaTurunanSPK');
+        $biayaTurunanTurunan = document.getElementById('biayaTurunanTurunan');
+        $spkTurunan = document.getElementById('spkturunan');
+        $biayaTransportInput = document.getElementById('biayaTransport');
+        $biayaInapInput = document.getElementById('biayaInap');
+        $biayaLainInput = document.getElementById('biayaLain');
+ 
+        $.ajax({
+          url: '../../config/process.php',
+          type: 'get',
+          data: {
+            biayaTurunanId: id
+          },
+          dataType: 'json',
+          success: function(responsetemp) {
+            // Add response in Modal body
+            console.log('res get biaya', responsetemp);
+            $response = responsetemp[0];
+            $biayaId.value = $response.Id;
+            $biayaHdid.value = $response.HdId;
+            $spkTurunan.innerHTML = $response.NoSPK + "-" + $response.Turunan;
+            $biayaTransportInput.value = $response.Biaya_transport;
+            $biayaInapInput.value = $response.Biaya_inap;
+            $biayaLainInput.value = $response.Biaya_lain;
+            $biayaTurunanSPK.value = $response.NoSPK;
+            $biayaTurunanTurunan.value = $response.Turunan; 
+            // Display Modal
+            $('#biayaTurunanModal').modal('show');
+          }
+        });
+      }
+    </script>
 
-	  $('.tddel').click(function(){
-
-		var id = $(this).attr('data-id');
-
-		$("#del").attr("href", "../../config/process.php?DtlId="+id);
-
-		$('#deleteModal').modal('show');
-
-	  });
-
-	  
-
-	  var status = document.getElementById("statuskirim").value;
-
-	  var cancel = document.getElementById("cancel");
-
-	  var submit = document.getElementById("submit");
-
-	  var tambah = document.getElementById("tambah")
-
-	  
-
-	  if(status != "OPEN"){
-
-		submit.disabled = true;
-
-		cancel.disabled = true;
-
-		tambah.disabled = true;
-
-	  };
-
-	  
-
-	});
-
-	
-
-	var armada = document.getElementById("armada").value;
-
-	function armadaUbah(){
-
-		$('#armadaModal').modal('show');
-
-  };
-  
-  function afterarmadaUbah(){
-
-    $('#afterarmadaModal').modal('show');
-
-  };
-
-	
-
-	function backArmada(){
-
-		document.getElementById("armada").value = armada;
-
-	};
-
-  </script>
-
-
-
-  <script>
-
-    function view(){
-
-      var a = document.getElementById("tambah");
-
-      var b = document.getElementById("lihat");
-
-      var c = document.getElementById("tabeldetail");
-
-      var d = document.getElementById("formdetail");
-
-      a.classList.remove("hidden");
-
-      b.classList.add("hidden");
-
-      c.classList.remove("hidden");
-
-      d.classList.add("hidden");
-
-    };
-
-
-
-    function add(){
-
-      var a = document.getElementById("tambah");
-
-      var b = document.getElementById("lihat");
-
-      var c = document.getElementById("tabeldetail");
-
-      var d = document.getElementById("formdetail");
-
-      a.classList.add("hidden");
-
-      b.classList.remove("hidden");
-
-      c.classList.add("hidden");
-
-      d.classList.remove("hidden");
-
-    };
-
-    function formUser(){
-      var a = document.getElementById("viewUser");
-      var b = document.getElementById("formUser");
-      a.classList.add("hidden");
-      b.classList.remove("hidden");
-    }
-
-    function viewUser(){
-      var a = document.getElementById("viewUser");
-      var b = document.getElementById("formUser");
-      a.classList.remove("hidden");
-      b.classList.add("hidden");
-    }
-
-  </script>
-
-  
-
-  <script type="text/javascript">
-	<?php echo $jsArray; ?>
-	function changeValue(){
-    var x = document.getElementById('pilihspk').value;
-    //alert(x);
-		document.getElementById('status').value = data[x].status;
-		document.getElementById('jenis').value = data[x].jenis;
-		document.getElementById('nopol').value = data[x].nopol;
-    var keterangan = data[x].keterangan;
-    var keterangan1 = keterangan.replace(/%%/g, "\n");
-		document.getElementById('keterangan').value = keterangan1;
-    document.getElementById('onclose').value = data[x].onclose;
-	};
-
-  function tmbreset(){
-    var x = document.getElementById('pilihspk').value;
-    //alert(x);
-    if(x != ""){
-      document.getElementById('status').value = data[x].status;
-      document.getElementById('jenis').value = data[x].jenis;
-      document.getElementById('nopol').value = data[x].nopol;
-      var keterangan = data[x].keterangan;
-      var keterangan1 = keterangan.replace(/%%/g, "\n");
-      document.getElementById('keterangan').value = keterangan1;
-      document.getElementById('onclose').value = data[x].onclose;
-    }
-	};
-  </script>
-
-  
-
-
-
-  
 
 </body>
 
