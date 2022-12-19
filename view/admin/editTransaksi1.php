@@ -156,7 +156,7 @@
 
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$year>
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $year?>">
 
         <div class="sidebar-brand-icon">
 
@@ -172,7 +172,7 @@
 
       <li class="nav-item">
 
-        <a class="nav-link" href="dashboard-admin.php?tahun=".$year>
+        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $year?>">
 
           <i class="fas fa-fw fa-tachometer-alt"></i>
 
