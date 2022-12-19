@@ -98,7 +98,7 @@
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
           <span>Kota</span>
-        </a>
+        </a> 
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
@@ -106,7 +106,7 @@
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
-      </li>
+      </li> 
       <!--<li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
