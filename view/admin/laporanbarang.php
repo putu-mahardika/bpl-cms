@@ -9,22 +9,66 @@
   }
 
   include '../../config/koneksi.php';
-  
-    if(isset($_POST['range'])){
-      $startspk = $_POST['start'];
-      $endspk = $_POST['end'];
-      $start0 = str_replace('/', '-', $startspk);
-      $end0 = str_replace('/', '-', $endspk);
-      $start = date('Y-m-d', strtotime($start0));
-      $end = date('Y-m-d', strtotime($end0));
-      //echo $start;
-      //echo $end;
-      $query = "select * from trans_detail where atr1=0 and create_date between '".$start." 00:00:00' and '".$end." 23:59:59'";
-      $fetch = mysqli_query($koneksi,$query);
-      $fill=1;
-    } else{
-      $fill=0;
+  $emparray = array();
+
+  if(isset($_POST['range'])){
+    $startspk = $_POST['start'];
+    $endspk = $_POST['end'];
+    $start0 = str_replace('/', '-', $startspk);
+    $end0 = str_replace('/', '-', $endspk);
+    $start = date('Y-m-d', strtotime($start0));
+    $end = date('Y-m-d', strtotime($end0));
+    $query = "SELECT 
+      a.create_date,
+      a.HdId,
+      b.NoSPK,
+      b.tgl_spk,
+      a.turunan, 
+      b.NoPO,
+      f.nama as namaCustomer,
+      f.npwp,
+      b.kota_kirim_id,
+      b.kota_kirim,
+      b.kota_tujuan_id,
+      b.kota_tujuan,
+      a.jenis_armada,
+      a.nopol,
+      a.keterangan_kirim,
+      g.status,
+      IF (a.OnClose=0, 'OPEN', 'CLOSE') AS StatusTurunan,
+      IF (b.OnClose=0, 'OPEN', 'CLOSE') AS StatusPO,
+      h.nama as namaUser,
+      concat(b.NoSPK, '-', a.turunan) as SPKTurunan,
+      CASE WHEN b.kota_kirim_id IS NULL then '-' ELSE c.Nama END AS kotaAsal,
+      CASE WHEN b.kota_tujuan_id IS NULL then '-' ELSE d.Nama END AS kotaTujuan,
+      case when a.NoSPK not in (select NoSPK from trans_biayaturunan) then '0' else e.Total end as totalBiaya
+    FROM
+      trans_detail a,
+      trans_hd b,
+      (select * from master_kota) AS c,
+      (select * from master_kota) AS d,
+      trans_biayaturunan e,
+      master_customer f,
+      master_status g,
+      master_user h
+    WHERE
+      a.HdId = b.HdId and
+      a.atr1=0 and
+      a.create_date between '".$start." 00:00:00' and '".$end." 23:59:59' and
+      a.StsId = g.stsId and
+      b.CustId = f.CustId and
+      a.UserId = h.UserId and
+      (b.kota_kirim_id = c.Id OR b.kota_kirim_id IS NULL) and
+      (b.kota_tujuan_id = d.Id OR b.kota_tujuan_id IS NULL) and
+      (a.NoSPK = e.NoSPK OR a.NoSPK NOT IN(SELECT NoSPK from trans_biayaturunan)) and
+      (a.turunan = e.Turunan OR a.turunan NOT IN(SELECT Turunan from trans_biayaturunan))";
+    $fetch = mysqli_query($koneksi,$query);
+    while($row =mysqli_fetch_assoc($fetch))
+    {
+      $emparray[] = $row;
     }
+  } 
+  $data = json_encode($emparray, JSON_HEX_TAG);
 ?>
 
 <!DOCTYPE html>
@@ -44,20 +88,23 @@
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
   <link href="../../css/style.css" rel="stylesheet">
+
+  <!-- DevExtreme theme -->
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.1.6/css/dx.light.css">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -104,6 +151,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span> 
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Transaksi
@@ -111,7 +172,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item active">
@@ -127,7 +188,7 @@
              <i class="fas fa-fw fa-file-invoice"></i>
            </div>
            <div>
-             <span>Laporan Pergerakan Barang</span>
+             <span>Laporan Pergerakan Truck</span>
            </div>
          </div>
        </a>
@@ -368,12 +429,12 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> Laporan Pergerakan Barang</h1>
-            <?php if($fill == 1){?>
+            <h1 class="h3 mb-0 text-gray-800"> Laporan Pergerakan Truck</h1>
+            <!-- <?php if($fill == 1){?>
             <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportlaporantransaksi.php?start=<?php echo $start?>&end=<?php echo $end?>"><i class="fas fa-print"></i></a>
             <?php }else{?>
             <a class="btn btn-info btn-lg disabled" target="_blank" href="#"><i class="fas fa-print"></i></a>
-            <?php }?>
+            <?php }?> -->
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Tables</li>
@@ -413,109 +474,14 @@
                   </form>
                 </div>
               </div>
-
-              
-
-              
             </div>
 
             <div class="col-lg-12">
-
-              <div class="card mb-4">
-
-                <div class="table-responsive p-3">
-
-				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-
-                    <thead class="thead-light">
-                      <tr>
-                        <th style="padding-left:16px;">Tgl</th>
-                        <th style="padding-left:16px;">No SPK</th>
-                        <th style="padding-left:16px;">No. PO</th>
-                        <!--<th>Tgl PO</th>-->
-                        <th style="padding-left:16px;">Customer</th>
-                        <!--<th>tgl SPK</th>-->
-                        <th style="padding-left:16px;">Kota Asal</th>
-                        <th style="padding-left:16px;">Kota Tujuan</th>
-                        <th style="padding-left:16px;">Status</th>
-                        <!--<th>Barang</th>
-                        <th>Keterangan</th>-->
-                        <!--<th style="padding-left:16px;">On Close</th>-->
-                        <!--<th>Tgl On Close</th>-->
-                        <th style="padding-left:16px;">Action</th>
-                      </tr>
-                    </thead>
-
-                    
-
-                    <tbody>
-
-                    <?php
-                    if($fill != 0){
-                      while($data = mysqli_fetch_array($fetch)){
-                        $id = $data['HdId'];
-                        $tgl = $data['create_date'];
-                        $cancel = $data['atr1'];
-                        $tgl1 = date('d-M-Y H:i:s', strtotime($tgl));
-                        $turunan = $data['turunan'];
-                      ?>
-                      <tr>
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $tgl1?></td>
-                        <?php if($turunan == 0){?>
-                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK']?></td>
-                        <?php }else{?>
-                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK']?>-<?php echo $turunan?></td>
-                        <?php }?>
-                        
-                        <?php
-                          $query_hd = "select NoPO from trans_hd where HdId=$id";
-                          $fetch_hd = mysqli_query($koneksi, $query_hd);
-                          $data_hd = mysqli_fetch_array($fetch_hd);
-                        ?>
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK']?>-<?php echo $data_hd['NoPO']?></td>
-                        <?php
-                          $query_hd0 = "select CustId from trans_hd where HdId=$id";
-                          $fetch_hd0 = mysqli_query($koneksi, $query_hd0);
-                          $data_hd0 = mysqli_fetch_array($fetch_hd0);
-
-                          $query_temp = "select nama from master_customer where CustId='$data_hd0[CustId]'";
-                          $fetch_temp = mysqli_query($koneksi, $query_temp);
-                          $data_temp = mysqli_fetch_array($fetch_temp);
-                        ?>
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_temp['nama']?></td>
-                        <?php
-                          $query_hd1 = "select kota_kirim from trans_hd where HdId=$id";
-                          $fetch_hd1 = mysqli_query($koneksi, $query_hd1);
-                          $data_hd1 = mysqli_fetch_array($fetch_hd1);
-                        ?>
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_hd1['kota_kirim']?></td>
-                        <?php
-                          $query_hd2 = "select kota_tujuan from trans_hd where HdId=$id";
-                          $fetch_hd2 = mysqli_query($koneksi, $query_hd2);
-                          $data_hd2 = mysqli_fetch_array($fetch_hd2);
-                        ?>
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_hd2['kota_tujuan']?></td>
-                        <?php
-                          $query_s = "select status from master_status where stsId='$data[StsId]'";
-                          $fetch_s = mysqli_query($koneksi, $query_s);
-                          $data_s = mysqli_fetch_array($fetch_s);
-                        ?>
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_s['status']?></td>
-                        
-                        <td style="padding-left:10px; padding-right:10px;">
-                          <!--<button title="detail" data-id="<?php echo $id?>" class="btn btn-info btn-sm transinfo" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>-->
-                          <button title="detail" onclick="transinfo(<?php echo $id?>)" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
-
-                        </td>
-                      </tr>
-                    <?php } }?>
-                    </tbody>
-                  </table>
-                </div>
+              <div class="card mb-4 p-4">
+                <div id="gridContainer"></div> 
               </div>
             </div>
+            
           </div>
 
           <!--Row-->
@@ -634,6 +600,12 @@
 
   <script src="../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 
+  <!-- DevExtreme library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/3.8.0/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/22.1.6/js/dx.all.js"></script>
+
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
@@ -671,7 +643,7 @@
     }; 
   </script>
 
-<script>
+  <script>
     function transinfo(id){
     var hdid = id;
     // AJAX request\
@@ -687,6 +659,242 @@
       }
     });
     }
+  </script>
+
+  <script>
+    // var xxx = <?php echo $data ?>;
+    // console.log('xxx', xxx);
+    $(() => {
+      var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
+      const dataGrid = $('#gridContainer').dxDataGrid({
+        // dataSource: generateData(100000),
+        dataSource: <?php echo $data; ?>,
+        // keyExpr: 'id',
+        showBorders: true,
+        showRowLines: true,
+        showColumnLines: true,
+        filterRow: {
+          visible: true,
+          applyFilter: 'auto',
+        },
+        searchPanel: {
+          visible: true,
+          width: 240,
+          placeholder: 'Search...',
+        },
+        headerFilter: {
+          visible: true,
+        },
+        columnChooser: {
+          enabled: true,
+          mode: 'select',
+        },
+        columnAutoWidth: true,
+        export: {
+          enabled: true,
+        },
+        onExporting(e) {
+          const workbook = new ExcelJS.Workbook();
+          const worksheet = workbook.addWorksheet('CountriesPopulation');
+
+          DevExpress.excelExporter.exportDataGrid({
+            component: e.component,
+            worksheet,
+            topLeftCell: { row: 5, column: 1 },
+            customizeCell: function(options) {
+              const { gridCell, excelCell } = options;
+
+              // if(gridCell.rowType === 'group' || gridCell.rowType === 'totalFooter' || gridCell.rowType === 'groupFooter') {
+              //   specialRowIndexes.push(excelCell.fullAddress.row);
+              // }
+            }
+          }).then(function(dataGridRange) {
+            // See border - https://github.com/exceljs/exceljs#borders for more details
+            setBorders(e.component, worksheet, dataGridRange);
+            return Promise.resolve();
+          }).then((cellRange) => {
+            // header
+            const headerRow = worksheet.getRow(2);
+            headerRow.height = 30;
+            worksheet.mergeCells(2, 1, 2, 19);
+
+            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Barang - PT Berkah Permata Logistik';
+            headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
+            headerRow.getCell(1).alignment = { horizontal: 'center' };
+            
+            const subHeaderRow = worksheet.getRow(3);
+            subHeaderRow.height = 24;
+            worksheet.mergeCells(3, 1, 3, 19);
+
+            subHeaderRow.getCell(1).value = 'Periode : <?php echo $start ?> s/d <?php echo $end ?>';
+            subHeaderRow.getCell(1).font = { name: 'Segoe UI Light', size: 14 };
+            subHeaderRow.getCell(1).alignment = { horizontal: 'center' };
+
+          }).then(() => {
+            workbook.xlsx.writeBuffer().then((buffer) => {
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Barang - PT Berkah Permata Logistik.xlsx');
+            });
+          });
+          e.cancel = true;
+        },
+        columns: [
+          {
+            caption: 'Tgl Detail Pergerakan',
+            dataField: 'create_date',
+          },
+          {
+            caption: 'No. SPK',
+            dataField: 'NoSPK'
+          },
+          {
+            caption: 'Tgl SPK',
+            dataField: 'tgl_spk'
+          },
+          {
+            caption: 'No. SPK Turunan',
+            dataField: 'SPKTurunan'
+          },
+          {
+            caption: 'No. PO',
+            dataField: 'NoPO'
+          },
+          {
+            caption: 'Customer',
+            dataField: 'namaCustomer'
+          },
+          {
+            caption: 'NPWP',
+            dataField: 'npwp'
+          },
+          {
+            caption: 'Kota Asal',
+            dataField: 'kotaAsal'
+          },
+          {
+            caption: 'Detail Kota Asal',
+            dataField: 'kota_kirim'
+          },
+          {
+            caption: 'Kota Tujuan',
+            dataField: 'kotaTujuan'
+          },
+          {
+            caption: 'Detail Kota Tujuan',
+            dataField: 'kota_tujuan'
+          },
+          {
+            caption: 'Jenis Armada',
+            dataField: 'jenis_armada'
+          },
+          {
+            caption: 'Nopol',
+            dataField: 'nopol'
+          },
+          {
+            caption: 'Keterangan',
+            dataField: 'keterangan_kirim'
+          },
+          {
+            caption: 'Status',
+            dataField: 'status'
+          },
+          {
+            caption: 'Status OnClose SPK Turunan',
+            dataField: 'StatusTurunan'
+          },
+          {
+            caption: 'Total Biaya',
+            dataField: 'totalBiaya'
+          },
+          {
+            caption: 'Status OnClose PO',
+            dataField: 'StatusPO'
+          },
+          {
+            caption: 'Sales',
+            dataField: 'namaUser'
+          },
+          {
+            caption: 'Action',
+            dataField: 'HdId',
+            cellTemplate: function(container, options) {
+                container.html(`
+                <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
+            `)},
+            allowExporting: false,
+            allowFiltering: false,
+            allowSearching: false,
+            allowSorting: false,
+            showInColumnChooser: false
+          }
+        ],
+        scrolling: {
+          rowRenderingMode: 'virtual',
+        },
+        paging: {
+          pageSize: 10,
+        },
+        pager: {
+          visible: true,
+          allowedPageSizes: [5, 10, 'all'],
+          showPageSizeSelector: true,
+          showInfo: true,
+          showNavigationButtons: true,
+        },
+      }).dxDataGrid('instance');
+
+      function setBorders(dataGrid, worksheet, cellsRange) {
+        const { showRowLines, showColumnLines, showBorders } = dataGrid.option();
+        // rowLines
+        // console.log(cellsRange);
+        // if(showRowLines) {
+          for(let i = cellsRange.from.row; i < cellsRange.to.row; i++) {
+            for(let j = cellsRange.from.column; j <= cellsRange.to.column; j++) {
+              setBorderCell(worksheet, i, j, { bottom: borderStylePattern });
+            }
+          }
+        // }
+        // if(showColumnLines) {
+            // columnLines
+            for(let i = cellsRange.from.row; i <= cellsRange.to.row; i++) {
+              for(let j = cellsRange.from.column; j < cellsRange.to.column; j++) {
+                setBorderCell(worksheet, i, j, { right: borderStylePattern }); 
+              }
+            }
+        // }
+        // if(showBorders) {
+          // borders
+          // top
+          for(let i = cellsRange.from.column; i <= cellsRange.to.column; i++) {
+            setBorderCell(worksheet, cellsRange.from.row, i, { top: borderStylePattern });
+          }
+          // left
+          for(let i = cellsRange.from.row; i <= cellsRange.to.row; i++) {
+            setBorderCell(worksheet, i, cellsRange.from.column, { left: borderStylePattern });
+          }
+
+          // right
+          for(let i = cellsRange.from.row; i <= cellsRange.to.row; i++) {
+            setBorderCell(worksheet, i, cellsRange.to.column, { right: borderStylePattern });
+          }
+          // bottom
+          for(let i = cellsRange.from.column; i <= cellsRange.to.column; i++) {
+            setBorderCell(worksheet, cellsRange.to.row, i, { bottom: borderStylePattern });
+          }
+        // }
+      }
+
+      function setBorderCell(worksheet, row, column, borderValue) {
+        const excelCell = worksheet.getCell(row, column);
+
+        if(!excelCell.border) {
+          excelCell.border = {};
+        }
+
+        Object.assign(excelCell.border, borderValue);
+      }
+    });
+
   </script>
 
 

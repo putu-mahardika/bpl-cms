@@ -24,6 +24,7 @@
   <title>Edit Customer - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
 </head>
  
@@ -31,7 +32,7 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
@@ -39,7 +40,7 @@
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -93,6 +94,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span> 
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
@@ -106,7 +121,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
         </a>
       </li>
       <li class="nav-item">
@@ -122,7 +137,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -374,7 +389,12 @@
             $id = $_GET['id'];
             $fetch = mysqli_query($koneksi, "select * from master_customer where CustId='$id'");
             $data = mysqli_fetch_array($fetch);
-            //echo $id;
+
+            $fetchUser = mysqli_query($koneksi, "select UserId, nama, aktif from master_user where atr1=0");
+            // $dataUser = mysqli_fetch_array($fetchUser);
+            // while($dataUser = mysqli_fetch_array($fetchUser)) {
+            //   print_r($dataUser);
+            // }
           ?>
 			
           <div class="card-body">
@@ -401,6 +421,26 @@
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" required>
                 <label>email PIC :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" required>
+                <div class="form-group">
+                  <label>Sales :</label>
+                  <select class="select2-single-placeholder form-control" name="sales" id="sales" required>
+                  <option value="" disabled>Pilih</option>
+                  <?php
+                    while($dataUser = mysqli_fetch_array($fetchUser)){
+                      // print_r($dataUser);
+                      if($dataUser['aktif']==1){
+                        if($dataUser['UserId'] == $data['UserId']){
+                  ?>
+                  <option value="<?php echo $dataUser['UserId'];?>" selected><?php echo $dataUser['nama'];?></option>
+                      <?php }else{?>
+                  <option value="<?php echo $dataUser['UserId'];?>"><?php echo $dataUser['nama'];?></option>
+                    <?php } } else {
+                      continue;
+                      }
+                    }
+                  ?>
+                  </select>
+                </div>
                 <label>Keterangan :</label>
                 <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" ><?php echo $data['keterangan'];?></textarea>
                 <label>Aktif :</label>
@@ -472,6 +512,17 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/select2/dist/js/select2.min.js"></script>
+
+  <script>
+    $(documrnt).ready(function () {
+      // Select2 Single  with Placeholder
+      $('#sales').select2({
+        placeholder: "Pilih",
+        allowClear: true
+      });
+    });
+  </script>
 
 </body>
 

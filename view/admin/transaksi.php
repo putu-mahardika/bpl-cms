@@ -1,5 +1,6 @@
 <?php
   session_save_path('../../tmp');
+
   session_start();
   date_default_timezone_set("Asia/Jakarta");
 
@@ -64,7 +65,7 @@
 
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=".$datetime>
 
         <div class="sidebar-brand-icon">
 
@@ -78,7 +79,7 @@
 
       <li class="nav-item">
 
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard-admin.php?tahun=".$datetime>
 
           <i class="fas fa-fw fa-tachometer-alt"></i>
 
@@ -171,6 +172,20 @@
         </div>
 
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
+          aria-controls="collapseKota">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Kota</span> 
+        </a>
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kota</h6>
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 
       <hr class="sidebar-divider">
 
@@ -186,7 +201,7 @@
 
           <i class="fas fa-fw fa-truck"></i>
 
-          <span>Pergerakan Barang</span>
+          <span>Pergerakan Truck</span>
 
         </a>
 
@@ -204,7 +219,7 @@
               <i class="fas fa-fw fa-file-invoice"></i>
             </div>
             <div>
-              <span>Laporan Pergerakan Barang</span>
+              <span>Laporan Pergerakan Truck</span>
             </div>
           </div>
         </a>
@@ -823,9 +838,29 @@
 
                         <!--<td><?php echo $data['tgl_spk']?></td>-->
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['kota_kirim']?></td>
+                        <?php
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['kota_tujuan']?></td>
+                          $query_k_temp = "select Nama from master_kota where Id='$data[kota_kirim_id]'";
+
+                          $fetch_k_temp = mysqli_query($koneksi, $query_k_temp);
+
+                          $data_k_temp = mysqli_fetch_array($fetch_k_temp);
+
+                        ?>
+
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_k_temp['Nama'] ?? '-' ?></td>
+
+                        <?php
+
+                          $query_k1_temp = "select Nama from master_kota where Id='$data[kota_tujuan_id]'";
+
+                          $fetch_k1_temp = mysqli_query($koneksi, $query_k1_temp);
+
+                          $data_k1_temp = mysqli_fetch_array($fetch_k1_temp);
+
+                        ?>
+
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_k1_temp['Nama'] ?? $data['kota_tujuan_id'] ?></td>
 
                         <td style="font-size:13px;padding-left:16px;"><?php echo $data['total_armada']?></td>
 
