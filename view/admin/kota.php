@@ -375,6 +375,7 @@
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">List Kota</h1>
+            <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportkota.php"><i class="fas fa-print"></i></a>
 			      <!--<a href="#" class="btn btn-info btn-lg">
                 <i class="fas fa-print"></i>
             </a>-->

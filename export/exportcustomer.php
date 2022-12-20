@@ -20,14 +20,14 @@
 			<th>Kode</th>
 			<th>Nama</th>
 			<th>NPWP</th>
-            <th>Alamat</th>
-            <th>Telp</th>
-            <th>E-mail</th>
-            <th>Bidang Usaha</th>
-            <th>PIC</th>
-            <th>PIC Telp</th>
-            <th>PIC e-mail</th>
-            <th>Keterangan</th>
+			<th>Alamat</th>
+			<th>Telp</th>
+			<th>E-mail</th>
+			<th>Bidang Usaha</th>
+			<th>PIC</th>
+			<th>PIC Telp</th>
+			<th>PIC e-mail</th>
+			<th>Keterangan</th>
 		</tr>
 		<?php 
 		// koneksi database
@@ -43,14 +43,14 @@
 			<td><?php echo $d['kode_customer']; ?></td>
 			<td><?php echo $d['nama']; ?></td>
 			<td><?php echo $d['npwp']; ?></td>
-            <td><?php echo $d['alamat']; ?></td>
-            <td><?php echo $d['telp']; ?></td>
-            <td><?php echo $d['email']; ?></td>
-            <td><?php echo $d['bidang_usaha']; ?></td>
-            <td><?php echo $d['PIC']; ?></td>
-            <td><?php echo $d['PIC_telp']; ?></td>
-            <td><?php echo $d['PIC_email']; ?></td>
-            <td><?php echo $d['keterangan']; ?></td>
+			<td><?php echo $d['alamat']; ?></td>
+			<td><?php echo $d['telp']; ?></td>
+			<td><?php echo $d['email']; ?></td>
+			<td><?php echo $d['bidang_usaha']; ?></td>
+			<td><?php echo $d['PIC']; ?></td>
+			<td><?php echo $d['PIC_telp']; ?></td>
+			<td><?php echo $d['PIC_email']; ?></td>
+			<td><?php echo $d['keterangan']; ?></td>
 		</tr>
 		<?php 
 		}
