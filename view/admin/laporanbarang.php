@@ -69,6 +69,7 @@
     }
   } 
   $data = json_encode($emparray, JSON_HEX_TAG);
+  echo $data;
 ?>
 
 <!DOCTYPE html>
