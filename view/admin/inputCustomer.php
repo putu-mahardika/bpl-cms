@@ -384,6 +384,7 @@
           </div>
 			
           <div class="card-body">
+  				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
               <form class="form group" method="post" action="../../config/process.php">
                 <label>Kode Customer :</label>
                 <input type="text" class="form-control form-control-sm mb-3" name="kode" required>

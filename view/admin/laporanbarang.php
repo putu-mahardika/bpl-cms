@@ -18,50 +18,46 @@
     $end0 = str_replace('/', '-', $endspk);
     $start = date('Y-m-d', strtotime($start0));
     $end = date('Y-m-d', strtotime($end0));
-    $query = "SELECT 
-      a.create_date,
-      a.HdId,
-      b.NoSPK,
-      b.tgl_spk,
-      a.turunan, 
-      b.NoPO,
-      f.nama as namaCustomer,
-      f.npwp,
-      b.kota_kirim_id,
-      b.kota_kirim,
-      b.kota_tujuan_id,
-      b.kota_tujuan,
-      a.jenis_armada,
-      a.nopol,
-      a.keterangan_kirim,
-      g.status,
-      IF (a.OnClose=0, 'OPEN', 'CLOSE') AS StatusTurunan,
-      IF (b.OnClose=0, 'OPEN', 'CLOSE') AS StatusPO,
-      h.nama as namaUser,
-      concat(b.NoSPK, '-', a.turunan) as SPKTurunan,
-      CASE WHEN b.kota_kirim_id IS NULL then '-' ELSE c.Nama END AS kotaAsal,
-      CASE WHEN b.kota_tujuan_id IS NULL then '-' ELSE d.Nama END AS kotaTujuan,
-      case when a.NoSPK not in (select NoSPK from trans_biayaturunan) then '0' else e.Total end as totalBiaya
-    FROM
-      trans_detail a,
-      trans_hd b,
-      (select * from master_kota) AS c,
-      (select * from master_kota) AS d,
-      trans_biayaturunan e,
-      master_customer f,
-      master_status g,
-      master_user h
-    WHERE
-      a.HdId = b.HdId and
-      a.atr1=0 and
-      a.create_date between '".$start." 00:00:00' and '".$end." 23:59:59' and
-      a.StsId = g.stsId and
-      b.CustId = f.CustId and
-      a.UserId = h.UserId and
-      (b.kota_kirim_id = c.Id OR b.kota_kirim_id IS NULL) and
-      (b.kota_tujuan_id = d.Id OR b.kota_tujuan_id IS NULL) and
-      (a.NoSPK = e.NoSPK OR a.NoSPK NOT IN(SELECT NoSPK from trans_biayaturunan)) and
-      (a.turunan = e.Turunan OR a.turunan NOT IN(SELECT Turunan from trans_biayaturunan))";
+    $query = "SELECT
+    b.create_date,
+    b.HdId,
+    a.NoSPK,
+    a.tgl_spk,
+    a.NoPO,
+    b.jenis_armada,
+    b.nopol,
+    b.keterangan_kirim,
+    IF (b.OnClose=0, 'OPEN', 'CLOSE') AS StatusTurunan,
+    IF (a.OnClose=0, 'OPEN', 'CLOSE') AS StatusPO,
+    concat(a.NoSPK, '-', b.turunan) as SPKTurunan,
+    CASE 
+      WHEN a.kota_kirim_id IS NULL THEN '-' ELSE c.nama
+    END AS kotaAsal,
+    a.kota_kirim,
+    CASE 
+      WHEN a.kota_tujuan_id IS NULL THEN '-' ELSE d.nama
+    END AS kotaTujuan,
+    a.kota_tujuan,
+    e.nama as namaUser,
+    h.nama as namaCustomer,
+    h.npwp,
+    f.status as statusTurunan,
+    CASE 
+    WHEN b.NoSPK NOT IN (select NoSPK from trans_biayaturunan) or (SELECT COUNT(*) from trans_biayaturunan) = 0 then '0' 
+    else g.Total
+    end as totalBiaya
+  FROM 
+    trans_detail b
+    left join trans_hd a on b.HdId = a.HdId 
+    left join master_kota c on a.kota_kirim_id = c.Id or a.kota_kirim_id is NULL
+    left join master_kota d on a.kota_tujuan_id = d.Id or a.kota_tujuan_id is NULL
+    left join master_user e on b.UserId = e.UserId
+    left join master_status f on b.StsId = f.stsId
+    left join trans_biayaturunan g on b.NoSPK = g.NoSPK AND b.turunan = g.Turunan
+    left join master_customer h on a.CustId = h.CustId
+  WHERE 
+    b.atr1 = 0 AND
+    b.create_date BETWEEN '".$start." 00:00:00' AND '".$end." 23:59:59'";
     $fetch = mysqli_query($koneksi,$query);
     while($row =mysqli_fetch_assoc($fetch))
     {
@@ -670,9 +666,22 @@
         // dataSource: generateData(100000),
         dataSource: <?php echo $data; ?>,
         // keyExpr: 'id',
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        selection: {
+          mode: 'single',
+        },
         showBorders: true,
         showRowLines: true,
         showColumnLines: true,
+        stateStoring: {
+          enabled: true,
+          type: 'localStorage',
+          storageKey: 'storage',
+        },
+        groupPanel: {
+          visible: true,
+        },
         filterRow: {
           visible: true,
           applyFilter: 'auto',
@@ -718,7 +727,7 @@
             headerRow.height = 30;
             worksheet.mergeCells(2, 1, 2, 19);
 
-            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Barang - PT Berkah Permata Logistik';
+            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik';
             headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
             headerRow.getCell(1).alignment = { horizontal: 'center' };
             
@@ -732,7 +741,7 @@
 
           }).then(() => {
             workbook.xlsx.writeBuffer().then((buffer) => {
-              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Barang - PT Berkah Permata Logistik.xlsx');
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Truck - PT Berkah Permata Logistik.xlsx');
             });
           });
           e.cancel = true;
