@@ -727,7 +727,7 @@
             headerRow.height = 30;
             worksheet.mergeCells(2, 1, 2, 19);
 
-            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Barang - PT Berkah Permata Logistik';
+            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik';
             headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
             headerRow.getCell(1).alignment = { horizontal: 'center' };
             
@@ -741,7 +741,7 @@
 
           }).then(() => {
             workbook.xlsx.writeBuffer().then((buffer) => {
-              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Barang - PT Berkah Permata Logistik.xlsx');
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Truck - PT Berkah Permata Logistik.xlsx');
             });
           });
           e.cancel = true;
