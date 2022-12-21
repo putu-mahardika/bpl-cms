@@ -1,3 +1,10 @@
+<?php
+	session_save_path('../tmp');
+	session_start();
+	//$s_username = $_SESSION['username'];
+	$s_id = $_SESSION['id'];
+	$akses = $_SESSION['hak_akses'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,8 +38,12 @@
 		</tr>
 		<?php 
 		// koneksi database
-        include '../config/koneksi.php';
-        $query = "select * from master_customer";
+		include '../config/koneksi.php';
+		if ($akses == 'Admin') {
+			$query = "select * from master_customer";
+		} else {
+			$query = "select * from master_customer where UserId=".$s_id;
+		}
 		// menampilkan data pegawai
 		$data = mysqli_query($koneksi,$query);
 		$no = 1;
