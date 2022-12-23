@@ -667,7 +667,7 @@
         // dataSource: generateData(100000),
         dataSource: <?php echo $data; ?>,
         // keyExpr: 'id',
-        allowColumnReordering: true,
+        // allowColumnReordering: true,
         allowColumnResizing: true,
         selection: {
           mode: 'single',

@@ -243,7 +243,7 @@
     //kota
     //input kota ===================================================================
     elseif (isset($_POST['inputKota'])) {
-        $kode = strtoupper($_POST['kode']);
+        // $kode = strtoupper($_POST['kode']);
         $nama = $_POST['namaKota'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
@@ -266,7 +266,7 @@
         }
 
         if($j != 1){
-            $query = "insert into master_kota values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
+            $query = "insert into master_kota (Id, Kode, Nama, last_update, create_date, aktif, Attribute1, Attribute2) values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/kota.php");
@@ -284,13 +284,14 @@
     //edit kota ====================================================================
     elseif (isset($_POST['editKota'])) {
         $id = $_POST['id'];
-        $kode = $_POST['kode'];
+        // $kode = $_POST['kode'];
         $nama = $_POST['namaKota'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
         // print_r([$id, $kode, $nama, $aktif]);
+        $j=0;
         while($data = mysqli_fetch_array($fetch_k)){
-            if((strtolower($kode) == strtolower($data['Kode']) || strtolower($nama) == strtolower($data['Nama'])) && strtolower($id != $data['Id'])){
+            if(strtolower($nama) == strtolower($data['Nama']) && strtolower($id != $data['Id'])){
                 $j=1;
             } 
             // elseif(strtolower($id == $data['Id'])){
@@ -496,7 +497,7 @@
 		//echo $tglspk1;
 
 		if ($t != 1) {
-			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, '0', '', '')";
+			$query = "insert into trans_hd (HdId, CustId, UserId, create_date, NoPO, tgl_po, NoSPK, tgl_spk, total_armada, kota_kirim_id, kota_krim, kota_tujuan_id, kota_tujuan, Barang, keterangan, DateOnClose, last_update, cancel_date, closedById, atr1, atr2, atr3) values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, '0', '', '')";
             $result = mysqli_query($koneksi, $query);
             //create biaya turunan ================================================================
             // $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $datetime, $s_id, $koneksi);
