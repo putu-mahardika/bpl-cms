@@ -389,8 +389,8 @@
 			
           <div class="card-body">
               <form class="form group" method="post" action="../../config/process.php">
-                <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" name="kode" maxlength="6" required>
+                <!-- <label>Kode :</label>
+                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" name="kode" maxlength="6" required> -->
                 <label>Nama :</label>
                 <input type="text" class="form-control form-control-sm mb-3" name="namaKota" maxlength="150" required>
                 <!-- <label>Keterangan :</label>

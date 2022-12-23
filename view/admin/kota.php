@@ -406,7 +406,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>No</th>
-                        <th>Kode</th>
+                        <!-- <th>Kode</th> -->
                         <th>Nama</th>
                         <th>Aktif</th>
 						            <!--<th>Create Date</th>-->
@@ -423,7 +423,7 @@
                     ?>
                       <tr>
                         <td ><?php echo $i?></td>
-                        <td><?php echo $data['Kode']?></td>
+                        <!-- <td><?php echo $data['Kode']?></td> -->
                         <td><?php echo $data['Nama']?></td>
                     <?php 
                       if($data['aktif'] == 1){
