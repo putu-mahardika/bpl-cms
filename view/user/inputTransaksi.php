@@ -968,7 +968,7 @@
                             </select>
                           </div>
                           <div class="form-group">
-                            <label>Detail Kota Asal :</label>
+                            <label>Detail Kota Asal :</label> 
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
       					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
                           </div>
