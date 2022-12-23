@@ -1288,6 +1288,17 @@
   		placeholder: "Pilih",
 	  	allowClear: true
 	  });
+
+    $('.select2-single-placeholder1').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+
+    $('.select2-single-placeholder2').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+
 	  $('#simple-date1 .input-group.date').datepicker({
       format: 'dd/mm/yyyy',
       todayBtn: 'linked',
