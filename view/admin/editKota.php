@@ -396,8 +396,8 @@
               <form class="form group" method="post" action="../../config/process.php">
                 <!--<label>Id :</label>-->
                 <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['Id'];?>" name="id" readonly>
-                <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['Kode'];?>" name="kode" maxlength="6" required>
+                <!-- <label>Kode :</label>
+                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['Kode'];?>" name="kode" maxlength="6" required> -->
                 <label>Nama :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Nama'];?>" name="namaKota" maxlength="150" required>
                 <!-- <label>Keterangan :</label>

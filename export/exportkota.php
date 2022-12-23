@@ -17,8 +17,9 @@
 	<table border="1">
 		<tr>
 			<th>No</th>
-			<th>Kode</th>
+			<!-- <th>Kode</th> -->
 			<th>Nama</th>
+			<th>Status</th>
 		</tr>
 		<?php 
 		// koneksi database
@@ -31,8 +32,13 @@
 		?>
 		<tr>
 			<td><?php echo $no++; ?></td>
-			<td><?php echo $d['Kode']; ?></td>
+			<!-- <td><?php echo $d['Kode']; ?></td> -->
 			<td><?php echo $d['Nama']; ?></td>
+			<?php if ($d['aktif'] == 1) { ?>
+				<td>AKITF</td>
+			<?php } else { ?>
+				<td>TIDAK AKITF</td>
+			<?php } ?>
 		</tr>
 		<?php 
 		}

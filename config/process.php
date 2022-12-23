@@ -243,7 +243,7 @@
     //kota
     //input kota ===================================================================
     elseif (isset($_POST['inputKota'])) {
-        $kode = strtoupper($_POST['kode']);
+        // $kode = strtoupper($_POST['kode']);
         $nama = $_POST['namaKota'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
@@ -284,7 +284,7 @@
     //edit kota ====================================================================
     elseif (isset($_POST['editKota'])) {
         $id = $_POST['id'];
-        $kode = $_POST['kode'];
+        // $kode = $_POST['kode'];
         $nama = $_POST['namaKota'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
