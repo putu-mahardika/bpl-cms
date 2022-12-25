@@ -970,18 +970,18 @@
         if ($result) {
             if($akses == 'Admin'){
                 header("location:../view/admin/editTransaksi.php?id=$hdid");
-                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data Biaya Turunan berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Detail Biaya Turunan berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
             } else {
                 header("location:../view/user/editTransaksi.php?id=$hdid");
-                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data Biaya Turunan berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Detail Biaya Turunan berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
             }
         } else {
             if($akses == 'Admin'){
 				header("location:../view/admin/editTransaksi.php?id=$hdid");
-				$_SESSION['pesan'] = '<p><div class="alert alert-warning">Data Biaya Turunan gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+				$_SESSION['pesan'] = '<p><div class="alert alert-warning">Detail Biaya Turunan gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
             } else {
                 header("location:../view/user/editTransaksi.php?id=$hdid");
-                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data Biaya Turunan gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Detail Biaya Turunan gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
             }
         }
     }
