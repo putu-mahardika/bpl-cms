@@ -1414,7 +1414,7 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                   <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>   
-                  <a type="button" href="#" onclick="formUser()" title="ganti user" class="edituser" ><i class="fas fa-edit"></i></a>       
+                  <a type="button" onclick="formUser()" title="ganti user" class="edituser" ><i class="fas fa-edit"></i></a>       
 
                 </div>
 
@@ -1437,7 +1437,7 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                   <h6 class="m-0 font-weight-bold text-primary">User</h6>   
-                  <a type="button" href="#" onclick="viewUser()" title="ganti user" class="edituser" ><i class="fas fa-edit"></i></a>       
+                  <a type="button" onclick="viewUser()" title="ganti user" class="edituser" ><i class="fas fa-edit"></i></a>       
 
                 </div>
 
