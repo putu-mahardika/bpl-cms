@@ -358,7 +358,7 @@
                 </div>
                 <div class="table-responsive p-3">
 				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover" style="width:100%;">
                     <thead class="thead-light">
                       <tr>
                         <th>Tanggal</th>
@@ -375,7 +375,8 @@
                         <th>Aktif</th>
                         <!--<th>Create Date</th>-->
                         <!--<th>Last Update</th>-->
-                        <th style="padding-left:10px; padding-right:44px;">Action</th>
+                        <!-- <th style="padding-left:10px; padding-right:44px;">Action</th> -->
+                        <th style="">Action</th>
                       </tr>
                     </thead>
                     
@@ -411,7 +412,8 @@
                         <!--<td><?php echo $data['create_date']?></td>-->
                         <!--<td><?php echo $data['last_update']?></td>-->
                         <!--<td><span class="badge badge-success">Aktif</span></td>-->
-                        <td style="padding-left:10px; padding-right:10px;">
+                        <!-- <td style="padding-left:10px; padding-right:10px;"> -->
+                          <td>
                             <button title="detail" onclick="custinfo(<?php echo $id?>)" class="btn btn-info btn-sm"><i class="fas fa-search"></i></button>
 
                             <!--<button data-id='".$id."' class='userinfo'>Info</button>-->
