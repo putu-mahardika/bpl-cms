@@ -974,7 +974,7 @@
 
                         <label>No. PO Customer :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" minlength="3" maxlength="50" required>
 
                       </div>
 
@@ -1004,7 +1004,7 @@
 
                         <label>No. SPK :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" minlength="3" maxlength="30" readonly>
 
                       </div>
 
@@ -1101,7 +1101,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required><?php echo $t_asal ?></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required><?php echo $t_asal ?></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -1141,7 +1141,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required><?php echo $t_asal ?></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required><?php echo $t_asal ?></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1152,7 +1152,7 @@
 
                       <label>Barang :</label>
 
-					  <textarea type="text" class="form-control form-control-sm mb-3" name="barang" required><?php echo $t_barang ?></textarea>
+					  <textarea type="text" class="form-control form-control-sm mb-3" name="barang" minlength="10" maxlength="100" required><?php echo $t_barang ?></textarea>
 
                     </div>
 
@@ -1162,7 +1162,7 @@
                       <?php
                         $t_keterangan = str_replace("%%",PHP_EOL, $t_keterangan);
                       ?>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $t_keterangan ?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="100"><?php echo $t_keterangan ?></textarea>
 
                     </div>
 

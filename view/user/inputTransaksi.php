@@ -905,7 +905,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" value="<?php echo $save[1]?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" value="<?php echo $save[1]?>" minlength="3" maxlength="50" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl PO :</label>
@@ -920,7 +920,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. SPK :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" value="<?php echo $save[3]?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" value="<?php echo $save[3]?>" minlength="3" maxlength="30" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl SPK :</label>
@@ -970,7 +970,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>  
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -996,7 +996,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1004,11 +1004,11 @@
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang"  required><?php echo $save[8]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" minlength="10" maxlength="100" required><?php echo $save[8]?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" ><?php echo $save[9]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100" ><?php echo $save[9]?></textarea>
                     </div>
                     
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
@@ -1046,7 +1046,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" minlength="3" maxlength="50" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl PO :</label>
@@ -1061,7 +1061,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. SPK :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" minlength="3" maxlength="30" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl SPK :</label>
@@ -1113,7 +1113,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -1141,7 +1141,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1149,11 +1149,11 @@
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" required></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" minlength="10" maxlength="100" required></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100"></textarea>
                     </div>
                     
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
