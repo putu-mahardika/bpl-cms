@@ -61,7 +61,7 @@
     }
   }
 
-  $query_k = "select * from master_kota where aktif = 1";
+  $query_k = "select * from master_kota where aktif = 1 ORDER BY SUBSTRING(Nama, 1, 1) ASC;";
   $fetch_k = mysqli_query($koneksi, $query_k);
   $fetch_k1 = mysqli_query($koneksi, $query_k);
 
@@ -1084,9 +1084,9 @@
                                   if($dataKotaAsal['aktif']==1){
                                     if($dataKotaAsal['Id'] == $t_asalId){
                               ?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Nama'];?></option>
                                   <?php }else{?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                                 <?php } } else {
                                   continue;
                                   }
@@ -1124,9 +1124,9 @@
                                   if($dataKotaTujuan['aktif']==1){
                                     if($dataKotaTujuan['Id'] == $t_tujuanId){
                               ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>" selected><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>" selected><?php echo $dataKotaTujuan['Nama'];?></option>
                                   <?php }else{?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Nama'];?></option>
                                 <?php } } else {
                                   continue;
                                   }
