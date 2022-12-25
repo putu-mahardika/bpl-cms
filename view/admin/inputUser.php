@@ -388,11 +388,11 @@
           <div class="card-body">
               <form class="form group" method="post" action="../../config/process.php">
                 <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="username" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="username" minlength="3" maxlength="30" required>
                 <label>Password :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="password" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" required>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="nama" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
                 <label>isAdmin :</label>
 				        <input type="text" class="form-control form-control-sm mb-3" name="isAdmin" value="Tidak" readonly>
                 <!--<input type="text" class="form-control" name="hak-akses">-->

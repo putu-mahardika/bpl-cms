@@ -401,12 +401,12 @@
                 <!--<label>Id :</label>-->
                 <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['UserId'];?>" name="id" readonly>  
                 <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username"  minlength="3" maxlength="30" required>
                 <label>Password Baru :</label>
-                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" name="password">
+                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" name="password">
                 <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
                 <label>isAdmin :</label>
                 <!--<input type="text" class="form-control" name="hak-akses">-->
                 <select name="isAdmin" class="form-control form-control-sm mb-3">
