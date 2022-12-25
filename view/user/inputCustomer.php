@@ -372,7 +372,7 @@
                 </select>-->
                 <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
                 <br>
-                <input type="reset" value="Reset" class="btn btn-md btn-danger ">
+                <input type="reset" value="Reset" class="btn btn-md btn-danger " style="width:22%;">
                 <input type="submit" value="Submit" name="inputCustomer" class="btn btn-md btn-primary " style="width:77%;">
               </form>
             </div>
