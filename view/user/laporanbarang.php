@@ -638,6 +638,7 @@
           end: dateEndInput
         },
         dataType: 'json',
+        timeout: 3600000,
         success: function(response){
           dataSourceTemp = response;
           // console.log('res', dataSourceTemp);
