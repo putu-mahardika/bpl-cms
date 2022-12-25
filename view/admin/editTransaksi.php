@@ -901,10 +901,11 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                   <form role="form" method="post" action="../../config/process.php">
                     <div class="form-group">
                       <input type="hidden" class="form-control form-control-sm mb-3" name="hdid" value="<?php echo $t_hdid ?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm mb-3" name="user" value="<?php echo $t_user ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label>User Lama :</label>
-                      <select class="select2-single-placeholder form-control" name="user" style="width:100% !important;" readonly>
+                      <select class="select2-single-placeholder form-control" style="width:100% !important;" disabled>
 
                         <?php while ($data1 = mysqli_fetch_array($query1)) { ?>
                           <option value="<?php echo $data1['UserId'] ?>"><?php echo $data1['nama'] ?></option>
@@ -915,7 +916,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>User Baru :</label>
-                      <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" readonly>
+                      <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" required>
                         <option disabled="" selected="">Pilih</option>
 
                         <?php while ($data2 = mysqli_fetch_array($query2)) { ?>
@@ -926,7 +927,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="50" required></textarea>
                     </div>
                     <input type="submit" value="Submit" name="gantiUser" class="btn btn-md btn-primary btn-block">
 

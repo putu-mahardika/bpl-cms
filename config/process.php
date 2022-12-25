@@ -918,23 +918,36 @@
         $keterangan = $_POST['keterangan'];
 
         $keterangan1 = str_replace(["\r\n", "\n", "\r"],"%%", $keterangan);
+
+        $cek = false;
+        if (!is_null($userbaru) && !is_null($keterangan)) {
+            $cek = true;
+        }
+
+        print_r($cek);
+        // echo $_POST['user'];
 		
 		//echo $hdid;
 		//echo $user;
 		//echo $userbaru;
 		//echo $keterangan;
 
-        $query = "insert into log values (null, '$datetime', '$hdid', '$user', '$userbaru', '$keterangan1')";
-        //echo $query;
-        $result = mysqli_query($koneksi, $query);
+        if ($cek) {
+            $query = "insert into log values (null, '$datetime', '$hdid', '$user', '$userbaru', '$keterangan1')";
+            //echo $query;
+            $result = mysqli_query($koneksi, $query);
+    
+            $query1 = "update trans_hd set UserId='$userbaru' where HdId='$hdid'";
+            $result1 = mysqli_query($koneksi, $query1);
+    
+            $query2 = "update trans_detail set UserId='$userbaru' where HdId='$hdid'";
+            $result2 = mysqli_query($koneksi, $query2);
+        } else {
+            $result = false;
+        }
 
-        $query1 = "update trans_hd set UserId='$userbaru' where HdId='$hdid'";
-        $result1 = mysqli_query($koneksi, $query1);
 
-        $query2 = "update trans_detail set UserId='$userbaru' where HdId='$hdid'";
-        $result2 = mysqli_query($koneksi, $query2);
-
-        if($result){
+        if($result && $cek){
             header("location:../view/admin/editTransaksi.php?id=$hdid");
             $_SESSION['pesan'] = '<p><div class="alert alert-success">User berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         }else{
