@@ -497,7 +497,7 @@
 		//echo $tglspk1;
 
 		if ($t != 1) {
-			$query = "insert into trans_hd (HdId, CustId, UserId, create_date, NoPO, tgl_po, NoSPK, tgl_spk, total_armada, kota_kirim_id, kota_krim, kota_tujuan_id, kota_tujuan, Barang, keterangan, DateOnClose, last_update, cancel_date, closedById, atr1, atr2, atr3) values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, '0', '', '')";
+			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, '0', '', '')";
             $result = mysqli_query($koneksi, $query);
             //create biaya turunan ================================================================
             // $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $datetime, $s_id, $koneksi);
