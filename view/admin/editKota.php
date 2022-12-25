@@ -399,7 +399,7 @@
                 <!-- <label>Kode :</label>
                 <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['Kode'];?>" name="kode" maxlength="6" required> -->
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Nama'];?>" name="namaKota" maxlength="150" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Nama'];?>" name="namaKota" minlength="3" maxlength="30" pattern="[a-zA-Z]+" title="Nama Kota hanya boleh diisi huruf" required>
                 <!-- <label>Keterangan :</label>
                 <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['keterangan'];?></textarea> -->
                 <label>Aktif :</label>

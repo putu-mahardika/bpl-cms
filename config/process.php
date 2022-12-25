@@ -247,6 +247,7 @@
         $nama = $_POST['namaKota'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
+        $kode = strtoupper(substr($nama, 0, 3).time());
 
 		if($aktif == "Ya"){
 			$aktif1 = 1;
