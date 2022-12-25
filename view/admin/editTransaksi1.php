@@ -1224,6 +1224,8 @@
                             $close = 1;
                             break;
                           }
+                        } else {
+                          $close = 1;
                         }
                       }
 

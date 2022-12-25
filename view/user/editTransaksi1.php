@@ -1221,6 +1221,8 @@
                               $close = 1;
                               break;
                             }
+                          } else {
+                            $close = 1;
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where NoSPK='$t_nospk' and OnClose=0");

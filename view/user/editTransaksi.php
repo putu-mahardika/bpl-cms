@@ -1174,6 +1174,11 @@
 
                     </select>-->
 
+                    <div class="mb-3">
+                      <label>Total Biaya :</label>
+                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
+                    </div>
+
                     <br>
 
                     <div class="row" style="height:70px;">
@@ -1212,6 +1217,8 @@
                               $close = 1;
                               break;
                             }
+                          } else {
+                            $close = 1;
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where NoSPK='$t_nospk' and OnClose=0");
@@ -1809,11 +1816,6 @@
                       <option value=0> Tidak </option>
 
                     </select>-->
-
-                    <div class="mb-3">
-                      <label>Total Biaya :</label>
-                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
-                    </div>
 
                     <br>
 

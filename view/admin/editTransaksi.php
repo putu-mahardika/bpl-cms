@@ -717,6 +717,8 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                               $close = 1;
                               break;
                             }
+                          } else {
+                            $close = 1;
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='1')");
