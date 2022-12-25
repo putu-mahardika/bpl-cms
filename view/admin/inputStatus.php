@@ -385,13 +385,14 @@
           </div>
 			
           <div class="card-body">
+              <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
               <form class="form group" method="post" action="../../config/process.php">
                 <label>No :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="no" required>
+                <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
                 <label>Status :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="status" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="status" minlength="3" maxlength="30" required>
                 <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"></textarea>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"></textarea>
                 <label>Aktif :</label>
 				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
                 <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
@@ -410,21 +411,20 @@
           </div>-->
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>
@@ -457,6 +457,14 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script>
+    document.querySelector(".no").addEventListener("keypress", function (evt) {
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    });
+  </script>
 
 </body>
 

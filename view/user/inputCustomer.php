@@ -343,27 +343,27 @@
             <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
               <form class="form group" method="post" action="../../config/process.php">
                 <label>Kode Customer :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="kode" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" minlength="3" maxlength="20" required>
                 <label>Nama Customer :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="nama" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" maxlength="70" required>
                 <label>Bidang Usaha :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="bidang" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="bidang" minlength="3" maxlength="50" required>
                 <label>NPWP :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="npwp" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="npwp" pattern="^([\d]{2})[.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$" title="NPWP harus dituliskan seperti berikut XX.XXX.XXX.X-XXX.XXX" required>
                 <label>Alamat :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="alamat" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="alamat" minlength="7" maxlength="150" required>
                 <label>Telp :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="telp" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="telp" pattern="^(\+62 ((\d{3}([ -]\d{3,})([- ]\d{4,})?)|(\d+)))|(\(\d+\) \d+)|\d{3}( \d+)+|(\d+[ -]\d+)|(\d+){10,14}$" title="nomor telp harus terdiri dari 10-14 amgka dan harus berawalan 0, 62 atau +62" required>
                 <label>email :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="email" required>
+                <input type="email" class="form-control form-control-sm mb-3" name="email" required>
                 <label>Nama PIC :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="pic" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="pic" minlength="3" maxlength="50" required>
                 <label>Telp PIC :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="pic_telp" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="pic_telp" pattern="^(\+62 ((\d{3}([ -]\d{3,})([- ]\d{4,})?)|(\d+)))|(\(\d+\) \d+)|\d{3}( \d+)+|(\d+[ -]\d+)|(\d+){10,14}$" title="nomor telp harus terdiri dari 10-14 amgka dan harus berawalan 0, 62 atau +62" required>
                 <label>email PIC :</label>
                 <input type="email" class="form-control form-control-sm mb-3" name="pic_email" required>
                 <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" ></textarea>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"></textarea>
                 <label>Aktif :</label>
                 <!--<select name="aktif" class="form-control form-control-sm mb-3">
                   <option disabled selected> Pilih </option>
@@ -382,21 +382,20 @@
           </div>-->
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>

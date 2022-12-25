@@ -15,6 +15,7 @@ while($data = mysqli_fetch_array($fetch)){
     $alamat = $data['alamat'];
     $telp = $data['telp'];
     $bidang = $data['bidang_usaha'];
+    $email = $data['email'];
     $pic = $data['PIC'];
     $pic_telp = $data['PIC_telp'];
     $pic_email = $data['PIC_email'];
@@ -27,9 +28,14 @@ while($data = mysqli_fetch_array($fetch)){
     $response .= "<label><b>Alamat : </b>".$alamat."</label><br>";
     $response .= "<label><b>Telp : </b>".$telp."</label><br>";
     $response .= "<label><b>Bidang Usaha : </b>".$bidang."</label><br>";
+    $response .= "<label><b>Email : </b>".$email."</label><br>";
     $response .= "<label><b>PIC : </b>".$pic."</label><br>";
-    $response .= "<label><b>PIC Telp : </b>".$pic_telp."</label><br>";
-    $response .= "<label><b>PIC E-mail : </b>".$pic_email."</label><br>";
+    $response .= "<label><b>Telp PIC : </b>".$pic_telp."</label><br>";
+    $response .= "<label><b>E-mail PIC : </b>".$pic_email."</label><br>";
+    if ($idLoggedUser != $idUser) {
+        $response .= "<label><b>Sales : </b>".$namaUser."</label><br>";
+    }
+    $response .= "<label><b>Create Date : </b>".$createDate."</label><br>";
     $response .= "<label><b>Keterangan : </b>".$keterangan."</label><br>";
     if($aktif == 1){
         $response .= "<label><b>Aktif : </b><span class='badge badge-success'>Aktif</span></label>";

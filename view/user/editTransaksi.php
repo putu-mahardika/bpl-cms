@@ -61,7 +61,7 @@
     }
   }
 
-  $query_k = "select * from master_kota where aktif = 1";
+  $query_k = "select * from master_kota where aktif = 1 ORDER BY SUBSTRING(Nama, 1, 1) ASC;";
   $fetch_k = mysqli_query($koneksi, $query_k);
   $fetch_k1 = mysqli_query($koneksi, $query_k);
 
@@ -970,7 +970,7 @@
 
                         <label>No. PO Customer :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" minlength="3" maxlength="50" required>
 
                       </div>
 
@@ -1000,7 +1000,7 @@
 
                         <label>No. SPK :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" minlength="3" maxlength="30" readonly>
 
                       </div>
 
@@ -1084,9 +1084,9 @@
                                   if($dataKotaAsal['aktif']==1){
                                     if($dataKotaAsal['Id'] == $t_asalId){
                               ?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Nama'];?></option>
                                   <?php }else{?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                                 <?php } } else {
                                   continue;
                                   }
@@ -1097,7 +1097,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required><?php echo $t_asal ?></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required><?php echo $t_asal ?></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -1124,9 +1124,9 @@
                                   if($dataKotaTujuan['aktif']==1){
                                     if($dataKotaTujuan['Id'] == $t_tujuanId){
                               ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>" selected><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>" selected><?php echo $dataKotaTujuan['Nama'];?></option>
                                   <?php }else{?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Nama'];?></option>
                                 <?php } } else {
                                   continue;
                                   }
@@ -1137,7 +1137,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required><?php echo $t_asal ?></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required><?php echo $t_asal ?></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1148,7 +1148,7 @@
 
                       <label>Barang :</label>
 
-					            <textarea type="text" class="form-control form-control-sm mb-3" name="barang" required><?php echo $t_barang ?></textarea>
+					            <textarea type="text" class="form-control form-control-sm mb-3" name="barang" minlength="10" maxlength="100" required><?php echo $t_barang ?></textarea>
 
                     </div>
 
@@ -1158,7 +1158,7 @@
                       <?php
                         $t_keterangan = str_replace("%%",PHP_EOL, $t_keterangan);
                       ?>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $t_keterangan ?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="100"><?php echo $t_keterangan ?></textarea>
 
                     </div>
 
@@ -1173,6 +1173,11 @@
                       <option value=0> Tidak </option>
 
                     </select>-->
+
+                    <div class="mb-3">
+                      <label>Total Biaya :</label>
+                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
+                    </div>
 
                     <br>
 
@@ -1212,6 +1217,8 @@
                               $close = 1;
                               break;
                             }
+                          } else {
+                            $close = 1;
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where NoSPK='$t_nospk' and OnClose=0");
@@ -1414,6 +1421,52 @@
 
               </div>
 
+            </div>
+
+            <div class="col-xl-12 col-lg-10 mb-9 sm-8">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Biaya</h6>
+                </div>
+                <div class="card-body" id="tabelDetailBiaya">
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush table-hover" id="tableBiayaTurunan">
+                      <thead class="thead-light">
+                        <tr>
+                          <th style="padding-left:8px;">No. SPK Turunan</th>
+                          <th style="padding-left:8px;">Biaya Transport</th>
+                          <th style="padding-left:8px;">Biaya Inap</th>
+                          <th style="padding-left:8px;">Biaya Lain-lain</th>
+                          <th style="padding-left:8px;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php 
+                          foreach ($arrayBiayaTambahans as $arrayBiayaTambahan) {
+                        ?>
+                        <tr>
+                        <?php
+                            if ($t_armada == 1) {
+                        ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] ?></td>
+                        <?php } else { ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] .'-'. $arrayBiayaTambahan['Turunan'] ?></td>
+                        <?php } ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_transport'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_inap'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_lain'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;">
+                            <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                          </td>
+                        </tr>
+                        <?php
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Invoice Example -->
@@ -1730,7 +1783,7 @@
 
                         <label>Jenis Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" maxlength="50" required>
 
                       </div>
 
@@ -1738,7 +1791,7 @@
 
                         <label>Nopol/Nama Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" maxlength="30" required>
 
                       </div>
 
@@ -1796,7 +1849,7 @@
 
                       <label>Keterangan :</label>
 
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100"></textarea>
 
                     </div>		
 
@@ -1809,11 +1862,6 @@
                       <option value=0> Tidak </option>
 
                     </select>-->
-
-                    <div class="mb-3">
-                      <label>Total Biaya :</label>
-                      <h4><b>IDR. <?php echo $grandTotal ?></b></h4>
-                    </div>
 
                     <br>
 
@@ -1977,7 +2025,7 @@
 
                 <div class="modal-header">
 
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin membatalkan data terpilih ?</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin menghapus transaksi ?</h5>
 
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
@@ -2125,44 +2173,24 @@
 
           <!-- Modal Logout -->
 
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-
-            aria-hidden="true">
-
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
-
               <div class="modal-content">
-
                 <div class="modal-header">
-
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
-
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
                     <span aria-hidden="true">&times;</span>
-
                   </button>
-
                 </div>
-
-                <div class="modal-body logout-modal">
-
-                  <p>Are you sure you want to logout?</p>
-
+                <div class="modal-body">
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
-
                 <div class="modal-footer">
-
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
-
                 </div>
-
               </div>
-
             </div>
-
           </div>
 
           <!-- Modal Form Ubah Biaya Turunan -->
@@ -2182,16 +2210,25 @@
                     <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
                     <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
                     <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
-                    <div class="form-group">
-                      <label for="biayaTransport">Biaya Transport</label>
+                    <label for="biayaTransport">Biaya Transport</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
                       <input type="number" min="0" class="form-control" id="biayaTransport" name="biayaTransport">
                     </div>
-                    <div class="form-group">
-                      <label for="biayaInap">Biaya Inap</label>
+                    <label for="biayaInap">Biaya Inap</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
                       <input type="number" min="0" class="form-control" id="biayaInap" name="biayaInap">
                     </div>
-                    <div class="form-group">
-                      <label for="biayaLain">Biaya Lain-lain</label>
+                    <label for="biayaLain">Biaya Lain-lain</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
                       <input type="number" min="0" class="form-control" id="biayaLain" name="biayaLain">
                     </div>
                 </div>

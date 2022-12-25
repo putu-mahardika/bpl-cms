@@ -90,7 +90,7 @@
     for ($i=0; $i < $arrayMonthLength; $i++) { 
       $array[$i] = 0;
       foreach ($tempArray as $data) {
-        if($data['month'] == $i) {
+        if($data['month'] == $i+1) {
           $array[$i] = $data['total'];
         }
       }
@@ -117,7 +117,7 @@
     for ($i=0; $i < $arrayMonthLength; $i++) { 
       $array[$i] = 0;
       foreach ($tempArray as $data) {
-        if($data['month'] == $i) {
+        if($data['month'] == $i+1) {
           $array[$i] = $data['total'];
         }
       }
@@ -145,7 +145,7 @@
     for ($i=0; $i < $arrayMonthLength; $i++) { 
       $array[$i] = 0;
       foreach ($tempArray as $data) {
-        if($data['month'] == $i) {
+        if($data['month'] == $i+1) {
           $array[$i] = $data['total'];
         }
       }
@@ -173,7 +173,7 @@
     for ($i=0; $i < $arrayMonthLength; $i++) { 
       $array[$i] = 0;
       foreach ($tempArray as $data) {
-        if($data['month'] == $i) {
+        if($data['month'] == $i+1) {
           $array[$i] = $data['total'];
         }
       }
