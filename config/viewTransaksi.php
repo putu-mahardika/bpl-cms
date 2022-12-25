@@ -21,7 +21,9 @@ while($data = mysqli_fetch_array($fetch)){
     //$tglspk = $data['tgl_spk'];
     $tglspk = date("d-M-Y", strtotime($data['tgl_spk']));
     $armada = $data['total_armada'];
+    $kirimId = $data['kota_kirim_id'];
     $kirim = $data['kota_kirim'];
+    $tujuanId = $data['kota_tujuan_id'];
     $tujuan = $data['kota_tujuan'];
     $barang = $data['Barang'];
     $keterangan = $data['keterangan'];
@@ -41,6 +43,12 @@ while($data = mysqli_fetch_array($fetch)){
     $query5 = mysqli_query($koneksi, "select nama from master_user where UserId='$closedById'");
     $data5 = mysqli_fetch_array($query5);
 
+    $query6 = mysqli_query($koneksi, "select Nama from master_kota where Id='$kirimId'");
+    $data6 = mysqli_fetch_array($query6);
+
+    $query7 = mysqli_query($koneksi, "select Nama from master_kota where Id='$tujuanId'");
+    $data7 = mysqli_fetch_array($query7);
+
 
     $response = "<label><b>Tgl : </b>".$tgl."</label><br>";
     $response .= "<label><b>Customer : </b>".$data1['nama']."</label><br>";
@@ -58,8 +66,18 @@ while($data = mysqli_fetch_array($fetch)){
         $response .= "<div class='col-sm-6'><label><b>Tgl SPK : </b>".$tglspk."</label></div></div>";
     }
 
-    $response .= "<div class='row'><div class='col-sm-6'><label><b>Kota Asal : </b>".$kirim."</label></div>";
-    $response .= "<div class='col-sm-6'><label><b>Kota Tujuan : </b>".$tujuan."</label></div></div>";
+    if(is_null($data6)) {
+        $response .= "<div class='row'><div class='col-sm-6'><label><b>Kota Asal : </b>-</label></div>";
+    } else {
+        $response .= "<div class='row'><div class='col-sm-6'><label><b>Kota Asal : </b>".$data6['Nama'] ?? '-'."</label></div>";
+    }
+    if(is_null($data7)) {
+        $response .= "<div class='col-sm-6'><label><b>Kota Tujuan : </b>-</label></div></div>";
+    } else {
+        $response .= "<div class='col-sm-6'><label><b>Kota Tujuan : </b>".$data7['Nama']."</label></div></div>";
+    }
+    $response .= "<div class='row'><div class='col-sm-6'><label><b>Detail Kota Asal : </b>".$kirim."</label></div>";
+    $response .= "<div class='col-sm-6'><label><b>Detail Kota Tujuan : </b>".$tujuan."</label></div></div>";
     $response .= "<label><b>Barang : </b>".$barang."</label><br>";
     $response .= "<label><b>Jumlah Armada : </b>".$armada."</label><br>";
     $response .= "<div class='row'><div style='padding-left:12px;width:105px'><label><b>Keterangan : </b></label></div><div style='width:auto;white-space:pre'><label>".$keterangan."</label></div></div>";
@@ -73,7 +91,7 @@ while($data = mysqli_fetch_array($fetch)){
     }
 
     $response .= "<div class='row'><div class='col-sm-6'><label><b>User : </b>".$data4['nama']."</label></div>";
-    if($onclose == 1){
+    if($onclose == 1 && !is_null($data5['nama'])){
         $response .= "<div class='col-sm-6'><label><b>Closed By : </b>".$data5['nama']."</label></div></div>";
     } else {
         $response .= "<div class='col-sm-6'><label><b>Closed By : </b> - </label></div></div>";
