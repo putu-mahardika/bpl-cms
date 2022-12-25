@@ -889,7 +889,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response[0].length);
+        console.log('res', response);
         dataChart1 = response;
         for(let i=0;i<dataChart1[0].length;i++) {
           openChart1.push(Number(dataChart1[0][i]))
