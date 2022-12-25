@@ -1423,6 +1423,52 @@
 
             </div>
 
+            <div class="col-xl-12 col-lg-10 mb-9 sm-8">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Detail Biaya</h6>
+                </div>
+                <div class="card-body" id="tabelDetailBiaya">
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush table-hover" id="tableBiayaTurunan">
+                      <thead class="thead-light">
+                        <tr>
+                          <th style="padding-left:8px;">No. SPK Turunan</th>
+                          <th style="padding-left:8px;">Biaya Transport</th>
+                          <th style="padding-left:8px;">Biaya Inap</th>
+                          <th style="padding-left:8px;">Biaya Lain-lain</th>
+                          <th style="padding-left:8px;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php 
+                          foreach ($arrayBiayaTambahans as $arrayBiayaTambahan) {
+                        ?>
+                        <tr>
+                        <?php
+                            if ($t_armada == 1) {
+                        ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] ?></td>
+                        <?php } else { ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] .'-'. $arrayBiayaTambahan['Turunan'] ?></td>
+                        <?php } ?>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_transport'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_inap'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_lain'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;">
+                            <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                          </td>
+                        </tr>
+                        <?php
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Invoice Example -->
 
             <div class="col-xl-12 col-lg-10 mb-9 sm-8">
