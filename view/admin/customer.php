@@ -429,13 +429,14 @@
                     <?php
                       while($data = mysqli_fetch_array($fetch)){
                         $id = $data['CustId'];
-                        $tgl = date("d-M-Y H:i:s", strtotime($data['create_date']));
+                        $tgltemp = strtotime($data['create_date']);
+                        $tgl = date("d-M-Y H:i:s", $tgltemp);
                     ?>
                       <tr>
                         <!--<td><a href="#" class="btn btn-primary btn-md" id="detail">
                         <i class="fas fa-chevron-circle-up"></i></a>
                         </td>-->
-                        <td style="font-size:13px;"><?php echo $tgl?></td>
+                        <td style="font-size:13px;" data-sort="<?php echo $tgltemp ?>"><?php echo $tgl?></td>
 						            <td style="font-size:13px;"><?php echo $data['kode_customer']?></td>
                         <td style="font-size:13px;"><?php echo $data['npwp']?></td>
                         <td style="font-size:13px;"><?php echo $data['nama']?></td>
