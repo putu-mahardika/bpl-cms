@@ -963,7 +963,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                         ?>
                         <tr>
                         <?php
-                            if ($arrayBiayaTambahanLength == 1) {
+                            if ($t_armada == 1) {
                         ?>
                           <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] ?></td>
                         <?php } else { ?>
