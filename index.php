@@ -58,7 +58,7 @@
                     </div>
                     <div class="input-group mb-4">
                       <!-- <input type="password" class="form-control" name="password" placeholder="Password"> -->
-                      <input type="text" class="form-control" id="password" name="password" placeholder="Password" required>
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                       <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" onclick="changeType()"><i id="btnPasswordIcon" class="fas fa-eye"></i></button>
                       </div>
@@ -89,12 +89,12 @@
       var btnPasswordIcon = document.getElementById('btnPasswordIcon');
       if(passwordInputType.type == 'password') {
         passwordInputType.type = 'text';
-        btnPasswordIcon.classList.remove('fa-eye-slash');
-        btnPasswordIcon.classList.add('fa-eye');
-      } else {
-        passwordInputType.type = 'password';
         btnPasswordIcon.classList.remove('fa-eye');
         btnPasswordIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInputType.type = 'password';
+        btnPasswordIcon.classList.remove('fa-eye-slash');
+        btnPasswordIcon.classList.add('fa-eye');
       }
     }
   </script>
