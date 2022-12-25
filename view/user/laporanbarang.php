@@ -29,6 +29,8 @@
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
   <link href="../../css/style.css" rel="stylesheet">
+  <!-- DevExtreme theme -->
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.1.6/css/dx.light.css">
 </head>
  
 <body id="page-top">
@@ -393,7 +395,7 @@
                 
               </div>
 
-              <div class="card mb-4 col-6 hidden" id="card-spk">
+              <div class="card mb-4 col-12 hidden" id="card-spk">
                 <div class="card-header">
                   <h6>Masukkan range tanggal detail yang ingin ditampilkan : </h6>
                 </div>
@@ -646,16 +648,15 @@
     }
   </script>
 
-  <script>
-    // var xxx = <?php echo $data ?>;
-    // console.log('xxx', xxx);
-    $(() => {
+<script>
+    $(document).ready(() => {
+      // console.log('aaa');
       var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
       dataGrid = $('#gridContainer').dxDataGrid({
         // dataSource: generateData(100000),
-        dataSource: <?php echo $data; ?>,
+        dataSource: dataSourceTemp,
         // keyExpr: 'id',
-        allowColumnReordering: true,
+        // allowColumnReordering: true,
         allowColumnResizing: true,
         selection: {
           mode: 'single',
@@ -891,6 +892,8 @@
 
         Object.assign(excelCell.border, borderValue);
       }
+
+      
     });
 
   </script>

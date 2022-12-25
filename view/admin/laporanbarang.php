@@ -391,7 +391,7 @@
                 
               </div>
 
-              <div class="card mb-4 col-6 col-md-12 hidden" id="card-spk">
+              <div class="card mb-4 col-12 hidden" id="card-spk">
                 <div class="card-header">
                   <h6>Masukkan range tanggal detail yang ingin ditampilkan : </h6>
                 </div>
