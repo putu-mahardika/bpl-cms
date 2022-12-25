@@ -1532,7 +1532,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                   <div class="modal-header">
 
-                    <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin membatalkan data terpilih ?</h5>
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin menghapus transaksi ?</h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 

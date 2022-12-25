@@ -702,27 +702,33 @@
         $query2 = mysqli_query($koneksi, "select count(*) as jumlah from trans_detail where HdId='$hdid'");
         $data2 = mysqli_fetch_array($query2);
 
-        if($data2['jumlah']!=0){
+        if($data2['jumlah'] > 0){
             for($i=1;$i<=$armada;$i++){
-                $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime', closedById='$s_id' where HdId=$hdid and turunan='$i'");
+                $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime' where HdId=$hdid and turunan='$i'");
             }
         }
 
-        if($query1){
+        // print_r([$query1, $query3]);
+
+        if($query1 == 1 && $query3 == 1){
             if($akses == "Admin"){
                 header("location:../view/admin/transaksi.php?tahun=$year");
-				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				// $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
             }else{
                 header("location:../view/user/transaksi.php?tahun=$year");
-				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				// $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
             }
         }else{
             if($akses == "Admin"){
                 header("location:../view/admin/transaksi.php?tahun=$year");
-				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				// $_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
             }else{
                 header("location:../view/user/transaksi.php?tahun=$year");
-				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				// $_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
             }
         }
     }
