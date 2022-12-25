@@ -1962,16 +1962,25 @@
                     <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
                     <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
                     <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
-                    <div class="form-group">
-                      <label for="biayaTransport">Biaya Transport</label>
+                    <label for="biayaTransport">Biaya Transport</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
                       <input type="number" min="0" class="form-control" id="biayaTransport" name="biayaTransport">
                     </div>
-                    <div class="form-group">
-                      <label for="biayaInap">Biaya Inap</label>
+                    <label for="biayaInap">Biaya Inap</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
                       <input type="number" min="0" class="form-control" id="biayaInap" name="biayaInap">
                     </div>
-                    <div class="form-group">
-                      <label for="biayaLain">Biaya Lain-lain</label>
+                    <label for="biayaLain">Biaya Lain-lain</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                      </div>
                       <input type="number" min="0" class="form-control" id="biayaLain" name="biayaLain">
                     </div>
                 </div>
