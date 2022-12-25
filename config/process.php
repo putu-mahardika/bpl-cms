@@ -502,21 +502,22 @@
             //create biaya turunan ================================================================
             // $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $datetime, $s_id, $koneksi);
             
-            $queryGetHdId = "select HdId from trans_hd where NoSPK='$nospk'";
-            $fetchGetHdId = mysqli_query($koneksi, $queryGetHdId);
-            $arrayGetHdId = mysqli_fetch_array($fetchGetHdId);
-            $getHdId = $arrayGetHdId['HdId'];
+            // $queryGetHdId = "select HdId from trans_hd where NoSPK='$nospk'";
+            // $fetchGetHdId = mysqli_query($koneksi, $queryGetHdId);
+            // $arrayGetHdId = mysqli_fetch_array($fetchGetHdId);
+            // $getHdId = $arrayGetHdId['HdId'];
             
-            $cekBiayaTurunan = true;
-            for ($i=1; $i <= $armada; $i++) { 
-                $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $i, $getHdId, $datetime, $s_id, $koneksi);
-                if (!$resultCreateBiayaTurunan) {
-                    $cekBiayaTurunan = false;
-                }
-            }
+            // $cekBiayaTurunan = true;
+            // for ($i=1; $i <= $armada; $i++) { 
+            //     $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $i, $getHdId, $datetime, $s_id, $koneksi);
+            //     if (!$resultCreateBiayaTurunan) {
+            //         $cekBiayaTurunan = false;
+            //     }
+            // }
 
 
-			if ($result && $cekBiayaTurunan) {
+			if ($result) {
+                $save = [];
                 if($akses == 'Admin'){
                     header("location:../view/admin/transaksi.php?tahun=$year");
                     $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
@@ -659,6 +660,13 @@
 
         $query = "delete from trans_hd where HdId='$id'";
         $result = mysqli_query($koneksi, $query);
+
+        $queryTurunan = "delete from trans_detail where HdId='$id'";
+        $result = mysqli_query($koneksi, $queryTurunan);
+
+        $queryBiaya = "delete from trans_biayaturunan where HdId='$id'";
+        $result = mysqli_query($koneksi, $queryBiaya);
+
         if ($result) {
 			if($akses == "Admin"){
 				header("location:../view/admin/transaksi.php?tahun=$year");
@@ -765,12 +773,16 @@
 		$onclose = $_POST['onclose'];
         $keterangan = $_POST['keterangan'];
         $keterangan1 = str_replace(["\r\n", "\n", "\r"],"%%", $keterangan);
-        // echo $datetime;
-        // echo $keterangan1;
 
-        //echo $tgl1;
-        //echo $tgl2;
-        //echo $tgl;
+        $querycek = "select count(*) as countSPKTurunan from trans_biayaturunan where NoSPK='$spk' and Turunan='$turunan'";
+        $fetchquerycek = mysqli_query($koneksi, $querycek);
+        $arrayquerycek = mysqli_fetch_array($fetchquerycek);
+        
+        if ($arrayquerycek['countSPKTurunan'] < 1) {
+            createBiayaTurunan($spk, $turunan, $hdid, $datetime, $s_id, $koneksi);
+        }
+
+
         if ($onclose == 1) {
     		$query = "insert into trans_detail values (null, '$hdid', '$spk', '$turunan', '$status', '$tgl', '$keterangan1', '$jenis', '$nopol', '', '$onclose', '$datetime', '$datetime', '$s_id', '0', '', '')";
         } else {
@@ -852,10 +864,27 @@
 	elseif (isset($_GET['DtlId'])) {
         $id = $_GET['DtlId'];
 
+        $queryGetDetail = "select * from trans_detail where DtlId='$id'";
+        $fetchQueryGetDetail = mysqli_query($koneksi, $queryGetDetail);
+        $arrayQueryGetDetail = mysqli_fetch_array($fetchQueryGetDetail);
+
+        $nospkToDelete = $arrayQueryGetDetail['NoSPK'];
+        $turunanToDelete = $arrayQueryGetDetail['turunan'];
+
+        $querycekToDelete = "select count(*) as countBiayaTurunan from trans_biayaturunan where NoSPK='$nospkToDelete' and Turunan='$turunanToDelete'";
+        $fetchquerycekToDelete = mysqli_query($koneksi, $querycekToDelete);
+        $arrayquerycekToDelete = mysqli_fetch_array($fetchquerycekToDelete);
+
+        if ($arrayquerycekToDelete['countBiayaTurunan'] > 0) {
+            $resDeleteBiaya = deleteBiayaTurunan($koneksi, $nospkToDelete, $turunanToDelete);
+        } else {
+            $resDeleteBiaya = true;
+        }
+
         $query = "delete from trans_detail where DtlId='$id'";
         $result = mysqli_query($koneksi, $query);
 
-        if ($result) {
+        if ($result && $resDeleteBiaya) {
 			if($akses == "Admin"){
 				header("location:../view/admin/transaksi.php?tahun=$year");
 				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
