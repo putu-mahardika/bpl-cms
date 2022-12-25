@@ -402,25 +402,25 @@
                 <!--<label>Id :</label>-->
                 <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['CustId'];?>" name="id" readonly>
                 <label>Kode Customer :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode_customer'];?>" name="kode" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode_customer'];?>" name="kode" minlength="3" maxlength="20" required>
                 <label>Nama Customer :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" maxlength="70" required>
                 <label>Bidang Usaha :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['bidang_usaha'];?>" name="bidang" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['bidang_usaha'];?>" name="bidang" minlength="3" maxlength="50" required>
                 <label>NPWP :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['npwp'];?>" name="npwp" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['npwp'];?>" name="npwp" pattern="^([\d]{2})[.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$" title="NPWP harus dituliskan seperti berikut XX.XXX.XXX.X-XXX.XXX" required>
                 <label>Alamat :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['alamat'];?>" name="alamat" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['alamat'];?>" name="alamat" minlength="7" maxlength="150" required>
                 <label>Telp :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['telp'];?>" name="telp" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['telp'];?>" name="telp" pattern="^(\+62 ((\d{3}([ -]\d{3,})([- ]\d{4,})?)|(\d+)))|(\(\d+\) \d+)|\d{3}( \d+)+|(\d+[ -]\d+)|(\d+){10,14}$" title="nomor telp harus terdiri dari 10-14 amgka dan harus berawalan 0, 62 atau +62" required>
                 <label>email :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['email'];?>" name="email" required>
+                <input type="email" class="form-control form-control-sm mb-3" value="<?php echo $data['email'];?>" name="email" required>
                 <label>Nama PIC :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC'];?>" name="pic" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC'];?>" name="pic" minlength="3" maxlength="50" required>
                 <label>Telp PIC :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" pattern="^(\+62 ((\d{3}([ -]\d{3,})([- ]\d{4,})?)|(\d+)))|(\(\d+\) \d+)|\d{3}( \d+)+|(\d+[ -]\d+)|(\d+){10,14}$" title="nomor telp harus terdiri dari 10-14 amgka dan harus berawalan 0, 62 atau +62" required>
                 <label>email PIC :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" required>
+                <input type="email" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" maxlength="150" required>
                 <div class="form-group">
                   <label>Sales :</label>
                   <select class="select2-single-placeholder form-control" name="sales" id="sales" required>
