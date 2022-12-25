@@ -396,11 +396,11 @@
                 <!--<label>Id :</label>-->
                 <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['stsId'];?>" name="id" readonly>
                 <label>No :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
                 <label>Status :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['status'];?>" name="status" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['status'];?>" name="status" minlength="3" maxlength="30" required>
                 <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['keterangan'];?></textarea>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"><?php echo $data['keterangan'];?></textarea>
                 <label>Aktif :</label>
                 <select name="aktif" class="form-control form-control-sm mb-3">
                 <?php if ($data['aktif'] == 1){ ?>

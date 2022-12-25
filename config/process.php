@@ -172,7 +172,7 @@
         //echo $datamax['max']
         
         while($data = mysqli_fetch_array($fetch_s)){
-            if($status == $data['status']){
+            if($status == $data['status'] || $no == $data['atr1']){
                 $j=1;
             }
         }
@@ -355,7 +355,7 @@
 		}
 
         while($data = mysqli_fetch_array($fetch_c)){
-            if($npwp == $data['npwp']){
+            if($npwp == $data['npwp'] || $telp == $data['telp'] || $email == $data['email']){
                 $k=1;
             }
         }

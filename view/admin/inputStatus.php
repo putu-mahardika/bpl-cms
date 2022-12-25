@@ -385,13 +385,14 @@
           </div>
 			
           <div class="card-body">
+              <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
               <form class="form group" method="post" action="../../config/process.php">
                 <label>No :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="no" required>
+                <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
                 <label>Status :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="status" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="status" minlength="3" maxlength="30" required>
                 <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"></textarea>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"></textarea>
                 <label>Aktif :</label>
 				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
                 <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
@@ -456,6 +457,14 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script>
+    document.querySelector(".no").addEventListener("keypress", function (evt) {
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    });
+  </script>
 
 </body>
 
