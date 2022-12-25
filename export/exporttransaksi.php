@@ -6,13 +6,13 @@
 <body>
     <?php
 	header("Content-type: application/vnd-ms-excel");
-	header("Content-Disposition: attachment; filename=Data Transaksi - PT Berkah Permata Logistik.xls");
+	header("Content-Disposition: attachment; filename=Data Transaksi Pergerakan Truk - PT Berkah Permata Logistik.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
 	?>
  
 	<center>
-		<h1>Data Transaksi - PT Berkah Permata Logistik</h1>
+		<h1>Data Transaksi Pergerakan Truck - PT Berkah Permata Logistik</h1>
 	</center>
 	<table border="1">
 		<tr>

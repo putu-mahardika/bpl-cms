@@ -10,64 +10,6 @@
   $s_id = $_SESSION['id'];
 
   include '../../config/koneksi.php';
-  
-  $emparray = array();
-
-  if(isset($_POST['range'])){
-    $startspk = $_POST['start'];
-    $endspk = $_POST['end'];
-    $start0 = str_replace('/', '-', $startspk);
-    $end0 = str_replace('/', '-', $endspk);
-    $start = date('Y-m-d', strtotime($start0));
-    $end = date('Y-m-d', strtotime($end0));
-    $query = "SELECT
-    b.create_date,
-    b.HdId,
-    a.NoSPK,
-    a.tgl_spk,
-    a.NoPO,
-    b.jenis_armada,
-    b.nopol,
-    b.keterangan_kirim,
-    IF (b.OnClose=0, 'OPEN', 'CLOSE') AS StatusTurunan,
-    IF (a.OnClose=0, 'OPEN', 'CLOSE') AS StatusPO,
-    concat(a.NoSPK, '-', b.turunan) as SPKTurunan,
-    CASE 
-      WHEN a.kota_kirim_id IS NULL THEN '-' ELSE c.nama
-    END AS kotaAsal,
-    a.kota_kirim,
-    CASE 
-      WHEN a.kota_tujuan_id IS NULL THEN '-' ELSE d.nama
-    END AS kotaTujuan,
-    a.kota_tujuan,
-    e.nama as namaUser,
-    h.nama as namaCustomer,
-    h.npwp,
-    f.status as statusTurunan,
-    CASE 
-    WHEN b.NoSPK NOT IN (select NoSPK from trans_biayaturunan) or (SELECT COUNT(*) from trans_biayaturunan) = 0 then '0' 
-    else g.Total
-    end as totalBiaya
-  FROM 
-    trans_detail b
-    left join trans_hd a on b.HdId = a.HdId 
-    left join master_kota c on a.kota_kirim_id = c.Id or a.kota_kirim_id is NULL
-    left join master_kota d on a.kota_tujuan_id = d.Id or a.kota_tujuan_id is NULL
-    left join master_user e on b.UserId = e.UserId
-    left join master_status f on b.StsId = f.stsId
-    left join trans_biayaturunan g on b.NoSPK = g.NoSPK AND b.turunan = g.Turunan
-    left join master_customer h on a.CustId = h.CustId
-  WHERE 
-    b.atr1 = 0 AND
-    b.create_date BETWEEN '".$start." 00:00:00' AND '".$end." 23:59:59' AND
-    b.UserId = ".$s_id;
-    $fetch = mysqli_query($koneksi,$query);
-    while($row =mysqli_fetch_assoc($fetch))
-    {
-      $emparray[] = $row;
-    }
-  } 
-  $data = json_encode($emparray, JSON_HEX_TAG);
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +29,8 @@
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
   <link href="../../css/style.css" rel="stylesheet">
+  <!-- DevExtreme theme -->
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.1.6/css/dx.light.css">
 </head>
  
 <body id="page-top">
@@ -451,27 +395,28 @@
                 
               </div>
 
-              <div class="card mb-4 col-6 hidden" id="card-spk">
+              <div class="card mb-4 col-12 hidden" id="card-spk">
                 <div class="card-header">
                   <h6>Masukkan range tanggal detail yang ingin ditampilkan : </h6>
                 </div>
                 <div class="card-body col-12">
-                  <form method="post" action="laporanbarang.php">
-                    <div class="form-group" >
+                  <!-- <form method="post" action="laporanbarang.php"> -->
+                  <div class="form-group" >
                       <div class=" input-group" id="simple-date4">
                         <div class="input-daterange" style="width:190px;">
-                          <input type="text" class="input-sm form-control form-control-sm" name="start" />
+                          <input type="text" class="input-sm form-control form-control-sm" name="start" id="dateStart" />
                         </div>
                         <div class="input-group-prepend" style="height:31px;">
                           <span class="input-group-text">to</span>
                         </div>
                         <div class="input-daterange" style="width:190px;">
-                          <input type="text" class="input-sm form-control form-control-sm" name="end" />
+                          <input type="text" class="input-sm form-control form-control-sm" name="end" id="dateEnd" />
                         </div>
                       </div>
                     </div>
-                    <input type="submit" value="Submit" name="range" class="btn btn-md btn-primary">
-                  </form>
+                    <!-- <input type="submit" value="Submit" name="range" class="btn btn-md btn-primary"> -->
+                    <button type="button" class="btn btn-md btn-primary" onclick="getDataSource()">Cari</button>
+                  <!-- </form> -->
                 </div>
               </div>
             </div>
@@ -512,21 +457,20 @@
 
 
           <!-- Modal Range SPK -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>
@@ -659,33 +603,60 @@
   </script>
 
   <script>
+    let dateStartInputTemp = document.getElementById('dateStart')
+    let dateEndInputTemp = document.getElementById('dateEnd')
+    let dataGrid = null;
+    let dataSourceTemp = null;
+
     function transinfo(id){
-    var hdid = id;
-    // AJAX request\
-    $.ajax({
-      url: '../../config/viewTransaksi.php',
-      type: 'post',
-      data: {hdid: hdid},
-      success: function(response){
-        // Add response in Modal body
-        $('.detail-body').html(response);
-        // Display Modal
-        $('#detailModal').modal('show');
-      }
-    });
+      var hdid = id;
+      // AJAX request\
+      $.ajax({
+        url: '../../config/viewTransaksi.php',
+        type: 'post',
+        data: {hdid: hdid},
+        success: function(response){
+          // Add response in Modal body
+          $('.detail-body').html(response);
+          // Display Modal
+          $('#detailModal').modal('show');
+        }
+      });
+    }
+
+    function getDataSource(){
+      dateStartInput = dateStartInputTemp.value;
+      dateEndInput = dateEndInputTemp.value;
+      console.log('start', dateStartInput);
+      // AJAX request\
+      $.ajax({
+        url: '../../config/reportController.php',
+        type: 'get',
+        data: {
+          reportTransaksi: true,
+          start: dateStartInput,
+          end: dateEndInput
+        },
+        dataType: 'json',
+        success: function(response){
+          dataSourceTemp = response;
+          // console.log('res', dataSourceTemp);
+          dataGrid.option('dataSource', response);
+          dataGrid.refresh();
+        }
+      });
     }
   </script>
 
-  <script>
-    // var xxx = <?php echo $data ?>;
-    // console.log('xxx', xxx);
-    $(() => {
+<script>
+    $(document).ready(() => {
+      // console.log('aaa');
       var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
-      const dataGrid = $('#gridContainer').dxDataGrid({
+      dataGrid = $('#gridContainer').dxDataGrid({
         // dataSource: generateData(100000),
-        dataSource: <?php echo $data; ?>,
+        dataSource: dataSourceTemp,
         // keyExpr: 'id',
-        allowColumnReordering: true,
+        // allowColumnReordering: true,
         allowColumnResizing: true,
         selection: {
           mode: 'single',
@@ -754,7 +725,7 @@
             subHeaderRow.height = 24;
             worksheet.mergeCells(3, 1, 3, 19);
 
-            subHeaderRow.getCell(1).value = 'Periode : <?php echo $start ?> s/d <?php echo $end ?>';
+            subHeaderRow.getCell(1).value = `Periode : ${dateStartInputTemp.value} s/d ${dateEndInputTemp.value}`;
             subHeaderRow.getCell(1).font = { name: 'Segoe UI Light', size: 14 };
             subHeaderRow.getCell(1).alignment = { horizontal: 'center' };
 
@@ -921,6 +892,8 @@
 
         Object.assign(excelCell.border, borderValue);
       }
+
+      
     });
 
   </script>

@@ -396,11 +396,11 @@
                 <!--<label>Id :</label>-->
                 <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['stsId'];?>" name="id" readonly>
                 <label>No :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
                 <label>Status :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['status'];?>" name="status" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['status'];?>" name="status" minlength="3" maxlength="30" required>
                 <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['keterangan'];?></textarea>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"><?php echo $data['keterangan'];?></textarea>
                 <label>Aktif :</label>
                 <select name="aktif" class="form-control form-control-sm mb-3">
                 <?php if ($data['aktif'] == 1){ ?>
@@ -428,16 +428,16 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>

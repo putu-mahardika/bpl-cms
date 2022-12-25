@@ -403,7 +403,7 @@
                 </div>
                 <div class="table-responsive p-3">
 				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover" style="width: 100%;">
                     <thead class="thead-light">
                       <tr>
                         <th>Tanggal</th>
@@ -429,13 +429,14 @@
                     <?php
                       while($data = mysqli_fetch_array($fetch)){
                         $id = $data['CustId'];
-                        $tgl = date("d-M-Y H:i:s", strtotime($data['create_date']));
+                        $tgltemp = strtotime($data['create_date']);
+                        $tgl = date("d-M-Y H:i:s", $tgltemp);
                     ?>
                       <tr>
                         <!--<td><a href="#" class="btn btn-primary btn-md" id="detail">
                         <i class="fas fa-chevron-circle-up"></i></a>
                         </td>-->
-                        <td style="font-size:13px;"><?php echo $tgl?></td>
+                        <td style="font-size:13px;" data-sort="<?php echo $tgltemp ?>"><?php echo $tgl?></td>
 						            <td style="font-size:13px;"><?php echo $data['kode_customer']?></td>
                         <td style="font-size:13px;"><?php echo $data['npwp']?></td>
                         <td style="font-size:13px;"><?php echo $data['nama']?></td>
@@ -505,16 +506,16 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>

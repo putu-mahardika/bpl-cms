@@ -47,7 +47,7 @@
 					header("location:../index.php?pesan=gagal");
 				}
 			} else {
-				header("location:../index.php?pesan=gagal");
+				header("location:../index.php?pesan=inactive");
 			}
 		} else {
 			header("location:../index.php?pesan=gagal");

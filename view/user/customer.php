@@ -358,7 +358,7 @@
                 </div>
                 <div class="table-responsive p-3">
 				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover" style="width:100%;">
                     <thead class="thead-light">
                       <tr>
                         <th>Tanggal</th>
@@ -375,7 +375,8 @@
                         <th>Aktif</th>
                         <!--<th>Create Date</th>-->
                         <!--<th>Last Update</th>-->
-                        <th style="padding-left:10px; padding-right:44px;">Action</th>
+                        <!-- <th style="padding-left:10px; padding-right:44px;">Action</th> -->
+                        <th style="">Action</th>
                       </tr>
                     </thead>
                     
@@ -411,7 +412,8 @@
                         <!--<td><?php echo $data['create_date']?></td>-->
                         <!--<td><?php echo $data['last_update']?></td>-->
                         <!--<td><span class="badge badge-success">Aktif</span></td>-->
-                        <td style="padding-left:10px; padding-right:10px;">
+                        <!-- <td style="padding-left:10px; padding-right:10px;"> -->
+                          <td>
                             <button title="detail" onclick="custinfo(<?php echo $id?>)" class="btn btn-info btn-sm"><i class="fas fa-search"></i></button>
 
                             <!--<button data-id='".$id."' class='userinfo'>Info</button>-->
@@ -452,21 +454,20 @@
 
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>

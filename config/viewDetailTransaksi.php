@@ -81,11 +81,11 @@ while($data = mysqli_fetch_array($fetch)){
 
     $response .= "<label><b>Nama Customer : </b>".$customer."</label><br>";
 
-    $response .= "<label><b>Jenis Armada : </b>".$jenis."</label><br>";
+    $response .= "<label><b>Jenis Kendaraan : </b>".$jenis."</label><br>";
 
-    $response .= "<label><b>Nopol/Nama Armada : </b>".$nopol."</label><br>";
+    $response .= "<label><b>Nopol/Nama Kendaraan : </b>".$nopol."</label><br>";
 
-    $response .= "<div class='row'><div style='padding-left:12px;width:105px'><label><b>Keterangan : </b></label></div><div style='width:auto;white-space:pre'><label>".$keterangan."</label></div></div>";
+    $response .= "<div class='row'><div style='padding-left:12px;width:190px'><label><b>Keterangan Pengiriman : </b></label></div><div style='width:auto;white-space:pre'><label>".$keterangan."</label></div></div>";
 
     $response .= "<label><b>Status Pengiriman : </b>".$status."</label><br>";
 

@@ -50,7 +50,7 @@ if (!is_null($t_closedById)) {
   }
 }
 
-$query_k = "select * from master_kota where aktif = 1";
+$query_k = "select * from master_kota where aktif = 1 ORDER BY SUBSTRING(Nama, 1, 1) ASC;";
 $fetch_k = mysqli_query($koneksi, $query_k);
 $fetch_k1 = mysqli_query($koneksi, $query_k);
 
@@ -539,7 +539,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" minlength="3" maxlength="50" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl PO :</label>
@@ -554,7 +554,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. SPK :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" required>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" minlength="3" maxlength="30" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl SPK :</label>
@@ -611,9 +611,9 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                                 if ($dataKotaAsal['aktif'] == 1) {
                                   if ($dataKotaAsal['Id'] == $t_asalId) {
                               ?>
-                                    <option value="<?php echo $dataKotaAsal['Id']; ?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama']; ?></option>
+                                    <option value="<?php echo $dataKotaAsal['Id']; ?>" selected><?php echo $dataKotaAsal['Nama']; ?></option>
                                   <?php } else { ?>
-                                    <option value="<?php echo $dataKotaAsal['Id']; ?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama']; ?></option>
+                                    <option value="<?php echo $dataKotaAsal['Id']; ?>"><?php echo $dataKotaAsal['Nama']; ?></option>
                               <?php }
                                 } else {
                                   continue;
@@ -625,7 +625,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_asal ?>" name="detailKotaAsal" id="detailKotaAsal"> -->
-                            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required><?php echo $t_asal ?></textarea>
+                            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required><?php echo $t_asal ?></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -652,9 +652,9 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                                 if ($dataKotaTujuan['aktif'] == 1) {
                                   if ($dataKotaTujuan['Id'] == $t_tujuanId) {
                               ?>
-                                    <option value="<?php echo $dataKotaTujuan['Id']; ?>" selected><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama']; ?></option>
+                                    <option value="<?php echo $dataKotaTujuan['Id']; ?>" selected><?php echo $dataKotaTujuan['Nama']; ?></option>
                                   <?php } else { ?>
-                                    <option value="<?php echo $dataKotaTujuan['Id']; ?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama']; ?></option>
+                                    <option value="<?php echo $dataKotaTujuan['Id']; ?>"><?php echo $dataKotaTujuan['Nama']; ?></option>
                               <?php }
                                 } else {
                                   continue;
@@ -666,7 +666,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-                            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required><?php echo $t_asal ?></textarea>
+                            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required><?php echo $t_asal ?></textarea>
                           </div>
                         </div>
                         <!-- <div class="form-group col-sm-4"> -->
@@ -674,14 +674,14 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" required><?php echo $t_barang ?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" minlength="10" maxlength="100" required><?php echo $t_barang ?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
                       <?php
                       $t_keterangan = str_replace("%%", PHP_EOL, $t_keterangan);
                       ?>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $t_keterangan ?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="100"><?php echo $t_keterangan ?></textarea>
                     </div>
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
                       <option disabled> Pilih </option>
@@ -717,6 +717,8 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                               $close = 1;
                               break;
                             }
+                          } else {
+                            $close = 1;
                           }
                         }
                         // $query_close = mysqli_query($koneksi, "select count(OnClose) as close from trans_detail where DtlId in (select max(DtlId) from trans_detail where NoSPK='$t_nospk' and turunan='1')");
@@ -861,7 +863,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                   <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>
-                  <a type="button" href="#" onclick="formUser()" title="ganti user" class="edituser"><i class="fas fa-edit"></i></a>
+                  <a type="button" onclick="formUser()" title="ganti user" class="edituser"><i class="fas fa-edit"></i></a>
 
                 </div>
 
@@ -884,7 +886,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                   <h6 class="m-0 font-weight-bold text-primary">Perubahan User</h6>
-                  <a type="button" href="#" onclick="viewUser()" title="ganti user" class="edituser"><i class="fas fa-edit"></i></a>
+                  <a type="button" onclick="viewUser()" title="ganti user" class="edituser"><i class="fas fa-edit"></i></a>
 
                 </div>
 
@@ -899,10 +901,11 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                   <form role="form" method="post" action="../../config/process.php">
                     <div class="form-group">
                       <input type="hidden" class="form-control form-control-sm mb-3" name="hdid" value="<?php echo $t_hdid ?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm mb-3" name="user" value="<?php echo $t_user ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label>User Lama :</label>
-                      <select class="select2-single-placeholder form-control" name="user" style="width:100% !important;" readonly>
+                      <select class="select2-single-placeholder form-control" style="width:100% !important;" disabled>
 
                         <?php while ($data1 = mysqli_fetch_array($query1)) { ?>
                           <option value="<?php echo $data1['UserId'] ?>"><?php echo $data1['nama'] ?></option>
@@ -913,7 +916,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>User Baru :</label>
-                      <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" readonly>
+                      <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" required>
                         <option disabled="" selected="">Pilih</option>
 
                         <?php while ($data2 = mysqli_fetch_array($query2)) { ?>
@@ -924,7 +927,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="50" required></textarea>
                     </div>
                     <input type="submit" value="Submit" name="gantiUser" class="btn btn-md btn-primary btn-block">
 
@@ -961,7 +964,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                         ?>
                         <tr>
                         <?php
-                            if ($arrayBiayaTambahanLength == 1) {
+                            if ($t_armada == 1) {
                         ?>
                           <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] ?></td>
                         <?php } else { ?>
@@ -1294,7 +1297,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                         <label>Jenis Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" maxlength="50" required>
 
                       </div>
 
@@ -1302,7 +1305,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                         <label>Nopol/Nama Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" maxlength="30" required>
 
                       </div>
 
@@ -1360,7 +1363,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                       <label>Keterangan :</label>
 
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100"></textarea>
 
                     </div>
 
@@ -1530,7 +1533,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                   <div class="modal-header">
 
-                    <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin membatalkan data terpilih ?</h5>
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Apakah anda ingin menghapus transaksi ?</h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
@@ -1655,18 +1658,16 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+                    <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-
-                  <div class="modal-body logout-modal">
-                    <p>Are you sure you want to logout?</p>
+                  <div class="modal-body">
+                    <p>Apakah Anda yakin ingin logout?</p>
                   </div>
-
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                     <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
                   </div>
                 </div>
@@ -1690,16 +1691,26 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                       <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
                       <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
                       <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
-                      <div class="form-group">
-                        <label for="biayaTransport">Biaya Transport</label>
+
+                      <label for="biayaTransport">Biaya Transport</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Rp</span>
+                        </div>
                         <input type="number" min="0" class="form-control" id="biayaTransport" name="biayaTransport">
                       </div>
-                      <div class="form-group">
-                        <label for="biayaInap">Biaya Inap</label>
+                      <label for="biayaInap">Biaya Inap</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Rp</span>
+                        </div>
                         <input type="number" min="0" class="form-control" id="biayaInap" name="biayaInap">
                       </div>
-                      <div class="form-group">
-                        <label for="biayaLain">Biaya Lain-lain</label>
+                      <label for="biayaLain">Biaya Lain-lain</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Rp</span>
+                        </div>
                         <input type="number" min="0" class="form-control" id="biayaLain" name="biayaLain">
                       </div>
                   </div>

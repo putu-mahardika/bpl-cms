@@ -40,21 +40,28 @@
                     <h1 class="h4 text-gray-900 mb-4">Login</h1>
                     <p>v1.1.1</p>
                   </div>
-				  	        <?php 
-                        if(isset($_GET['pesan'])){
-                            if($_GET['pesan'] == "gagal"){
-                                echo '<p><div class="alert alert-warning">Login gagal! Kombinasi username dan password salah!</div></p>';
-                            }else if($_GET['pesan'] == "logout"){
-                                echo '<p><div class="alert alert-success">Logout berhasil</div></p>';
-                            }
+                  <?php 
+                    if(isset($_GET['pesan'])){
+                        if($_GET['pesan'] == "gagal"){
+                          echo '<p><div class="alert alert-warning">Login gagal! Kombinasi username dan password salah!</div></p>';
+                        }else if($_GET['pesan'] == "inactive"){
+                          echo '<p><div class="alert alert-warning">Login gagal! Akun tidak aktif, silahkan hubungi admin</div></p>';
+                        }else if($_GET['pesan'] == "logout"){
+                          echo '<p><div class="alert alert-success">Logout berhasil</div></p>';
                         }
-                    ?>
+                    }
+                  ?>
+
                   <form class="user" method="post" action="config/cek-login.php">
                     <div class="form-group">
-                      <input type="text" class="form-control" name="username" placeholder="Username">
+                      <input type="text" class="form-control" name="username" placeholder="Username" required>
                     </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control" name="password" placeholder="Password">
+                    <div class="input-group mb-4">
+                      <!-- <input type="password" class="form-control" name="password" placeholder="Password"> -->
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeType()"><i id="btnPasswordIcon" class="fas fa-eye"></i></button>
+                      </div>
                     </div>
                     <div class="form-group">
                       <!--<a href="dashboard.html" class="btn btn-primary btn-block">Login</a>-->
@@ -76,6 +83,21 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
+  <script>
+    function changeType() {
+      var passwordInputType = document.getElementById('password');
+      var btnPasswordIcon = document.getElementById('btnPasswordIcon');
+      if(passwordInputType.type == 'password') {
+        passwordInputType.type = 'text';
+        btnPasswordIcon.classList.remove('fa-eye');
+        btnPasswordIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInputType.type = 'password';
+        btnPasswordIcon.classList.remove('fa-eye-slash');
+        btnPasswordIcon.classList.add('fa-eye');
+      }
+    }
+  </script>
 </body>
 
 </html>

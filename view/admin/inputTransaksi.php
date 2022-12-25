@@ -17,7 +17,7 @@
 
 	$fetch = mysqli_query($koneksi,$query);
 
-  $query_k = "select * from master_kota where aktif = 1";
+  $query_k = "select * from master_kota where aktif = 1 ORDER BY SUBSTRING(Nama, 1, 1) ASC;";
   $fetch_k = mysqli_query($koneksi, $query_k);
   $fetch_k1 = mysqli_query($koneksi, $query_k);
 
@@ -869,8 +869,8 @@
                   </div>
 
                 </div>-->
-                <?php if(isset($_SESSION['id_pesan1'])){
-                    //echo $_SESSION['id_pesan1'][1];
+                <?php if(isset($_SESSION['id_pesan1']) && isset($_SESSION['pesan'])){
+                    // echo $_SESSION['id_pesan1'][0];
                     $save = $_SESSION['id_pesan1'];
                 ?>
                 <div class="card-body">
@@ -885,9 +885,9 @@
 							            if($data['aktif']==1){
                             if($data['CustId'] == $save[0]){
                       ?>
-                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
-                          <?php }else{?>
                       <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                          <?php }else{?>
+                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
                         <?php } } else {
                           continue;
                           }
@@ -898,7 +898,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" value="<?php echo $save[1]?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" minlength="3" maxlength="50" value="<?php echo $save[1]?>" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl PO :</label>
@@ -913,7 +913,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. SPK :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" value="<?php echo $save[3]?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" minlength="3" maxlength="30" value="<?php echo $save[3]?>" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl SPK :</label>
@@ -952,10 +952,13 @@
                                 while($dataKotaAsal = mysqli_fetch_array($fetch_k)){
                                   // print_r($dataUser);
                                   if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $save[6]){
                               ?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Nama'];?></option>
+                              <?php } else { ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                               <?php
-                                  } else {
+                                  } } else {
                                     continue;
                                   }
                                 }
@@ -965,7 +968,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required><?php echo $save[7] ?></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -977,13 +980,16 @@
                             <select class="select2-single-placeholder2 form-control" name="kotaTujuan" id="kotaTujuan" required>
                               <option value="" selected disabled>Pilih</option>
                               <?php
-                                while($dataKotaTujuan = mysqli_fetch_array($fetch_k1)){
+                                while($dataKotaAsal = mysqli_fetch_array($fetch_k1)){
                                   // print_r($dataUser);
-                                  if($dataKotaTujuan['aktif']==1){
+                                  if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $save[8]){
                               ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Nama'];?></option>
+                              <?php } else { ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                               <?php
-                                  } else {
+                                  } } else {
                                     continue;
                                   }
                                 }
@@ -993,7 +999,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required><?php echo $save[9] ?></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1001,11 +1007,11 @@
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang"  required><?php echo $save[8]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" minlength="10" maxlength="100" required><?php echo $save[10]?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" ><?php echo $save[9]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100" ><?php echo $save[11]?></textarea>
                     </div>
                     
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
@@ -1043,7 +1049,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopo" id="nopo" minlength="3" maxlength="50" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl PO :</label>
@@ -1058,7 +1064,7 @@
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. SPK :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nospk" id="nospk" minlength="3" maxlength="30" required>
                       </div>
                       <div class="form-group col-sm-5" id="simple-date1">
                         <label>Tgl SPK :</label>
@@ -1098,7 +1104,7 @@
                                   // print_r($dataUser);
                                   if($dataKotaAsal['aktif']==1){
                               ?>
-                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                               <?php
                                   } else {
                                     continue;
@@ -1110,7 +1116,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -1126,7 +1132,7 @@
                                   // print_r($dataUser);
                                   if($dataKotaTujuan['aktif']==1){
                               ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Nama'];?></option>
                               <?php
                                   } else {
                                     continue;
@@ -1138,7 +1144,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1146,11 +1152,11 @@
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" required></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" minlength="10" maxlength="100" required></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100"></textarea>
                     </div>
                     
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
@@ -1181,44 +1187,24 @@
 
           <!-- Modal Logout -->
 
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-
-            aria-hidden="true">
-
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
-
               <div class="modal-content">
-
                 <div class="modal-header">
-
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
-
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Logout</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
                     <span aria-hidden="true">&times;</span>
-
                   </button>
-
                 </div>
-
                 <div class="modal-body">
-
-                  <p>Are you sure you want to logout?</p>
-
+                  <p>Apakah Anda yakin ingin logout?</p>
                 </div>
-
                 <div class="modal-footer">
-
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
-
                 </div>
-
               </div>
-
             </div>
-
           </div>
 
 
