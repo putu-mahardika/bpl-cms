@@ -1296,7 +1296,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                         <label>Jenis Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" maxlength="50" required>
 
                       </div>
 
@@ -1304,7 +1304,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                         <label>Nopol/Nama Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" maxlength="30" required>
 
                       </div>
 
@@ -1362,7 +1362,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
 
                       <label>Keterangan :</label>
 
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100"></textarea>
 
                     </div>
 
@@ -1690,7 +1690,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                       <input type="hidden" class="form-control" id="biayaTurunanHdid" name="biayaTurunanHdid">
                       <input type="hidden" class="form-control" id="biayaTurunanSPK" name="biayaTurunanSPK">
                       <input type="hidden" class="form-control" id="biayaTurunanTurunan" name="biayaTurunanTurunan">
-                      
+
                       <label for="biayaTransport">Biaya Transport</label>
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">

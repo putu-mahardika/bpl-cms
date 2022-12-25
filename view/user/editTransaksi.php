@@ -1783,7 +1783,7 @@
 
                         <label>Jenis Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" id="jenis" maxlength="50" required>
 
                       </div>
 
@@ -1791,7 +1791,7 @@
 
                         <label>Nopol/Nama Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" id="nopol" maxlength="30" required>
 
                       </div>
 
@@ -1849,7 +1849,7 @@
 
                       <label>Keterangan :</label>
 
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan"></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100"></textarea>
 
                     </div>		
 

@@ -1647,7 +1647,7 @@
 
                         <label>Jenis Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" value="<?php echo $data_td['jenis_armada']?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="jenis" value="<?php echo $data_td['jenis_armada']?>" maxlength="50" required>
 
                       </div>
 
@@ -1655,7 +1655,7 @@
 
                         <label>Nopol/Nama Kendaraan :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" value="<?php echo $data_td['nopol']?>" required>
+                        <input type="text" class="form-control form-control-sm mb-3" name="nopol" value="<?php echo $data_td['nopol']?>" maxlength="30" required>
 
                       </div>
 
@@ -1738,7 +1738,7 @@
                         $keterangan_td = $data_td['keterangan_kirim'];
                         $keterangan_td = str_replace("%%",PHP_EOL, $keterangan_td);
                       ?>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $keterangan_td?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="100"><?php echo $keterangan_td?></textarea>
 
                     </div>
 
