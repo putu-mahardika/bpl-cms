@@ -869,8 +869,8 @@
                   </div>
 
                 </div>-->
-                <?php if(isset($_SESSION['id_pesan1'])){
-                    //echo $_SESSION['id_pesan1'][1];
+                <?php if(isset($_SESSION['id_pesan1']) && isset($_SESSION['pesan'])){
+                    // echo $_SESSION['id_pesan1'][0];
                     $save = $_SESSION['id_pesan1'];
                 ?>
                 <div class="card-body">
@@ -885,9 +885,9 @@
 							            if($data['aktif']==1){
                             if($data['CustId'] == $save[0]){
                       ?>
-                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
-                          <?php }else{?>
                       <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                          <?php }else{?>
+                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
                         <?php } } else {
                           continue;
                           }
@@ -952,10 +952,13 @@
                                 while($dataKotaAsal = mysqli_fetch_array($fetch_k)){
                                   // print_r($dataUser);
                                   if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $save[6]){
                               ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <?php } else { ?>
                               <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
                               <?php
-                                  } else {
+                                  } } else {
                                     continue;
                                   }
                                 }
@@ -965,7 +968,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" required><?php echo $save[7] ?></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -977,13 +980,16 @@
                             <select class="select2-single-placeholder2 form-control" name="kotaTujuan" id="kotaTujuan" required>
                               <option value="" selected disabled>Pilih</option>
                               <?php
-                                while($dataKotaTujuan = mysqli_fetch_array($fetch_k1)){
+                                while($dataKotaAsal = mysqli_fetch_array($fetch_k1)){
                                   // print_r($dataUser);
-                                  if($dataKotaTujuan['aktif']==1){
+                                  if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $save[8]){
                               ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Kode'] . " - " . $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
+                              <?php } else { ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Kode'] . " - " . $dataKotaAsal['Nama'];?></option>
                               <?php
-                                  } else {
+                                  } } else {
                                     continue;
                                   }
                                 }
@@ -993,7 +999,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" required><?php echo $save[9] ?></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1001,11 +1007,11 @@
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang"  required><?php echo $save[8]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang"  required><?php echo $save[10]?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" ><?php echo $save[9]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" ><?php echo $save[11]?></textarea>
                     </div>
                     
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>

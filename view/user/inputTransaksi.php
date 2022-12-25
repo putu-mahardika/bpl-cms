@@ -892,9 +892,9 @@
 							            if($data['aktif']==1){
                             if($data['CustId'] == $save[0]){
                       ?>
-                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
-                          <?php }else{?>
                       <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                          <?php }else{?>
+                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
                         <?php } } else {
                           continue;
                           }
