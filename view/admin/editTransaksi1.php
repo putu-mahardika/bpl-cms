@@ -1468,7 +1468,7 @@
                       <div class="form-group">
                         <label>User Baru :</label>
                         <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" required>
-                          <option disabled="" selected="">Pilih</option>
+                          <option value="">Pilih</option>
 
                           <?php while($data2 = mysqli_fetch_array($query2)){?>
                           <option value="<?php echo $data2['UserId']?>"><?php echo $data2['nama']?></option>
