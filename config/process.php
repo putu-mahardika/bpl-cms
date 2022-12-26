@@ -261,7 +261,7 @@
         //echo $datamax['max']
         
         while($data = mysqli_fetch_array($fetch_k)){
-            if(strtolower($kode) == strtolower($data['Kode']) && strtolower($nama) == strtolower($data['Nama'])){
+            if(strtolower($nama) == strtolower($data['Nama'])){
                 $j=1;
             }
         }
