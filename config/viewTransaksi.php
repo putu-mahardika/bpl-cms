@@ -69,7 +69,7 @@ while($data = mysqli_fetch_array($fetch)){
     if(is_null($data6)) {
         $response .= "<div class='row'><div class='col-sm-6'><label><b>Kota Asal : </b>-</label></div>";
     } else {
-        $response .= "<div class='row'><div class='col-sm-6'><label><b>Kota Asal : </b>".$data6['Nama'] ?? '-'."</label></div>";
+        $response .= "<div class='row'><div class='col-sm-6'><label><b>Kota Asal : </b>".$data6['Nama']."</label></div>";
     }
     if(is_null($data7)) {
         $response .= "<div class='col-sm-6'><label><b>Kota Tujuan : </b>-</label></div></div>";
