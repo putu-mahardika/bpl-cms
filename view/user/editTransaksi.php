@@ -1761,9 +1761,9 @@
 
                         <!--<input type="text" class="form-control form-control-sm mb-3" name="status" required>-->
 
-                        <select class="form-control form-control-sm mb-3" placeholder="Pilih" name="status" id="status">
+                        <select class="form-control form-control-sm mb-3" placeholder="Pilih" name="status" id="status" required>
 
-						              <option value="" disabled selected hidden>Pilih</option>
+						              <option value="">Pilih</option>
 
                           <?php
 
