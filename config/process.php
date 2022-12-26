@@ -487,8 +487,10 @@
         }
         $t=0;
 		while($data = mysqli_fetch_array($fetch_t)){
-            if($nospk == $data['NoSPK'] || $nopo == $data['NoPO']){
+            if($nospk == $data['NoSPK']){
                 $t=1;
+            } else if ($nopo == $data['NoPO']) {
+                $t=2;
             }
         }
 
@@ -497,7 +499,7 @@
 		//echo $tglpo1;
 		//echo $tglspk1;
 
-		if ($t != 1) {
+		if ($t = 0) {
 			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, '0', '', '')";
             $result = mysqli_query($koneksi, $query);
             //create biaya turunan ================================================================
@@ -534,6 +536,18 @@
 					header("location:../view/user/transaksi.php?tahun=$year");
                     $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
                 }
+            }
+        } else if ($t=2) {
+            if($akses == 'Admin'){
+                //header("location:../view/admin/transaksi.php?tahun=$year");
+                header("location:../view/admin/inputTransaksi.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">No PO sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+                $_SESSION['id_pesan1'] = $save;
+            } else {
+                //header("location:../view/user/transaksi.php?tahun=$year");
+                header("location:../view/user/inputTransaksi.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">No PO sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';               
+                $_SESSION['id_pesan1'] = $save;
             }
 		} else {
             if($akses == 'Admin'){
