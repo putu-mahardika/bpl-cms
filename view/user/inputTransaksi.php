@@ -9,12 +9,14 @@
 
   }
 
+  $s_id = $_SESSION['id'];
+
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
 
-	$query = 'select * from master_customer';
+	$query = "select * from master_customer where UserId='".$s_id."' and aktif=1;";
 
 	$fetch = mysqli_query($koneksi,$query);
 
@@ -876,7 +878,7 @@
                   </div>
 
                 </div>-->
-                <?php if(isset($_SESSION['id_pesan1'])){
+                <?php if(isset($_SESSION['id_pesan1']) && isset($_SESSION['pesan'])){
                     //echo $_SESSION['id_pesan1'][1];
                     $save = $_SESSION['id_pesan1'];
                 ?>
@@ -953,15 +955,20 @@
                             <!-- <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" style="width:100% !important;" required>
                               <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
                             </select> -->
-                            <select class="select2-single-placeholder form-control" name="kotaAsal" id="kotaAsal" required>
-                              <option value="" disabled>Pilih</option>
+                            <select class="select2-single-placeholder1 form-control" name="kotaAsal" id="kotaAsal" required>
+                              <option value="" selected disabled>Pilih</option>
                               <?php
                                 while($dataKotaAsal = mysqli_fetch_array($fetch_k)){
                                   // print_r($dataUser);
                                   if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $save[6]){
                               ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Nama'];?></option>
+                              <?php } else { ?>
                               <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                               <?php
+                                  } } else {
+                                    continue;
                                   }
                                 }
                               ?>
@@ -970,7 +977,7 @@
                           <div class="form-group">
                             <label>Detail Kota Asal :</label>  
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="" name="detailKotaAsal" id="detailKotaAsal"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal" id="detailKotaAsal" minlength="5" maxlength="50" required><?php echo $save[7] ?></textarea>
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -979,15 +986,20 @@
                             <!-- <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" style="width:100% !important;" required>
                               <option value="<?php echo $c_custid?>" selected><?php echo $c_nama?></option>
                             </select> -->
-                            <select class="select2-single-placeholder form-control" name="kotaTujuan" id="kotaTujuan" required>
-                              <option value="" disabled>Pilih</option>
+                            <select class="select2-single-placeholder2 form-control" name="kotaTujuan" id="kotaTujuan" required>
+                              <option value="" selected disabled>Pilih</option>
                               <?php
-                                while($dataKotaTujuan = mysqli_fetch_array($fetch_k1)){
+                                while($dataKotaAsal = mysqli_fetch_array($fetch_k1)){
                                   // print_r($dataUser);
-                                  if($dataKotaTujuan['aktif']==1){
+                                  if($dataKotaAsal['aktif']==1){
+                                    if($dataKotaAsal['Id'] == $save[8]){
                               ?>
-                              <option value="<?php echo $dataKotaTujuan['Id'];?>"><?php echo $dataKotaTujuan['Nama'];?></option>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>" selected><?php echo $dataKotaAsal['Nama'];?></option>
+                              <?php } else { ?>
+                              <option value="<?php echo $dataKotaAsal['Id'];?>"><?php echo $dataKotaAsal['Nama'];?></option>
                               <?php
+                                  } } else {
+                                    continue;
                                   }
                                 }
                               ?>
@@ -996,7 +1008,7 @@
                           <div class="form-group">
                             <label>Detail Kota Tujuan :</label>
                             <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_tujuan ?>" name="detailKotaTujuan" id="detailKotaTujuan"> -->
-      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required></textarea>
+      					            <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan" id="detailKotaTujuan" minlength="5" maxlength="50" required><?php echo $save[9] ?></textarea>
                           </div>
                         </div>
                       <!-- <div class="form-group col-sm-4"> -->
@@ -1004,11 +1016,11 @@
                     </div>
                     <div class="form-group">
                       <label>Barang :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" minlength="10" maxlength="100" required><?php echo $save[8]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="barang" id="barang" minlength="10" maxlength="100" required><?php echo $save[10]?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Keterangan :</label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100" ><?php echo $save[9]?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" maxlength="100" ><?php echo $save[11]?></textarea>
                     </div>
                     
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
