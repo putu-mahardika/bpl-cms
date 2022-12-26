@@ -1413,7 +1413,7 @@
                     $data1 = mysqli_fetch_array($query1);
                   ?>
                   <div class="card-body" style="padding-top:0;">
-                    <label><b>User Lama :</b></label> 
+                    <label><b>User :</b></label> 
                     <input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama']?>" readonly>
                   </div>
 
