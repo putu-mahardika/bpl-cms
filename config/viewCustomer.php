@@ -21,6 +21,7 @@ while($data = mysqli_fetch_array($fetch)){
     $pic_email = $data['PIC_email'];
     $keterangan = $data['keterangan'];
     $aktif = $data['aktif'];
+    $createDate = $data['create_date'];
 
     $response = "<label><b>Kode : </b>".$kode."</label><br>";
     $response .= "<label><b>NPWP : </b>".$npwp."</label><br>";
