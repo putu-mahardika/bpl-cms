@@ -873,7 +873,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                 $data1 = mysqli_fetch_array($query1);
                 ?>
                 <div class="card-body" style="padding-top:0;">
-                  <label><b>User Lama :</b></label>
+                  <label><b>User :</b></label>
                   <input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama'] ?>" readonly>
                 </div>
 
@@ -916,8 +916,8 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>User Baru :</label>
-                      <select class="select2-single-placeholder form-control" name="userBaru" style="width:100% !important;" required>
-                        <option disabled="" selected="">Pilih</option>
+                      <select class="select2-single-placeholder form-control" id="userBaru" name="userBaru" style="width:100% !important;" required>
+                        <option value="">Pilih</option>
 
                         <?php while ($data2 = mysqli_fetch_array($query2)) { ?>
                           <option value="<?php echo $data2['UserId'] ?>"><?php echo $data2['nama'] ?></option>
@@ -1795,6 +1795,11 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
         $('.select2-single-placeholder').select2({
           placeholder: "Pilih",
           allowClear: true
+        });
+
+        $('#userBaru').select2({
+          placeholder: "Pilih",
+          allowClear: false
         });
 
         $('#simple-date1 .input-group.date').datepicker({

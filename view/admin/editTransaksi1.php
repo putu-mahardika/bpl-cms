@@ -1424,7 +1424,7 @@
                     $data1 = mysqli_fetch_array($query1);
                   ?>
                   <div class="card-body" style="padding-top:0;">
-                    <label><b>User Lama :</b></label> 
+                    <label><b>User :</b></label> 
                     <input type="text" class="form-control form-control-sm mb-3" name="user" value="<?php echo $data1['nama']?>" readonly>
                   </div>
 
@@ -1455,7 +1455,7 @@
                         <input type="hidden" class="form-control form-control-sm mb-3" name="user" value="<?php echo $t_user ?>" readonly>
                       </div>
                       <div class="form-group">
-                        <label>User :</label> 
+                        <label>User Lama:</label> 
                         <select class="select2-single-placeholder form-control" style="width:100% !important;" disabled>
 
                           <?php while($data1 = mysqli_fetch_array($query1)){?>
