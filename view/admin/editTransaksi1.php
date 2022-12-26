@@ -1683,7 +1683,7 @@
 
                         <!--<input type="text" class="form-control form-control-sm mb-3" name="status" required>-->
 
-                        <select class="form-control form-control-sm mb-3" placeholder="Pilih" name="status" id="select2SinglePlaceholder">
+                        <select class="form-control form-control-sm mb-3" placeholder="Pilih" name="status" required>
 
                           <?php
 
