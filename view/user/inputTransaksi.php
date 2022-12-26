@@ -9,12 +9,14 @@
 
   }
 
+  $s_id = $_SESSION['id'];
+
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
 
-	$query = 'select * from master_customer';
+	$query = "select * from master_customer where UserId='".$s_id."' and aktif=1;";
 
 	$fetch = mysqli_query($koneksi,$query);
 

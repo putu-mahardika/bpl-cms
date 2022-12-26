@@ -13,7 +13,7 @@
 
   $datetime = date('Y');
 
-	$query = 'select * from master_customer';
+	$query = 'select * from master_customer where aktif=1;';
 
 	$fetch = mysqli_query($koneksi,$query);
 
