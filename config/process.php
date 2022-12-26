@@ -487,7 +487,7 @@
         }
         $t=0;
 		while($data = mysqli_fetch_array($fetch_t)){
-            if($nospk == $data['NoSPK']){
+            if($nospk == $data['NoSPK'] || $nopo == $data['NoPO']){
                 $t=1;
             }
         }
@@ -587,7 +587,7 @@
             $nospk = str_replace($x, "", $nospk);
         }
 		while($data = mysqli_fetch_array($fetch_t)){
-            if($nospk == $data['NoSPK'] && $id != $data['HdId']){
+            if(($nospk == $data['NoSPK'] || $nopo == $data['NoPO'] )&& $id != $data['HdId']){
                 $t=1;
             } elseif($nospk == $data['NoSPK'] && $id == $data['HdId']) {
 				$t=0;
