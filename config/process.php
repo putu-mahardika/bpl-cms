@@ -487,7 +487,7 @@
         }
         $t=0;
 		while($data = mysqli_fetch_array($fetch_t)){
-            if($nospk == $data['NoSPK']){
+            if($nospk == $data['NoSPK'] || $nopo == $data['NoPO']){
                 $t=1;
             }
         }
@@ -587,7 +587,7 @@
             $nospk = str_replace($x, "", $nospk);
         }
 		while($data = mysqli_fetch_array($fetch_t)){
-            if($nospk == $data['NoSPK'] && $id != $data['HdId']){
+            if(($nospk == $data['NoSPK'] || $nopo == $data['NoPO'] )&& $id != $data['HdId']){
                 $t=1;
             } elseif($nospk == $data['NoSPK'] && $id == $data['HdId']) {
 				$t=0;
@@ -706,6 +706,8 @@
             for($i=1;$i<=$armada;$i++){
                 $query3 = mysqli_query($koneksi, "update trans_detail set atr1=1, last_update='$datetime' where HdId=$hdid and turunan='$i'");
             }
+        } else if ($query1 == 1 && $data2['jumlah'] == 0) {
+            $query3 = 1;
         }
 
         // print_r([$query1, $query3]);
@@ -724,11 +726,11 @@
             if($akses == "Admin"){
                 header("location:../view/admin/transaksi.php?tahun=$year");
 				// $_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				$_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
             }else{
                 header("location:../view/user/transaksi.php?tahun=$year");
 				// $_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dibatalkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-				$_SESSION['pesan'] = '<p><div class="alert alert-success">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+				$_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
             }
         }
     }
