@@ -404,7 +404,7 @@
                 <label>Kode Customer :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode_customer'];?>" name="kode" minlength="3" maxlength="20" required>
                 <label>Nama Customer :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" maxlength="70" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="70" required>
                 <label>Bidang Usaha :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['bidang_usaha'];?>" name="bidang" minlength="3" maxlength="50" required>
                 <label>NPWP :</label>
@@ -412,13 +412,13 @@
                 <label>Alamat :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['alamat'];?>" name="alamat" minlength="7" maxlength="150" required>
                 <label>Telp :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['telp'];?>" name="telp" pattern="^(\+62 ((\d{3}([ -]\d{3,})([- ]\d{4,})?)|(\d+)))|(\(\d+\) \d+)|\d{3}( \d+)+|(\d+[ -]\d+)|(\d+){10,14}$" title="nomor telp harus terdiri dari 10-14 amgka dan harus berawalan 0, 62 atau +62" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['telp'];?>" name="telp" pattern="^0\d{10,14}|62\d{10,14}$" title="nomor telp harus terdiri dari 10-14 angka dan harus berawalan 0 atau 62" required>
                 <label>email :</label>
                 <input type="email" class="form-control form-control-sm mb-3" value="<?php echo $data['email'];?>" name="email" required>
                 <label>Nama PIC :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC'];?>" name="pic" minlength="3" maxlength="50" required>
                 <label>Telp PIC :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" pattern="^(\+62 ((\d{3}([ -]\d{3,})([- ]\d{4,})?)|(\d+)))|(\(\d+\) \d+)|\d{3}( \d+)+|(\d+[ -]\d+)|(\d+){10,14}$" title="nomor telp harus terdiri dari 10-14 amgka dan harus berawalan 0, 62 atau +62" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" pattern="^0\d{10,14}|62\d{10,14}$" title="nomor telp harus terdiri dari 10-14 angka dan harus berawalan 0 atau 62" required>
                 <label>email PIC :</label>
                 <input type="email" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" maxlength="150" required>
                 <div class="form-group">
