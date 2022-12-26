@@ -1520,9 +1520,9 @@
                         <?php } else { ?>
                           <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] .'-'. $arrayBiayaTambahan['Turunan'] ?></td>
                         <?php } ?>
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_transport'] ?></td>
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_inap'] ?></td>
-                          <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['Biaya_lain'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_transport'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_inap'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_lain'] ?></td>
                           <td style="font-size:13px;padding-left:8px;">
                             <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                           </td>
