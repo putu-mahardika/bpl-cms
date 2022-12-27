@@ -15,6 +15,8 @@
 
   }
 
+  $s_id = $_SESSION['id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -696,14 +698,15 @@
 
 
           <?php
+          echo $s_id;
 
-          $query_c = mysqli_query($koneksi, "select count(CustId) as jmlCust from master_customer where create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 00:00:00'");
+          $query_c = mysqli_query($koneksi, "select count(CustId) as jmlCust from master_customer where UserId='".$s_id."' and create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 23:59:59'");
 
-          $query_t = mysqli_query($koneksi, "select count(HdId) as jmlHd from trans_hd where atr1=0 and create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 00:00:00'");
+          $query_t = mysqli_query($koneksi, "select count(HdId) as jmlHd from trans_hd where atr1=0 and UserId='".$s_id."' and create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 23:59:59'");
 
-          $query_to = mysqli_query($koneksi, "select count(HdId) as Hdopen from trans_hd where OnClose='0' and create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 00:00:00'");
+          $query_to = mysqli_query($koneksi, "select count(HdId) as Hdopen from trans_hd where OnClose='0' and UserId='".$s_id."' and create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 23:59:59'");
 
-          $query_tc = mysqli_query($koneksi, "select count(HdId) as Hdclose from trans_hd where OnClose='1' and atr1=0 and DateOnClose between '$tahun-01-01 00:00:00' and '$tahun-12-31 00:00:00'");
+          $query_tc = mysqli_query($koneksi, "select count(HdId) as Hdclose from trans_hd where OnClose='1' and UserId='".$s_id."' and atr1=0 and DateOnClose between '$tahun-01-01 00:00:00' and '$tahun-12-31 23:59:59'");
 
           
 
