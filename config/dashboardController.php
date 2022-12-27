@@ -77,9 +77,9 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' group by month(create_date)";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 and atr1=0 AND year(create_date)='".$year."' group by month(create_date)";
     } else {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=0 and atr1=0 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -104,9 +104,9 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' group by month(create_date)";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 and atr1=0 AND year(create_date)='".$year."' group by month(create_date)";
     } else {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
+      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 and atr1=0 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -131,10 +131,10 @@
     $tempArray = array();
     if ($akses == "Admin") {
       $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
     } else {
       $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -159,10 +159,10 @@
     $tempArray = array();
     if ($akses == "Admin") {
       $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 and b.atr1=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
     } else {
       $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 and b.atr1=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -195,6 +195,7 @@
       trans_hd b,
       trans_biayaturunan e
     WHERE
+      b.atr1=0 and
       e.HdId = b.HdId and
       b.OnClose=0 and year(b.create_date)='".$year."'";
     } else {
@@ -206,6 +207,7 @@
       trans_hd b,
       trans_biayaturunan e
     WHERE
+      b.atr1=0 and
       e.HdId = b.HdId and
       b.OnClose=0 and 
       b.UserId='".$s_id."' and 
@@ -242,6 +244,7 @@
       trans_hd b,
       trans_biayaturunan e
     WHERE
+      b.atr1=0 and
       e.HdId = b.HdId and
       b.OnClose=1 and year(b.create_date)='".$year."'";
     } else {
@@ -253,6 +256,7 @@
       trans_hd b,
       trans_biayaturunan e
     WHERE
+      b.atr1=0 and
       e.HdId = b.HdId and
       b.OnClose=1 and year(b.create_date)='".$year."' and
       a.UserId='".$s_id."'";
