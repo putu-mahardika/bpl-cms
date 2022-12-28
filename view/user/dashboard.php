@@ -698,7 +698,6 @@
 
 
           <?php
-          echo $s_id;
 
           $query_c = mysqli_query($koneksi, "select count(CustId) as jmlCust from master_customer where UserId='".$s_id."' and create_date between '$tahun-01-01 00:00:00' and '$tahun-12-31 23:59:59'");
 
