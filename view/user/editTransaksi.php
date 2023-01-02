@@ -1456,7 +1456,11 @@
                           <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_inap'] ?></td>
                           <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_lain'] ?></td>
                           <td style="font-size:13px;padding-left:8px;">
-                            <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                          <?php if ($t_onclose == 0) { ?>
+                            <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                          <?php } else { ?>
+                            <button title="edit" class="btn btn-warning btn-sm"><i class="fas fa-edit" disabled></i></button>
+                          <?php } ?>
                           </td>
                         </tr>
                         <?php
