@@ -356,7 +356,7 @@
 		}
 
         while($data = mysqli_fetch_array($fetch_c)){
-            if($npwp == $data['npwp'] || $telp == $data['telp'] || $email == $data['email']){
+            if($npwp == $data['npwp'] || $telp == $data['telp'] || $email == $data['email'] || strtolower($kode) == strtolower($data['kode_customer']) || strtolower($nama) == strtolower($data['nama'])){
                 $k=1;
             }
         }
