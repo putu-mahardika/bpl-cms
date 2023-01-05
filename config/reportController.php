@@ -62,7 +62,7 @@
         left join master_customer h on a.CustId = h.CustId
       WHERE 
         b.atr1 = 0 AND
-        b.create_date BETWEEN "."'".$start." 00:00:00'"." AND "."'".$end." 23:59:59'";
+        a.tgl_spk BETWEEN "."'".$start."'"." AND "."'".$end."'";
     } else {
       $query = "SELECT
       b.create_date,
@@ -103,7 +103,8 @@
         left join master_customer h on a.CustId = h.CustId
       WHERE 
       b.atr1 = 0 AND
-      b.create_date BETWEEN "."'".$start." 00:00:00'"." AND "."'".$end." 23:59:59'"." AND
+      -- b.create_date BETWEEN "."'".$start." 00:00:00'"." AND "."'".$end." 23:59:59'"." AND
+      a.tgl_spk BETWEEN "."'".$start."'"." AND "."'".$end."'"." AND
       b.UserId = '".$s_id."'";
     }
     
