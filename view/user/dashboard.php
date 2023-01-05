@@ -7,6 +7,7 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
+  $prevdatetime = $datetime-1;
   $tahun = $_GET['tahun'];
 
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
@@ -740,169 +741,93 @@
           <div class="row mb-3">
 
             <!-- Earnings (Monthly) Card Example -->
-
             <div class="col-xl-3 col-md-6 mb-4">
-
               <div class="card h-100">
-
                 <div class="card-body">
-
                   <div class="row align-items-center">
-
                     <div class="col mr-2">
-
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Customer</div>
-
                       <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $data_c['jmlCust']?></div>
-
                       <div class="mt-2 mb-0 text-muted text-xs">
-
                         <!--<span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-
                         <span>Since last month</span>-->
-
                       </div>
-
                     </div>
-
                     <div class="col-auto">
-
                       <i class="fas fa-users fa-2x text-info"></i>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
             <!-- Earnings (Annual) Card Example -->
-
             <div class="col-xl-3 col-md-6 mb-4">
-
               <div class="card h-100">
-
                 <div class="card-body">
-
                   <div class="row no-gutters align-items-center">
-
                     <div class="col mr-2">
-
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Jumlah Transaksi</div>
-
                       <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $data_t['jmlHd']?></div>
-
                       <div class="mt-2 mb-0 text-muted text-xs">
-
                         <!--<span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-
                         <span>Since last years</span>-->
-
                       </div>
-
                     </div>
-
                     <div class="col-auto">
-
                       <i class="fas fa-file-invoice fa-2x text-primary"></i>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
             <!-- New User Card Example -->
-
             <div class="col-xl-3 col-md-6 mb-4">
-
               <div class="card h-100">
-
                 <div class="card-body">
-
                   <div class="row no-gutters align-items-center">
-
                     <div class="col mr-2">
-
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Transaksi Open</div>
-
                       <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $data_to['Hdopen']?></div>
-
                       <div class="mt-2 mb-0 text-muted text-xs">
-
                         <!--<span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 20.4%</span>
-
                         <span>Since last month</span>-->
-
                       </div>
-
                     </div>
-
                     <div class="col-auto">
-
                       <i class="fas fa-shipping-fast fa-2x text-warning"></i>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
             <!-- Pending Requests Card Example -->
-
             <div class="col-xl-3 col-md-6 mb-4">
-
               <div class="card h-100">
-
                 <div class="card-body">
-
                   <div class="row no-gutters align-items-center">
-
                     <div class="col mr-2">
-
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Transaksi Closed</div>
-
                       <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $data_tc['Hdclose']?></div>
-
                       <div class="mt-2 mb-0 text-muted text-xs">
-
                         <!--<span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-
                         <span>Since yesterday</span>-->
-
                       </div>
-
                     </div>
-
                     <div class="col-auto">
-
                       <i class="fas fa-people-carry fa-2x text-success"></i>
-
                     </div>
-
                   </div>
-
+                  <div class="text-xs">
+                    note : terhitung dari <?php echo $prevdatetime ?> sampai <?php echo $datetime ?>
+                  </div>
                 </div>
-
               </div>
-
             </div>
 
-
-
             <!-- Area Chart -->
-
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
