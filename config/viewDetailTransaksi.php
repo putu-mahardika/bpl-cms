@@ -20,7 +20,7 @@ while($data = mysqli_fetch_array($fetch)){
 
 	$hdid = $data['HdId'];
 
-    $query_c = "select a.nama from master_customer as a inner join trans_hd as b on b.HdId='$hdid' and b.CustId=a.CustId";
+  $query_c = "select a.nama from master_customer as a inner join trans_hd as b on b.HdId='$hdid' and b.CustId=a.CustId";
 
 	$query_s = "select status from master_status where stsid='$data[StsId]'";
 
