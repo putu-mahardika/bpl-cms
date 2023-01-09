@@ -16,6 +16,7 @@
   }
   date_default_timezone_set("Asia/Jakarta");
   $datetime = date('Y');
+  $prevdatetime = $datetime-1;
   $tahun = $_GET['tahun'];
   
 	
@@ -671,6 +672,9 @@
                     <div class="col-auto">
                       <i class="fas fa-people-carry fa-2x text-success"></i>
                     </div>
+                  </div>
+                  <div class="text-xs">
+                    note : terhitung dari <?php echo $prevdatetime ?> sampai <?php echo $datetime ?>
                   </div>
                 </div>
               </div>

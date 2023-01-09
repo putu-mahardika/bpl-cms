@@ -1,14 +1,14 @@
 <?php
 
-    // $dbhost = 'localhost';
-    // $dbuser = 'root';
-    // $dbpass = '';
-    // $dbname = 'berkahpe_tracking';
+    $dbhost = 'localhost';
+    $dbuser = 'root';
+    $dbpass = '';
+    $dbname = 'berkahpe_tracking';
 
-    $dbhost = '192.168.100.226';
-    $dbuser = 'devuser';
-    $dbpass = 'tog57588';
-    $dbname = 'devuser_bpl';
+    // $dbhost = '192.168.100.226';
+    // $dbuser = 'devuser';
+    // $dbpass = 'tog57588';
+    // $dbname = 'devuser_bpl';
 
     $timeout = 1000;
 

@@ -49,6 +49,9 @@ while($data = mysqli_fetch_array($fetch)){
     $query7 = mysqli_query($koneksi, "select Nama from master_kota where Id='$tujuanId'");
     $data7 = mysqli_fetch_array($query7);
 
+    $query8 = mysqli_query($koneksi, "select * from trans_biayaturunan where HdId='$t_id'");
+    // $data8 = mysqli_fetch_array($query8);
+
 
     $response = "<label><b>Tgl : </b>".$tgl."</label><br>";
     $response .= "<label><b>Customer : </b>".$data1['nama']."</label><br>";
@@ -101,6 +104,29 @@ while($data = mysqli_fetch_array($fetch)){
 
     if($data0['jumlah'] != 0){
         if($armada==1){
+
+            $response .= "<label><b>Detail Biaya</b></label>";
+            $response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover>'";
+            $response .= "<thead class='thead-light'><tr>";
+            $response .= "<th style='padding-left:8px;'>No. SPK Turunan</th>
+                            <th style='padding-left:8px;'>Biaya Transport</th>
+                            <th style='padding-left:8px;'>Biaya Inap</th>
+                            <th style='padding-left:8px;'>Biaya Lain=lain</th>";
+            $response .= "</tr></thead>";
+            $response .= "<tbody>";
+
+            while($dataBiaya = mysqli_fetch_array($query8)) {
+                $response .= "<tr><td>".$dataBiaya['NoSPK']."</td>
+                                <td>".$dataBiaya['Biaya_transport']."</td>
+                                <td>".$dataBiaya['Biaya_inap']."</td>
+                                <td>".$dataBiaya['Biaya_lain']."</td></tr>";
+            }
+
+            $response .= "</tbody>";
+            $response .= "</table>";
+
+            $response .= "<br>";
+
             $response .= "<label><b>No SPK Turunan :</b> ".$nospk."</label>";
 			$response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover'>";
             $response .= "<thead class='thead-light'><tr>";
@@ -135,6 +161,29 @@ while($data = mysqli_fetch_array($fetch)){
             $response .= "</tbody>";
             $response .= "</table>";
         }else{
+
+            $response .= "<label><b>Detail Biaya</b></label>";
+            $response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover'>";
+            $response .= "<thead class='thead-light'><tr>";
+            $response .= "<th style='padding-left:8px;'>No. SPK Turunan</th>
+                            <th style='padding-left:8px;'>Biaya Transport</th>
+                            <th style='padding-left:8px;'>Biaya Inap</th>
+                            <th style='padding-left:8px;'>Biaya Lain=lain</th>";
+            $response .= "</tr></thead>";
+            $response .= "<tbody>";
+
+            while($dataBiaya = mysqli_fetch_array($query8)) {
+                $response .= "<tr><td>".$dataBiaya['NoSPK']."-".$dataBiaya['Turunan']."</td>
+                                <td>".$dataBiaya['Biaya_transport']."</td>
+                                <td>".$dataBiaya['Biaya_inap']."</td>
+                                <td>".$dataBiaya['Biaya_lain']."</td></tr>";
+            }
+
+            $response .= "</tbody>";
+            $response .= "</table>";
+
+            $response .= "<br>";
+
             for($i=1;$i<=$armada;$i++){
                 $response .= "<label><b>No SPK Turunan :</b> ".$nospk."-".$i."</label>";
                 $response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover'>";
