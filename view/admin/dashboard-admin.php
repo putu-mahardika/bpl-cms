@@ -41,6 +41,9 @@
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <!-- <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet"> -->
+  <!-- DevExtreme theme -->
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.1.6/css/dx.light.css">
 </head>
 
 <body id="page-top">
@@ -674,13 +677,41 @@
                     </div>
                   </div>
                   <div class="text-xs">
-                    note : terhitung dari <?php echo $prevdatetime ?> sampai <?php echo $datetime ?>
+                    note : terhitung dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong>
                   </div>
                 </div>
               </div>
             </div>
 
-
+            <div class="col-lg-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <p class="font-weight-bold">
+                    <?php if ($_SESSION['hak_akses'] == "Admin") {
+                      echo 'Accumulate Sales This Year : ';
+                    } else {
+                      echo 'Total Sales This Year : ';
+                    } ?>
+                    <span id="acumulateThisYear"></span>
+                      / 
+                    <span id="ritThisYear"></span> Rit
+                  </p>
+                  <p class="font-weight-bold">
+                    <?php if ($_SESSION['hak_akses'] == "Admin") {
+                      echo 'Accumulate Sales This Month : ';
+                    } else {
+                      echo 'Total Sales This Month : ';
+                    } ?>
+                    <span id="acumulateThisMonth"></span>
+                      / 
+                    <span id="ritThisMonth"></span> Rit
+                  </p>
+                  <div class="text-xs">
+                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong> 
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- Area Chart -->
 
@@ -722,6 +753,21 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-lg-12 mb-4">
+              <div class="card">
+                <div class="card-header pt-3 pb-0">
+                  <h6 class="m-0 font-weight-bold text-primary">Yearly Sales Users</h6>
+                  <div class="text-xs">
+                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="userSummaryTable"></div>
+                </div>
+              </div>
+            </div>
+            
 
             <!-- Pie Chart -->
             <!--<div class="col-xl-4 col-lg-5">
@@ -868,7 +914,14 @@
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
   <script src="../../vendor/chart.js/Chart.min.js"></script>
+  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
+  <!-- <script src="../../vendor/datatables1/datatables.min.js"></script> -->
   <!-- <script src="../../js/demo/chart-area-demo.js"></script>   -->
+  <!-- DevExtreme library -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/3.8.0/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> -->
+  <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/22.1.6/js/dx.all.js"></script>
 
   <script>
     function tahunUbah(){
@@ -948,6 +1001,14 @@
             ],
           },
           options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
             maintainAspectRatio: false,
             layout: {
               padding: {
@@ -974,8 +1035,11 @@
                 ticks: {
                   beginAtZero: true,
                   // stepSize: 1,
-                  suggestedMax: 5
-                }
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
               }],
             },
             legend: {
@@ -1064,6 +1128,14 @@
             ],
           },
           options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
             maintainAspectRatio: false,
             layout: {
               padding: {
@@ -1090,8 +1162,11 @@
                 ticks: {
                   beginAtZero: true,
                   // stepSize: 1,
-                  suggestedMax: 5
-                }
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
               }],
             },
             legend: {
@@ -1162,6 +1237,14 @@
             ],
           },
           options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
             maintainAspectRatio: false,
             layout: {
               padding: {
@@ -1190,8 +1273,11 @@
                 ticks: {
                   beginAtZero: true,
                   // stepSize: 1,
-                  suggestedMax: 5
-                }
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
               }],
             },
             legend: {
@@ -1208,6 +1294,126 @@
         console.log('err', response);
       }
     });
+  </script>
+
+  <script>
+    $acumulateThisYear = document.getElementById('acumulateThisYear');
+    $ritThisYear = document.getElementById('ritThisYear');
+    $acumulateThisMonth = document.getElementById('acumulateThisMonth');
+    $ritThisMonth = document.getElementById('ritThisMonth');
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getAccumulateData: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log(response);
+        $acumulateThisYear.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[0]['Total'])
+        $ritThisYear.innerHTML = new Intl.NumberFormat('id-ID').format(response[0]['totalDetail'])
+        $acumulateThisMonth.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[1]['Total'])
+        $ritThisMonth.innerHTML = new Intl.NumberFormat('id-ID').format(response[1]['totalDetail'])
+      }
+    })
+  </script>
+  <script>
+    let dataGrid = null;
+    let dataSourceTemp = null;
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getSalesSummary: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('anu', response);
+        dataSourceTemp = response;
+      }
+    })
+  </script>
+
+<script>
+    $(document).ready(() => {
+      // console.log('aaa');
+      var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
+      dataGrid = $('#userSummaryTable').dxDataGrid({
+        // dataSource: generateData(100000),
+        dataSource: "../../config/dashboardController.php?getSalesSummary=true&tahun=<?php echo $tahun ?>",
+        // keyExpr: 'id',
+        // allowColumnReordering: true,
+        allowColumnResizing: true,
+        selection: {
+          mode: 'single',
+        },
+        showBorders: true,
+        showRowLines: true,
+        groupPanel: {
+          visible: false,
+        },
+        filterRow: {
+          visible: false,
+          applyFilter: 'auto',
+        },
+        searchPanel: {
+          visible: false,
+          width: 240,
+          placeholder: 'Search...',
+        },
+        headerFilter: {
+          visible: false,
+        },
+        columnChooser: {
+          enabled: false,
+          mode: 'select',
+        },
+        columnAutoWidth: true,
+        columns: [
+          {
+            caption: 'Nama',
+            dataField: 'Nama'
+          },
+          {
+            caption: 'Sales/Rit',
+            cellTemplate: function(container, options) {
+              // container.html(`${options.row.rowIndex + 1}`);
+              // let datax = options.row.data
+              container.html(`
+              <div class="row my-1">
+                  <div class="col-auto">
+                      <div> Rp ${new Intl.NumberFormat('id-ID').format(options.row.data.Total)} / ${new Intl.NumberFormat('id-ID').format(options.row.data.Rit)} Rit</div>
+                  </div>
+              </div>
+
+              `);
+            }
+          },
+          // {
+          //     dataField: 'Nama',
+          //     caption: 'Name',
+          // }
+        ],
+        scrolling: {
+          rowRenderingMode: 'virtual',
+        },
+        paging: {
+          pageSize: 5,
+        },
+        pager: {
+          visible: true,
+          allowedPageSizes: [5, 10, 'all'],
+          showPageSizeSelector: true,
+          showInfo: true,
+          showNavigationButtons: true,
+        },
+      }).dxDataGrid('instance');
+
+      
+    });
+
   </script>
 
 </body>

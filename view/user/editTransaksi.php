@@ -87,7 +87,7 @@
 
   $fetch_s = mysqli_query($koneksi, $query_s);
 
-  $query_b = "select * from trans_biayaturunan where HdId='$t_id'";
+  $query_b = "select * from trans_biayaturunan where atr1 is null and HdId='$t_id'";
   $fetch_b = mysqli_query($koneksi, $query_b);
   $arrayBiayaTambahans = array();
   while($rowbiaya = $fetch_b->fetch_assoc()) {
@@ -1452,9 +1452,9 @@
                         <?php } else { ?>
                           <td style="font-size:13px;padding-left:8px;"><?php echo $arrayBiayaTambahan['NoSPK'] .'-'. $arrayBiayaTambahan['Turunan'] ?></td>
                         <?php } ?>
-                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_transport'] ?></td>
-                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_inap'] ?></td>
-                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.$arrayBiayaTambahan['Biaya_lain'] ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.number_format($arrayBiayaTambahan['Biaya_transport'], 0, ",", ".") ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.number_format($arrayBiayaTambahan['Biaya_inap'], 0, ",", ".") ?></td>
+                          <td style="font-size:13px;padding-left:8px;"><?php echo 'Rp '.number_format($arrayBiayaTambahan['Biaya_lain'], 0, ",", ".") ?></td>
                           <td style="font-size:13px;padding-left:8px;">
                           <?php if ($t_onclose == 0) { ?>
                             <button title="edit" onclick="openFormBiayaTurunan(<?php echo $arrayBiayaTambahan['Id'] ?>)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>

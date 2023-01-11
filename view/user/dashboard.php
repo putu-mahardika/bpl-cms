@@ -821,7 +821,38 @@
                     </div>
                   </div>
                   <div class="text-xs">
-                    note : terhitung dari <?php echo $prevdatetime ?> sampai <?php echo $datetime ?>
+                    note : terhitung dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-lg-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <p class="font-weight-bold">
+                    <?php if ($_SESSION['hak_akses'] == "Admin") {
+                      echo 'Accumulate Sales This Year : ';
+                    } else {
+                      echo 'Total Sales This Year : ';
+                    } ?>
+                    <span id="acumulateThisYear"></span>
+                      / 
+                    <span id="ritThisYear"></span> Rit
+                  </p>
+                  <p class="font-weight-bold">
+                    <?php if ($_SESSION['hak_akses'] == "Admin") {
+                      echo 'Accumulate Sales This Month : ';
+                    } else {
+                      echo 'Total Sales This Month : ';
+                    } ?>
+                    <span id="acumulateThisMonth"></span>
+                      / 
+                    <span id="ritThisMonth"></span> Rit
+                  </p>
+                  <div class="text-xs">
+                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong> 
                   </div>
                 </div>
               </div>
@@ -1428,6 +1459,14 @@
             ],
           },
           options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
             maintainAspectRatio: false,
             layout: {
               padding: {
@@ -1454,7 +1493,10 @@
                 ticks: {
                   beginAtZero: true,
                   // stepSize: 1,
-                  suggestedMax: 5
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return new Intl.NumberFormat('id-ID').format(value)
+                  }
                 }
               }],
             },
@@ -1544,6 +1586,14 @@
             ],
           },
           options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
             maintainAspectRatio: false,
             layout: {
               padding: {
@@ -1570,7 +1620,10 @@
                 ticks: {
                   beginAtZero: true,
                   // stepSize: 1,
-                  suggestedMax: 5
+                  suggestedMax: 1000,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
                 }
               }],
             },
@@ -1588,6 +1641,29 @@
         console.log('err', response);
       }
     });
+  </script>
+
+<script>
+    $acumulateThisYear = document.getElementById('acumulateThisYear');
+    $ritThisYear = document.getElementById('ritThisYear');
+    $acumulateThisMonth = document.getElementById('acumulateThisMonth');
+    $ritThisMonth = document.getElementById('ritThisMonth');
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getAccumulateData: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log(response);
+        $acumulateThisYear.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[0]['Total'])
+        $ritThisYear.innerHTML = new Intl.NumberFormat('id-ID').format(response[0]['totalDetail'])
+        $acumulateThisMonth.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[1]['Total'])
+        $ritThisMonth.innerHTML = new Intl.NumberFormat('id-ID').format(response[1]['totalDetail'])
+      }
+    })
   </script>
 
 </body>

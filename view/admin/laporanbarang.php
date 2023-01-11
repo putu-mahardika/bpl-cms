@@ -724,6 +724,10 @@
             dataField: 'create_date',
           },
           {
+            caption: 'Sales',
+            dataField: 'namaUser'
+          },
+          {
             caption: 'No. SPK',
             dataField: 'NoSPK'
           },
@@ -790,10 +794,6 @@
           {
             caption: 'Status OnClose PO',
             dataField: 'StatusPO'
-          },
-          {
-            caption: 'Sales',
-            dataField: 'namaUser'
           },
           {
             caption: 'Action',

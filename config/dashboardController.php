@@ -6,7 +6,13 @@
     $year = $_GET['tahun'];
   } else {
     $year = date('Y', strtotime($datetime));
-  } 
+  }
+  
+  if(isset($_GET['bulan'])) {
+    $month = $_GET['bulan'];
+  } else {
+    $month = date('m', strtotime($datetime));
+  }
   session_save_path('../tmp');
   session_start();
   //$s_username = $_SESSION['username'];
@@ -36,6 +42,16 @@
     $resArrayDataOpenChart3 = getDataOpenChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
     $resArrayDataCloseChart3 = getDataCloseChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
     $resArray = [$resArrayDataOpenChart3, $resArrayDataCloseChart3, $arrayUser[1]];
+  
+  } elseif (isset($_GET['getAccumulateData'])) {
+    $resArraySalesThisYear = getSalesThisYear($koneksi, $year, $akses, $s_id);
+    $resArraySalesThisMonth = getSalesThisMonth($koneksi, $year, $month, $akses, $s_id);
+    $resArray = [$resArraySalesThisYear, $resArraySalesThisMonth];
+  
+  } elseif (isset($_GET['getSalesSummary'])) {
+    $arrayUser = getUser($koneksi);
+    $resArraySalesSummary = getSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id);
+    $resArray = $resArraySalesSummary;
   }
 
   echo json_encode($resArray);
@@ -246,7 +262,7 @@
     WHERE
       b.atr1=0 and
       e.HdId = b.HdId and
-      b.OnClose=1 and year(b.create_date)='".$year."'";
+      b.OnClose=1 and year(b.DateOnClose)='".$year."'";
     } else {
       $query = "SELECT 
       b.HdId,
@@ -258,7 +274,7 @@
     WHERE
       b.atr1=0 and
       e.HdId = b.HdId and
-      b.OnClose=1 and year(b.create_date)='".$year."' and
+      b.OnClose=1 and year(b.DateOnClose)='".$year."' and
       a.UserId='".$s_id."'";
     }
 
@@ -276,7 +292,143 @@
       }
     }
 
-    return $tempArray;
+    return $array;
+  }
+
+  function getSalesThisYear($koneksi, $year, $akses, $s_id) {
+    if ($akses == "Admin") {
+      $query = "SELECT
+        SUM(a.Total) AS Total,
+        COUNT(a.Id) AS Id,
+        SUM(b.total_armada) AS totalDetail
+      FROM 
+        trans_biayaturunan a,
+        trans_hd b
+      WHERE 
+        a.atr1 IS NULL AND
+        a.HdId = b.HdId AND
+        b.OnClose=1 AND
+        YEAR(b.DateOnClose)='".$year."'";
+    } else {
+      $query = "SELECT
+        SUM(a.Total) AS Total,
+        COUNT(a.Id) AS Id,
+        SUM(b.total_armada) AS totalDetail
+      FROM 
+        trans_biayaturunan a,
+        trans_hd b
+      WHERE 
+        a.atr1 IS NULL AND
+        a.HdId = b.HdId AND
+        b.OnClose=1 AND
+        b.UserId='".$s_id."'"."AND
+        YEAR(b.DateOnClose)='".$year."'"; 
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    $data = mysqli_fetch_array($fetch);
+
+    return $data;
+  }
+
+  function getSalesThisMonth($koneksi, $year, $month, $akses, $s_id) {
+    if ($akses == "Admin") {
+      $query = "SELECT
+        SUM(a.Total) AS Total,
+        COUNT(a.Id) AS Id,
+        SUM(b.total_armada) AS totalDetail
+      FROM 
+        trans_biayaturunan a,
+        trans_hd b
+      WHERE 
+        a.atr1 IS NULL AND
+        a.HdId = b.HdId AND
+        b.OnClose=1 AND
+        YEAR(b.DateOnClose)='".$year."'"."AND
+        MONTH(b.DateOnClose)='".$month."'";
+    } else {
+      $query = "SELECT
+        SUM(a.Total) AS Total,
+        COUNT(a.Id) AS Id,
+        SUM(b.total_armada) AS totalDetail
+      FROM 
+        trans_biayaturunan a,
+        trans_hd b
+      WHERE 
+        a.atr1 IS NULL AND
+        a.HdId = b.HdId AND
+        b.OnClose=1 AND
+        b.UserId='".$s_id."'"."AND
+        YEAR(b.DateOnClose)='".$year."'"."AND
+        MONTH(b.DateOnClose)='".$month."'"; 
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    $data = mysqli_fetch_array($fetch);
+
+    return $data;
+  }
+
+  function getSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id) {
+    $arrayUserLength = count($arrayUser[0]);
+    $array = array();
+    $tempArray = array();
+    if ($akses == "Admin") {
+      $query = "SELECT 
+        SUM(a.Total) as Total,
+        COUNT(a.Id) as Jumlah,
+        c.UserId
+      FROM
+        trans_biayaturunan a,
+        trans_hd c 
+      WHERE 
+        -- a.UserId = c.UserId AND 
+        a.HdId = c.HdId AND
+        c.OnClose = 1 AND
+        a.atr1 IS NULL AND 
+        -- c.UserId = 17 AND
+        YEAR(c.DateOnClose) = '2023'
+      GROUP BY 
+        c.UserId";
+    } else {
+      $query = "SELECT 
+        SUM(a.Total) as Total,
+        COUNT(a.Id) as Jumlah,
+        c.UserId
+      FROM
+        trans_biayaturunan a,
+        trans_hd c 
+      WHERE 
+        -- a.UserId = c.UserId AND 
+        a.HdId = c.HdId AND
+        c.OnClose = 1 AND
+        a.atr1 IS NULL AND 
+        c.UserId = '".$s_id."'"."AND
+        YEAR(c.DateOnClose) = '$year'
+      GROUP BY 
+        c.UserId";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    // $datas = mysqli_fetch_assoc($fetch);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
+
+    for ($i=0; $i < $arrayUserLength; $i++) { 
+      $array[$i]['Nama'] = '';
+      $array[$i]['Total'] = 0;
+      $array[$i]['Rit'] = 0;
+      foreach ($tempArray as $data) {
+        if($data['UserId'] == $arrayUser[0][$i]) {
+          $array[$i]['Total'] = (double)$data['Total'];
+          $array[$i]['Rit'] = (double)$data['Jumlah'];
+        }
+      }
+      $array[$i]['Nama'] = $arrayUser[1][$i];
+    }
+
+    return $array;
   }
 
 ?>

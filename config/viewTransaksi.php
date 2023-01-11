@@ -49,7 +49,7 @@ while($data = mysqli_fetch_array($fetch)){
     $query7 = mysqli_query($koneksi, "select Nama from master_kota where Id='$tujuanId'");
     $data7 = mysqli_fetch_array($query7);
 
-    $query8 = mysqli_query($koneksi, "select * from trans_biayaturunan where HdId='$t_id'");
+    $query8 = mysqli_query($koneksi, "select * from trans_biayaturunan where atr1 is null and HdId='$t_id'");
     // $data8 = mysqli_fetch_array($query8);
 
 
@@ -106,20 +106,22 @@ while($data = mysqli_fetch_array($fetch)){
         if($armada==1){
 
             $response .= "<label><b>Detail Biaya</b></label>";
-            $response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover>'";
+            $response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover'>";
             $response .= "<thead class='thead-light'><tr>";
             $response .= "<th style='padding-left:8px;'>No. SPK Turunan</th>
                             <th style='padding-left:8px;'>Biaya Transport</th>
                             <th style='padding-left:8px;'>Biaya Inap</th>
-                            <th style='padding-left:8px;'>Biaya Lain=lain</th>";
+                            <th style='padding-left:8px;'>Biaya Lain-lain</th>";
             $response .= "</tr></thead>";
             $response .= "<tbody>";
 
             while($dataBiaya = mysqli_fetch_array($query8)) {
-                $response .= "<tr><td>".$dataBiaya['NoSPK']."</td>
-                                <td>".$dataBiaya['Biaya_transport']."</td>
-                                <td>".$dataBiaya['Biaya_inap']."</td>
-                                <td>".$dataBiaya['Biaya_lain']."</td></tr>";
+                if ($dataBiaya['Turunan'] == 1) {
+                    $response .= "<tr><td>".$dataBiaya['NoSPK']."</td>
+                                    <td>Rp ".number_format($dataBiaya['Biaya_transport'], 0, ",", ".")."</td>
+                                    <td>Rp ".number_format($dataBiaya['Biaya_inap'], 0, ",", ".")."</td>
+                                    <td>Rp ".number_format($dataBiaya['Biaya_lain'], 0, ",", ".")."</td></tr>";
+                }
             }
 
             $response .= "</tbody>";
@@ -168,15 +170,15 @@ while($data = mysqli_fetch_array($fetch)){
             $response .= "<th style='padding-left:8px;'>No. SPK Turunan</th>
                             <th style='padding-left:8px;'>Biaya Transport</th>
                             <th style='padding-left:8px;'>Biaya Inap</th>
-                            <th style='padding-left:8px;'>Biaya Lain=lain</th>";
+                            <th style='padding-left:8px;'>Biaya Lain-lain</th>";
             $response .= "</tr></thead>";
             $response .= "<tbody>";
 
             while($dataBiaya = mysqli_fetch_array($query8)) {
                 $response .= "<tr><td>".$dataBiaya['NoSPK']."-".$dataBiaya['Turunan']."</td>
-                                <td>".$dataBiaya['Biaya_transport']."</td>
-                                <td>".$dataBiaya['Biaya_inap']."</td>
-                                <td>".$dataBiaya['Biaya_lain']."</td></tr>";
+                                <td>Rp ".number_format($dataBiaya['Biaya_transport'], 0, ",", ".")."</td>
+                                <td>Rp ".number_format($dataBiaya['Biaya_inap'], 0, ",", ".")."</td>
+                                <td>Rp ".number_format($dataBiaya['Biaya_lain'], 0, ",", ".")."</td></tr>";
             }
 
             $response .= "</tbody>";
@@ -225,6 +227,20 @@ while($data = mysqli_fetch_array($fetch)){
         }
 
     }else{
+
+        $response .= "<label><b>Detail Biaya</b></label>";
+        $response .= "<table class='table align-items-center table-flush table-hover' id='dataTableHover'>";
+        $response .= "<thead class='thead-light'><tr>";
+        $response .= "<th style='padding-left:8px;'>No. SPK Turunan</th>
+                        <th style='padding-left:8px;'>Biaya Transport</th>
+                        <th style='padding-left:8px;'>Biaya Inap</th>
+                        <th style='padding-left:8px;'>Biaya Lain-lain</th>";
+        $response .= "</tr></thead>";
+        $response .= "<tbody>";
+        $response .= "</body>";
+        $response .= "</table>";
+        
+        $response .= "<br>";
 
 		if($armada==1){
 			$response .= "<label><b>No SPK Turunan :</b> ".$nospk."</label>";
