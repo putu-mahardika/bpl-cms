@@ -921,7 +921,9 @@
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/3.8.0/exceljs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> -->
-  <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/22.1.6/js/dx.all.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/globalize/1.1.1/globalize.min.js"></script> -->
+  <!-- <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/globalize/0.1.1/globalize.min.js"></script> -->
+  <script src="https://cdn3.devexpress.com/jslib/22.2.3/js/dx.all.js"></script>
 
   <script>
     function tahunUbah(){
@@ -1337,8 +1339,11 @@
   </script>
 
 <script>
-    $(document).ready(() => {
-      // console.log('aaa');
+  $(document).ready(() => {
+    // console.log('aaa');
+      // Globalize.culture().numberFormat.currency.symbol = "Rp";
+      // Globalize.culture().numberFormat.currency[','] = ".";
+      // Globalize.culture().numberFormat.currency['.'] = ",";
       var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
       dataGrid = $('#userSummaryTable').dxDataGrid({
         // dataSource: generateData(100000),
@@ -1377,24 +1382,31 @@
             dataField: 'Nama'
           },
           {
-            caption: 'Sales/Rit',
-            cellTemplate: function(container, options) {
-              // container.html(`${options.row.rowIndex + 1}`);
-              // let datax = options.row.data
-              container.html(`
-              <div class="row my-1">
-                  <div class="col-auto">
-                      <div> Rp ${new Intl.NumberFormat('id-ID').format(options.row.data.Total)} / ${new Intl.NumberFormat('id-ID').format(options.row.data.Rit)} Rit</div>
-                  </div>
-              </div>
+            // caption: 'Sales/Rit',
+            // cellTemplate: function(container, options) {
+            //   // container.html(`${options.row.rowIndex + 1}`);
+            //   // let datax = options.row.data
+            //   container.html(`
+            //   <div class="row my-1">
+            //       <div class="col-auto">
+            //           <div> Rp ${new Intl.NumberFormat('id-ID').format(options.row.data.Total)} / ${new Intl.NumberFormat('id-ID').format(options.row.data.Rit)} Rit</div>
+            //       </div>
+            //   </div>
 
-              `);
+            //   `);
+            // }
+            caption: 'Sales',
+            dataField: 'Total',
+            dataType: 'number',
+            format: 'currency',
+            customizeText: function(cellInfo) {
+                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
             }
           },
-          // {
-          //     dataField: 'Nama',
-          //     caption: 'Name',
-          // }
+          {
+              dataField: 'Rit',
+              caption: 'Rit',
+          }
         ],
         scrolling: {
           rowRenderingMode: 'virtual',
