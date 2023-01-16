@@ -1351,6 +1351,7 @@
         // keyExpr: 'id',
         // allowColumnReordering: true,
         allowColumnResizing: true,
+        columnAutoWidth: true,
         selection: {
           mode: 'single',
         },
@@ -1398,14 +1399,18 @@
             caption: 'Sales',
             dataField: 'Total',
             dataType: 'number',
+            // alignment: 'center',
             format: 'currency',
             customizeText: function(cellInfo) {
                 return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
-            }
+            },
+            width: 300
           },
           {
               dataField: 'Rit',
               caption: 'Rit',
+              // alignment: 'center',
+              width: 100
           }
         ],
         scrolling: {
