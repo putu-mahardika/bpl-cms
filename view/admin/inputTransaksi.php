@@ -178,6 +178,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
+          aria-controls="collapseLoadType">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Load Type</span> 
+        </a> 
+        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Load Type</h6>
+            <a class="collapse-item" href="loadType.php">List Load Type</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 
       <!--<li class="nav-item">
 

@@ -1,6 +1,5 @@
 <?php
   session_save_path('../../tmp');
-
   session_start();
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../index.php?pesan=belum_login");
@@ -22,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit User - PT Berkah Permata Logistik</title>
+  <title>Tambah Load Type - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -98,8 +97,8 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span> 
-        </a>
+          <span>Kota</span>
+        </a> 
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
@@ -189,7 +188,8 @@
         </a>
       </li>
       <hr class="sidebar-divider">
-	    <li class="nav-item">
+	  <li class="nav-item">
+        
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
@@ -371,12 +371,8 @@
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>-->
-                <a class="dropdown-item" href="editPassword.php">
+				<a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -394,61 +390,34 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="user.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit User</h1>
+            <a href="loadType.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Load Type</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
               <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
-
-          <?php
-            $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_user where UserId='$id'");
-            $data = mysqli_fetch_array($fetch);
-            //echo $id;
-          ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-
+			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php?">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['UserId'];?>" name="id" readonly>  
-                <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username"  minlength="3" maxlength="30" required>
-                <label>Password Baru :</label>
-                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" name="password">
-                <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
+              <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+              <form class="form group" method="post" action="../../config/controller/loadTypeController.php">
+                <label>No :</label>
+                <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+                <label>Kode :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" minlength="3" maxlength="6" required>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
-                <label>isAdmin :</label>
-                <!--<input type="text" class="form-control" name="hak-akses">-->
-                <select name="isAdmin" class="form-control form-control-sm mb-3">
-                <?php if ($data['isAdmin'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" required>
                 <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
+				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
+                <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
                   <option disabled> Pilih </option>
                   <option value=1 selected> Ya </option>
                   <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editUser" class="btn btn-md btn-primary " style="width:77%;">
+                </select>-->
+				        <br>
+                <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
+                <input type="submit" value="Submit" name="inputLoadType" class="btn btn-md btn-primary " style="width:77%;">
               </form>
             </div>
 		  <!--<div class="text-center">
@@ -503,6 +472,14 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script>
+    document.querySelector(".no").addEventListener("keypress", function (evt) {
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    });
+  </script>
 
 </body>
 

@@ -1,6 +1,5 @@
 <?php
   session_save_path('../../tmp');
-
   session_start();
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../index.php?pesan=belum_login");
@@ -14,7 +13,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit User - PT Berkah Permata Logistik</title>
+  <title>Edit Load Type - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -36,6 +35,7 @@
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
+        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -189,8 +189,8 @@
         </a>
       </li>
       <hr class="sidebar-divider">
-	    <li class="nav-item">
-        <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
+	  <li class="nav-item">
+        <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
@@ -371,12 +371,8 @@
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>-->
-                <a class="dropdown-item" href="editPassword.php">
+				<a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -394,8 +390,8 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="user.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit User</h1>
+          <a href="loadType.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Edit Load Type</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
@@ -405,59 +401,46 @@
 
           <?php
             $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_user where UserId='$id'");
+            $fetch = mysqli_query($koneksi, "select * from master_load_type where id='$id'");
             $data = mysqli_fetch_array($fetch);
             //echo $id;
           ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-
+			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php?">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['UserId'];?>" name="id" readonly>  
-                <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username"  minlength="3" maxlength="30" required>
-                <label>Password Baru :</label>
-                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" name="password">
-                <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
-                <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
-                <label>isAdmin :</label>
-                <!--<input type="text" class="form-control" name="hak-akses">-->
-                <select name="isAdmin" class="form-control form-control-sm mb-3">
-                <?php if ($data['isAdmin'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editUser" class="btn btn-md btn-primary " style="width:77%;">
-              </form>
-            </div>
+            <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+            <form class="form group" method="post" action="../../config/controller/loadTypeController.php">
+              <!--<label>Id :</label>-->
+              <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['id'];?>" name="id" readonly>
+              <label>No :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+              <label>Kode :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode'];?>" name="kode" minlength="3" maxlength="30" required>
+              <label>Nama :</label>
+              <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" value ="<?php echo $data['nama'];?>" required>
+              <label>Aktif :</label>
+              <select name="aktif" class="form-control form-control-sm mb-3">
+              <?php if ($data['aktif'] == 1){ ?>
+                <option disabled> Pilih </option>
+                <option value=1 selected> Ya </option>
+                <option value=0> Tidak </option>
+              <?php } else { ?>
+                <option disabled> Pilih </option>
+                <option value=1> Ya </option>
+                <option value=0 selected> Tidak </option>
+              <?php } ?>
+              </select>
+              <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
+              <input type="submit" value="Submit" name="editLoadType" class="btn btn-md btn-primary " style="width:77%;">
+            </form>
+          </div>
 		  <!--<div class="text-center">
             <img src="img/think.svg" style="max-height: 90px">
             <h4 class="pt-3">save your <b>imagination</b> here!</h4>
           </div>-->
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">

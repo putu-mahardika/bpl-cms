@@ -1,6 +1,5 @@
 <?php
   session_save_path('../../tmp');
-
   session_start();
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../index.php?pesan=belum_login");
@@ -9,8 +8,8 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-  //$query = 'select * from master_user where ...';
-  //$fetch = mysqli_query($koneksi,$query);
+	$query = 'select * from master_load_type';
+	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,12 +21,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit User - PT Berkah Permata Logistik</title>
+  <title>Load Type - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
-
+ 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
@@ -99,7 +99,7 @@
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
           <span>Kota</span> 
-        </a>
+        </a> 
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
@@ -108,16 +108,16 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>
           <span>Load Type</span> 
         </a> 
-        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseLoadType" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="loadType.php">List Load Type</a>
+            <a class="collapse-item active" href="loadType.php">List Load Type</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -156,19 +156,19 @@
           </div>
         </a>
       </li>-->
-      <!--<li class="nav-item active">
+      <!--<li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
           <span>Pages</span>
         </a>
-        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Example Pages</h6>
             <a class="collapse-item" href="login.html">Login</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item active" href="blank.html">Blank Page</a>
+            <a class="collapse-item" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -189,13 +189,13 @@
         </a>
       </li>
       <hr class="sidebar-divider">
-	    <li class="nav-item">
+      <!--<div class="version" id="version-ruangadmin"></div>-->
+	  <li class="nav-item">
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
-      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -361,7 +361,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama']?></span>
-				        <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
+			        	<img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <!--<a class="dropdown-item" href="#">
@@ -371,10 +371,6 @@
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>-->
                 <a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -390,71 +386,82 @@
           </ul>
         </nav>
         <!-- Topbar -->
-
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="user.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit User</h1>
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Load Type</h1>
+      			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportLoadType.php"><i class="fas fa-print"></i></a>
+			      <!--<a href="#" class="btn btn-info btn-lg">
+                <i class="fas fa-print"></i>
+            </a>-->
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Pages</li>
-              <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
             </ol>-->
           </div>
 
-          <?php
-            $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_user where UserId='$id'");
-            $data = mysqli_fetch_array($fetch);
-            //echo $id;
-          ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+          <div class="row">
 
-          <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php?">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['UserId'];?>" name="id" readonly>  
-                <label>Username :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['username'];?>" name="username"  minlength="3" maxlength="30" required>
-                <label>Password Baru :</label>
-                <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" name="password">
-                <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
-                <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
-                <label>isAdmin :</label>
-                <!--<input type="text" class="form-control" name="hak-akses">-->
-                <select name="isAdmin" class="form-control form-control-sm mb-3">
-                <?php if ($data['isAdmin'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editUser" class="btn btn-md btn-primary " style="width:77%;">
-              </form>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
+                  <a href="inputLoadType.php" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tambah Load Type</span>
+                  </a>
+
+                </div>
+                <div class="table-responsive p-3">
+				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Aktif</th>
+						            <!--<th>Create Date</th>-->
+						            <!--<th>Last Update</th>-->
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                  
+                    <tbody>
+                    <?php
+                      while($data = mysqli_fetch_array($fetch)){
+                        //$tgl = date("d-M-Y", strtotime($data['create_date']));
+                    ?>
+                      <tr>
+                        <td ><?php echo $data['atr1']?></td>
+                        <td><?php echo $data['kode']?></td>
+                        <td><?php echo $data['nama']?></td>
+                    <?php 
+                      if($data['aktif'] == 1){
+                    ?>
+                        <td><span class="badge badge-success">Aktif</span></td>
+                    <?php } else{ ?>
+                        <td><span class="badge badge-danger">Tidak Aktif</span></td>
+                    <?php } ?>	
+                        <!--<td><?php echo $data['create_date']?></td>-->
+                        <!--<td><?php echo $data['last_update']?></td>-->
+                        <td><a href="editLoadType.php?id=<?php echo $data['id']?>" class="btn btn-warning">
+                            <i class="fas fa-edit"></i></a>
+                        </td>
+                      </tr>
+                    <?php
+                      }
+                    ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-		  <!--<div class="text-center">
-            <img src="img/think.svg" style="max-height: 90px">
-            <h4 class="pt-3">save your <b>imagination</b> here!</h4>
-          </div>-->
+          </div>
+          <!--Row-->
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -503,6 +510,24 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables1/datatables.min.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
+
+  <!-- Page level custom scripts -->
+  <script>
+    $(document).ready(function () {
+      //$.fn.table.moment('d-M-Y hh:mm:ss');
+      $('#dataTable').DataTable(); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "order": [[0, "asc"]]
+        
+      }); // ID From dataTable with Hover
+    });
+  </script>
 
 </body>
 
