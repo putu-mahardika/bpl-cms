@@ -148,29 +148,19 @@
       </li>
 
       <li class="nav-item">
-
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-
           aria-controls="collapseTable">
-
           <i class="fas fa-fw fa-table"></i>
-
           <span>Status</span>
-
         </a>
-
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-
           <div class="bg-white py-2 collapse-inner rounded">
-
             <h6 class="collapse-header">Status</h6>
-
-            <a class="collapse-item" href="status.php">List Status</a>
-
+            <a class="collapse-item" href="status.php">Status Trucking</a>
+            <a class="collapse-item" href="status.php">Status Shipment</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
-
         </div>
-
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"

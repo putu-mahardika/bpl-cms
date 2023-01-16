@@ -88,7 +88,8 @@
         <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item active" href="status.php">List Status</a>
+            <a class="collapse-item active" href="status.php">Status Trucking</a>
+            <a class="collapse-item" href="statusShipment.php">Status Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>

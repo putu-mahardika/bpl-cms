@@ -88,7 +88,8 @@
         <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item active" href="status.php">List Status</a>
+            <a class="collapse-item" href="status.php">Status Trucking</a>
+            <a class="collapse-item active" href="status.php">Status Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -375,6 +376,7 @@
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Status Shipment</h1>
+      			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportStatusShipment.php"><i class="fas fa-print"></i></a>
 			      <!--<a href="#" class="btn btn-info btn-lg">
                 <i class="fas fa-print"></i>
             </a>-->
@@ -424,7 +426,7 @@
                         <td><?php echo $data['kode']?></td>
                         <td><?php echo $data['nama']?></td>
                     <?php 
-                      if($data['isActive'] == 1){
+                      if($data['aktif'] == 1){
                     ?>
                         <td><span class="badge badge-success">Aktif</span></td>
                     <?php } else{ ?>

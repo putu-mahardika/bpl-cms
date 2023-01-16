@@ -87,7 +87,8 @@
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
+            <a class="collapse-item" href="status.php">Status Trucking</a>
+            <a class="collapse-item" href="status.php">Status Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -386,13 +387,13 @@
 			
           <div class="card-body">
               <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-              <form class="form group" method="post" action="../../config/process.php">
+              <form class="form group" method="post" action="../../config/controller/statusShipmentController.php">
                 <label>No :</label>
                 <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
                 <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="status" minlength="3" maxlength="30" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" minlength="3" maxlength="6" required>
                 <label>Nama :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"></textarea>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" required>
                 <label>Aktif :</label>
 				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
                 <!--<select name="aktif" class="form-control form-control-sm mb-3" required>

@@ -88,7 +88,8 @@
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
+            <a class="collapse-item" href="status.php">Status Trucking</a>
+            <a class="collapse-item" href="status.php">Status Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -386,37 +387,38 @@
 
           <?php
             $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_status where stsId='$id'");
+            $fetch = mysqli_query($koneksi, "select * from master_status_shipment where id='$id'");
             $data = mysqli_fetch_array($fetch);
             //echo $id;
           ?>
 			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['stsId'];?>" name="id" readonly>
-                <label>No :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
-                <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['status'];?>" name="status" minlength="3" maxlength="30" required>
-                <label>Nama :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"><?php echo $data['keterangan'];?></textarea>
-                <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editStatusShipment" class="btn btn-md btn-primary " style="width:77%;">
-              </form>
-            </div>
+            <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+            <form class="form group" method="post" action="../../config/controller/statusShipmentController.php">
+              <!--<label>Id :</label>-->
+              <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['id'];?>" name="id" readonly>
+              <label>No :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+              <label>Kode :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode'];?>" name="kode" minlength="3" maxlength="30" required>
+              <label>Nama :</label>
+              <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" value ="<?php echo $data['nama'];?>" required>
+              <label>Aktif :</label>
+              <select name="aktif" class="form-control form-control-sm mb-3">
+              <?php if ($data['aktif'] == 1){ ?>
+                <option disabled> Pilih </option>
+                <option value=1 selected> Ya </option>
+                <option value=0> Tidak </option>
+              <?php } else { ?>
+                <option disabled> Pilih </option>
+                <option value=1> Ya </option>
+                <option value=0 selected> Tidak </option>
+              <?php } ?>
+              </select>
+              <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
+              <input type="submit" value="Submit" name="editStatusShipment" class="btn btn-md btn-primary " style="width:77%;">
+            </form>
+          </div>
 		  <!--<div class="text-center">
             <img src="img/think.svg" style="max-height: 90px">
             <h4 class="pt-3">save your <b>imagination</b> here!</h4>
