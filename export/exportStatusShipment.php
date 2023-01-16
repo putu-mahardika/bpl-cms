@@ -34,7 +34,7 @@
 		if ($akses == 'Admin') {
 			$query = "select * from master_status_shipment";
 		} else {
-			$query = "select * from master_customer where UserId=".$s_id;
+			$query = "select * from master_status_shipment where UserId=".$s_id;
 		}
 		// menampilkan data pegawai
 		$data = mysqli_query($koneksi,$query);
@@ -45,7 +45,7 @@
 			<td><?php echo $d['atr1']; ?></td>
 			<td><?php echo $d['kode']; ?></td>
 			<td><?php echo $d['nama']; ?></td>
-			<td><?php echo $d['aktif']; ?></td>
+			<td><?php echo $d['aktif'] == 1 ? 'Aktif' : 'Tidak Aktif'; ?></td>
 		</tr>
 		<?php 
 		}

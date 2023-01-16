@@ -89,7 +89,7 @@
       }
     } else {
         header("location:../../view/admin/editStatusShipment.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
   }
 ?>
