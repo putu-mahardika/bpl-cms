@@ -8,12 +8,12 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-	$query = 'select * from master_kota';
+	$query = 'select * from master_status_shipment';
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,13 +21,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Kota - PT Berkah Permata Logistik</title>
+  <title>Status Shipment - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
-
+ 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
@@ -79,34 +79,34 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
           <span>Status</span>
         </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">List Status</a>
+            <a class="collapse-item active" href="status.php">List Status</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
-        </a>
-        <div id="collapseKota" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <span>Kota</span> 
+        </a> 
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item active" href="kota.php">List Kota</a>
+            <a class="collapse-item" href="kota.php">List Kota</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
-      </li>
+      </li> 
       <!--<li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
@@ -374,8 +374,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">List Kota</h1>
-            <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportkota.php"><i class="fas fa-print"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Status Shipment</h1>
 			      <!--<a href="#" class="btn btn-info btn-lg">
                 <i class="fas fa-print"></i>
             </a>-->
@@ -392,11 +391,11 @@
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-                  <a href="inputKota.php" class="btn btn-primary btn-icon-split">
+                  <a href="inputStatusShipment.php" class="btn btn-primary btn-icon-split">
                     <span class="icon text-white-50">
                       <i class="fas fa-plus"></i>
                     </span>
-                    <span class="text">Tambah Kota</span>
+                    <span class="text">Tambah Status Shipment</span>
                   </a>
 
                 </div>
@@ -406,7 +405,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>No</th>
-                        <!-- <th>Kode</th> -->
+                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Aktif</th>
 						            <!--<th>Create Date</th>-->
@@ -417,16 +416,15 @@
                   
                     <tbody>
                     <?php
-                      $i = 1;
                       while($data = mysqli_fetch_array($fetch)){
                         //$tgl = date("d-M-Y", strtotime($data['create_date']));
                     ?>
                       <tr>
-                        <td ><?php echo $i?></td>
-                        <!-- <td><?php echo $data['Kode']?></td> -->
-                        <td><?php echo $data['Nama']?></td>
+                        <td ><?php echo $data['atr1']?></td>
+                        <td><?php echo $data['kode']?></td>
+                        <td><?php echo $data['nama']?></td>
                     <?php 
-                      if($data['aktif'] == 1){
+                      if($data['isActive'] == 1){
                     ?>
                         <td><span class="badge badge-success">Aktif</span></td>
                     <?php } else{ ?>
@@ -434,12 +432,11 @@
                     <?php } ?>	
                         <!--<td><?php echo $data['create_date']?></td>-->
                         <!--<td><?php echo $data['last_update']?></td>-->
-                        <td><a href="editKota.php?id=<?php echo $data['Id']?>" class="btn btn-warning">
+                        <td><a href="editStatusShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning">
                             <i class="fas fa-edit"></i></a>
                         </td>
                       </tr>
                     <?php
-                        $i++;
                       }
                     ?>
                     </tbody>

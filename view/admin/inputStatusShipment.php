@@ -8,12 +8,12 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-	$query = 'select * from master_kota';
-	$fetch = mysqli_query($koneksi,$query);
+  //$query = 'select * from master_user where ...';
+  //$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,11 +21,10 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Kota - PT Berkah Permata Logistik</title>
+  <title>Tambah Status Shipment - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -93,16 +92,16 @@
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
           <span>Kota</span>
-        </a>
-        <div id="collapseKota" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        </a> 
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item active" href="kota.php">List Kota</a>
+            <a class="collapse-item" href="kota.php">List Kota</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -141,19 +140,19 @@
           </div>
         </a>
       </li>-->
-      <!--<li class="nav-item">
+      <!--<li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
           <span>Pages</span>
         </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Example Pages</h6>
             <a class="collapse-item" href="login.html">Login</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <a class="collapse-item active" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -174,13 +173,14 @@
         </a>
       </li>
       <hr class="sidebar-divider">
-      <!--<div class="version" id="version-ruangadmin"></div>-->
 	  <li class="nav-item">
+        
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
+      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -346,7 +346,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama']?></span>
-			        	<img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
+				        <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <!--<a class="dropdown-item" href="#">
@@ -357,7 +357,7 @@
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>-->
-                <a class="dropdown-item" href="editPassword.php">
+				<a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -371,84 +371,44 @@
           </ul>
         </nav>
         <!-- Topbar -->
+
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">List Kota</h1>
-            <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportkota.php"><i class="fas fa-print"></i></a>
-			      <!--<a href="#" class="btn btn-info btn-lg">
-                <i class="fas fa-print"></i>
-            </a>-->
+          <div class="d-sm-flex align-items-center justify-content-start mb-4">
+            <a href="statusShipment.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Status Shipment</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
+              <li class="breadcrumb-item">Pages</li>
+              <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
-
-          <div class="row">
-
-            <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-                  <a href="inputKota.php" class="btn btn-primary btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Tambah Kota</span>
-                  </a>
-
-                </div>
-                <div class="table-responsive p-3">
-				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>No</th>
-                        <!-- <th>Kode</th> -->
-                        <th>Nama</th>
-                        <th>Aktif</th>
-						            <!--<th>Create Date</th>-->
-						            <!--<th>Last Update</th>-->
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                  
-                    <tbody>
-                    <?php
-                      $i = 1;
-                      while($data = mysqli_fetch_array($fetch)){
-                        //$tgl = date("d-M-Y", strtotime($data['create_date']));
-                    ?>
-                      <tr>
-                        <td ><?php echo $i?></td>
-                        <!-- <td><?php echo $data['Kode']?></td> -->
-                        <td><?php echo $data['Nama']?></td>
-                    <?php 
-                      if($data['aktif'] == 1){
-                    ?>
-                        <td><span class="badge badge-success">Aktif</span></td>
-                    <?php } else{ ?>
-                        <td><span class="badge badge-danger">Tidak Aktif</span></td>
-                    <?php } ?>	
-                        <!--<td><?php echo $data['create_date']?></td>-->
-                        <!--<td><?php echo $data['last_update']?></td>-->
-                        <td><a href="editKota.php?id=<?php echo $data['Id']?>" class="btn btn-warning">
-                            <i class="fas fa-edit"></i></a>
-                        </td>
-                      </tr>
-                    <?php
-                        $i++;
-                      }
-                    ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+			
+          <div class="card-body">
+              <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+              <form class="form group" method="post" action="../../config/process.php">
+                <label>No :</label>
+                <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+                <label>Kode :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="status" minlength="3" maxlength="30" required>
+                <label>Nama :</label>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"></textarea>
+                <label>Aktif :</label>
+				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
+                <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
+                  <option disabled> Pilih </option>
+                  <option value=1 selected> Ya </option>
+                  <option value=0> Tidak </option>
+                </select>-->
+				        <br>
+                <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
+                <input type="submit" value="Submit" name="inputStatusShipment" class="btn btn-md btn-primary " style="width:77%;">
+              </form>
             </div>
-          </div>
-          <!--Row-->
+		  <!--<div class="text-center">
+            <img src="img/think.svg" style="max-height: 90px">
+            <h4 class="pt-3">save your <b>imagination</b> here!</h4>
+          </div>-->
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -497,22 +457,12 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
-  <script src="../../vendor/datatables1/datatables.min.js"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-  <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
-
-  <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function () {
-      //$.fn.table.moment('d-M-Y hh:mm:ss');
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable({
-        "order": [[0, "asc"]]
-        
-      }); // ID From dataTable with Hover
+    document.querySelector(".no").addEventListener("keypress", function (evt) {
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
     });
   </script>
 
