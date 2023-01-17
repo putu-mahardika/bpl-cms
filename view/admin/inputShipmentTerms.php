@@ -13,7 +13,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit Kota - PT Berkah Permata Logistik</title>
+  <title>Tambah Shipment Terms - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -35,7 +35,6 @@
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
-        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -98,8 +97,8 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span> 
-        </a>
+          <span>Kota</span>
+        </a> 
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
@@ -204,7 +203,8 @@
       </li>
       <hr class="sidebar-divider">
 	  <li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
+        
+        <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
@@ -404,47 +404,34 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="kota.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit Kota</h1>
+            <a href="shipmentTerms.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Shipment Terms</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
               <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
-
-          <?php
-            $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_kota where Id='$id'");
-            $data = mysqli_fetch_array($fetch);
-            //echo $id;
-          ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
 			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['Id'];?>" name="id" readonly>
-                <!-- <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['Kode'];?>" name="kode" maxlength="6" required> -->
+              <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+              <form class="form group" method="post" action="../../config/controller/shipmentTermsController.php">
+                <label>No :</label>
+                <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+                <label>Kode :</label>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" minlength="3" maxlength="6" required>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Nama'];?>" name="namaKota" minlength="3" maxlength="30" pattern="[a-zA-Z]+" title="Nama Kota hanya boleh diisi huruf" required>
-                <!-- <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['keterangan'];?></textarea> -->
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" required>
                 <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
+				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
+                <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
                   <option disabled> Pilih </option>
                   <option value=1 selected> Ya </option>
                   <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editKota" class="btn btn-md btn-primary " style="width:77%;">
+                </select>-->
+				        <br>
+                <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
+                <input type="submit" value="Submit" name="inputShipmentTerms" class="btn btn-md btn-primary " style="width:77%;">
               </form>
             </div>
 		  <!--<div class="text-center">
@@ -453,8 +440,7 @@
           </div>-->
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -500,6 +486,14 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script>
+    document.querySelector(".no").addEventListener("keypress", function (evt) {
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    });
+  </script>
 
 </body>
 

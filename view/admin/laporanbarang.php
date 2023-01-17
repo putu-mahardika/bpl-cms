@@ -121,6 +121,20 @@
           </div>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShipmentTerms" aria-expanded="true"
+          aria-controls="collapseShipmentTerms">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Shipment Terms</span> 
+        </a> 
+        <div id="collapseShipmentTerms" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Shipment Terms</h6>
+            <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Transaksi

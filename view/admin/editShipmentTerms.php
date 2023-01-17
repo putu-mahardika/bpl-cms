@@ -21,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit Kota - PT Berkah Permata Logistik</title>
+  <title>Edit Shipment Terms - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -404,8 +404,8 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="kota.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit Kota</h1>
+          <a href="shipmentTerms.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Edit Shipment Terms</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
@@ -415,38 +415,38 @@
 
           <?php
             $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_kota where Id='$id'");
+            $fetch = mysqli_query($koneksi, "select * from master_shipment_terms where id='$id'");
             $data = mysqli_fetch_array($fetch);
             //echo $id;
           ?>
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
 			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php">
-                <!--<label>Id :</label>-->
-                <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['Id'];?>" name="id" readonly>
-                <!-- <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['Kode'];?>" name="kode" maxlength="6" required> -->
-                <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Nama'];?>" name="namaKota" minlength="3" maxlength="30" pattern="[a-zA-Z]+" title="Nama Kota hanya boleh diisi huruf" required>
-                <!-- <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['keterangan'];?></textarea> -->
-                <label>Aktif :</label>
-                <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
-                  <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
-                </select>
-                <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editKota" class="btn btn-md btn-primary " style="width:77%;">
-              </form>
-            </div>
+            <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+            <form class="form group" method="post" action="../../config/controller/shipmentTermsController.php">
+              <!--<label>Id :</label>-->
+              <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['id'];?>" name="id" readonly>
+              <label>No :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+              <label>Kode :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode'];?>" name="kode" minlength="3" maxlength="30" required>
+              <label>Nama :</label>
+              <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" value ="<?php echo $data['nama'];?>" required>
+              <label>Aktif :</label>
+              <select name="aktif" class="form-control form-control-sm mb-3">
+              <?php if ($data['aktif'] == 1){ ?>
+                <option disabled> Pilih </option>
+                <option value=1 selected> Ya </option>
+                <option value=0> Tidak </option>
+              <?php } else { ?>
+                <option disabled> Pilih </option>
+                <option value=1> Ya </option>
+                <option value=0 selected> Tidak </option>
+              <?php } ?>
+              </select>
+              <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
+              <input type="submit" value="Submit" name="editShipmentTerms" class="btn btn-md btn-primary " style="width:77%;">
+            </form>
+          </div>
 		  <!--<div class="text-center">
             <img src="img/think.svg" style="max-height: 90px">
             <h4 class="pt-3">save your <b>imagination</b> here!</h4>
