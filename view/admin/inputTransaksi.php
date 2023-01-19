@@ -925,7 +925,7 @@
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                           </div>
                           <input type="text" class="form-control" id="simpleDataInput" name="tglpo" id="tglpo" value="<?php echo $save[2]?>" required>
-                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row" style="height: 70px;">
