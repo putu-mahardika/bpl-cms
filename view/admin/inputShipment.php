@@ -537,7 +537,7 @@
                     <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
-                        <div class="listBiayaHandling">
+                        <div class="listBiayaHandling" id="listBiayaHandling">
                           <div class="form-row" id="parentInputBiayaHandling">
                             <div class="form-group col-md-12 col-lg-6 mb-0">
                               <label>Nama Biaya Handling</label>
@@ -583,8 +583,8 @@
                               </div>
                             </div>
                           </div>
-                          <div class="text-primary font-weight-bold addRowHandling" id="addRowHandling"><i class="fas fa-plus"></i> Tambah Biaya Handling</div>
                         </div>
+                        <div class="text-primary font-weight-bold addRowHandling" id="addRowHandling"><i class="fas fa-plus"></i> Tambah Biaya Handling</div>
                       </div>
                       <div class="col-md-12 col-lg-6">
                         <div class="form-group col-12 py-3 rounded bg-lightGrey">
@@ -664,11 +664,12 @@
 
   <script>
     $('.addRowHandling').click(function() {
-      var node = document.getElementById('addRowHandling')
+      var node = document.getElementById('listBiayaHandling')
       var clone = document.getElementById('parentInputBiayaHandling')
-      clonex = clone.clone()
-      console.log('xxx', clone.firstChild);
-      clonex.insertBefore($('.addRowHandling'))
+      clonex = clone.cloneNode(true);
+      console.log('xxx', clonex);
+      // clonex.insertBefore($('.addRowHandling'))
+      node.appendChild(clonex);
     });
   </script>
 
