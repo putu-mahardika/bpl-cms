@@ -742,7 +742,8 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     <?php
                     if ($t_onclose == 1 && is_null($t_cancelDate)) {
                     ?>
-                      <p>Ditutup Oleh <b><?php echo $u_namaUser ?></b> tanggal <b><?php echo $t_DateOnClose ?></b></p>
+                      <p class="mb-0">Ditutup Oleh <b><?php echo $u_namaUser ?></b> tanggal <b><?php echo $t_DateOnClose ?></b></p>
+                      <p><em>*Tanggal penutupan transaksi berdasarkan tanggal SPK</em></p>
                     <?php
                     } elseif (!is_null($t_cancelDate)) {
                     ?>
