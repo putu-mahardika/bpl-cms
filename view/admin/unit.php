@@ -8,12 +8,12 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-  //$query = 'select * from master_user where ...';
-  //$fetch = mysqli_query($koneksi,$query);
+	$query = 'select * from master_unit';
+	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,18 +21,13 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Tambah Shipment - PT Berkah Permata Logistik</title>
+  <title>Unit - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <style>
-    .bg-lightGrey {
-      background-color: #f1f1f1;
-      color: black;
-    }
-  </style>
+  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
-
+ 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
@@ -41,7 +36,6 @@
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
-        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -105,7 +99,7 @@
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
           <span>Kota</span> 
-        </a>
+        </a> 
         <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
@@ -114,16 +108,16 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>
           <span>Load Type</span> 
         </a> 
-        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseLoadType" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="loadType.php">List Load Type</a>
+            <a class="collapse-item active" href="loadType.php">List Load Type</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -176,19 +170,19 @@
           </div>
         </a>
       </li>-->
-      <!--<li class="nav-item active">
+      <!--<li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
           <span>Pages</span>
         </a>
-        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Example Pages</h6>
             <a class="collapse-item" href="login.html">Login</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item active" href="blank.html">Blank Page</a>
+            <a class="collapse-item" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -209,14 +203,13 @@
         </a>
       </li>
       <hr class="sidebar-divider">
+      <!--<div class="version" id="version-ruangadmin"></div>-->
 	  <li class="nav-item">
-        
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
-      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -382,7 +375,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama']?></span>
-				        <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
+			        	<img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <!--<a class="dropdown-item" href="#">
@@ -393,7 +386,7 @@
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>-->
-				<a class="dropdown-item" href="editPassword.php">
+                <a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -407,212 +400,82 @@
           </ul>
         </nav>
         <!-- Topbar -->
-
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-start mb-4">
-            <a href="shipment.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Tambah Shipment</h1>
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">List Unit</h1>
+      			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportUnit.php"><i class="fas fa-print"></i></a>
+			      <!--<a href="#" class="btn btn-info btn-lg">
+                <i class="fas fa-print"></i>
+            </a>-->
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Pages</li>
-              <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
             </ol>-->
           </div>
 
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-			
-          <div class="col-xl-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <form class="form group" method="post" action="../../config/process.php">
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Shipment</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                      <label for="customer">Customer</label>
-                      <select id="customer" class="form-control form-control-sm" name="customer">
-                        <option selected>Choose...</option>
-                        <option>...</option>
-                      </select>
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="kodeShipment">Kode Shipment</label>
-                        <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment">
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                      <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                      <input type="text" class="form-control form-control-sm" id="pib" name="pib">
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="billLanding">Bill of Landing (BL)</label>
-                        <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Muatan</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="shipmentTerm">Shipment Term</label>
-                        <select id="shipmentTerm" class="form-control form-control-sm" name="shipmentTerm">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="ShipmentLoadType">Shipment Load Type</label>
-                        <select id="ShipmentLoadType" class="form-control form-control-sm" name="loadType">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="qty">Quantity</label>
-                        <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty">
-                        </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="unit">Unit</label>
-                        <select id="unit" class="form-control form-control-sm" name="unit">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Biaya</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="biayaFreight">Biaya Freight</label>
-                        <div class="input-group input-group-sm mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">US$</span>
-                          </div>
-                          <input type="text" class="form-control" placeholder="0.00" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-12 col-lg-6">
-                          <label for="kurs">Kurs USD - IDR (saat ini)</label>
-                          <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">IDR</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="0.00" aria-label="kurs" id="kurs" aria-describedby="basic-addon1">
-                          </div>
-                          </div>
-                          <div class="form-group col-md-12 col-lg-6">
-                            <label for="tglKurs">Tgl Kurs (saat ini)</label>
-                            <div class="input-group input-group-sm mb-3 date">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                              </div>
-                              <input type="text" class="form-control" id="simpleDataInput" name="tglKurs" id="tglKurs" required>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12 col-lg-6">
-                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
-                          <h5 class="font-weight-bold">(dengan kurs)</h5>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;">0.00</span>
-                            </div>
-                            <div>
-                            <button title="refresh" class="btn btn-primary"><i class="fas fa-redo-alt"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          <div class="row">
 
-                  <div class="col-12 mb-5">
-                    <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <div class="listBiayaHandling" id="listBiayaHandling">
-                          <div class="form-row" id="parentInputBiayaHandling">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="text-primary font-weight-bold addRowHandling" id="addRowHandling"><i class="fas fa-plus"></i> Tambah Biaya Handling</div>
-                      </div>
-                      <div class="col-md-12 col-lg-6">
-                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
-                          <h5 class="font-weight-bold">(dengan kurs)</h5>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;">0.00</span>
-                            </div>
-                            <div>
-                            <button title="refresh" class="btn btn-primary"><i class="fas fa-redo-alt"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
+                  <a href="inputUnit.php" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tambah Unit</span>
+                  </a>
+
+                </div>
+                <div class="table-responsive p-3">
+				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Aktif</th>
+						            <!--<th>Create Date</th>-->
+						            <!--<th>Last Update</th>-->
+                        <th>Action</th>
+                      </tr>
+                    </thead>
                   
-                  <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
-                  <input type="submit" value="Submit" name="inputShipment" class="btn btn-md btn-primary " style="width:77%;">
-                </form>
+                    <tbody>
+                    <?php
+                      while($data = mysqli_fetch_array($fetch)){
+                        //$tgl = date("d-M-Y", strtotime($data['create_date']));
+                    ?>
+                      <tr>
+                        <td ><?php echo $data['atr1']?></td>
+                        <td><?php echo $data['kode']?></td>
+                        <td><?php echo $data['nama']?></td>
+                    <?php 
+                      if($data['aktif'] == 1){
+                    ?>
+                        <td><span class="badge badge-success">Aktif</span></td>
+                    <?php } else{ ?>
+                        <td><span class="badge badge-danger">Tidak Aktif</span></td>
+                    <?php } ?>	
+                        <!--<td><?php echo $data['create_date']?></td>-->
+                        <!--<td><?php echo $data['last_update']?></td>-->
+                        <td><a href="editUnit.php?id=<?php echo $data['id']?>" class="btn btn-warning">
+                            <i class="fas fa-edit"></i></a>
+                        </td>
+                      </tr>
+                    <?php
+                      }
+                    ?>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-		  <!--<div class="text-center">
-            <img src="img/think.svg" style="max-height: 90px">
-            <h4 class="pt-3">save your <b>imagination</b> here!</h4>
-          </div>-->
+          <!--Row-->
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -662,14 +525,21 @@
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
 
+  <!-- Page level plugins -->
+  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
+  <script src="../../vendor/datatables1/datatables.min.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
+
+  <!-- Page level custom scripts -->
   <script>
-    $('.addRowHandling').click(function() {
-      var node = document.getElementById('listBiayaHandling')
-      var clone = document.getElementById('parentInputBiayaHandling')
-      clonex = clone.cloneNode(true);
-      console.log('xxx', clonex);
-      // clonex.insertBefore($('.addRowHandling'))
-      node.appendChild(clonex);
+    $(document).ready(function () {
+      //$.fn.table.moment('d-M-Y hh:mm:ss');
+      $('#dataTable').DataTable(); // ID From dataTable 
+      $('#dataTableHover').DataTable({
+        "order": [[0, "asc"]]
+        
+      }); // ID From dataTable with Hover
     });
   </script>
 

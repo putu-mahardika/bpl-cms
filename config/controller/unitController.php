@@ -10,11 +10,11 @@
   $akses = $_SESSION['hak_akses'];
 
 
-  $master_query = "select * from master_load_type";
+  $master_query = "select * from master_unit";
   $fetch_master_query = mysqli_query($koneksi, $master_query);
 
   // ============= tambah status shipment ===============
-  if (isset($_POST['inputLoadType'])) {
+  if (isset($_POST['inputUnit'])) {
     $kode = $_POST['kode'];
     $nama = $_POST['nama'];
     // $isActive = $_POST['aktif'];
@@ -35,27 +35,27 @@
     }
 
     if($j != 1){
-      $query = "insert into master_load_type values(null, '$kode', '$nama', '$isActive', '$datetime', '$datetime', '$s_id', '$no', '', '')";
+      $query = "insert into master_unit values(null, '$kode', '$nama', '$isActive', '$datetime', '$datetime', '$s_id', '$no', '', '')";
       $result = mysqli_query($koneksi, $query);
       if ($result) {
           // echo 'aaa';
-          header("location:../../view/admin/loadType.php");
+          header("location:../../view/admin/unit.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
        } else {
           // echo 'bbb';
-          header("location:../../view/admin/loadType.php");
+          header("location:../../view/admin/unit.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
       }
     } else {
         // echo 'ccc';
-        header("location:../../view/admin/inputLoadType.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        header("location:../../view/admin/inputUnit.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Unit sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
 
   } 
 
   // ============= edit status shipment =================
-  else if (isset($_POST['editLoadType'])) {
+  else if (isset($_POST['editUnit'])) {
     $id = $_POST['id'];
     $kode = $_POST['kode'];
     $nama = $_POST['nama'];
@@ -80,18 +80,18 @@
     // echo $isActive;
 
     if($j != 1) {
-      $query = "update master_load_type set kode='$kode', nama='$nama', aktif='$isActive', last_update='$datetime', UserId='$s_id', atr1='$no' where id='$id'";
+      $query = "update master_unit set kode='$kode', nama='$nama', aktif='$isActive', last_update='$datetime', UserId='$s_id', atr1='$no' where id='$id'";
       $result = mysqli_query($koneksi, $query);
       if ($result) {
-          header("location:../../view/admin/loadType.php");
+          header("location:../../view/admin/unit.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
       } else {
-          header("location:../../view/admin/loadType.php");
+          header("location:../../view/admin/unit.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
       }
     } else {
-        header("location:../../view/admin/editLoadType.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        header("location:../../view/admin/editUnit.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Unit sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
   }
 ?>

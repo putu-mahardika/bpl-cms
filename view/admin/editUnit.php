@@ -21,16 +21,10 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Tambah Shipment - PT Berkah Permata Logistik</title>
+  <title>Edit Unit - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <style>
-    .bg-lightGrey {
-      background-color: #f1f1f1;
-      color: black;
-    }
-  </style>
 </head>
 
 <body id="page-top">
@@ -210,8 +204,7 @@
       </li>
       <hr class="sidebar-divider">
 	  <li class="nav-item">
-        
-        <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
+        <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
@@ -411,8 +404,8 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-            <a href="shipment.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Tambah Shipment</h1>
+          <a href="unit.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Edit Unit</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
@@ -420,194 +413,39 @@
             </ol>-->
           </div>
 
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+          <?php
+            $id = $_GET['id'];
+            $fetch = mysqli_query($koneksi, "select * from master_unit where id='$id'");
+            $data = mysqli_fetch_array($fetch);
+            //echo $id;
+          ?>
 			
-          <div class="col-xl-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <form class="form group" method="post" action="../../config/process.php">
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Shipment</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                      <label for="customer">Customer</label>
-                      <select id="customer" class="form-control form-control-sm" name="customer">
-                        <option selected>Choose...</option>
-                        <option>...</option>
-                      </select>
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="kodeShipment">Kode Shipment</label>
-                        <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment">
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                      <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                      <input type="text" class="form-control form-control-sm" id="pib" name="pib">
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="billLanding">Bill of Landing (BL)</label>
-                        <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Muatan</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="shipmentTerm">Shipment Term</label>
-                        <select id="shipmentTerm" class="form-control form-control-sm" name="shipmentTerm">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="ShipmentLoadType">Shipment Load Type</label>
-                        <select id="ShipmentLoadType" class="form-control form-control-sm" name="loadType">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="qty">Quantity</label>
-                        <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty">
-                        </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="unit">Unit</label>
-                        <select id="unit" class="form-control form-control-sm" name="unit">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Biaya</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="biayaFreight">Biaya Freight</label>
-                        <div class="input-group input-group-sm mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">US$</span>
-                          </div>
-                          <input type="text" class="form-control" placeholder="0.00" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-12 col-lg-6">
-                          <label for="kurs">Kurs USD - IDR (saat ini)</label>
-                          <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">IDR</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="0.00" aria-label="kurs" id="kurs" aria-describedby="basic-addon1">
-                          </div>
-                          </div>
-                          <div class="form-group col-md-12 col-lg-6">
-                            <label for="tglKurs">Tgl Kurs (saat ini)</label>
-                            <div class="input-group input-group-sm mb-3 date">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                              </div>
-                              <input type="text" class="form-control" id="simpleDataInput" name="tglKurs" id="tglKurs" required>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12 col-lg-6">
-                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
-                          <h5 class="font-weight-bold">(dengan kurs)</h5>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;">0.00</span>
-                            </div>
-                            <div>
-                            <button title="refresh" class="btn btn-primary"><i class="fas fa-redo-alt"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 mb-5">
-                    <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <div class="listBiayaHandling" id="listBiayaHandling">
-                          <div class="form-row" id="parentInputBiayaHandling">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="text-primary font-weight-bold addRowHandling" id="addRowHandling"><i class="fas fa-plus"></i> Tambah Biaya Handling</div>
-                      </div>
-                      <div class="col-md-12 col-lg-6">
-                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
-                          <h5 class="font-weight-bold">(dengan kurs)</h5>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;">0.00</span>
-                            </div>
-                            <div>
-                            <button title="refresh" class="btn btn-primary"><i class="fas fa-redo-alt"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
-                  <input type="submit" value="Submit" name="inputShipment" class="btn btn-md btn-primary " style="width:77%;">
-                </form>
-              </div>
-            </div>
+          <div class="card-body">
+            <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+            <form class="form group" method="post" action="../../config/controller/unitController.php">
+              <!--<label>Id :</label>-->
+              <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['id'];?>" name="id" readonly>
+              <label>No :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
+              <label>Kode :</label>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode'];?>" name="kode" minlength="3" maxlength="30" required>
+              <label>Nama :</label>
+              <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" value ="<?php echo $data['nama'];?>" required>
+              <label>Aktif :</label>
+              <select name="aktif" class="form-control form-control-sm mb-3">
+              <?php if ($data['aktif'] == 1){ ?>
+                <option disabled> Pilih </option>
+                <option value=1 selected> Ya </option>
+                <option value=0> Tidak </option>
+              <?php } else { ?>
+                <option disabled> Pilih </option>
+                <option value=1> Ya </option>
+                <option value=0 selected> Tidak </option>
+              <?php } ?>
+              </select>
+              <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
+              <input type="submit" value="Submit" name="editUnit" class="btn btn-md btn-primary " style="width:77%;">
+            </form>
           </div>
 		  <!--<div class="text-center">
             <img src="img/think.svg" style="max-height: 90px">
@@ -615,7 +453,8 @@
           </div>-->
 
           <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -661,17 +500,6 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
-
-  <script>
-    $('.addRowHandling').click(function() {
-      var node = document.getElementById('listBiayaHandling')
-      var clone = document.getElementById('parentInputBiayaHandling')
-      clonex = clone.cloneNode(true);
-      console.log('xxx', clonex);
-      // clonex.insertBefore($('.addRowHandling'))
-      node.appendChild(clonex);
-    });
-  </script>
 
 </body>
 

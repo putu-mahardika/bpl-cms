@@ -26,6 +26,8 @@
 			$isActive = 0;
 		}
 
+    $j=0;
+
     while($data = mysqli_fetch_array($fetch_master_query)){
       if(strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1']){
           $j=1;
