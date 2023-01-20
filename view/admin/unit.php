@@ -108,16 +108,16 @@
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>
           <span>Load Type</span> 
         </a> 
-        <div id="collapseLoadType" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item active" href="loadType.php">List Load Type</a>
+            <a class="collapse-item" href="loadType.php">List Load Type</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -132,6 +132,20 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Shipment Terms</h6>
             <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
+          aria-controls="collapseUnit">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Unit</span> 
+        </a> 
+        <div id="collapseUnit" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Unit</h6>
+            <a class="collapse-item active" href="unit.php">List Unit</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
