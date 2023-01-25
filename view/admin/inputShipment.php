@@ -8,6 +8,18 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
+  $queryMasterCustomer = 'select * from master_customer where aktif=1';
+  $fetchMasterCustomer = mysqli_query($koneksi, $queryMasterCustomer);
+
+  $queryMasterShipmentTerms = 'select * from master_shipment_terms where aktif=1';
+  $fetchMasterShipmentTerms = mysqli_query($koneksi, $queryMasterShipmentTerms);
+
+  $queryMasterLoadType = 'select * from master_load_type where aktif=1';
+  $fetchMasterLoadType = mysqli_query($koneksi, $queryMasterLoadType);
+
+  $queryMasterUnit = 'select * from master_unit where aktif=1';
+  $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
+
   //$query = 'select * from master_user where ...';
   //$fetch = mysqli_query($koneksi,$query);
 ?>
@@ -24,6 +36,8 @@
   <title>Tambah Shipment - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  <link href="../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
   <style>
     .bg-lightGrey {
@@ -439,15 +453,27 @@
           <div class="col-xl-12">
             <div class="card mb-4">
               <div class="card-body">
-                <form class="form group" method="post" action="../../config/process.php">
+                <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
                   <div class="col-12">
                     <h5 class="font-weight-bold">Informasi Shipment</h5>
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                       <label for="customer">Customer</label>
-                      <select id="customer" class="form-control form-control-sm" name="customer">
-                        <option selected>Choose...</option>
-                        <option>...</option>
+                      <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
+                        <option value="" selected disabled>Pilih</option>
+                        <?php
+                          while($data = mysqli_fetch_array($fetchMasterCustomer)){
+                            if($data['aktif']==1){
+                              if($data['CustId'] == 'x'){
+                        ?>
+                        <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                            <?php }else{?>
+                        <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
+                          <?php } } else {
+                            continue;
+                            }
+                          }
+                        ?>
                       </select>
                       </div>
                       <div class="form-group col-md-12 col-lg-6">
@@ -471,16 +497,40 @@
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                         <label for="shipmentTerm">Shipment Term</label>
-                        <select id="shipmentTerm" class="form-control form-control-sm" name="shipmentTerm">
-                          <option selected>Choose...</option>
-                          <option>...</option>
+                        <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                          <option value="" selected disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
+                              if($data['aktif']==1){
+                                if($data['id'] == 'x'){
+                          ?>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
                         </select>
                       </div>
                       <div class="form-group col-md-12 col-lg-6">
                         <label for="ShipmentLoadType">Shipment Load Type</label>
-                        <select id="ShipmentLoadType" class="form-control form-control-sm" name="loadType">
-                          <option selected>Choose...</option>
-                          <option>...</option>
+                        <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                          <option value="" selected disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterLoadType)){
+                              if($data['aktif']==1){
+                                if($data['id'] == null){
+                          ?>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
                         </select>
                       </div>
                     </div>
@@ -491,9 +541,21 @@
                         </div>
                       <div class="form-group col-md-12 col-lg-6">
                         <label for="unit">Unit</label>
-                        <select id="unit" class="form-control form-control-sm" name="unit">
-                          <option selected>Choose...</option>
-                          <option>...</option>
+                        <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
+                          <option value="" selected disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterUnit)){
+                              if($data['aktif']==1){
+                                if($data['id'] == 'x'){
+                          ?>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
                         </select>
                       </div>
                     </div>
@@ -507,7 +569,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">US$</span>
                           </div>
-                          <input type="text" class="form-control" placeholder="0.00" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1">
+                          <input type="text" class="form-control" placeholder="0.00" onkeypress="return isNumberKey(event)" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1">
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-12 col-lg-6">
@@ -516,16 +578,16 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text" id="basic-addon1">IDR</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="0.00" aria-label="kurs" id="kurs" aria-describedby="basic-addon1">
+                            <input type="text" name="kurs" class="form-control" placeholder="0.00" aria-label="kurs" onkeypress="return isNumberKey(event)" id="kurs" aria-describedby="basic-addon1">
                           </div>
                           </div>
-                          <div class="form-group col-md-12 col-lg-6">
+                          <div class="form-group col-md-12 col-lg-6" id="simple-date1">
                             <label for="tglKurs">Tgl Kurs (saat ini)</label>
                             <div class="input-group input-group-sm mb-3 date">
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                               </div>
-                              <input type="text" class="form-control" id="simpleDataInput" name="tglKurs" id="tglKurs" required>
+                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" required>
                             </div>
                           </div>
                         </div>
@@ -536,10 +598,10 @@
                           <h5 class="font-weight-bold">(dengan kurs)</h5>
                           <div class="d-flex justify-content-between align-items-center">
                             <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;">0.00</span>
+                              IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaFreight">0.00</span>
                             </div>
                             <div>
-                            <button title="refresh" class="btn btn-primary"><i class="fas fa-redo-alt"></i></button>
+                            <button type="button" class="btn btn-primary" id="actionCountBiayaFreight"><i class="fas fa-redo-alt"></i></button>
                             </div>
                           </div>
                         </div>
@@ -563,7 +625,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="basic-addon1">IDR</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
+                                <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
                               </div>
                             </div>
                           </div>
@@ -578,7 +640,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="basic-addon1">IDR</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
+                                <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
                               </div>
                             </div>
                           </div>
@@ -593,23 +655,23 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="basic-addon1">IDR</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="0.00" name="biayaHandling[]">
+                                <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="text-primary font-weight-bold addRowHandling" id="addRowHandling"><i class="fas fa-plus"></i> Tambah Biaya Handling</div>
+                        <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
                       </div>
                       <div class="col-md-12 col-lg-6">
                         <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
-                          <h5 class="font-weight-bold">(dengan kurs)</h5>
+                          <h5 class="font-weight-bold">Total Biaya Handling</h5>
+                          <!-- <h5 class="font-weight-bold">(dengan kurs)</h5> -->
                           <div class="d-flex justify-content-between align-items-center">
                             <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;">0.00</span>
+                              IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling">0.00</span>
                             </div>
                             <div>
-                            <button title="refresh" class="btn btn-primary"><i class="fas fa-redo-alt"></i></button>
+                            <button type="button" class="btn btn-primary" id="actionCountBiayaHandling"><i class="fas fa-redo-alt"></i></button>
                             </div>
                           </div>
                         </div>
@@ -675,6 +737,8 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="../../vendor/select2/dist/js/select2.min.js"></script>
 
   <script>
     $('.addRowHandling').click(function() {
@@ -685,6 +749,64 @@
       // clonex.insertBefore($('.addRowHandling'))
       node.appendChild(clonex);
     });
+    // Select2 Single  with Placeholder
+    $('.select2-single-placeholder').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+    $('.select2-single-placeholder1').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+    $('.select2-single-placeholder2').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+    $('.select2-single-placeholder3').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+
+    $('#simple-date1 .input-group.date').datepicker({
+      format: 'dd/mm/yyyy',
+      todayBtn: 'linked',
+      todayHighlight: true,
+      autoclose: true,        
+    });
+
+    $('#actionCountBiayaHandling').click(function() {
+      var l = $('.inputBiayaHandling').length;
+      //Initialize default array
+      // var arrResult = [];
+      var result = 0;
+      for (i = 0; i < l; i++) { 
+        //Push each element to the array
+        var temp = $('.inputBiayaHandling').eq(i).val() == '' ? 0 : $('.inputBiayaHandling').eq(i).val()
+        console.log(temp);
+        result += parseFloat(temp)
+      }
+      //print the array or use it for your further logic
+      console.log(result);
+
+      $('#countBiayaHandling').html(new Intl.NumberFormat('id-ID').format(result));
+    })
+
+    $('#actionCountBiayaFreight').click(function() {
+      var result = 0;
+      var kursTemp = $('#kurs').val() == '' ? 0 : $('#kurs').val()
+      var biayaFreightTemp = $('#biayaFreight').val() == '' ? 0 : $('#biayaFreight').val()
+      result = kursTemp * biayaFreightTemp
+      console.log(result);
+
+      $('#countBiayaFreight').html(new Intl.NumberFormat('id-ID').format(result));
+    })
+
+    function isNumberKey(evt){
+      var charCode = (evt.which) ? evt.which : evt.keyCode
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46)
+          return false;
+      return true;
+    }
   </script>
 
 </body>
