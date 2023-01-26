@@ -448,240 +448,464 @@
             </ol>-->
           </div>
 
-          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-			
           <div class="col-xl-12">
             <div class="card mb-4">
               <div class="card-body">
-                <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Shipment</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                      <label for="customer">Customer</label>
-                      <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
-                        <option value="" selected disabled>Pilih</option>
-                        <?php
-                          while($data = mysqli_fetch_array($fetchMasterCustomer)){
-                            if($data['aktif']==1){
-                              if($data['CustId'] == 'x'){
-                        ?>
-                        <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
-                            <?php }else{?>
-                        <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
-                          <?php } } else {
-                            continue;
-                            }
-                          }
-                        ?>
-                      </select>
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="kodeShipment">Kode Shipment</label>
-                        <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment">
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                      <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                      <input type="text" class="form-control form-control-sm" id="pib" name="pib">
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="billLanding">Bill of Landing (BL)</label>
-                        <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Muatan</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="shipmentTerm">Shipment Term</label>
-                        <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                <?php if(isset($_SESSION['id_pesan1']) && isset($_SESSION['pesan'])){
+                    // echo $_SESSION['id_pesan1'][0];
+                    $save = $_SESSION['id_pesan1'];
+                ?>
+                  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
+                    <div class="col-12">
+                      <h5 class="font-weight-bold">Informasi Shipment</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                        <label for="customer">Customer</label>
+                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
                           <option value="" selected disabled>Pilih</option>
                           <?php
-                            while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
+                            while($data = mysqli_fetch_array($fetchMasterCustomer)){
                               if($data['aktif']==1){
-                                if($data['id'] == 'x'){
+                                if($data['CustId'] == $save[3]){
                           ?>
-                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                          <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
                               <?php }else{?>
-                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                          <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
                             <?php } } else {
                               continue;
                               }
                             }
                           ?>
                         </select>
-                      </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="ShipmentLoadType">Shipment Load Type</label>
-                        <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
-                          <option value="" selected disabled>Pilih</option>
-                          <?php
-                            while($data = mysqli_fetch_array($fetchMasterLoadType)){
-                              if($data['aktif']==1){
-                                if($data['id'] == null){
-                          ?>
-                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
-                              <?php }else{?>
-                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
-                            <?php } } else {
-                              continue;
-                              }
-                            }
-                          ?>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="qty">Quantity</label>
-                        <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty">
                         </div>
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="unit">Unit</label>
-                        <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
-                          <option value="" selected disabled>Pilih</option>
-                          <?php
-                            while($data = mysqli_fetch_array($fetchMasterUnit)){
-                              if($data['aktif']==1){
-                                if($data['id'] == 'x'){
-                          ?>
-                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
-                              <?php }else{?>
-                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
-                            <?php } } else {
-                              continue;
-                              }
-                            }
-                          ?>
-                        </select>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="kodeShipment">Kode Shipment</label>
+                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment" value="<?php echo $save[1] ?>">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                        <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
+                        <input type="text" class="form-control form-control-sm" id="pib" name="pib" value="<?php echo $save[4] ?>">
+                        </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="billLanding">Bill of Landing (BL)</label>
+                          <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding" value="<?php echo $save[5] ?>">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Biaya</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <label for="biayaFreight">Biaya Freight</label>
-                        <div class="input-group input-group-sm mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">US$</span>
+                    <div class="col-12">
+                      <h5 class="font-weight-bold">Informasi Muatan</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="shipmentTerm">Shipment Term</label>
+                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                            <option value="" selected disabled>Pilih</option>
+                            <?php
+                              while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
+                                if($data['aktif']==1){
+                                  if($data['id'] == $save[6]){
+                            ?>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                                <?php }else{?>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                              <?php } } else {
+                                continue;
+                                }
+                              }
+                            ?>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="ShipmentLoadType">Shipment Load Type</label>
+                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                            <option value="" selected disabled>Pilih</option>
+                            <?php
+                              while($data = mysqli_fetch_array($fetchMasterLoadType)){
+                                if($data['aktif']==1){
+                                  if($data['id'] == $save[7]){
+                            ?>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                                <?php }else{?>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                              <?php } } else {
+                                continue;
+                                }
+                              }
+                            ?>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="qty">Quantity</label>
+                          <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $save[8] ?>">
                           </div>
-                          <input type="text" class="form-control" placeholder="0.00" onkeypress="return isNumberKey(event)" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="unit">Unit</label>
+                          <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
+                            <option value="" selected disabled>Pilih</option>
+                            <?php
+                              while($data = mysqli_fetch_array($fetchMasterUnit)){
+                                if($data['aktif']==1){
+                                  if($data['id'] == $save[9]){
+                            ?>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                                <?php }else{?>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                              <?php } } else {
+                                continue;
+                                }
+                              }
+                            ?>
+                          </select>
                         </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-12 col-lg-6">
-                          <label for="kurs">Kurs USD - IDR (saat ini)</label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <h5 class="font-weight-bold">Informasi Biaya</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="biayaFreight">Biaya Freight</label>
                           <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">IDR</span>
+                              <span class="input-group-text" id="basic-addon1">US$</span>
                             </div>
-                            <input type="text" name="kurs" class="form-control" placeholder="0.00" aria-label="kurs" onkeypress="return isNumberKey(event)" id="kurs" aria-describedby="basic-addon1">
+                            <input type="text" class="form-control" placeholder="0.00" onkeypress="return isNumberKey(event)" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1" value="<?php echo $save[10] ?>">
                           </div>
-                          </div>
-                          <div class="form-group col-md-12 col-lg-6" id="simple-date1">
-                            <label for="tglKurs">Tgl Kurs (saat ini)</label>
-                            <div class="input-group input-group-sm mb-3 date">
+                          <div class="form-row">
+                            <div class="form-group col-md-12 col-lg-6">
+                            <label for="kurs">Kurs USD - IDR (saat ini)</label>
+                            <div class="input-group input-group-sm mb-3">
                               <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                <span class="input-group-text" id="basic-addon1">IDR</span>
                               </div>
-                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" required>
+                              <input type="text" name="kurs" class="form-control" placeholder="0.00" aria-label="kurs" onkeypress="return isNumberKey(event)" id="kurs" aria-describedby="basic-addon1" value="<?php echo $save[13] ?>">
+                            </div>
+                            </div>
+                            <div class="form-group col-md-12 col-lg-6" id="simple-date1">
+                              <label for="tglKurs">Tgl Kurs (saat ini)</label>
+                              <div class="input-group input-group-sm mb-3 date">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $save[12] ?>" required>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-12 col-lg-6">
-                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
-                          <h5 class="font-weight-bold">(dengan kurs)</h5>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaFreight">0.00</span>
-                            </div>
-                            <div>
-                            <button type="button" class="btn btn-primary" id="actionCountBiayaFreight"><i class="fas fa-redo-alt"></i></button>
+                        <div class="col-md-12 col-lg-6">
+                          <div class="form-group col-12 py-3 rounded bg-lightGrey">
+                            <h5 class="font-weight-bold">Total Biaya Freight</h5>
+                            <h5 class="font-weight-bold">(dengan kurs)</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="mb-0 text-primary">
+                                IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaFreight"><?php echo $save[11] ?></span>
+                              </div>
+                              <div>
+                              <button type="button" class="btn btn-primary" id="actionCountBiayaFreight"><i class="fas fa-redo-alt"></i></button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div class="col-12 mb-5">
-                    <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
-                    <div class="form-row">
-                      <div class="form-group col-md-12 col-lg-6">
-                        <div class="listBiayaHandling" id="listBiayaHandling">
-                          <div class="form-row" id="parentInputBiayaHandling">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
+  
+                    <div class="col-12 mb-5">
+                      <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <div class="listBiayaHandling" id="listBiayaHandling">
+                            <?php for ($i=0; $i < count($save[14]); $i++) { 
+                            if ($i == 0) { ?>
+                              <div class="form-row" id="parentInputBiayaHandling">
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Nama Biaya Handling</label>
+                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" value="<?php echo $save[14][$i] ?>">
                                 </div>
-                                <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Biaya</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">IDR</span>
+                                    </div>
+                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $save[15][$i] ?>">
+                                  </div>
                                 </div>
-                                <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
                               </div>
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Nama Biaya Handling</label>
-                              <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                            </div>
-                            <div class="form-group col-md-12 col-lg-6 mb-0">
-                              <label>Biaya</label>
-                              <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="basic-addon1">IDR</span>
+                            <?php } else { ?>
+                              <div class="form-row">
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Nama Biaya Handling</label>
+                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" value="<?php echo $save[14][$i] ?>">
                                 </div>
-                                <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Biaya</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">IDR</span>
+                                    </div>
+                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $save[15][$i] ?>">
+                                  </div>
+                                </div>
                               </div>
-                            </div>
+                            <?php } } ?>
                           </div>
+                          <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
                         </div>
-                        <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
-                      </div>
-                      <div class="col-md-12 col-lg-6">
-                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
-                          <h5 class="font-weight-bold">Total Biaya Handling</h5>
-                          <!-- <h5 class="font-weight-bold">(dengan kurs)</h5> -->
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="mb-0 text-primary">
-                              IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling">0.00</span>
-                            </div>
-                            <div>
-                            <button type="button" class="btn btn-primary" id="actionCountBiayaHandling"><i class="fas fa-redo-alt"></i></button>
+                        <div class="col-md-12 col-lg-6">
+                          <div class="form-group col-12 py-3 rounded bg-lightGrey">
+                            <h5 class="font-weight-bold">Total Biaya Handling</h5>
+                            <!-- <h5 class="font-weight-bold">(dengan kurs)</h5> -->
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="mb-0 text-primary">
+                                IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling"><?php echo $save[16] ?></span>
+                              </div>
+                              <div>
+                              <button type="button" class="btn btn-primary" id="actionCountBiayaHandling"><i class="fas fa-redo-alt"></i></button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
-                  <input type="submit" value="Submit" name="inputShipment" class="btn btn-md btn-primary " style="width:77%;">
-                </form>
+                    
+                    <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
+                    <input type="submit" value="Submit" name="inputShipment" class="btn btn-md btn-primary " style="width:77%;">
+                  </form>
+                <?php } else { ?>
+                  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
+                    <div class="col-12">
+                      <h5 class="font-weight-bold">Informasi Shipment</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                        <label for="customer">Customer</label>
+                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
+                          <option value="" selected disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterCustomer)){
+                              if($data['aktif']==1){
+                                if($data['CustId'] == 'x'){
+                          ?>
+                          <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
+                        </select>
+                        </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="kodeShipment">Kode Shipment</label>
+                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                        <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
+                        <input type="text" class="form-control form-control-sm" id="pib" name="pib">
+                        </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="billLanding">Bill of Landing (BL)</label>
+                          <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <h5 class="font-weight-bold">Informasi Muatan</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="shipmentTerm">Shipment Term</label>
+                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                            <option value="" selected disabled>Pilih</option>
+                            <?php
+                              while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
+                                if($data['aktif']==1){
+                                  if($data['id'] == 'x'){
+                            ?>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                                <?php }else{?>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                              <?php } } else {
+                                continue;
+                                }
+                              }
+                            ?>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="ShipmentLoadType">Shipment Load Type</label>
+                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                            <option value="" selected disabled>Pilih</option>
+                            <?php
+                              while($data = mysqli_fetch_array($fetchMasterLoadType)){
+                                if($data['aktif']==1){
+                                  if($data['id'] == null){
+                            ?>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                                <?php }else{?>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                              <?php } } else {
+                                continue;
+                                }
+                              }
+                            ?>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="qty">Quantity</label>
+                          <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty">
+                          </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="unit">Unit</label>
+                          <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
+                            <option value="" selected disabled>Pilih</option>
+                            <?php
+                              while($data = mysqli_fetch_array($fetchMasterUnit)){
+                                if($data['aktif']==1){
+                                  if($data['id'] == 'x'){
+                            ?>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                                <?php }else{?>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                              <?php } } else {
+                                continue;
+                                }
+                              }
+                            ?>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <h5 class="font-weight-bold">Informasi Biaya</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="biayaFreight">Biaya Freight</label>
+                          <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1">US$</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="0.00" onkeypress="return isNumberKey(event)" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1">
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-12 col-lg-6">
+                            <label for="kurs">Kurs USD - IDR (saat ini)</label>
+                            <div class="input-group input-group-sm mb-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">IDR</span>
+                              </div>
+                              <input type="text" name="kurs" class="form-control" placeholder="0.00" aria-label="kurs" onkeypress="return isNumberKey(event)" id="kurs" aria-describedby="basic-addon1">
+                            </div>
+                            </div>
+                            <div class="form-group col-md-12 col-lg-6" id="simple-date1">
+                              <label for="tglKurs">Tgl Kurs (saat ini)</label>
+                              <div class="input-group input-group-sm mb-3 date">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" required>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                          <div class="form-group col-12 py-3 rounded bg-lightGrey">
+                            <h5 class="font-weight-bold">Total Biaya Freight</h5>
+                            <h5 class="font-weight-bold">(dengan kurs)</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="mb-0 text-primary">
+                                IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaFreight">0.00</span>
+                              </div>
+                              <div>
+                              <button type="button" class="btn btn-primary" id="actionCountBiayaFreight"><i class="fas fa-redo-alt"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="col-12 mb-5">
+                      <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <div class="listBiayaHandling" id="listBiayaHandling">
+                            <div class="form-row" id="parentInputBiayaHandling">
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Nama Biaya Handling</label>
+                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
+                              </div>
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Biaya</label>
+                                <div class="input-group input-group-sm mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                                  </div>
+                                  <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Nama Biaya Handling</label>
+                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
+                              </div>
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Biaya</label>
+                                <div class="input-group input-group-sm mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                                  </div>
+                                  <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Nama Biaya Handling</label>
+                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
+                              </div>
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Biaya</label>
+                                <div class="input-group input-group-sm mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                                  </div>
+                                  <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                          <div class="form-group col-12 py-3 rounded bg-lightGrey">
+                            <h5 class="font-weight-bold">Total Biaya Handling</h5>
+                            <!-- <h5 class="font-weight-bold">(dengan kurs)</h5> -->
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="mb-0 text-primary">
+                                IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling">0.00</span>
+                              </div>
+                              <div>
+                              <button type="button" class="btn btn-primary" id="actionCountBiayaHandling"><i class="fas fa-redo-alt"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
+                    <input type="submit" value="Submit" name="inputShipment" class="btn btn-md btn-primary " style="width:77%;">
+                  </form>
+                <?php } ?>
               </div>
             </div>
           </div>

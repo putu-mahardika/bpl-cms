@@ -33,6 +33,7 @@
 
     $namaBiayaHandling = $_POST['namaBiayaHandling'];
     $biayaHandling = $_POST['biayaHandling'];
+    $sumBiayaHandling = array_sum($biayaHandling);
 
     $j=0;
 
@@ -41,7 +42,7 @@
           $j=1;
       }
     }
-    // print_r([$datetime, $kodeShipment, $s_id, $customer, $pib, $billLanding, $shipmentTerm, $loadType, $qty, $unit, $biayaFreight, $totalFreight, $tglKurs, $kurs]);
+    $save = [$datetime, $kodeShipment, $s_id, $customer, $pib, $billLanding, $shipmentTerm, $loadType, $qty, $unit, $biayaFreight, $totalFreight, $tglKurs, $kurs, $namaBiayaHandling, $biayaHandling, $sumBiayaHandling];
 
     // foreach ($namaBiayaHandling as $x) {
     //   echo $x;
@@ -69,16 +70,19 @@
 
       if ($result) {
           // echo 'aaa';
+          $save = [];
           header("location:../../view/admin/shipment.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
        } else {
           // echo 'bbb';
           header("location:../../view/admin/shipment.php");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;			
       }
     } else {
         header("location:../../view/admin/inputShipment.php");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
     }
   }
 ?>
