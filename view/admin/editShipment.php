@@ -8,26 +8,44 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-	$query = 'select
-	ts.id,
-	ts.create_order as create_order,
-	mc.nama as customer,
-	ts.shipment_order as kode_shipment,
-	ts.pib as pib,
-	ts.bl as bl,
-	mu.nama as sales,
-	ts.quantity as qty,
-	mu2.nama as unit 
-from 
-	trans_shipment ts,
-	master_customer mc,
-	master_user mu,
-	master_unit mu2
-where 
-	mc.CustId = ts.CustId and 
-	mu.UserId = ts.UserId and 
-	mu2.id = ts.unit';
-	$fetch = mysqli_query($koneksi,$query);
+  $id = $_GET['id'];
+
+  $queryMasterCustomer = 'select * from master_customer where aktif=1';
+  $fetchMasterCustomer = mysqli_query($koneksi, $queryMasterCustomer);
+
+  $queryMasterShipmentTerms = 'select * from master_shipment_terms where aktif=1';
+  $fetchMasterShipmentTerms = mysqli_query($koneksi, $queryMasterShipmentTerms);
+
+  $queryMasterLoadType = 'select * from master_load_type where aktif=1';
+  $fetchMasterLoadType = mysqli_query($koneksi, $queryMasterLoadType);
+
+  $queryMasterUnit = 'select * from master_unit where aktif=1';
+  $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
+
+  $queryShipment = "select * from trans_shipment where id='$id'";
+  $fetchShipment = mysqli_query($koneksi,$queryShipment);
+  $dataShipment = mysqli_fetch_array($fetchShipment);
+
+  $shipmentId = $dataShipment['id'];
+  // print_r($dataShipment);
+  // echo $shipmentId;
+
+  $queryShipmentHandling = "select * from trans_shipment_handling where id_shipment='$id'";
+  $fetchShipmentHandling = mysqli_query($koneksi,$queryShipmentHandling);
+  // $dataShipmentHandling = mysqli_fetch_array($fetchShipmentHandling);
+  $dataShipmentHandling = array();
+  while ($data = mysqli_fetch_array($fetchShipmentHandling)) {
+    $dataShipmentHandling[] = array(
+      'id' => $data['id'],
+      'id_shipment' => $data['id_shipment'],
+      'create_date' => $data['create_date'],
+      'keterangan_biaya' => $data['keterangan_biaya'],
+      'nominal' => $data['nominal'] 
+    );
+  }
+
+  $totalHandling = array_sum(array_column($dataShipmentHandling, 'nominal'))
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,11 +57,18 @@ where
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>List Shipment - PT Berkah Permata Logistik</title>
+  <title>Tambah Shipment - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  <link href="../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
+  <style>
+    .bg-lightGrey {
+      background-color: #f1f1f1;
+      color: black;
+    }
+  </style>
 </head>
 
 <body id="page-top">
@@ -54,6 +79,7 @@ where
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
+        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -112,16 +138,16 @@ where
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
+          <span>Kota</span> 
         </a>
-        <div id="collapseKota" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item active" href="kota.php">List Kota</a>
+            <a class="collapse-item" href="kota.php">List Kota</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -202,19 +228,19 @@ where
           </div>
         </a>
       </li>-->
-      <!--<li class="nav-item">
+      <!--<li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
           <span>Pages</span>
         </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Example Pages</h6>
             <a class="collapse-item" href="login.html">Login</a>
             <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <a class="collapse-item active" href="blank.html">Blank Page</a>
           </div>
         </div>
       </li>
@@ -235,13 +261,14 @@ where
         </a>
       </li>
       <hr class="sidebar-divider">
-      <!--<div class="version" id="version-ruangadmin"></div>-->
 	  <li class="nav-item">
+        
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
+      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -407,7 +434,7 @@ where
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama']?></span>
-			        	<img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
+				        <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <!--<a class="dropdown-item" href="#">
@@ -418,7 +445,7 @@ where
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>-->
-                <a class="dropdown-item" href="editPassword.php">
+				<a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -432,84 +459,249 @@ where
           </ul>
         </nav>
         <!-- Topbar -->
+
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">List Shipment</h1>
-            <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportShipment.php"><i class="fas fa-print"></i></a>
-			      <!--<a href="#" class="btn btn-info btn-lg">
-                <i class="fas fa-print"></i>
-            </a>-->
+          <div class="d-sm-flex align-items-center justify-content-start mb-4">
+            <a href="shipment.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Shipment</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
+              <li class="breadcrumb-item">Pages</li>
+              <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
 
-          <div class="row">
+          <div class="col-xl-12">
+            <div class="card mb-4">
+              <div class="card-body">
+                <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
+                  <input type="hidden" name="shipmentId" value="<?php echo $shipmentId ?>">
+                  <div class="col-12">
+                    <h5 class="font-weight-bold">Informasi Shipment</h5>
+                    <div class="form-row">
+                      <div class="form-group col-md-12 col-lg-6">
+                      <label for="customer">Customer</label>
+                      <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer" readonly>
+                        <option value="" selected disabled>Pilih</option>
+                        <?php
+                          while($data = mysqli_fetch_array($fetchMasterCustomer)){
+                            if($data['aktif']==1){
+                              if($data['CustId'] == $dataShipment['CustId']){
+                        ?>
+                        <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                          <?php } } else {
+                            continue;
+                            }
+                          }
+                        ?>
+                      </select>
+                      </div>
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="kodeShipment">Kode Shipment</label>
+                        <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment" value="<?php echo $dataShipment['shipment_order']?>">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-12 col-lg-6">
+                      <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
+                      <input type="text" class="form-control form-control-sm" id="pib" name="pib" value="<?php echo $dataShipment['pib']?>">
+                      </div>
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="billLanding">Bill of Landing (BL)</label>
+                        <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding" value="<?php echo $dataShipment['bl']?>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <h5 class="font-weight-bold">Informasi Muatan</h5>
+                    <div class="form-row">
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="shipmentTerm">Shipment Term</label>
+                        <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                          <option value="" disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
+                              if($data['aktif']==1){
+                                if($data['id'] == $dataShipment['id_shipment_term']){
+                          ?>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="ShipmentLoadType">Shipment Load Type</label>
+                        <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                          <option value="" selected disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterLoadType)){
+                              if($data['aktif']==1){
+                                if($data['id'] == $dataShipment['id_shipment_load_type']){
+                          ?>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="qty">Quantity</label>
+                        <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $dataShipment['quantity'] ?>">
+                        </div>
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="unit">Unit</label>
+                        <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
+                          <option value="" disabled>Pilih</option>
+                          <?php
+                            while($data = mysqli_fetch_array($fetchMasterUnit)){
+                              if($data['aktif']==1){
+                                if($data['id'] == $dataShipment['unit']){
+                          ?>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                              <?php }else{?>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <?php } } else {
+                              continue;
+                              }
+                            }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <h5 class="font-weight-bold">Informasi Biaya</h5>
+                    <div class="form-row">
+                      <div class="form-group col-md-12 col-lg-6">
+                        <label for="biayaFreight">Biaya Freight</label>
+                        <div class="input-group input-group-sm mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">US$</span>
+                          </div>
+                          <input type="text" class="form-control" placeholder="0.00" onkeypress="return isNumberKey(event)" aria-label="biayaFreight" id="biayaFreight" name="biayaFreight" aria-describedby="basic-addon1" value="<?php echo $dataShipment['freight'] ?>">
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-12 col-lg-6">
+                          <label for="kurs">Kurs USD - IDR (saat ini)</label>
+                          <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1">IDR</span>
+                            </div>
+                            <input type="text" name="kurs" class="form-control" placeholder="0.00" aria-label="kurs" onkeypress="return isNumberKey(event)" id="kurs" aria-describedby="basic-addon1" value="<?php echo $dataShipment['nilai_kurs'] ?>">
+                          </div>
+                          </div>
+                          <div class="form-group col-md-12 col-lg-6" id="simple-date1">
+                            <label for="tglKurs">Tgl Kurs (saat ini)</label>
+                            <div class="input-group input-group-sm mb-3 date">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                              </div>
+                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo date('d/m/Y', strtotime($dataShipment['kurs_date'])) ?>" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 col-lg-6">
+                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
+                          <h5 class="font-weight-bold">Total Biaya Freight</h5>
+                          <h5 class="font-weight-bold">(dengan kurs)</h5>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="mb-0 text-primary">
+                              IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaFreight"><?php echo $dataShipment['total_freight'] ?></span>
+                            </div>
+                            <div>
+                            <button type="button" class="btn btn-primary" id="actionCountBiayaFreight"><i class="fas fa-redo-alt"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-            <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-                  <a href="inputShipment.php" class="btn btn-primary btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Tambah Shipment</span>
-                  </a>
-
-                </div>
-                <div class="table-responsive p-3">
-				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Tgl</th>
-                        <th>Customer</th>
-                        <th>Kode Shipment</th>
-                        <th>No. PIB</th>
-                        <th>No. BIL</th>
-                        <th>Sales</th>
-                        <th>Qty</th>
-                        <th>Unit</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                        $i = 1;
-                        while($data = mysqli_fetch_array($fetch)){
-                          //$tgl = date("d-M-Y", strtotime($data['create_date']));
-                      ?>
-                        <tr>
-                          <td><?php echo $data['create_order'] ?></td>
-                          <td><?php echo $data['customer'] ?></td>
-                          <td><?php echo $data['kode_shipment']?></td>
-                          <td><?php echo $data['pib']?></td>
-                          <td><?php echo $data['bl']?></td>
-                          <td><?php echo $data['sales'] ?></td>
-                          <td><?php echo $data['qty'] ?></td>
-                          <td><?php echo $data['unit'] ?></td>
-                          <td><span class="badge badge-success">Aktif</span></td>
-                          <td>
-                            <a href="editShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning btn-sm" style="margin-bottom:0.25rem;width:33px;">
-                            <i class="fas fa-edit"></i></a>
-                            <a href="detailShipment.php?id=<?php echo $data['id']?>" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;">
-                            <i class="fas fa-search"></i></a>
-                            <!-- <button title="detail" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button> -->
-                          </td>
-                        </tr>
-                      <?php } ?>
-                    </tbody>
-                  </table>
-                </div>
+                  <div class="col-12 mb-5">
+                    <h5 class="font-weight-bold">Informasi Biaya Handling</h5>
+                    <div class="form-row">
+                      <div class="form-group col-md-12 col-lg-6">
+                        <div class="listBiayaHandling" id="listBiayaHandling">
+                          <?php foreach ($dataShipmentHandling as $i => $datas) {
+                          if ($i == 0) { ?>
+                            <div class="form-row" id="parentInputBiayaHandling">
+                              <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Nama Biaya Handling</label>
+                                <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" value="<?php echo $datas['keterangan_biaya']?>">
+                              </div>
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Biaya</label>
+                                <div class="input-group input-group-sm mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                                  </div>
+                                  <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
+                                </div>
+                              </div>
+                            </div>
+                          <?php } else { ?>
+                            <div class="form-row">
+                              <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Nama Biaya Handling</label>
+                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" value="<?php echo $datas['keterangan_biaya']?>">
+                              </div>
+                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <label>Biaya</label>
+                                <div class="input-group input-group-sm mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                                  </div>
+                                  <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
+                                </div>
+                              </div>
+                            </div>
+                        <?php } }?>
+                        </div>
+                        <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
+                      </div>
+                      <div class="col-md-12 col-lg-6">
+                        <div class="form-group col-12 py-3 rounded bg-lightGrey">
+                          <h5 class="font-weight-bold">Total Biaya Handling</h5>
+                          <!-- <h5 class="font-weight-bold">(dengan kurs)</h5> -->
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="mb-0 text-primary">
+                              IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling"><?php echo $totalHandling ?></span>
+                            </div>
+                            <div>
+                            <button type="button" class="btn btn-primary" id="actionCountBiayaHandling"><i class="fas fa-redo-alt"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
+                  <input type="submit" value="Submit" name="editShipment" class="btn btn-md btn-primary " style="width:77%;">
+                </form>
               </div>
             </div>
           </div>
-          <!--Row-->
+		  <!--<div class="text-center">
+            <img src="img/think.svg" style="max-height: 90px">
+            <h4 class="pt-3">save your <b>imagination</b> here!</h4>
+          </div>-->
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -558,23 +750,81 @@ where
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+  <script src="../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="../../vendor/select2/dist/js/select2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
-  <script src="../../vendor/datatables1/datatables.min.js"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-  <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
-
-  <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function () {
-      //$.fn.table.moment('d-M-Y hh:mm:ss');
-      $('#dataTable').DataTable(); // ID From dataTable 
-      $('#dataTableHover').DataTable({
-        "order": [[0, "asc"]]
-        
-      }); // ID From dataTable with Hover
+    $('.addRowHandling').click(function() {
+      var node = document.getElementById('listBiayaHandling')
+      var clone = document.getElementById('parentInputBiayaHandling')
+      clonex = clone.cloneNode(true);
+
+      clonex.setAttribute('id', ' ');
+      clonex.querySelector('#biayaHandlingId').value = ' ';
+      clonex.querySelector('#parentNameInputBiayaHandling').value = ' ';
+      clonex.querySelector('#parentCostInputBiayaHandling').value = ' ';
+      
+      // clonex.insertBefore($('.addRowHandling'))
+      node.appendChild(clonex);
     });
+    // Select2 Single  with Placeholder
+    $('.select2-single-placeholder').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+    $('.select2-single-placeholder1').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+    $('.select2-single-placeholder2').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+    $('.select2-single-placeholder3').select2({
+  		placeholder: "Pilih",
+	  	allowClear: true
+	  });
+
+    $('#simple-date1 .input-group.date').datepicker({
+      format: 'dd/mm/yyyy',
+      todayBtn: 'linked',
+      todayHighlight: true,
+      autoclose: true,        
+    });
+
+    $('#actionCountBiayaHandling').click(function() {
+      var l = $('.inputBiayaHandling').length;
+      //Initialize default array
+      // var arrResult = [];
+      var result = 0;
+      for (i = 0; i < l; i++) { 
+        //Push each element to the array
+        var temp = $('.inputBiayaHandling').eq(i).val() == '' ? 0 : $('.inputBiayaHandling').eq(i).val()
+        console.log(temp);
+        result += parseFloat(temp)
+      }
+      //print the array or use it for your further logic
+      console.log(result);
+
+      $('#countBiayaHandling').html(new Intl.NumberFormat('id-ID').format(result));
+    })
+
+    $('#actionCountBiayaFreight').click(function() {
+      var result = 0;
+      var kursTemp = $('#kurs').val() == '' ? 0 : $('#kurs').val()
+      var biayaFreightTemp = $('#biayaFreight').val() == '' ? 0 : $('#biayaFreight').val()
+      result = kursTemp * biayaFreightTemp
+      console.log(result);
+
+      $('#countBiayaFreight').html(new Intl.NumberFormat('id-ID').format(result));
+    })
+
+    function isNumberKey(evt){
+      var charCode = (evt.which) ? evt.which : evt.keyCode
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46)
+          return false;
+      return true;
+    }
   </script>
 
 </body>
