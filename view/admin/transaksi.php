@@ -836,7 +836,7 @@
 
                         ?>
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_temp['nama']?></td>
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_temp['nama'] ?? '-'?></td>
 
                         <?php
 
@@ -844,11 +844,11 @@
 
                         ?>
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO']?> <p style="color:red;">(Canceled)</p> </td>
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO'] ?? '-'?> <p style="color:red;">(Canceled)</p> </td>
 
                         <?php } else { ?>
 
-                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO']?></td>
+                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO'] ?? '-'?></td>
 
                         <?php } ?>
 
@@ -860,11 +860,11 @@
 
                         ?>
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK']?> <p style="color:red;">(Canceled)</p> </td>
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK'] ?? '-'?> <p style="color:red;">(Canceled)</p> </td>
 
                         <?php } else {?>
 
-                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK']?></td>
+                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK'] ?? '-'?></td>
 
                         <?php } ?>
 
@@ -892,9 +892,9 @@
 
                         ?>
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_k1_temp['Nama'] ?? $data['kota_tujuan_id'] ?></td>
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data_k1_temp['Nama'] ?? '-' ?></td>
 
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['total_armada']?></td>
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['total_armada'] ?? '-'?></td>
 
                         <!--<td><?php echo $data['Barang']?></td>-->
 

@@ -54,13 +54,13 @@ $query_k = "select * from master_kota where aktif = 1 ORDER BY SUBSTRING(Nama, 1
 $fetch_k = mysqli_query($koneksi, $query_k);
 $fetch_k1 = mysqli_query($koneksi, $query_k);
 
-$query_c = "select * from master_customer where CustId='$t_custid'";
+$query_c = "select * from master_customer where aktif=1";
 $fetch_c = mysqli_query($koneksi, $query_c);
 
-while ($data_c = mysqli_fetch_array($fetch_c)) {
-  $c_custid = $data_c['CustId'];
-  $c_nama = $data_c['nama'];
-}
+// while ($data_c = mysqli_fetch_array($fetch_c)) {
+//   $c_custid = $data_c['CustId'];
+//   $c_nama = $data_c['nama'];
+// }
 
 $query_s = "select * from master_status where aktif='1' ORDER by atr1 asc";
 $fetch_s = mysqli_query($koneksi, $query_s);
@@ -577,8 +577,21 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="form-group">
                       <label>Customer :</label>
-                      <select class="select2-single-placeholder form-control" name="customer" style="width:100% !important;" readonly>
-                        <option value="<?php echo $c_custid ?>" selected><?php echo $c_nama ?></option>
+                      <select class="select2-single-placeholder form-control" name="customer" id="customer" required>
+                      <option value="" selected disabled>Pilih</option>
+                      <?php
+                        while($data = mysqli_fetch_array($fetch_c)){
+							            if($data['aktif']==1){
+                            if($data['CustId'] == $t_custid){
+                      ?>
+                      <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                          <?php }elseif ($t_custid == '') {?>
+                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
+                        <?php } } else {
+                          continue;
+                          }
+                        }
+                      ?>
                       </select>
                     </div>
                     <div class="row" style="height: 70px;">
@@ -592,7 +605,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                           </div>
-                          <input type="text" class="form-control" value="<?php echo $t_tglpo1 ?>" id="simpleDataInput" name="tglpo" required>
+                          <input type="text" class="form-control" value="<?php echo $t_tglpo != '' ? $t_tglpo1 : $date ?>" id="simpleDataInput" name="tglpo" required>
                         </div>
                       </div>
                     </div>
@@ -607,7 +620,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                           </div>
-                          <input type="text" class="form-control" value="<?php echo $t_tglspk1 ?>" id="simpleDataInput" name="tglspk" required>
+                          <input type="text" class="form-control" value="<?php echo $t_tglspk != '' ? $t_tglspk1 : $date ?>" id="simpleDataInput" name="tglspk" required>
                         </div>
                       </div>
                     </div>
