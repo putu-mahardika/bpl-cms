@@ -8,8 +8,70 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
-  //$query = 'select * from master_user where ...';
-  //$fetch = mysqli_query($koneksi,$query);
+  $id = $_GET['id'];
+  
+  $queryShipment = "select * from trans_shipment where id='$id'";
+  $fetchShipment = mysqli_query($koneksi,$queryShipment);
+  $dataShipment = mysqli_fetch_array($fetchShipment);
+
+  $shipmentId = $dataShipment['id'];
+  $shipmentCustId = $dataShipment['CustId'];
+  $shipmentTerm = $dataShipment['id_shipment_term'];
+  $shipmentLoadType = $dataShipment['id_shipment_load_type'];
+  $shipmentUnit = $dataShipment['unit'];
+  $shipmentUser = $dataShipment['UserId'];
+  $shipmentStatus = $dataShipment['id_status_shipment'];
+
+  // print_r($dataShipment);
+  // echo $shipmentId;
+
+  $queryMasterUser = "select * from master_user where UserId='$shipmentUser'";
+  $fetchMasterUser = mysqli_query($koneksi, $queryMasterUser);
+  $dataUser = mysqli_fetch_array($fetchMasterUser);
+
+  $queryMasterCustomer = "select * from master_customer where aktif=1 and CustId='$shipmentCustId'";
+  $fetchMasterCustomer = mysqli_query($koneksi, $queryMasterCustomer);
+  $dataCustomer = mysqli_fetch_array($fetchMasterCustomer);
+  // echo $dataCustomer['nama'];
+
+  $queryMasterShipmentTerms = "select * from master_shipment_terms where aktif=1 and id='$shipmentTerm'";
+  $fetchMasterShipmentTerms = mysqli_query($koneksi, $queryMasterShipmentTerms);
+  $dataShipmentTerms = mysqli_fetch_array($fetchMasterShipmentTerms);
+
+  $queryMasterLoadType = "select * from master_load_type where aktif=1 and id='$shipmentLoadType'";
+  $fetchMasterLoadType = mysqli_query($koneksi, $queryMasterLoadType);
+  $dataLoadType = mysqli_fetch_array($fetchMasterLoadType);
+
+  $queryMasterUnit = "select * from master_unit where aktif=1 and id='$shipmentUnit'";
+  $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
+  $dataUnit = mysqli_fetch_array($fetchMasterUnit);
+
+  $queryTransHd = "select * from trans_hd where id_shipment='$shipmentId'";
+  $fetchTransHd = mysqli_query($koneksi, $queryTransHd);
+  // $dataTranshd = mysqli_fetch_array($fetchTransHd);
+  $dataTransHd = array();
+  while ($data = mysqli_fetch_array($fetchTransHd)) {
+    $dataTransHd[] = $data;
+  }
+  // print_r($dataTransHd);
+
+
+  $queryShipmentHandling = "select * from trans_shipment_handling where id_shipment='$id'";
+  $fetchShipmentHandling = mysqli_query($koneksi,$queryShipmentHandling);
+  // $dataShipmentHandling = mysqli_fetch_array($fetchShipmentHandling);
+  $dataShipmentHandling = array();
+  while ($data = mysqli_fetch_array($fetchShipmentHandling)) {
+    $dataShipmentHandling[] = array(
+      'id' => $data['id'],
+      'id_shipment' => $data['id_shipment'],
+      'create_date' => $data['create_date'],
+      'keterangan_biaya' => $data['keterangan_biaya'],
+      'nominal' => $data['nominal'] 
+    );
+  }
+
+  $totalHandling = array_sum(array_column($dataShipmentHandling, 'nominal'));
+  // print_r($dataShipment);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +87,17 @@
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <style>
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+</style>
 </head>
 
 <body id="page-top">
@@ -401,7 +474,7 @@
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>-->
-				<a class="dropdown-item" href="editPassword.php">
+				        <a class="dropdown-item" href="editPassword.php">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ubah Password
                 </a>
@@ -425,7 +498,7 @@
             </div>
             <div>
               <p class="text-right mb-0">Last Edit</p>
-              <p class="text-right mb-0" style="color: black;"><strong>Jamilla Cabello</strong></p>
+              <p class="text-right mb-0" style="color: black;"><strong><?php echo $dataUser['nama']?></strong></p>
             </div>
           </div>
           <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
@@ -437,23 +510,124 @@
                   <div>
                     <div class="d-flex justify-content-between">
                       <div class="" style="color:black;font-size:18px;word-wrap: break-word;width:90%;">
-                        0004-2022/11/25-CS2 TGR
-                      </div> 
-                      <p class="" style="color: black;;"><i class="fa fa-ellipsis-v"></i></p>
+                        <?php echo $dataShipment['shipment_order'] ?>
+                      </div>
+                      <div class="dropdown">
+                        <div class="" style="color: black;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></div>
+                        <!-- <span class="caret"></span></button> -->
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a class="dropdown-item" tabindex="-1" href="">
+                              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Edit
+                            </a>
+                          </li>
+                          <li class="dropdown-submenu">
+                            <?php if ($shipmentStatus == 3) { ?>
+                              <p class="test dropdown-item mb-0" style="cursor: pointer;">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Ubah Status
+                              </p>
+                            <?php } else { ?>
+                              <a class="test dropdown-item" tabindex="-1" href="">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Ubah Status
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li>
+                                  <p class="dropdown-item mb-0" onclick="changeStatusAct(1)">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Open
+                                  </p>
+                                </li>
+                                <li>
+                                  <p class="dropdown-item mb-0" onclick="changeStatusAct(2)">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Delivering
+                                  </p>
+                                </li>
+                                <li class="dropdown-submenu">
+                                  <!-- <a class="test" href="#">Another dropdown <span class="caret"></span></a> -->
+                                  <p class="dropdown-item mb-0" onclick="changeStatusAct(3)">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Closed
+                                  </p>
+                                </li>
+                              </ul>
+                            <?php } ?>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" tabindex="-1" href="">
+                              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Hapus / Drop
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <!-- <div>
+                        <p class="" style="color: black;"><i class="fa fa-ellipsis-v"></i></p>
+                        <ul class="dropdown-menu dropdown-menu-right shadow animated--grow-in shipment-dropdown" aria-labelledby="userDropdown">
+                          <li>
+                            <a class="dropdown-item" href="editPassword.php">
+                              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Ubah Password
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#">
+                              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Ubah Password
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                              <li>
+                                <a class="dropdown-item" href="editPassword.php">
+                                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                  Ubah Password
+                                </a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="editPassword.php">
+                                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                  Ubah Password
+                                </a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="editPassword.php">
+                                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                  Ubah Password
+                                </a>
+                              </li>
+                            </ul>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="editPassword.php">
+                              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Ubah Password
+                            </a>
+                          </li>
+                        </ul>
+                      </div> -->
                     </div>
-                    <p>PT CS2 Pola Sehat</p>
+                    <p><?php echo $dataCustomer['nama']?></p>
+                    <?php if ($shipmentStatus == 2) { ?>
+                      <span class="badge badge-warning">Delivering</span>
+                    <?php } elseif ($shipmentStatus == 3) { ?>
+                      <span class="badge badge-success">Closed</span>
+                    <?php } else { ?>
+                      <span class="badge badge-primary">Open</span>
+                    <?php } ?>
 
                   </div>
                   <hr class="sidebar-divider">
                   <div>
                     <p class="" style="color: black;"><strong>Informasi Shipment</strong></p>
                     <div>
-                      <p class="mb-0">No. BIP</p>
-                      <p class="" style="color: black;"><strong>376/OTG/2022</strong></p>
+                      <p class="mb-0">No. PIB</p>
+                      <p class="" style="color: black;"><strong><?php echo $dataShipment['pib'] ?></strong></p>
                     </div>
                     <div>
                       <p class="mb-0">No. BIL</p>
-                      <p class="" style="color: black;"><strong>376/OTG/2022</strong></p>
+                      <p class="" style="color: black;"><strong><?php echo $dataShipment['bl'] ?></strong></p>
                     </div>
                   </div>
 
@@ -462,15 +636,15 @@
                     <p class="" style="color: black;"><strong>Informasi Muatan</strong></p>
                     <div>
                       <p class="mb-0">Shipment Term</p>
-                      <p class="" style="color: black;"><strong>FCA (Free Carrier Address)</strong></p>
+                      <p class="" style="color: black;"><strong><?php echo $dataShipmentTerms['nama'] ?></strong></p>
                     </div>
                     <div>
                       <p class="mb-0">Shipment Load Type</p>
-                      <p class="" style="color: black;"><strong>FCL (Full Container Load)</strong></p>
+                      <p class="" style="color: black;"><strong><?php echo $dataLoadType['nama'] ?></strong></p>
                     </div>
                     <div>
                       <p class="mb-0">QTY & Unit</p>
-                      <p class="" style="color: black;"><strong>3 Container</strong></p>
+                      <p class="" style="color: black;"><strong><?php echo $dataShipment['quantity'] ." ". $dataUnit['nama'] ?></strong></p>
                     </div>
                   </div>
 
@@ -478,37 +652,39 @@
                   <div>
                     <p class="" style="color: black;"><strong>Informasi Biaya</strong></p>
                     <div>
-                      <p class="mb-0">Biaya Freight (US$)</p>
-                      <p class="" style="color: black;"><strong>$ 100.000</strong></p>
+                      <p class="mb-0">Biaya Freight</p>
+                      <p class="" style="color: black;"><strong><?php echo "US$ ".number_format($dataShipment['freight'],2,",",".")?></strong></p>
                     </div>
                     <div>
                       <p class="mb-0">Kurs Saat Pengiriman</p>
-                      <p class="" style="color: black;"><strong>IDR 14.599 (per 13 November 2022)</strong></p>
+                      <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($dataShipment['nilai_kurs'],2,",",".")." (".date("d F Y", strtotime($dataShipment['kurs_date'])).")"?></strong></p>
                     </div>
                     <div>
                       <p class="mb-0">Total Biaya Freight (IDR)</p>
-                      <p class="text-primary"><strong>IDR 1.459.900.000</strong></p>
+                      <p class="text-primary"><strong><?php echo "Rp ".number_format($dataShipment['total_freight'],2,",",".") ?></strong></p>
                     </div>
                   </div> 
 
                   <hr class="sidebar-divider">
                   <div>
                     <p class="" style="color: black;"><strong>Informasi Biaya Handling</strong></p>
-                    <div>
-                      <p class="mb-0">Handling 1</p>
-                      <p class="" style="color: black;"><strong>IDR 15.000.000</strong></p>
-                    </div>
-                    <div>
-                      <p class="mb-0">Handling 2</p>
-                      <p class="" style="color: black;"><strong>IDR 15.000.000</strong></p>
-                    </div>
-                    <div>
-                      <p class="mb-0">Handling 3</p>
-                      <p class="" style="color: black;"><strong>IDR 15.000.000</strong></p>
-                    </div>
+                    <?php foreach ($dataShipmentHandling as $data) {?>
+                      <div>
+                        <p class="mb-0">
+                          <?php 
+                            if ($data['keterangan_biaya'] == ' ') {
+                              echo "-";
+                            } else {
+                              echo $data['keterangan_biaya'];
+                            }
+                          ?>
+                        </p>
+                        <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($data['nominal'],2,",",".")?> </strong></p>
+                      </div>
+                    <?php } ?>
                     <div>
                       <p class="mb-0">Total Handling</p>
-                      <p class="text-primary"><strong>IDR 45.000.000</strong></p>
+                      <p class="text-primary"><strong><?php echo "Rp ".number_format($totalHandling,2,",",".")?></strong></p>
                     </div>
                   </div> 
                 </div>
@@ -521,49 +697,75 @@
                     <div class="d-flex align-items-center justify-content-between">
                       <div class="d-flex align-items-center">
                         <div class="mr-2" style="color: black;"><strong>Trucking Order</strong></div>
-                        <div class="px-1 rounded" style="background-color: #EAEAEA;color:black;">0</div>
+                        <div class="px-1 rounded" style="background-color: #EAEAEA;color:black;"><?php echo count($dataTransHd) ?></div>
                       </div>
                       <div>
-                        <a href="inputShipment.php" class="btn btn-primary btn-icon-split">
+                      <?php if ($shipmentStatus != 2) { ?>
+                        <button class="btn btn-primary btn-icon-split" disabled="disabled">
+                          <span class="icon text-white-50">
+                              <i class="fas fa-plus"></i>
+                            </span>
+                          <span class="text">Tambah Shipment</span>
+                        </button>
+                      <?php } else {?>
+                        <a style="color: white;" class="btn btn-primary btn-icon-split" type="button" data-toggle="modal" data-target="#generateTruckingModal">
                           <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                           </span>
                           <span class="text">Tambah Shipment</span>
                         </a>
+                      <?php } ?>
                       </div>
                     </div>
-                    <div class="table-responsive p-3">
-                      <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                        <thead class="thead-light">
-                          <tr>
-                            <th>No. PO</th>
-                            <th>Tgl</th>
-                            <th>No. SPK</th>
-                            <th>Kota Asal</th>
-                            <th>Kota Tujuan</th>
-                            <th>Jumlah Armada</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>0004-2022/11/25-CS2 TGR</td>
-                            <td>27/11/2022</td>
-                            <td>376/OTG/2022</td>
-                            <td>Jakarta</td>
-                            <td>Surabaya</td>
-                            <td>3</td>
-                            <td><span class="badge badge-success">Close</span></td>
-                            <td>
-                            <a title="edit" href="#" class="btn btn-sm btn-warning" style="margin-bottom:0.25rem; width:33px;"><i class="fas fa-edit"></i></a>
-                            <button title="detail" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                    <?php if (count($dataTransHd) == 0) { ?>
+                      <div class="text-center">
+                        <img src="../../img/list-grey.png" alt="list-grey">
+                        <p>You can add trucking order after shipment status is Delivering</p>
+                      </div>
+
+                      <?php } else { ?>
+                    
+                        <div class="table-responsive p-3">
+                          <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                            <thead class="thead-light">
+                              <tr>
+                                <th>No. PO</th>
+                                <th>Tgl</th>
+                                <th>No. SPK</th>
+                                <th>Kota Asal</th>
+                                <th>Kota Tujuan</th>
+                                <th>Jumlah Armada</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php foreach ($dataTransHd as $id=>$data) {?>
+                                <tr>
+                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
+                                  <td><?php echo date('d-M-Y H:i:s', strtotime($data['create_date'])) ?? '-' ?></td>
+                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
+                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
+                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
+                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
+                                  <?php 
+                                    if($data['OnClose'] == 1){
+                                  ?>
+                                    <td style="padding-left:16px;"><span class="badge badge-success">Close</span></td>
+                                  <?php } else{ ?>
+                                    <td style="padding-left:16px;"><span class="badge badge-info">Open</span></td>
+                                  <?php } ?>
+                                  <td>
+                                  <a title="edit" href="editTransaksi.php?id=<?php echo $data['HdId']?>" class="btn btn-sm btn-warning" style="margin-bottom:0.25rem; width:33px;"><i class="fas fa-edit"></i></a>
+                                  <button title="detail" onclick="transinfo(<?php echo $data['HdId']?>)" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
+                                  </td>
+                                </tr>
+                              <?php } ?>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  <?php } ?>
                 </div>
               </div>
             </div>
@@ -585,6 +787,52 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Generate Trucking Logout -->
+          <div class="modal fade" id="generateTruckingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelGenerateTrucking" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelGenerateTrucking">Order Trucking</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="../../config/controller/shipmentController.php" method="post">
+                  <div class="modal-body">
+                    <!-- <p>Jumlah Order Trucking</p> -->
+                    <label for="generateTrucking">Jumlah Order Trucking :</label>
+                    <input type="hidden" name="id" value="<?php echo $shipmentId ?>">
+				            <input type="number" id="generateTrucking" class="form-control form-control-sm mb-3" name="count" min="0" value="0" >
+                  </div>
+                  <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button> -->
+                    <input type="submit" value="Submit" name="inputGenerateTrucking" class="btn btn-primary">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Detail -->
+          <div class="modal fade bd-example-modal-xl" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Detail Transaksi</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body detail-body">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
                 </div>
               </div>
             </div>
@@ -616,6 +864,57 @@
   <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../../js/ruang-admin.min.js"></script>
+
+  <script>
+  $(document).ready(function(){
+    $('.dropdown-submenu a.test').on("click", function(e){
+      $(this).next('ul').toggle();
+      e.stopPropagation();
+      e.preventDefault();
+    });
+  });
+  function changeStatusAct(statusId){
+    console.log('xxx');
+    // var custid = $(this).data('id');
+    var shipmentId = <?php echo $shipmentId ?>
+
+    // AJAX request\
+    $.ajax({
+      url: '../../config/controller/shipmentController.php',
+      type: 'post',
+      data: {
+        changeStatusShipment: true,
+        id: shipmentId,
+        statusId: statusId
+      },
+      success: function(response){
+        location.reload();
+        // // Add response in Modal body
+        // $('.modal-body').html(response);
+        // // Display Modal
+        // $('#detailModal').modal('show');
+      }
+    });
+  };
+  </script>
+
+  <script>
+    function transinfo(id){
+      var hdid = id;
+      // AJAX request\
+      $.ajax({
+        url: '../../config/viewTransaksi.php',
+        type: 'post',
+        data: {hdid: hdid},
+        success: function(response){
+          // Add response in Modal body
+          $('.detail-body').html(response);
+          // Display Modal
+          $('#detailModal').modal('show');
+        }
+      });
+    }
+  </script>
 
 </body>
 

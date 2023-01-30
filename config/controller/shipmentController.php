@@ -166,5 +166,49 @@
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         $_SESSION['id_pesan1'] = $save;
     }
+  } elseif (isset($_POST['changeStatusShipment'])) {
+    // echo $_POST['statusId'];
+    $id = $_POST['id'];
+    $statusId = $_POST['statusId'];
+
+    $query = "update trans_shipment set id_status_shipment='$statusId' where id='$id'";
+    $result = mysqli_query($koneksi, $query);
+
+    if ($result) {
+      // header("location:../../view/admin/detailShipment.php?id='$id'");
+      $_SESSION['pesan'] = '<p><div class="alert alert-success">Status berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+    } else {
+      // header("location:../../view/admin/detailShipment.php?id='$id'");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      // $_SESSION['id_pesan1'] = $save;			
+    }
+    
+  } elseif (isset($_POST['inputGenerateTrucking'])) {
+    $id = $_POST['id'];
+    $count = $_POST['count'];
+    // echo $id;
+		for ($i=0; $i < $count; $i++) { 
+      $query = "insert into trans_hd values (null, null, '$s_id', '$datetime', null, null, null, null, null, null, null, null, null, null, null, '0', null, '$datetime', null, null, '$id', '$datetime', '0', '', '')";
+      // printf($query);
+      $result = mysqli_query($koneksi, $query);
+    }
+
+    if ($result) {
+      if($akses == 'Admin'){
+          header("location:../../view/admin/detailShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Trucking berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+      } else {
+          header("location:../../view/user/detailShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Trucking berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+      }
+    } else {
+      if($akses == 'Admin'){
+        header("location:../../view/admin/detailShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Trucking gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      } else {
+        header("location:../../view/user/detailShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Trucking gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      }
+    }
   }
 ?>
