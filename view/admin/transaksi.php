@@ -871,27 +871,17 @@
                         <!--<td><?php echo $data['tgl_spk']?></td>-->
 
                         <?php
-
                           $query_k_temp = "select Nama from master_kota where Id='$data[kota_kirim_id]'";
-
                           $fetch_k_temp = mysqli_query($koneksi, $query_k_temp);
-
                           $data_k_temp = mysqli_fetch_array($fetch_k_temp);
-
                         ?>
-
                         <td style="font-size:13px;padding-left:16px;"><?php echo $data_k_temp['Nama'] ?? '-' ?></td>
 
                         <?php
-
                           $query_k1_temp = "select Nama from master_kota where Id='$data[kota_tujuan_id]'";
-
                           $fetch_k1_temp = mysqli_query($koneksi, $query_k1_temp);
-
                           $data_k1_temp = mysqli_fetch_array($fetch_k1_temp);
-
                         ?>
-
                         <td style="font-size:13px;padding-left:16px;"><?php echo $data_k1_temp['Nama'] ?? '-' ?></td>
 
                         <td style="font-size:13px;padding-left:16px;"><?php echo $data['total_armada'] ?? '-'?></td>

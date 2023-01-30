@@ -22,9 +22,6 @@
   $shipmentUser = $dataShipment['UserId'];
   $shipmentStatus = $dataShipment['id_status_shipment'];
 
-  // print_r($dataShipment);
-  // echo $shipmentId;
-
   $queryMasterUser = "select * from master_user where UserId='$shipmentUser'";
   $fetchMasterUser = mysqli_query($koneksi, $queryMasterUser);
   $dataUser = mysqli_fetch_array($fetchMasterUser);
@@ -53,8 +50,6 @@
   while ($data = mysqli_fetch_array($fetchTransHd)) {
     $dataTransHd[] = $data;
   }
-  // print_r($dataTransHd);
-
 
   $queryShipmentHandling = "select * from trans_shipment_handling where id_shipment='$id'";
   $fetchShipmentHandling = mysqli_query($koneksi,$queryShipmentHandling);
@@ -71,7 +66,15 @@
   }
 
   $totalHandling = array_sum(array_column($dataShipmentHandling, 'nominal'));
-  // print_r($dataShipment);
+
+  $queryCountOpenTrucking = "select count(*) as total from trans_hd th where atr1=0 and OnClose=0 and id_shipment='$id'";
+  $fetchCountOpenTrucking = mysqli_query($koneksi, $queryCountOpenTrucking);
+  $countOpenTrucking = mysqli_fetch_array($fetchCountOpenTrucking);
+  // print_r($countOpenTrucking);
+
+  $queryMasterShipmentStatus = "select * from master_status_shipment where aktif=1";
+  $fetchMasterShipmentStatus = mysqli_query($koneksi, $queryMasterShipmentStatus);
+  // $dataMasterShipmentStatus = mysqli_fetch_array($fetchMasterShipmentStatus);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -517,50 +520,72 @@
                         <!-- <span class="caret"></span></button> -->
                         <ul class="dropdown-menu">
                           <li>
-                            <a class="dropdown-item" tabindex="-1" href="">
-                              <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <a class="dropdown-item" tabindex="-1" href="" style="cursor: pointer;color:black;">
+                              <i class="fas fa-edit fa-sm fa-fw mr-2"></i>
                               Edit
                             </a>
                           </li>
                           <li class="dropdown-submenu">
                             <?php if ($shipmentStatus == 3) { ?>
-                              <p class="test dropdown-item mb-0" style="cursor: pointer;">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              <p class="test dropdown-item mb-0" style="cursor: pointer;color:black;">
+                                <i class="fas fa-tag fa-sm fa-fw mr-2"></i>
                                 Ubah Status
                               </p>
                             <?php } else { ?>
-                              <a class="test dropdown-item" tabindex="-1" href="">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                              <a class="test dropdown-item" style="cursor: pointer;color:black;" tabindex="-1" href="">
+                                <i class="fas fa-list fa-sm fa-fw mr-2"></i>
                                 Ubah Status
                               </a>
                               <ul class="dropdown-menu">
-                                <li>
-                                  <p class="dropdown-item mb-0" onclick="changeStatusAct(1)">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Open
-                                  </p>
-                                </li>
-                                <li>
-                                  <p class="dropdown-item mb-0" onclick="changeStatusAct(2)">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Delivering
-                                  </p>
-                                </li>
-                                <li class="dropdown-submenu">
-                                  <!-- <a class="test" href="#">Another dropdown <span class="caret"></span></a> -->
-                                  <p class="dropdown-item mb-0" onclick="changeStatusAct(3)">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Closed
-                                  </p>
-                                </li>
+                                <?php while ($data = mysqli_fetch_array($fetchMasterShipmentStatus)) { ?>
+                                  <?php 
+                                    if ($data['id'] == 3) {
+                                      if ($countOpenTrucking['total'] != 0) { ?>
+                                        <li>
+                                          <p class="dropdown-item mb-0" style="cursor: pointer;color:black;" data-toggle="modal" data-target="#alertCloseShipmentModal">
+                                            <?php echo $data['nama']?>
+                                          </p>
+                                        </li>
+                                      <?php } else { ?>
+                                        <li>
+                                          <p class="dropdown-item mb-0" style="cursor: pointer;color:black;" data-toggle="modal" data-target="#alertAllowCloseShipmentModal">
+                                            <?php echo $data['nama']?>
+                                          </p>
+                                        </li>
+                                    <?php  }
+                                    } else { ?>
+                                      <li>
+                                        <p class="dropdown-item mb-0" style="cursor: pointer;color:black;" onclick="changeStatusAct(<?php echo $data['id'] ?>)">
+                                          <?php echo $data['nama']?>
+                                        </p>
+                                      </li>
+                                  <?php }
+                                  ?>
+                                  <!-- <li>
+                                    <p class="dropdown-item mb-0" style="cursor: pointer;" onclick="changeStatusAct(<?php echo $data['id'] ?>)">
+                                      <?php echo $data['nama']?>
+                                    </p>
+                                  </li> -->
+                                <?php } ?>
                               </ul>
                             <?php } ?>
                           </li>
                           <li>
-                            <a class="dropdown-item" tabindex="-1" href="">
+                            <?php if ($countOpenTrucking['total'] != 0) { ?>
+                              <p class="dropdown-item mb-0" style="cursor: pointer;color:red;" data-toggle="modal" data-target="#alertDeleteShipmentModal">
+                                <i class="fas fa-trash-alt fa-sm fa-fw mr-2"></i>
+                                Hapus / Drop
+                              </p>
+                            <?php } else { ?>
+                              <p class="dropdown-item mb-0" style="cursor: pointer;color:red;" data-toggle="modal" data-target="#alertAllowDeleteShipmentModal">
+                                <i class="fas fa-trash-alt fa-sm fa-fw mr-2"></i>
+                                Hapus / Drop
+                              </p>
+                            <?php } ?>
+                            <!-- <p class="dropdown-item" tabindex="-1" >
                               <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                               Hapus / Drop
-                            </a>
+                            </p> -->
                           </li>
                         </ul>
                       </div>
@@ -744,10 +769,23 @@
                                 <tr>
                                   <td><?php echo $data['NoPO'] ?? '-' ?></td>
                                   <td><?php echo date('d-M-Y H:i:s', strtotime($data['create_date'])) ?? '-' ?></td>
-                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
-                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
-                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
-                                  <td><?php echo $data['NoPO'] ?? '-' ?></td>
+                                  <td><?php echo $data['NoSPK'] ?? '-' ?></td>
+
+                                  <?php
+                                    $query_k_temp = "select Nama from master_kota where Id='$data[kota_kirim_id]'";
+                                    $fetch_k_temp = mysqli_query($koneksi, $query_k_temp);
+                                    $data_k_temp = mysqli_fetch_array($fetch_k_temp);
+                                  ?>
+                                  <td><?php echo $data_k_temp['Nama'] ?? '-' ?></td>
+                                  
+                                  <?php
+                                    $query_k1_temp = "select Nama from master_kota where Id='$data[kota_tujuan_id]'";
+                                    $fetch_k1_temp = mysqli_query($koneksi, $query_k1_temp);
+                                    $data_k1_temp = mysqli_fetch_array($fetch_k1_temp);
+                                  ?>
+                                  <td style="font-size:13px;padding-left:16px;"><?php echo $data_k1_temp['Nama'] ?? '-' ?></td>
+
+                                  <td><?php echo $data['total_armada'] ?? '-' ?></td>
                                   <?php 
                                     if($data['OnClose'] == 1){
                                   ?>
@@ -792,7 +830,7 @@
             </div>
           </div>
 
-          <!-- Generate Trucking Logout -->
+          <!-- Generate Trucking Modal -->
           <div class="modal fade" id="generateTruckingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelGenerateTrucking" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -834,6 +872,100 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Alert Close Shipment -->
+          <div class="modal fade bd-example-modal-xl" id="alertCloseShipmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Peringatan !</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Terdapat Transaksi Trucking dengan status <b>OPEN</b>. Anda hanya bisa menutup Shipment ketika semua transaksi Trucking sudah dalam status <b>CLOSE</b>.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Alert Allow Close Shipment -->
+          <div class="modal fade bd-example-modal-xl" id="alertAllowCloseShipmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Close Shipment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="../../config/controller/shipmentController.php" method="post">
+                  <div class="modal-body">
+                    <p>Anda akan melakukan Close Shipment. Silahkan masukkan kurs terbaru sebelum melanjutkan proses.</p>
+                    <label for="lastKurs">Kurs saat ini :</label>
+                    <input type="hidden" name="id" value="<?php echo $shipmentId ?>">
+				            <input type="number" id="lastKurs" class="form-control form-control-sm mb-3" name="lastKurs" min="0" value="0" >
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                    <input type="submit" value="Submit" name="inputLastKursShipment" class="btn btn-primary">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Alert Delete Shipment -->
+          <div class="modal fade bd-example-modal-xl" id="alertDeleteShipmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Peringatan !</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Shipment masih dalam status <b>DELIVERING</b>. Silahkan ubah status Shipment terlebih dahulu.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Alert Delete Shipment -->
+          <div class="modal fade bd-example-modal-xl" id="alertAllowDeleteShipmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Hapus / Drop Shipment !</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="../../config/controller/shipmentController.php" method="post">
+                  <div class="modal-body">
+                    <p>Apakah anda ingin menghapus/drop Shipment ?</p>
+                    <input type="hidden" name="id" value="<?php echo $id ?>">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                    <input type="submit" value="Submit" name="dropShipment" class="btn btn-primary">
+                  </div>
+                </form>
               </div>
             </div>
           </div>

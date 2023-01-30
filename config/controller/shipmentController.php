@@ -182,7 +182,7 @@
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
       // $_SESSION['id_pesan1'] = $save;			
     }
-    
+
   } elseif (isset($_POST['inputGenerateTrucking'])) {
     $id = $_POST['id'];
     $count = $_POST['count'];
@@ -208,6 +208,71 @@
       } else {
         header("location:../../view/user/detailShipment.php?id=$id");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Trucking gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      }
+    }
+
+  } elseif (isset($_POST['inputLastKursShipment'])) {
+    $id = $_POST['id'];
+    $lastKurs = $_POST['lastKurs'];
+
+    $query = "update trans_shipment set close=1, close_date='$datetime', close_by='$s_id', last_update='$datetime' where id='$id'";
+    $result = mysqli_query($koneksi, $query);
+
+    if ($result) {
+      if($akses == 'Admin'){
+          header("location:../../view/admin/detailShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Status berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+      } else {
+          header("location:../../view/user/detailShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Status berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+      }
+    } else {
+      if($akses == 'Admin'){
+        header("location:../../view/admin/detailShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      } else {
+        header("location:../../view/user/detailShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      }
+    }
+  
+  } elseif (isset($_POST['dropShipment'])) {
+    $id = $_POST['id'];
+
+    $queryTransShipment = "update trans_shipment set is_delete=1, deleted_date='$datetime', last_update='$datetime' where id='$id'";
+    $resultTransShipment = mysqli_query($koneksi, $queryTransShipment);
+
+    if ($resultTransShipment) {
+      $queryTransHd = "update trans_hd set cancel_date='$datetime', atr1=1 where id_shipment='$id'";
+      $resultTransHd = mysqli_query($koneksi, $queryTransHd);
+
+      if ($resultTransHd) {
+        if($akses == 'Admin'){
+          header("location:../../view/admin/shipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Shipment berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+        } else {
+          header("location:../../view/user/shipment");
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Shipment berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+        }
+      } else {
+        $queryTransShipment = "update trans_shipment set is_delete=0, deleted_date=null, last_update=null where id='$id'";
+        $resultTransShipment = mysqli_query($koneksi, $queryTransShipment);
+
+        if($akses == 'Admin'){
+          header("location:../../view/admin/detailShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+        } else {
+          header("location:../../view/user/detailShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+        }
+      }
+    } else {
+      if($akses == 'Admin'){
+        header("location:../../view/admin/detailShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+      } else {
+        header("location:../../view/user/detailShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
       }
     }
   }
