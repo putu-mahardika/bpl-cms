@@ -2,6 +2,7 @@
   include '../koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 	$datetime = date('Y-m-d H:i:s');
+  $date = date('Y-m-d');
 	$year = date('Y', strtotime($datetime));
   session_save_path('../../tmp');
 	session_start();
@@ -213,9 +214,11 @@
 
   } elseif (isset($_POST['inputLastKursShipment'])) {
     $id = $_POST['id'];
+    // echo $id;
     $lastKurs = $_POST['lastKurs'];
 
-    $query = "update trans_shipment set close=1, close_date='$datetime', close_by='$s_id', last_update='$datetime' where id='$id'";
+    $query = "update trans_shipment set id_status_shipment=3, close=1, close_date='$datetime', closed_by='$s_id', nilai_kurs='$lastKurs', kurs_date='$date', last_update='$datetime' where id='$id'";
+    // echo $query;
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {
@@ -240,6 +243,7 @@
     $id = $_POST['id'];
 
     $queryTransShipment = "update trans_shipment set is_delete=1, deleted_date='$datetime', last_update='$datetime' where id='$id'";
+    // echo $queryTransShipment;
     $resultTransShipment = mysqli_query($koneksi, $queryTransShipment);
 
     if ($resultTransShipment) {

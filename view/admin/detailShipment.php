@@ -516,7 +516,7 @@
                         <?php echo $dataShipment['shipment_order'] ?>
                       </div>
                       <div class="dropdown">
-                        <div class="" style="color: black;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></div>
+                        <div class="" style="color: black;cursor:pointer;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></div>
                         <!-- <span class="caret"></span></button> -->
                         <ul class="dropdown-menu">
                           <li>
@@ -571,7 +571,7 @@
                             <?php } ?>
                           </li>
                           <li>
-                            <?php if ($countOpenTrucking['total'] != 0) { ?>
+                            <?php if ($shipmentStatus == 2) { ?>
                               <p class="dropdown-item mb-0" style="cursor: pointer;color:red;" data-toggle="modal" data-target="#alertDeleteShipmentModal">
                                 <i class="fas fa-trash-alt fa-sm fa-fw mr-2"></i>
                                 Hapus / Drop
@@ -959,11 +959,11 @@
                 <form action="../../config/controller/shipmentController.php" method="post">
                   <div class="modal-body">
                     <p>Apakah anda ingin menghapus/drop Shipment ?</p>
-                    <input type="hidden" name="id" value="<?php echo $id ?>">
+                    <input type="hidden" name="id" value="<?php echo $shipmentId ?>">
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
-                    <input type="submit" value="Submit" name="dropShipment" class="btn btn-primary">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Tidak</button>
+                    <input type="submit" value="Ya" name="dropShipment" class="btn btn-primary">
                   </div>
                 </form>
               </div>

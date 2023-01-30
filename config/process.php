@@ -631,11 +631,11 @@
 
 		if ($t == 0) {
             if($akses == 'Admin'){
-                $query = "update trans_hd set NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim_id='$kotaAsalId', kota_kirim='$detailKotaAsal', kota_tujuan_id='$kotaTujuanId', kota_tujuan='$detailKotaTujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime' where HdId='$id'";
+                $query = "update trans_hd set CustId='$cust', NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim_id='$kotaAsalId', kota_kirim='$detailKotaAsal', kota_tujuan_id='$kotaTujuanId', kota_tujuan='$detailKotaTujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime' where HdId='$id'";
                 $query1 = "update trans_detail set NoSPK='$nospk', last_update='$datetime' where HdId='$id'";
                 $query2 = "update trans_biayaturunan set NoSPK='$nospk', last_update='$datetime' where HdId='$id'";
             }else{
-                $query = "update trans_hd set NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim_id='$kotaAsalId', kota_kirim='$detailKotaAsal', kota_tujuan_id='$kotaTujuanId', kota_tujuan='$detailKotaTujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime', UserId='$s_id' where HdId='$id'";
+                $query = "update trans_hd set CustId='$cust', NoPO='$nopo', tgl_po='$tglpo1', NoSPK='$nospk', tgl_spk='$tglspk1', total_armada='$armada', kota_kirim_id='$kotaAsalId', kota_kirim='$detailKotaAsal', kota_tujuan_id='$kotaTujuanId', kota_tujuan='$detailKotaTujuan', Barang='$barang', keterangan='$keterangan', OnClose='$status1', last_update='$datetime', UserId='$s_id' where HdId='$id'";
                 $query1 = "update trans_detail set NoSPK='$nospk', last_update='$datetime', UserId='$s_id' where HdId='$id'";
                 $query2 = "update trans_biayaturunan set NoSPK='$nospk', last_update='$datetime', UserId='$s_id' where HdId='$id'";
             }

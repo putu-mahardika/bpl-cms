@@ -26,7 +26,8 @@ from
 where 
 	mc.CustId = ts.CustId and 
 	mu.UserId = ts.UserId and 
-	mu2.id = ts.unit';
+	mu2.id = ts.unit and
+  ts.is_delete=0';
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>

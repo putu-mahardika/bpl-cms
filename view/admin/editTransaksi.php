@@ -38,7 +38,20 @@ while ($data_t = mysqli_fetch_array($fetch_t)) {
   $t_cancelDate = $data_t['cancel_date'];
   $t_user = $data_t['UserId'];
   $t_closedById = $data_t['closedById'];
+  $t_idShipment = $data_t['id_shipment'];
 }
+
+// if (!is_null($t_idShipment)) {
+  $queryShipment = "select * from trans_shipment where id='$t_idShipment'";
+  $fetchShipment = mysqli_query($koneksi, $queryShipment);
+  $dataShipment = mysqli_fetch_array($fetchShipment);
+
+  $shipmentUser = $dataShipment['UserId'];
+  
+  $queryShipmentUser = "select * from master_user where UserId='$shipmentUser'";
+  $fetchShipmentUser = mysqli_query($koneksi, $queryShipmentUser);
+  $dataShipmentUser = mysqli_fetch_array($fetchShipmentUser);
+// }
 
 if (!is_null($t_closedById)) {
   $query_u = "select UserId, nama from master_user where UserId = " . $t_closedById;
@@ -595,6 +608,27 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                       </select>
                     </div>
                     <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-6">
+                        <label>Shipment Order :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipment['shipment_order'] ?? ''?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>Nama Sales Shipment :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipmentUser['nama'] ?? '' ?>" readonly>
+                      </div>
+                    </div>
+                    <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-6">
+                        <label>No BIL :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipment['bl'] ?? ''?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>No. PIB :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipment['pib'] ?? ''?>" readonly>
+                      </div>
+                    </div>
+
+                    <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-7">
                         <label>No. PO Customer :</label>
                         <input type="text" class="form-control form-control-sm mb-3" name="nopo" value="<?php echo $t_nopo ?>" minlength="3" maxlength="50" required>
@@ -739,7 +773,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                       <?php
                       $t_keterangan = str_replace("%%", PHP_EOL, $t_keterangan);
                       ?>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="100"><?php echo $t_keterangan ?></textarea>
+                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"><?php echo $t_keterangan ?></textarea>
                     </div>
                     <!--<select name="aktif" class="form-control form-control-sm mb-3" required>
                       <option disabled> Pilih </option>
