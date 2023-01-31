@@ -50,6 +50,11 @@ while($data = mysqli_fetch_array($fetch)){
     $data7 = mysqli_fetch_array($query7);
 
     $query8 = mysqli_query($koneksi, "select * from trans_biayaturunan where atr1 is null and HdId='$t_id'");
+
+    $queryGetGrandTotal = "select (sum(Biaya_transport)+sum(Biaya_inap)+sum(Biaya_lain)) as totalBiaya from trans_biayaturunan where HdId='$t_id'";
+    $fetchGetGrandTotal = mysqli_query($koneksi, $queryGetGrandTotal);
+    $arrayGetGrandTotal = mysqli_fetch_array($fetchGetGrandTotal);
+    $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
     // $data8 = mysqli_fetch_array($query8);
 
 
@@ -81,8 +86,13 @@ while($data = mysqli_fetch_array($fetch)){
     }
     $response .= "<div class='row'><div class='col-sm-6'><label><b>Detail Kota Asal : </b>".$kirim."</label></div>";
     $response .= "<div class='col-sm-6'><label><b>Detail Kota Tujuan : </b>".$tujuan."</label></div></div>";
+    $response .= "<div class='row'><div class='col-sm-6'>";
     $response .= "<label><b>Barang : </b>".$barang."</label><br>";
     $response .= "<label><b>Jumlah Armada : </b>".$armada."</label><br>";
+    $response .= "</div><div class='col-sm-6'>";
+    $response .= "<p class='mb-0'><b>Total Biaya</b></p>";
+    $response .= "<p class='mb-0'style='font-size:30px;'>Rp ".$grandTotal."</p>";
+    $response .= "</div></div>";
     $response .= "<div class='row'><div style='padding-left:12px;width:105px'><label><b>Keterangan : </b></label></div><div style='width:auto;white-space:pre'><label>".$keterangan."</label></div></div>";
 
     if($onclose == 1){

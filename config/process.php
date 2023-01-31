@@ -796,9 +796,20 @@
         while($data=mysqli_fetch_array($query)){
             $armada = $data['total_armada'];
             $nospk = $data['NoSPK'];
+            $createDate = $data['create_date'];
         }
 
-        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetime', last_update='$datetime', closedById='$s_id' where NoSPK='$nospk'");
+        $createYearTemp = new DateTime($createDate);
+        $closeYearTemp = new DateTime($datetime);
+
+        if ($createYearTemp->format('Y') < $closeYearTemp->format('Y')) {
+            $prevYear = $closeYearTemp->modify('-1 year')->format('Y');
+            $datetimeClose = $prevYear."-12-31 23:59:59";;
+        } else {
+            $datetimeClose = $datetime;
+        }
+
+        $query1 = mysqli_query($koneksi, "update trans_hd set OnClose=1, DateOnClose='$datetimeClose', last_update='$datetime', closedById='$s_id', atr3='$datetime' where NoSPK='$nospk'");
 
         if($query1){
             if($akses == "Admin"){
