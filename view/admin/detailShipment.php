@@ -90,6 +90,7 @@
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
   <style>
 .dropdown-submenu {
   position: relative;
@@ -99,6 +100,12 @@
   top: 0;
   left: 100%;
   margin-top: -1px;
+}
+
+@media (max-width: 991px) {
+    .dropdown-shipment .dropdown-submenu .dropdown-menu {
+        left: -100% !important;
+    }
 }
 </style>
 </head>
@@ -515,7 +522,7 @@
                       <div class="" style="color:black;font-size:18px;word-wrap: break-word;width:90%;">
                         <?php echo $dataShipment['shipment_order'] ?>
                       </div>
-                      <div class="dropdown">
+                      <div class="dropdown dropdown-shipment">
                         <div class="" style="color: black;cursor:pointer;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></div>
                         <!-- <span class="caret"></span></button> -->
                         <ul class="dropdown-menu">

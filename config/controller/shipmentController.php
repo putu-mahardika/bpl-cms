@@ -187,9 +187,15 @@
   } elseif (isset($_POST['inputGenerateTrucking'])) {
     $id = $_POST['id'];
     $count = $_POST['count'];
+
+    $queryShipment = "select * from trans_shipment where id='$id'";
+    $fetchShipment = mysqli_query($koneksi, $queryShipment);
+    $dataShipment = mysqli_fetch_array($fetchShipment);
+
+    $custId = $dataShipment['CustId'];
     // echo $id;
 		for ($i=0; $i < $count; $i++) { 
-      $query = "insert into trans_hd values (null, null, '$s_id', '$datetime', null, null, null, null, null, null, null, null, null, null, null, '0', null, '$datetime', null, null, '$id', '$datetime', '0', '', '')";
+      $query = "insert into trans_hd values (null, '$custId', '$s_id', '$datetime', null, null, null, null, null, null, null, null, null, null, null, '0', null, '$datetime', null, null, '$id', '$datetime', '0', '', '')";
       // printf($query);
       $result = mysqli_query($koneksi, $query);
     }
