@@ -517,7 +517,7 @@
         <div class="container-fluid" id="container-wrapper">
           <div class="d-md-flex align-items-center justify-content-between mb-4">
             <div class="d-flex align-items-center justify-content-start">
-              <a href="shipment.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+              <a href="shipment.php?tahun=<?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
               <h1 class="h3 mb-0 text-gray-800">Detail Shipment</h1>
             </div>
             <div>
