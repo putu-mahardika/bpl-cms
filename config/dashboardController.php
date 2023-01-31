@@ -462,6 +462,10 @@
   }
 
 
+
+
+
+
   // =============== AREA SHIPMENT ===================
 
   function getShipmentDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
@@ -518,14 +522,42 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
+      // $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      // trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
+      $queryShipment = "SELECT 
+        ts.UserId,
+        month(create_order) as month,
+        sum(ts.total_freight) as freight
+      from
+        trans_shipment ts
+      where 
+        ts.is_delete=0 and 
+        ts.`close`=0 and  
+        year(ts.create_order)='".$year."'
+      group by 
+        ts.UserId,
+        month(create_order)";
+
     } else {
-      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
+      // $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      // trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
+      $queryShipment = "SELECT 
+        ts.UserId,
+        month(create_order) as month,
+        sum(ts.total_freight) as freight
+      from
+        trans_shipment ts
+      where 
+        ts.is_delete=0 and 
+        ts.`close`=0 and
+        ts.UserId = '".$s_id."'"."AND  
+        year(ts.create_order)='".$year."'
+      group by 
+        ts.UserId,
+        month(create_order)";
     }
 
-    $fetch = mysqli_query($koneksi, $query);
+    $fetch = mysqli_query($koneksi, $queryShipment);
     while($row = $fetch->fetch_assoc()) {
       $tempArray[] = $row;
     }
