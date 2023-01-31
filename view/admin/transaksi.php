@@ -736,30 +736,20 @@
 
 
             <div class="col-lg-12">
-
               <div class="card mb-4">
-
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-
                   <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-
                   <a href="inputTransaksi.php" class="btn btn-primary btn-icon-split">
-
                     <span class="icon text-white-50">
-
                       <i class="fas fa-plus"></i>
-
                     </span>
-
                     <span class="text">Tambah Transaksi</span>
-
                   </a>
-
-				  <div>
-				  <label>Tahun: </label>
-					<input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
-					<a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
-				  </div>
+                  <div>
+                    <label>Tahun: </label>
+                    <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
+                    <a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
+                  </div>
 
                 </div>
 

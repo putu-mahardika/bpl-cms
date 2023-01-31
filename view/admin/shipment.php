@@ -7,8 +7,9 @@
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
+  $tahun = $_GET['tahun'];
   $datetime = date('Y');
-	$query = 'select
+	$query = "select
 	ts.id,
 	ts.create_order as create_order,
 	mc.nama as customer,
@@ -27,7 +28,8 @@ where
 	mc.CustId = ts.CustId and 
 	mu.UserId = ts.UserId and 
 	mu2.id = ts.unit and
-  ts.is_delete=0';
+  ts.is_delete=0 and
+  ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'";
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
@@ -470,7 +472,11 @@ where
                     </span>
                     <span class="text">Tambah Shipment</span>
                   </a>
-
+                  <div>
+                    <label>Tahun: </label>
+                    <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
+                    <a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
+                  </div>
                 </div>
                 <div class="table-responsive p-3">
 				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
@@ -586,6 +592,13 @@ where
         
       }); // ID From dataTable with Hover
     });
+  </script>
+
+  <script>
+    function tahunUbah(){
+      var tahun = document.getElementById("tahun").value;
+      $('#tahunGo').attr("href", "shipment.php?tahun="+tahun);
+    }
   </script>
 
 </body>
