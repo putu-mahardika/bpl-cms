@@ -76,7 +76,7 @@
       <div class="sidebar-heading">
         Transaksi
       </div>
-	  <li class="nav-item">
+	    <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
@@ -134,7 +134,7 @@
       </li>
       <hr class="sidebar-divider">
       <!--<div class="version" id="version-ruangadmin"></div>-->
-	  <li class="nav-item">
+	    <li class="nav-item">
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
