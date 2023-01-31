@@ -42,7 +42,9 @@
     $t_tglspk = $data_t['tgl_spk'];
     $t_tglspk1 = date('d/m/Y', strtotime($t_tglspk));
     $t_armada = $data_t['total_armada'];
+    $t_asalId = $data_t['kota_kirim_id'];
     $t_asal = $data_t['kota_kirim'];
+    $t_tujuanId = $data_t['kota_tujuan_id'];
     $t_tujuan = $data_t['kota_tujuan'];
     $t_barang = $data_t['Barang'];
     $t_keterangan = $data_t['keterangan'];
@@ -51,6 +53,7 @@
     $t_cancelDate = $data_t['cancel_date'];
     $t_user = $data_t['UserId'];
     $t_closedById = $data_t['closedById'];
+    $t_idShipment = $data_t['id_shipment'];
   }
 
   if (!is_null($t_closedById)) {
@@ -61,6 +64,18 @@
       $u_id = $data_u['UserId'];
       $u_namaUser = $data_u['nama'];
     }
+  }
+
+  if (!is_null($t_idShipment)) {
+    $queryShipment = "select * from trans_shipment where id='$t_idShipment'";
+    $fetchShipment = mysqli_query($koneksi, $queryShipment);
+    $dataShipment = mysqli_fetch_array($fetchShipment);
+  
+    $shipmentUser = $dataShipment['UserId'];
+    
+    $queryShipmentUser = "select * from master_user where UserId='$shipmentUser'";
+    $fetchShipmentUser = mysqli_query($koneksi, $queryShipmentUser);
+    $dataShipmentUser = mysqli_fetch_array($fetchShipmentUser);
   }
 
   $query_k = "select * from master_kota where aktif = 1 ORDER BY SUBSTRING(Nama, 1, 1) ASC;";
@@ -964,7 +979,7 @@
 
             <!-- Area Chart -->
 
-            <div class="col-xl-9 col-lg-8">
+            <div class="col-xl-8 col-lg-8">
 
               <div class="card mb-4">
 
@@ -1006,9 +1021,9 @@
 
                   <form role="form" method="post" action="../../config/process.php">
 
-					<div class="form-group">
+                    <div class="form-group">
 
-						<input type="hidden" class="form-control form-control-sm mb-3" name="id" value="<?php echo $t_id ?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm mb-3" name="id" value="<?php echo $t_id ?>" readonly>
 
                     </div>
 
@@ -1022,7 +1037,28 @@
 
                       </select>
 
-                    </div>	
+                    </div>
+
+                    <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-6">
+                        <label>Shipment Order :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['shipment_order'] ?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>Nama Sales Shipment :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipmentUser['nama'] ?>" readonly>
+                      </div>
+                    </div>
+                    <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-6">
+                        <label>No BIL :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['bl'] ?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>No. PIB :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['pib'] ?>" readonly>
+                      </div>
+                    </div>
 
                     <div class="row" style="height: 70px;">
 
@@ -1104,15 +1140,15 @@
 
                         <label>Status Pengiriman :</label>
 
-						<?php if($t_onclose == 0){?>
+						        <?php if($t_onclose == 0){?>
 
                         <input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="OPEN" readonly>
 
-						<?php } else { ?>
+						        <?php } else { ?>
 
-						<input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="CLOSE" readonly>
+						              <input type="text" class="form-control form-control-sm mb-3" name="status" id="statuskirim" value="CLOSE" readonly>
 
-						<?php } ?>
+						        <?php } ?>
 
                       </div>
 
@@ -1208,7 +1244,7 @@
 
                       <label>Barang :</label>
 
-					  <textarea type="text" class="form-control form-control-sm mb-3" name="barang" minlength="10" maxlength="100" required><?php echo $t_barang ?></textarea>
+					            <textarea type="text" class="form-control form-control-sm mb-3" name="barang" minlength="10" maxlength="100" required><?php echo $t_barang ?></textarea>
 
                     </div>
 
@@ -1241,11 +1277,11 @@
 
                     <br>
 
-					<div class="row" style="height:70px;">
+					          <div class="row" style="height:70px;">
 
                       <div class="form-group col-sm-2" >
 
-                        <input type="reset" value="Reset" style="width:100%;" class="btn btn-danger">
+                        <input type="reset" value="Reset" style="width:100%;height:100%;" class="btn btn-danger">
 
                       </div>
 
@@ -1253,11 +1289,11 @@
 
                       <?php if($t_onclose!=1){?>
 
-                        <button type="button" class="btn btn-warning cancel1" style="width:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Delete Order</button>
+                        <button type="button" class="btn btn-warning cancel1" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Delete Order</button>
 
                       <?php } else {?>
 
-                        <button type="button" class="btn btn-warning" style="width:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#cancelModal" disabled>Delete Order</button>
+                        <button type="button" class="btn btn-warning" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#cancelModal" disabled>Delete Order</button>
 
                       <?php } ?>
 
@@ -1294,7 +1330,7 @@
 
                       ?>
 
-                      <button type="button" class="btn btn-success close1" style="width:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
+                      <button type="button" class="btn btn-success close1" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
 
                       <?php
 
@@ -1302,7 +1338,7 @@
 
                       ?>
 
-                      <button type="button" class="btn btn-success" style="width:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
+                      <button type="button" class="btn btn-success" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
 
                       <?php } ?>
 
@@ -1310,7 +1346,7 @@
 
                       <div class="form-group col-sm-6" style="padding-left:0px;">
 
-                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;" class="btn btn-md btn-primary" id="submit" >
+                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;height:100%;" class="btn btn-md btn-primary" id="submit" >
 
                       </div>
 
@@ -1338,7 +1374,7 @@
 
             <!-- Pie Chart -->
 
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-4 col-lg-4">
 
               <div class="card mb-4">
 

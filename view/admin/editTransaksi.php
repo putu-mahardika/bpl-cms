@@ -41,7 +41,7 @@ while ($data_t = mysqli_fetch_array($fetch_t)) {
   $t_idShipment = $data_t['id_shipment'];
 }
 
-// if (!is_null($t_idShipment)) {
+if (!is_null($t_idShipment)) {
   $queryShipment = "select * from trans_shipment where id='$t_idShipment'";
   $fetchShipment = mysqli_query($koneksi, $queryShipment);
   $dataShipment = mysqli_fetch_array($fetchShipment);
@@ -51,7 +51,7 @@ while ($data_t = mysqli_fetch_array($fetch_t)) {
   $queryShipmentUser = "select * from master_user where UserId='$shipmentUser'";
   $fetchShipmentUser = mysqli_query($koneksi, $queryShipmentUser);
   $dataShipmentUser = mysqli_fetch_array($fetchShipmentUser);
-// }
+}
 
 if (!is_null($t_closedById)) {
   $query_u = "select UserId, nama from master_user where UserId = " . $t_closedById;
@@ -625,21 +625,21 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-6">
                         <label>Shipment Order :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipment['shipment_order'] ?? ''?>" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['shipment_order'] ?>" readonly>
                       </div>
                       <div class="form-group col-sm-6">
                         <label>Nama Sales Shipment :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipmentUser['nama'] ?? '' ?>" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipmentUser['nama'] ?>" readonly>
                       </div>
                     </div>
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-6">
                         <label>No BIL :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipment['bl'] ?? ''?>" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['bl'] ?>" readonly>
                       </div>
                       <div class="form-group col-sm-6">
                         <label>No. PIB :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $dataShipment['pib'] ?? ''?>" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['pib'] ?>" readonly>
                       </div>
                     </div>
 

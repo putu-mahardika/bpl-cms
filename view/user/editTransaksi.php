@@ -40,7 +40,9 @@
     $t_tglspk = $data_t['tgl_spk'];
     $t_tglspk1 = date('d/m/Y', strtotime($t_tglspk));
     $t_armada = $data_t['total_armada'];
+    $t_asalId = $data_t['kota_kirim_id'];
     $t_asal = $data_t['kota_kirim'];
+    $t_tujuanId = $data_t['kota_tujuan_id'];
     $t_tujuan = $data_t['kota_tujuan'];
     $t_barang = $data_t['Barang'];
     $t_keterangan = $data_t['keterangan'];
@@ -49,6 +51,19 @@
     $t_cancelDate = $data_t['cancel_date'];
     $t_user = $data_t['UserId'];
     $t_closedById = $data_t['closedById'];
+    $t_idShipment = $data_t['id_shipment'];
+  }
+
+  if (!is_null($t_idShipment)) {
+    $queryShipment = "select * from trans_shipment where id='$t_idShipment'";
+    $fetchShipment = mysqli_query($koneksi, $queryShipment);
+    $dataShipment = mysqli_fetch_array($fetchShipment);
+  
+    $shipmentUser = $dataShipment['UserId'];
+    
+    $queryShipmentUser = "select * from master_user where UserId='$shipmentUser'";
+    $fetchShipmentUser = mysqli_query($koneksi, $queryShipmentUser);
+    $dataShipmentUser = mysqli_fetch_array($fetchShipmentUser);
   }
 
   if (!is_null($t_closedById)) {
@@ -972,6 +987,27 @@
                       </select>
 
                     </div>	
+
+                    <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-6">
+                        <label>Shipment Order :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['shipment_order'] ?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>Nama Sales Shipment :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipmentUser['nama'] ?>" readonly>
+                      </div>
+                    </div>
+                    <div class="row" style="height: 70px;">
+                      <div class="form-group col-sm-6">
+                        <label>No BIL :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['bl'] ?>" readonly>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>No. PIB :</label>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['pib'] ?>" readonly>
+                      </div>
+                    </div>
 
                     <div class="row" style="height: 70px;">
 
