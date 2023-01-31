@@ -53,14 +53,35 @@
     $resArraySalesSummary = getSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id);
     $resArray = $resArraySalesSummary;
 
+
+
+
   } elseif (isset($_GET['getShipmentDataChart1'])) {
+    $resArrayShipmentDataOpenChart1 = getShipmentDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArrayShipmentDataCloseChart1 = getShipmentDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArray = [$resArrayShipmentDataOpenChart1, $resArrayShipmentDataCloseChart1, $arrayMonth];
 
   } elseif (isset($_GET['getShipmentDataChart2'])) {
+    $resArrayShipmentDataOpenChart2 = getShipmentDataOpenChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArrayShipmentDataCloseChart2 = getShipmentDataCloseChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArray = [$resArrayShipmentDataOpenChart2, $resArrayShipmentDataCloseChart2, $arrayMonth];
 
   } elseif (isset($_GET['getShipmentDataChart3'])) {
+    $arrayUser = getUser($koneksi);
+    $arrayUserLength = count($arrayUser);
+    $resArrayShipmentDataOpenChart3 = getShipmentDataOpenChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
+    $resArrayShipmentDataCloseChart3 = getShipmentDataCloseChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
+    $resArray = [$resArrayShipmentDataOpenChart3, $resArrayShipmentDataCloseChart3, $arrayUser[1]];
+
+  } elseif (isset($_GET['getAccumulateShipmentData'])) { //done
+    $resArrayShipmentSalesThisYear = getShipmentSalesThisYear($koneksi, $year, $akses, $s_id);
+    $resArrayShipmentSalesThisMonth = getShipmentSalesThisMonth($koneksi, $year, $month, $akses, $s_id);
+    $resArray = [$resArrayShipmentSalesThisYear, $resArrayShipmentSalesThisMonth];
 
   } elseif (isset($_GET['getShipmentSalesSummary'])) {
-
+    $arrayUser = getUser($koneksi);
+    $resArrayShipmentSalesSummary = getShipmentSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id);
+    $resArray = $resArrayShipmentSalesSummary;
   }
 
   echo json_encode($resArray);
@@ -440,4 +461,274 @@
     return $array;
   }
 
+
+  // =============== AREA SHIPMENT ===================
+
+  function getShipmentDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
+    $array = array();
+    $tempArray = array();
+    if ($akses == "Admin") {
+      $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=0 and year(create_order)='".$year."' group by month(create_order)";
+    } else {
+      $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=0 and year(create_order)='".$year."' AND UserId='".$s_id."' group by month(create_order)";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
+
+    for ($i=0; $i < $arrayMonthLength; $i++) { 
+      $array[$i] = 0;
+      foreach ($tempArray as $data) {
+        if($data['month'] == $i+1) {
+          $array[$i] = $data['total'];
+        }
+      }
+    }
+    return $array;
+  }
+
+  function getShipmentDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
+    $array = array();
+    $tempArray = array();
+    if ($akses == "Admin") {
+      $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=1 and year(create_order)='".$year."' group by month(create_order)";
+    } else {
+      $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=1 and year(create_order)='".$year."' AND UserId='".$s_id."' group by month(create_order)";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
+
+    for ($i=0; $i < $arrayMonthLength; $i++) { 
+      $array[$i] = 0;
+      foreach ($tempArray as $data) {
+        if($data['month'] == $i+1) {
+          $array[$i] = $data['total'];
+        }
+      }
+    }
+    return $array;
+  }
+
+  function getShipmentDataOpenChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
+    $array = array();
+    $tempArray = array();
+    if ($akses == "Admin") {
+      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
+    } else {
+      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=0 and b.atr1=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
+
+    for ($i=0; $i < $arrayMonthLength; $i++) { 
+      $array[$i] = 0;
+      foreach ($tempArray as $data) {
+        if($data['month'] == $i+1) {
+          $array[$i] = $data['total'];
+        }
+      }
+    }
+
+    return $array;
+  }
+
+  function getShipmentSalesThisYear($koneksi, $year, $akses, $s_id) {
+    if ($akses == "Admin") {
+      $queryShipment = "SELECT 
+        SUM(total_freight) as total,
+        COUNT(*) as count
+      FROM
+        trans_shipment
+      WHERE
+        is_delete=0 AND
+        close=1 AND
+        YEAR(close_date)='".$year."'";
+
+      $queryHandling = "SELECT
+        SUM(nominal) as total
+      FROM
+        trans_shipment ts,
+        trans_shipment_handling tsh
+      WHERE
+        ts.id=tsh.id AND
+        ts.is_delete=0 AND
+        ts.close=1 AND
+        YEAR(close_date)='".$year."'";
+    } else {
+      $queryShipment = "SELECT 
+        SUM(total_freight) as total
+      FROM
+        trans_shipment
+      WHERE
+        is_delete=0 AND
+        close=1 AND
+        UserId = '".$s_id."'"." AND
+        YEAR(close_date)='".$year."'";
+        
+      $queryHandling = "SELECT
+        SUM(nominal) as total
+      FROM
+        trans_shipment ts,
+        trans_shipment_handling tsh
+      WHERE
+        ts.id=tsh.id AND
+        ts.is_delete=0 AND
+        ts.close=1 AND
+        ts.UserId = '".$s_id."'"." AND
+        YEAR(close_date)='".$year."'"; 
+    }
+
+    $fetchShipment = mysqli_query($koneksi, $queryShipment);
+    $dataShipment = mysqli_fetch_array($fetchShipment);
+
+    $fetchHandling = mysqli_query($koneksi, $queryHandling);
+    $dataHandling = mysqli_fetch_array($fetchHandling);
+
+    $totalShipment = is_null($dataShipment['total']) ? 0 : (float)$dataShipment['total'];
+    $totalHandling = is_null($dataHandling['total']) ? 0 : (float)$dataHandling['total'];
+
+    $grandTotal = $totalShipment + $totalHandling;
+
+    $data = [$grandTotal, $dataShipment['count']];
+
+    return $data;
+  }
+
+  function getShipmentSalesThisMonth($koneksi, $year, $month, $akses, $s_id) {
+    if ($akses == "Admin") {
+      $queryShipment = "SELECT 
+        SUM(total_freight) as total,
+        COUNT(*) as count
+      FROM
+        trans_shipment
+      WHERE
+        is_delete=0 AND
+        close=1 AND
+        YEAR(b.DateOnClose)='".$year."'"."AND
+        MONTH(b.DateOnClose)='".$month."'"; 
+
+      $queryHandling = "SELECT
+        SUM(nominal) as total
+      FROM
+        trans_shipment ts,
+        trans_shipment_handling tsh
+      WHERE
+        ts.id=tsh.id AND
+        ts.is_delete=0 AND
+        ts.close=1 AND
+        YEAR(b.DateOnClose)='".$year."'"."AND
+        MONTH(b.DateOnClose)='".$month."'"; 
+    } else {
+      $queryShipment = "SELECT 
+        SUM(total_freight) as total
+      FROM
+        trans_shipment
+      WHERE
+        is_delete=0 AND
+        close=1 AND
+        UserId = '".$s_id."'"." AND
+        YEAR(b.DateOnClose)='".$year."'"."AND
+        MONTH(b.DateOnClose)='".$month."'"; 
+        
+      $queryHandling = "SELECT
+        SUM(nominal) as total
+      FROM
+        trans_shipment ts,
+        trans_shipment_handling tsh
+      WHERE
+        ts.id=tsh.id AND
+        ts.is_delete=0 AND
+        ts.close=1 AND
+        ts.UserId = '".$s_id."'"." AND
+        YEAR(b.DateOnClose)='".$year."'"."AND
+        MONTH(b.DateOnClose)='".$month."'"; 
+    }
+
+    $fetchShipment = mysqli_query($koneksi, $queryShipment);
+    $dataShipment = mysqli_fetch_array($fetchShipment);
+
+    $fetchHandling = mysqli_query($koneksi, $queryHandling);
+    $dataHandling = mysqli_fetch_array($fetchHandling);
+
+    $totalShipment = is_null($dataShipment['total']) ? 0 : (float)$dataShipment['total'];
+    $totalHandling = is_null($dataHandling['total']) ? 0 : (float)$dataHandling['total'];
+
+    $grandTotal = $totalShipment + $totalHandling;
+
+    $data = [$grandTotal, $dataShipment['count']];
+
+    return $data;
+  }
+
+  function getShipmentSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id) {
+    $arrayUserLength = count($arrayUser[0]);
+    $array = array();
+    $tempArray = array();
+    if ($akses == "Admin") {
+      $query = "SELECT 
+        SUM(a.Total) as Total,
+        COUNT(a.Id) as Jumlah,
+        c.UserId
+      FROM
+        trans_biayaturunan a,
+        trans_hd c 
+      WHERE 
+        -- a.UserId = c.UserId AND 
+        a.HdId = c.HdId AND
+        c.OnClose = 1 AND
+        a.atr1 IS NULL AND 
+        -- c.UserId = 17 AND
+        YEAR(c.DateOnClose) = '2023'
+      GROUP BY 
+        c.UserId";
+    } else {
+      $query = "SELECT 
+        SUM(a.Total) as Total,
+        COUNT(a.Id) as Jumlah,
+        c.UserId
+      FROM
+        trans_biayaturunan a,
+        trans_hd c 
+      WHERE 
+        -- a.UserId = c.UserId AND 
+        a.HdId = c.HdId AND
+        c.OnClose = 1 AND
+        a.atr1 IS NULL AND 
+        c.UserId = '".$s_id."'"."AND
+        YEAR(c.DateOnClose) = '$year'
+      GROUP BY 
+        c.UserId";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    // $datas = mysqli_fetch_assoc($fetch);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
+
+    for ($i=0; $i < $arrayUserLength; $i++) { 
+      $array[$i]['Nama'] = '';
+      $array[$i]['Total'] = 0;
+      $array[$i]['Rit'] = 0;
+      foreach ($tempArray as $data) {
+        if($data['UserId'] == $arrayUser[0][$i]) {
+          $array[$i]['Total'] = (double)$data['Total'];
+          $array[$i]['Rit'] = (double)$data['Jumlah'];
+        }
+      }
+      $array[$i]['Nama'] = $arrayUser[1][$i];
+    }
+
+    return $array;
+  }
 ?>
