@@ -331,13 +331,13 @@
         Transaksi
       </div>
 	    <li class="nav-item">
-        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="shipment.php?tahun=<?php echo $year?>">
           <i class="fas fa-fw fa-ship"></i>
           <span>Shipment</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="transaksi.php?tahun=<?php echo $year?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
         </a>
