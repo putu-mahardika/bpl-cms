@@ -52,6 +52,15 @@
     $arrayUser = getUser($koneksi);
     $resArraySalesSummary = getSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id);
     $resArray = $resArraySalesSummary;
+
+  } elseif (isset($_GET['getShipmentDataChart1'])) {
+
+  } elseif (isset($_GET['getShipmentDataChart2'])) {
+
+  } elseif (isset($_GET['getShipmentDataChart3'])) {
+
+  } elseif (isset($_GET['getShipmentSalesSummary'])) {
+
   }
 
   echo json_encode($resArray);

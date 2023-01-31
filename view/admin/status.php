@@ -183,7 +183,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="laporanbarang.php">
+        <a class="nav-link" href="laporanShipment.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Shipment</span>
         </a>

@@ -89,7 +89,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
             <a class="collapse-item" href="status.php">Status Trucking</a>
-            <a class="collapse-item active" href="status.php">Status Shipment</a>
+            <a class="collapse-item active" href="statusShipment.php">Status Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -183,7 +183,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="laporanbarang.php">
+        <a class="nav-link" href="laporanShipment.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Shipment</span>
         </a>
