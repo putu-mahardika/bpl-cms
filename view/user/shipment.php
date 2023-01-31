@@ -1,19 +1,43 @@
 <?php
   session_save_path('../../tmp');
   session_start();
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  // echo session_id();
+  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
   }
+
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
+  $s_id = $_SESSION['id'];
   $datetime = date('Y');
-	$query = 'select * from master_status_shipment';
+	// $query = 'select * from master_customer';
+	$query = "select
+    ts.id,
+    ts.create_order as create_order,
+    mc.nama as customer,
+    ts.shipment_order as kode_shipment,
+    ts.pib as pib,
+    ts.bl as bl,
+    mu.nama as sales,
+    ts.quantity as qty,
+    mu2.nama as unit 
+  from 
+    trans_shipment ts,
+    master_customer mc,
+    master_user mu,
+    master_unit mu2
+  where 
+    mc.CustId = ts.CustId and 
+    mu.UserId = ts.UserId and 
+    mu2.id = ts.unit and
+    ts.UserId = '".$s_id."' and
+    ts.is_delete=0";
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,25 +45,26 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Status Shipment - PT Berkah Permata Logistik</title>
+  <title>List Shipment - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
 </head>
- 
+
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=<?php echo $datetime?>">
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
+        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -47,106 +72,17 @@
       <div class="sidebar-heading">
         Master
       </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
           <i class="fas fa-fw fa-table"></i>
           <span>Customer</span>
         </a>
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div id="collapseForm" class="collapse show" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item" href="customer.php">List Customer</a>
+            <a class="collapse-item active" href="customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">Status Trucking</a>
-            <a class="collapse-item active" href="status.php">Status Shipment</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span> 
-        </a> 
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
-          aria-controls="collapseLoadType">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Load Type</span> 
-        </a> 
-        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="loadType.php">List Load Type</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShipmentTerms" aria-expanded="true"
-          aria-controls="collapseShipmentTerms">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Shipment Terms</span> 
-        </a> 
-        <div id="collapseShipmentTerms" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Shipment Terms</h6>
-            <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
-          aria-controls="collapseUnit">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Unit</span> 
-        </a> 
-        <div id="collapseUnit" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Unit</h6>
-            <a class="collapse-item" href="unit.php">List Unit</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
@@ -160,22 +96,12 @@
       <div class="sidebar-heading">
         Transaksi
       </div>
-	    <li class="nav-item">
-        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
-          <i class="fas fa-fw fa-ship"></i>
-          <span>Shipment</span>
-        </a>
-      </li>
-      <li class="nav-item">
+	  <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
         </a>
       </li>
-      <hr class="sidebar-divider">
-      <div class="sidebar-heading">
-        Laporan
-      </div>
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
@@ -399,7 +325,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama']?></span>
-			        	<img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
+				        <img class="img-profile rounded-circle" src="../../img/boy.png" style="max-width: 60px"> 
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <!--<a class="dropdown-item" href="#">
@@ -427,11 +353,8 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Status Shipment</h1>
-      			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportStatusShipment.php"><i class="fas fa-print"></i></a>
-			      <!--<a href="#" class="btn btn-info btn-lg">
-                <i class="fas fa-print"></i>
-            </a>-->
+            <h1 class="h3 mb-0 text-gray-800">List Customer</h1>
+			<a class="btn btn-info btn-lg " target="_blank" href="../../export/exportcustomer.php"><i class="fas fa-print"></i></a>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Tables</li>
@@ -445,11 +368,11 @@
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-                  <a href="inputStatusShipment.php" class="btn btn-primary btn-icon-split">
+                  <a href="inputShipment.php" class="btn btn-primary btn-icon-split">
                     <span class="icon text-white-50">
                       <i class="fas fa-plus"></i>
                     </span>
-                    <span class="text">Tambah Status Shipment</span>
+                    <span class="text">Tambah Shipment</span>
                   </a>
 
                 </div>
@@ -458,41 +381,43 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>No</th>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Aktif</th>
-						            <!--<th>Create Date</th>-->
-						            <!--<th>Last Update</th>-->
+                        <th>Tgl</th>
+                        <th>Customer</th>
+                        <th>Kode Shipment</th>
+                        <th>No. PIB</th>
+                        <th>No. BIL</th>
+                        <th>Sales</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
-                  
                     <tbody>
-                    <?php
-                      while($data = mysqli_fetch_array($fetch)){
-                        //$tgl = date("d-M-Y", strtotime($data['create_date']));
-                    ?>
-                      <tr>
-                        <td ><?php echo $data['atr1']?></td>
-                        <td><?php echo $data['kode']?></td>
-                        <td><?php echo $data['nama']?></td>
-                    <?php 
-                      if($data['aktif'] == 1){
-                    ?>
-                        <td><span class="badge badge-success">Aktif</span></td>
-                    <?php } else{ ?>
-                        <td><span class="badge badge-danger">Tidak Aktif</span></td>
-                    <?php } ?>	
-                        <!--<td><?php echo $data['create_date']?></td>-->
-                        <!--<td><?php echo $data['last_update']?></td>-->
-                        <td><a href="editStatusShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning">
+                      <?php
+                        $i = 1;
+                        while($data = mysqli_fetch_array($fetch)){
+                          //$tgl = date("d-M-Y", strtotime($data['create_date']));
+                      ?>
+                        <tr>
+                          <td><?php echo $data['create_order'] ?></td>
+                          <td><?php echo $data['customer'] ?></td>
+                          <td><?php echo $data['kode_shipment']?></td>
+                          <td><?php echo $data['pib']?></td>
+                          <td><?php echo $data['bl']?></td>
+                          <td><?php echo $data['sales'] ?></td>
+                          <td><?php echo $data['qty'] ?></td>
+                          <td><?php echo $data['unit'] ?></td>
+                          <td><span class="badge badge-success">Aktif</span></td>
+                          <td>
+                            <a href="editShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning btn-sm" style="margin-bottom:0.25rem;width:33px;">
                             <i class="fas fa-edit"></i></a>
-                        </td>
-                      </tr>
-                    <?php
-                      }
-                    ?>
+                            <a href="detailShipment.php?id=<?php echo $data['id']?>" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;">
+                            <i class="fas fa-search"></i></a>
+                            <!-- <button title="detail" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button> -->
+                          </td>
+                        </tr>
+                      <?php } ?>
                     </tbody>
                   </table>
                 </div>
@@ -500,6 +425,29 @@
             </div>
           </div>
           <!--Row-->
+          
+
+          <!-- Modal Detail -->
+          <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Detail Customer</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                </div>
+              </div>
+            </div>
+          </div>              
+
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
@@ -552,20 +500,62 @@
   <!-- Page level plugins -->
   <script src="../../vendor/datatables1/jquery.dataTables.min.js"></script>
   <script src="../../vendor/datatables1/datatables.min.js"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-  <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
 
   <!-- Page level custom scripts -->
-  <script>
+  <script type="text/javascript">
     $(document).ready(function () {
-      //$.fn.table.moment('d-M-Y hh:mm:ss');
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
-        "order": [[0, "asc"]]
-        
+        "scrollX": true,
+        // "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
+        "order": [[0, "desc"]]
+        //"columnDefs": [
+        //    {
+        //        "targets": [ 0 ],
+        //        "visible": true,
+        //        "searchable": false,
+        //        "order": "desc"
+        //    },
+        //  ]
       }); // ID From dataTable with Hover
+
+      //$('.custinfo').click(function(){
+      //  var custid = $(this).data('id');
+
+        // AJAX request\
+        //$.ajax({
+        //  url: '../../config/viewCustomer.php',
+        //  type: 'post',
+        //  data: {custid: custid},
+        //  success: function(response){
+            // Add response in Modal body
+        //    $('.modal-body').html(response);
+            // Display Modal
+        //    $('#detailModal').modal('show');
+        //  }
+        //});
+      //});
     });
   </script>
+
+<script>
+    function custinfo(id){
+      var custid = id;
+      // AJAX request\
+      $.ajax({
+        url: '../../config/viewCustomer.php',
+        type: 'post',
+        data: {custid: custid},
+        success: function(response){
+          // Add response in Modal body
+          $('.modal-body').html(response);
+          // Display Modal
+          $('#detailModal').modal('show');
+        }
+      });
+    }
+  </script>
+
 
 </body>
 

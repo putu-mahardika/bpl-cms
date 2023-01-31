@@ -247,12 +247,22 @@
       <div class="sidebar-heading">
         Transaksi
       </div>
-	  <li class="nav-item">
+	    <li class="nav-item">
+        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-ship"></i>
+          <span>Shipment</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
         </a>
       </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Laporan
+      </div>
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>

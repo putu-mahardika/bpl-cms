@@ -113,16 +113,16 @@ where
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
           <span>Kota</span>
         </a>
-        <div id="collapseKota" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item active" href="kota.php">List Kota</a>
+            <a class="collapse-item" href="kota.php">List Kota</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -179,12 +179,22 @@ where
       <div class="sidebar-heading">
         Transaksi
       </div>
-	  <li class="nav-item">
+	    <li class="nav-item active">
+        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-ship"></i>
+          <span>Shipment</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
         </a>
       </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Laporan
+      </div>
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
