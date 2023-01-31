@@ -104,114 +104,35 @@
       </li>
 
       <hr class="sidebar-divider">
-
-      <!--<div class="sidebar-heading">
-
-        Master
-
-      </div>
-
-      <li class="nav-item">
-
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-
-          aria-expanded="true" aria-controls="collapseBootstrap">
-
-          <i class="far fa-fw fa-window-maximize"></i>
-
-          <span>Akun</span>
-
-        </a>
-
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-
-          <div class="bg-white py-2 collapse-inner rounded">
-
-            <h6 class="collapse-header">Akun</h6>
-
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-
-          </div>
-
-        </div>
-
-      </li>
-
-      <li class="nav-item">
-
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-
-          aria-controls="collapseForm">
-
-          <i class="fab fa-fw fa-wpforms"></i>
-
-          <span>Customer</span>
-
-        </a>
-
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-
-          <div class="bg-white py-2 collapse-inner rounded">
-
-            <h6 class="collapse-header">Customer</h6>
-
-            <a class="collapse-item" href="customer.php">List Customer</a>
-
-          </div>
-
-        </div>
-
-      </li>
-
-      <li class="nav-item">
-
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-
-          aria-controls="collapseTable">
-
-          <i class="fas fa-fw fa-table"></i>
-
-          <span>Status</span>
-
-        </a>
-
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-
-          <div class="bg-white py-2 collapse-inner rounded">
-
-            <h6 class="collapse-header">Status</h6>
-
-            <a class="collapse-item" href="status.php">List Status</a>
-
-          </div>
-
-        </div>
-
-      </li>
-
-      <hr class="sidebar-divider">-->
-
       <div class="sidebar-heading">
-
         Transaksi
-
       </div>
-
-	  <li class="nav-item">
-
-        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
-
-          <i class="fas fa-fw fa-truck"></i>
-
-          <span>Pergerakan Truck</span>
-
+	    <li class="nav-item">
+        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-ship"></i>
+          <span>Shipment</span>
         </a>
-
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-truck"></i>
+          <span>Pergerakan Truck</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Laporan
+      </div>
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Detail</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="laporanShipment.php">
+          <i class="fas fa-fw fa-file-invoice"></i>
+          <span>Laporan Shipment</span>
         </a>
       </li>
       <!--<li class="nav-item">
@@ -270,6 +191,16 @@
         </a>
 
       </li>-->
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Bantuan
+      </div>
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.berkahpermatalogistik.com/Howto/index.htm" target="_blank">
+          <i class="fas fa-fw fa-question"></i>
+          <span>Bantuan</span>
+        </a>
+      </li>
 
       <hr class="sidebar-divider">
 

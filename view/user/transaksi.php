@@ -108,7 +108,7 @@
           </div>
         </div>
       </li>
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!--<div class="sidebar-heading">
 
@@ -196,27 +196,36 @@
 
       <hr class="sidebar-divider">-->
 
+      <hr class="sidebar-divider">
       <div class="sidebar-heading">
-
         Transaksi
-
       </div>
-
-	  <li class="nav-item active">
-
-        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
-
-          <i class="fas fa-fw fa-truck"></i>
-
-          <span>Pergerakan Barang</span>
-
+	    <li class="nav-item">
+        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-ship"></i>
+          <span>Shipment</span>
         </a>
-
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-truck"></i>
+          <span>Pergerakan Truck</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Laporan
+      </div>
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Detail</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="laporanShipment.php">
+          <i class="fas fa-fw fa-file-invoice"></i>
+          <span>Laporan Shipment</span>
         </a>
       </li>
       <!--<li class="nav-item">
@@ -275,6 +284,17 @@
         </a>
 
       </li>-->
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Bantuan
+      </div>
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.berkahpermatalogistik.com/Howto/index.htm" target="_blank">
+          <i class="fas fa-fw fa-question"></i>
+          <span>Bantuan</span>
+        </a>
+      </li>
 
       <hr class="sidebar-divider">
 

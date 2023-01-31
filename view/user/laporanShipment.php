@@ -55,16 +55,16 @@
       <div class="sidebar-heading">
         Master
       </div>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
           <i class="fas fa-fw fa-table"></i>
           <span>Customer</span>
         </a>
-        <div id="collapseForm" class="collapse show" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item active" href="customer.php">List Customer</a>
+            <a class="collapse-item" href="customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
           </div>
         </div>
@@ -80,15 +80,31 @@
         Transaksi
       </div>
 	    <li class="nav-item">
+        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+          <i class="fas fa-fw fa-ship"></i>
+          <span>Shipment</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
         </a>
       </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Laporan
+      </div>
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Detail</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="laporanShipment.php">
+          <i class="fas fa-fw fa-file-invoice"></i>
+          <span>Laporan Shipment</span>
         </a>
       </li>
       <!--<li class="nav-item">
