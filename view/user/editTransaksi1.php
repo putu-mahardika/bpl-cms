@@ -932,7 +932,7 @@
 
             <!-- Area Chart -->
 
-            <div class="col-xl-9 col-lg-8">
+            <div class="col-xl-8 col-lg-8">
 
               <div class="card mb-4">
 
@@ -1282,7 +1282,7 @@
 
                       ?>
 
-                      <button type="button" class="btn btn-success close1" style="width:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
+                      <button type="button" class="btn btn-success close1" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
 
                       <?php
 
@@ -1290,7 +1290,7 @@
 
                       ?>
 
-                      <button type="button" class="btn btn-success" style="width:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
+                      <button type="button" class="btn btn-success" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
 
                       <?php } ?>
 
@@ -1298,7 +1298,7 @@
 
                       <div class="form-group col-sm-8" style="padding-left:0px;">
 
-                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;" class="btn btn-md btn-primary" id="submit" >
+                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;height:100%;" class="btn btn-md btn-primary" id="submit" >
 
                       </div>
 
@@ -1326,7 +1326,7 @@
 
             <!-- Pie Chart -->
 
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-4 col-lg-4">
 
               <div class="card mb-4">
 

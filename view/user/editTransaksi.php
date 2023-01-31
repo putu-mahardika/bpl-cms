@@ -1278,7 +1278,7 @@
 
                       ?>
 
-                      <button type="button" class="btn btn-success close1" style="width:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
+                      <button type="button" class="btn btn-success close1" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-id="<?php echo $t_hdid?>">Close Order</button>
 
                       <?php
 
@@ -1286,13 +1286,13 @@
 
                       ?>
 
-                      <button type="button" class="btn btn-success" style="width:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
+                      <button type="button" class="btn btn-success" style="width:100%;height:100%;padding-left:11px;padding-right:11px;" data-toggle="modal" data-target="#closeModal" disabled>Close Order</button>
 
                       <?php } ?>
 
                       </div>
 
-                      <div class="form-group col-sm-8" style="padding-left:0px;">
+                      <div class="form-group col-sm-8" style="padding-left:0px;height:100%;">
 
                         <input type="submit" value="Submit" name="editTransaksi" style="width:100%;" class="btn btn-md btn-primary" id="submit" >
 
