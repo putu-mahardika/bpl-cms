@@ -175,6 +175,12 @@
           <span>Laporan Detail</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="laporanbarang.php">
+          <i class="fas fa-fw fa-file-invoice"></i>
+          <span>Laporan Shipment</span>
+        </a>
+      </li>
       <!--<li class="nav-item active">
        <a class="nav-link" href="laporanbarang.php">
          <div class="row">

@@ -669,24 +669,6 @@
       dateStartInput = dateStartInputTemp.value;
       dateEndInput = dateEndInputTemp.value;
       console.log('start', dateStartInput);
-      // AJAX request\
-      // $.ajax({
-      //   url: '../../config/reportController.php',
-      //   type: 'get',
-      //   data: {
-      //     reportTransaksi: true,
-      //     start: dateStartInput,
-      //     end: dateEndInput
-      //   },
-      //   dataType: 'json',
-      //   timeout: 3600000,
-      //   success: function(response){
-      //     dataSourceTemp = response;
-      //     // console.log('res', dataSourceTemp);
-      //     dataGrid.option('dataSource', response);
-      //     dataGrid.refresh();
-      //   }
-      // });
       $.ajax({
         url: '../../config/controller/shipmentController.php',
         type: 'get',
