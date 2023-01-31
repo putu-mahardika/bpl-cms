@@ -492,8 +492,11 @@
                     <?php } ?>	
                         <!--<td><?php echo $data['create_date']?></td>-->
                         <!--<td><?php echo $data['last_update']?></td>-->
-                        <td><a href="editStatusShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning">
-                            <i class="fas fa-edit"></i></a>
+                        <td>
+                          <?php if($data['id'] > 3) { ?>
+                            <a href="editStatusShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning">
+                              <i class="fas fa-edit"></i></a>
+                          <?php } ?>
                         </td>
                       </tr>
                     <?php

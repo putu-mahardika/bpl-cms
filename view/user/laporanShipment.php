@@ -759,19 +759,19 @@
             caption: 'Total Handling',
             dataField: 'total'
           },
-          {
-            caption: 'Action',
-            dataField: 'id',
-            cellTemplate: function(container, options) {
-                container.html(`
-                <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
-            `)},
-            allowExporting: false,
-            allowFiltering: false,
-            allowSearching: false,
-            allowSorting: false,
-            showInColumnChooser: false
-          }
+          // {
+          //   caption: 'Action',
+          //   dataField: 'id',
+          //   cellTemplate: function(container, options) {
+          //       container.html(`
+          //       <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
+          //   `)},
+          //   allowExporting: false,
+          //   allowFiltering: false,
+          //   allowSearching: false,
+          //   allowSorting: false,
+          //   showInColumnChooser: false
+          // }
         ],
         scrolling: {
           rowRenderingMode: 'virtual',
