@@ -523,7 +523,7 @@
                         <?php echo $dataShipment['shipment_order'] ?>
                       </div>
                       <div class="dropdown dropdown-shipment">
-                        <div class="" style="color: black;cursor:pointer;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></div>
+                        <div class="" id="dropdown-shipment" style="color: black;cursor:pointer;" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></div>
                         <!-- <span class="caret"></span></button> -->
                         <ul class="dropdown-menu">
                           <li>
@@ -543,7 +543,7 @@
                                 <i class="fas fa-list fa-sm fa-fw mr-2"></i>
                                 Ubah Status
                               </a>
-                              <ul class="dropdown-menu">
+                              <ul class="dropdown-menu" id="statusShipmentMenu">
                                 <?php while ($data = mysqli_fetch_array($fetchMasterShipmentStatus)) { ?>
                                   <?php 
                                     if ($data['id'] == 3) {
@@ -1011,7 +1011,12 @@
       e.stopPropagation();
       e.preventDefault();
     });
+
+    $('#dropdown-shipment').on('click', function() {
+      $('#statusShipmentMenu').css({display: 'none'});
+    })
   });
+
   function changeStatusAct(statusId){
     console.log('xxx');
     // var custid = $(this).data('id');
