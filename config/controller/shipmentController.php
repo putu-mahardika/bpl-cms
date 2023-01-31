@@ -285,5 +285,95 @@
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
       }
     }
+  } elseif (isset($_GET['reportShipment'])) {
+    $startspk = $_GET['start'];
+    $endspk = $_GET['end'];
+    $start0 = str_replace('/', '-', $startspk);
+    $end0 = str_replace('/', '-', $endspk);
+    $start = date('Y-m-d', strtotime($start0));
+    $end = date('Y-m-d', strtotime($end0));
+    if($akses == "Admin") {
+      $query = "select
+      ts.id,
+      ts.create_order as create_order,
+      ts.shipment_order as kode_shipment,
+      mc.nama as customer,
+      mu.nama as sales,
+      ts.pib as pib,
+      ts.bl as bl,
+      mst.nama as shipment_term,
+      mlt.nama as load_type,
+      ts.quantity as qty,
+      mu2.nama as unit,
+      mss.nama as status,
+      ts.freight as freight,
+      ts.total_freight as total_freight,
+      sum(tsh.nominal) as total 
+    from 
+      trans_shipment ts,
+      master_customer mc,
+      master_user mu,
+      master_unit mu2,
+      master_load_type mlt,
+      master_shipment_terms mst,
+      master_status_shipment mss,
+      trans_shipment_handling tsh 
+    where 
+      mc.CustId = ts.CustId and 
+      mu.UserId = ts.UserId and 
+      mu2.id = ts.unit and
+      mlt.id = ts.id_shipment_load_type and 
+      mst.id = ts.id_shipment_term and 
+      mss.id = ts.id_status_shipment and 
+      tsh.id_shipment = ts.id and 
+      ts.is_delete=0 and
+      ts.create_order between '".$year."-01-01 00:00:00' and '".$year."-12-31 23:59:59'";
+    } else {
+      $query = "select
+      ts.id,
+      ts.create_order as create_order,
+      ts.shipment_order as kode_shipment,
+      mc.nama as customer,
+      mu.nama as sales,
+      ts.pib as pib,
+      ts.bl as bl,
+      mst.nama as shipment_term,
+      mlt.nama as load_type,
+      ts.quantity as qty,
+      mu2.nama as unit,
+      mss.nama as status,
+      ts.freight as freight,
+      ts.total_freight as total_freight,
+      sum(tsh.nominal) as total 
+    from 
+      trans_shipment ts,
+      master_customer mc,
+      master_user mu,
+      master_unit mu2,
+      master_load_type mlt,
+      master_shipment_terms mst,
+      master_status_shipment mss,
+      trans_shipment_handling tsh 
+    where 
+      mc.CustId = ts.CustId and 
+      mu.UserId = ts.UserId and 
+      mu2.id = ts.unit and
+      mlt.id = ts.id_shipment_load_type and 
+      mst.id = ts.id_shipment_term and 
+      mss.id = ts.id_status_shipment and 
+      tsh.id_shipment = ts.id and 
+      ts.is_delete=0 and
+      ts.UserId = '".$s_id."' and
+      ts.create_order between '".$year."-01-01 00:00:00' and '".$year."-12-31 23:59:59'";
+    }
+
+    $fetch = mysqli_query($koneksi,$query);
+    while($row =mysqli_fetch_assoc($fetch))
+    {
+      $emparray[] = $row;
+    }
+
+    $data = json_encode($emparray);
+    echo $data;
   }
 ?>
