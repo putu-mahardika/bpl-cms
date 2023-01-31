@@ -75,6 +75,10 @@
   $queryMasterShipmentStatus = "select * from master_status_shipment where aktif=1";
   $fetchMasterShipmentStatus = mysqli_query($koneksi, $queryMasterShipmentStatus);
   // $dataMasterShipmentStatus = mysqli_fetch_array($fetchMasterShipmentStatus);
+
+  $querySpecificMasterShipmentStatus = "select * from master_status_shipment where id='$shipmentStatus'";
+  $fetchSpesificMasterShipmentStatus = mysqli_query($koneksi, $querySpecificMasterShipmentStatus);
+  $dataSpesificMasterShipmentStatus = mysqli_fetch_array($fetchSpesificMasterShipmentStatus);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -527,7 +531,7 @@
                         <!-- <span class="caret"></span></button> -->
                         <ul class="dropdown-menu">
                           <li>
-                            <a class="dropdown-item" tabindex="-1" href="" style="cursor: pointer;color:black;">
+                            <a class="dropdown-item" tabindex="-1" href="editShipment?id=<?php echo $shipmentId?>" style="cursor: pointer;color:black;">
                               <i class="fas fa-edit fa-sm fa-fw mr-2"></i>
                               Edit
                             </a>
@@ -642,11 +646,13 @@
                     </div>
                     <p><?php echo $dataCustomer['nama']?></p>
                     <?php if ($shipmentStatus == 2) { ?>
-                      <span class="badge badge-warning">Delivering</span>
+                      <span class="badge badge-warning"><?php echo $dataSpesificMasterShipmentStatus['nama']?></span>
                     <?php } elseif ($shipmentStatus == 3) { ?>
-                      <span class="badge badge-success">Closed</span>
-                    <?php } else { ?>
-                      <span class="badge badge-primary">Open</span>
+                      <span class="badge badge-success"><?php echo $dataSpesificMasterShipmentStatus['nama']?></span>
+                    <?php } elseif ($shipmentStatus == 1) { ?>
+                      <span class="badge badge-primary"><?php echo $dataSpesificMasterShipmentStatus['nama']?></span>
+                    <?php } else {?>
+                      <span class="badge badge-primary"><?php echo $dataSpesificMasterShipmentStatus['nama']?></span>
                     <?php } ?>
 
                   </div>
