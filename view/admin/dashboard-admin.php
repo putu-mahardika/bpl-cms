@@ -1180,7 +1180,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response);
+        // console.log('res', response);
         dataChart1 = response;
         for(let i=0;i<dataChart1[0].length;i++) {
           openChart1.push(Number(dataChart1[0][i]))
@@ -1191,7 +1191,7 @@
         for(let i=0;i<dataChart1[2].length;i++) {
           labelChart1.push((dataChart1[2][i]))
         }
-        console.log('open', labelChart1);
+        // console.log('open', labelChart1);
 
         // Chart 1
         var ctx = document.getElementById("Chart1");
@@ -1307,7 +1307,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response);
+        // console.log('res', response);
         dataChart2 = response;
         for(let i=0;i<dataChart2[0].length;i++) {
           openChart2.push(Number(dataChart2[0][i]))
@@ -1318,7 +1318,7 @@
         for(let i=0;i<dataChart2[2].length;i++) {
           labelChart2.push((dataChart2[2][i]))
         }
-        console.log('open', labelChart2);
+        // console.log('open', labelChart2);
 
         // Chart 2
         var ctx1 = document.getElementById("Chart2");
@@ -1436,7 +1436,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response);
+        // console.log('res', response);
         dataChart3 = response;
         for(let i=0;i<dataChart3[0].length;i++) {
           openChart3.push(Number(dataChart3[0][i]))
@@ -1447,7 +1447,7 @@
         for(let i=0;i<dataChart3[2].length;i++) {
           labelChart3.push((dataChart3[2][i]))
         }
-        console.log('open', labelChart3);
+        // console.log('open', labelChart3);
 
         // Chart 3
         var ctx2 = document.getElementById("Chart3");
@@ -1544,7 +1544,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log(response);
+        // console.log(response);
         $acumulateThisYear.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[0]['Total'])
         $ritThisYear.innerHTML = new Intl.NumberFormat('id-ID').format(response[0]['totalDetail'])
         $acumulateThisMonth.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[1]['Total'])
@@ -1564,7 +1564,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('anu', response);
+        // console.log('anu', response);
         dataSourceTemp = response;
       }
     })
@@ -1676,7 +1676,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('anu', response);
+        // console.log('anu', response);
         // dataSourceTemp = response;
       }
     })
@@ -1697,7 +1697,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log(response);
+        // console.log(response);
         $acumulateShipmentThisYear.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[0][0])
         $shipmentThisYear.innerHTML = new Intl.NumberFormat('id-ID').format(response[0][1])
         $acumulateShipmentThisMonth.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[1][0])
@@ -1722,7 +1722,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response);
+        // console.log('res', response);
         dataChartShipment1 = response;
         for(let i=0;i<dataChartShipment1[0].length;i++) {
           openChartShipment1.push(Number(dataChartShipment1[0][i]))
@@ -1733,7 +1733,7 @@
         for(let i=0;i<dataChartShipment1[2].length;i++) {
           labelChartShipment1.push((dataChartShipment1[2][i]))
         }
-        console.log('open', labelChartShipment1);
+        // console.log('open', labelChartShipment1);
 
         // Chart 1
         var ctx = document.getElementById("ChartShipment1");
@@ -1847,7 +1847,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response);
+        // console.log('res', response);
         dataChartShipment2 = response;
         for(let i=0;i<dataChartShipment2[0].length;i++) {
           openChartShipment2.push(Number(dataChartShipment2[0][i]))
@@ -1858,7 +1858,7 @@
         for(let i=0;i<dataChartShipment2[2].length;i++) {
           labelChartShipment2.push((dataChartShipment2[2][i]))
         }
-        console.log('open', labelChartShipment2);
+        // console.log('open', labelChartShipment2);
 
         // Chart 2
         var ctx1 = document.getElementById("ChartShipment2");
@@ -1975,7 +1975,7 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('res', response);
+        // console.log('res', response);
         dataChartShipment3 = response;
         for(let i=0;i<dataChartShipment3[0].length;i++) {
           openChartShipment3.push(Number(dataChartShipment3[0][i]))
@@ -1986,7 +1986,7 @@
         for(let i=0;i<dataChartShipment3[2].length;i++) {
           labelChartShipment3.push((dataChartShipment3[2][i]))
         }
-        console.log('open', labelChartShipment3);
+        // console.log('open', labelChartShipment3);
 
         // Chart 3
         var ctx2 = document.getElementById("ChartShipment3");

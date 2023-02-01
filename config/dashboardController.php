@@ -942,12 +942,13 @@
         YEAR(close_date)='".$year."'";
     } else {
       $queryShipment = "SELECT 
-        SUM(total_freight) as total
+        SUM(total_freight) as total,
+        COUNT(*) as count
       FROM
         trans_shipment
       WHERE
         is_delete=0 AND
-        close=1 AND
+        `close`=1 AND
         UserId = '".$s_id."'"." AND
         YEAR(close_date)='".$year."'";
         
@@ -992,7 +993,7 @@
         ts.UserId=mu.UserId and
         mu.atr1=0 and
         ts.is_delete=0 AND
-        close=1 AND
+        `close`=1 AND
         YEAR(ts.close_date)='".$year."'"." AND
         MONTH(ts.close_date)='".$month."'"; 
 
@@ -1012,12 +1013,13 @@
         MONTH(ts.close_date)='".$month."'"; 
     } else {
       $queryShipment = "SELECT 
-        SUM(total_freight) as total
+        SUM(total_freight) as total,
+        COUNT(*) as count
       FROM
         trans_shipment
       WHERE
         is_delete=0 AND
-        close=1 AND
+        `close`=1 AND
         UserId = '".$s_id."'"." AND
         YEAR(close_date)='".$year."'"."AND
         MONTH(close_date)='".$month."'"; 
