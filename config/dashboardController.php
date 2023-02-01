@@ -104,8 +104,8 @@
     $arrayId = array();
     $arrayNama = array();
     $tempArray = array();
-    // $query = "select UserId, nama from master_user where atr1=0";
-    $query = "select UserId, nama from master_user";
+    $query = "select UserId, nama from master_user where atr1=0";
+    // $query = "select UserId, nama from master_user";
     $fetch = mysqli_query($koneksi, $query);
     // echo $fetch;
     while($row = $fetch->fetch_assoc()) {
@@ -478,7 +478,7 @@
         c.OnClose = 1 AND
         a.atr1 IS NULL AND 
         -- c.UserId = 17 AND
-        YEAR(c.DateOnClose) = '2023'
+        YEAR(c.DateOnClose) = '$year'
       GROUP BY 
         c.UserId";
     } else {
@@ -533,7 +533,7 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=0 and year(create_order)='".$year."' group by month(create_order)";
+      $query = "select month(a.create_order) as month, count(*) as total from trans_shipment a, master_user b where a.is_delete=0 and a.close=0 and a.UserId=b.UserId and b.atr1=0 and year(a.create_order)='".$year."' group by month(a.create_order)";
     } else {
       $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=0 and year(create_order)='".$year."' AND UserId='".$s_id."' group by month(create_order)";
     }
@@ -558,7 +558,7 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=1 and year(create_order)='".$year."' group by month(create_order)";
+      $query = "select month(a.create_order) as month, count(*) as total from trans_shipment a, master_user b where a.UserId=b.UserId and b.atr1=0 and a.is_delete=0 and a.close=1 and year(a.create_order)='".$year."' group by month(a.create_order)";
     } else {
       $query = "select month(create_order) as month, count(*) as total from trans_shipment where is_delete=0 and close=1 and year(create_order)='".$year."' AND UserId='".$s_id."' group by month(create_order)";
     }
@@ -585,30 +585,36 @@
     $tempHandlingArray = array();
     if ($akses == "Admin") {
       $queryGetTotalShipment = "SELECT 
-        month(create_order) as month,
+        month(ts.create_order) as month,
         sum(ts.total_freight) as freight
       from
-        trans_shipment ts
+        trans_shipment ts,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.is_delete=0 and 
         ts.`close`=0 and  
         year(ts.create_order)='".$year."'
       group by
-        month(create_order)";
+        month(ts.create_order)";
 
       $queryGetTotalHandling = "SELECT
         month(ts.create_order) as month,
         sum(tsh.nominal) as nominal 
       from
         trans_shipment ts,
-        trans_shipment_handling tsh 
+        trans_shipment_handling tsh,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.id = tsh.id_shipment and 
         ts.is_delete=0 and 
-          ts.`close`=0 and  
-          year(ts.create_order)='".$year."'
+        ts.`close`=0 and  
+        year(ts.create_order)='".$year."'
       group by 
-          month(ts.create_order)";
+        month(ts.create_order)";
 
     } else {
       $queryGetTotalShipment = "SELECT 
@@ -677,8 +683,11 @@
         month(create_order) as month,
         sum(ts.total_freight) as freight
       from
-        trans_shipment ts
+        trans_shipment ts,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.is_delete=0 and 
         ts.`close`=1 and  
         year(ts.create_order)='".$year."'
@@ -690,14 +699,17 @@
         sum(tsh.nominal) as nominal 
       from
         trans_shipment ts,
-        trans_shipment_handling tsh 
+        trans_shipment_handling tsh,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.id = tsh.id_shipment and 
         ts.is_delete=0 and 
-          ts.`close`=1 and  
-          year(ts.create_order)='".$year."'
+        ts.`close`=1 and  
+        year(ts.create_order)='".$year."'
       group by 
-          month(ts.create_order)";
+        month(ts.create_order)";
 
     } else {
       $queryGetTotalShipment = "SELECT 
@@ -768,8 +780,11 @@
         ts.id,
         ts.total_freight 
       from 
-        trans_shipment ts 
+        trans_shipment ts,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.is_delete = 0 and 
         ts.`close` = 0 and 
         year(ts.create_order) = '".$year."'";
@@ -779,8 +794,11 @@
         sum(tsh.nominal) as nominal
       from 
         trans_shipment ts, 
-        trans_shipment_handling tsh 
+        trans_shipment_handling tsh,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.id = tsh.id_shipment and 
         ts.is_delete = 0 and 
         ts.`close` = 0 and 
@@ -833,8 +851,11 @@
         ts.id,
         ts.total_freight 
       from 
-        trans_shipment ts 
+        trans_shipment ts,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.is_delete = 0 and 
         ts.`close` = 1 and 
         year(ts.create_order) = '".$year."'";
@@ -844,8 +865,11 @@
         sum(tsh.nominal) as nominal
       from 
         trans_shipment ts, 
-        trans_shipment_handling tsh 
+        trans_shipment_handling tsh,
+        master_user mu
       where 
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.id = tsh.id_shipment and 
         ts.is_delete = 0 and 
         ts.`close` = 1 and 
@@ -891,21 +915,27 @@
   function getShipmentSalesThisYear($koneksi, $year, $akses, $s_id) {
     if ($akses == "Admin") {
       $queryShipment = "SELECT 
-        SUM(total_freight) as total,
+        SUM(ts.total_freight) as total,
         COUNT(*) as count
       FROM
-        trans_shipment
+        trans_shipment ts,
+        master_user mu
       WHERE
-        is_delete=0 AND
-        close=1 AND
-        YEAR(close_date)='".$year."'";
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
+        ts.is_delete=0 AND
+        ts.`close`=1 AND
+        YEAR(ts.close_date)='".$year."'";
 
       $queryHandling = "SELECT
         SUM(nominal) as total
       FROM
         trans_shipment ts,
-        trans_shipment_handling tsh
+        trans_shipment_handling tsh,
+        master_user mu
       WHERE
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.id=tsh.id AND
         ts.is_delete=0 AND
         ts.close=1 AND
@@ -953,22 +983,28 @@
   function getShipmentSalesThisMonth($koneksi, $year, $month, $akses, $s_id) {
     if ($akses == "Admin") {
       $queryShipment = "SELECT 
-        SUM(total_freight) as total,
+        SUM(ts.total_freight) as total,
         COUNT(*) as count
       FROM
-        trans_shipment
+        trans_shipment ts,
+        master_user mu
       WHERE
-        is_delete=0 AND
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
+        ts.is_delete=0 AND
         close=1 AND
-        YEAR(close_date)='".$year."'"." AND
-        MONTH(close_date)='".$month."'"; 
+        YEAR(ts.close_date)='".$year."'"." AND
+        MONTH(ts.close_date)='".$month."'"; 
 
       $queryHandling = "SELECT
         SUM(tsh.nominal) as total
       FROM
         trans_shipment ts,
-        trans_shipment_handling tsh
+        trans_shipment_handling tsh,
+        master_user mu
       WHERE
+        ts.UserId=mu.UserId and
+        mu.atr1=0 and
         ts.id=tsh.id AND
         ts.is_delete=0 AND
         ts.close=1 AND

@@ -16,8 +16,9 @@
   }
   date_default_timezone_set("Asia/Jakarta");
   $datetime = date('Y');
-  $prevdatetime = $datetime-1;
+  // $prevdatetime = $datetime-1;
   $tahun = $_GET['tahun'];
+  $prevdatetime = (int)$tahun-1;
   
 	
 
@@ -736,37 +737,71 @@
                     </div>
                   </div>
                   <div class="text-xs">
-                    note : terhitung dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong>
+                    note : terhitung dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-lg-12 mb-4">
-              <div class="card">
-                <div class="card-body">
-                  <p class="font-weight-bold">
-                    <?php if ($_SESSION['hak_akses'] == "Admin") {
-                      echo 'Accumulate Sales This Year : ';
-                    } else {
-                      echo 'Total Sales This Year : ';
-                    } ?>
-                    <span id="acumulateThisYear"></span>
-                      / 
-                    <span id="ritThisYear"></span> Rit
-                  </p>
-                  <p class="font-weight-bold">
-                    <?php if ($_SESSION['hak_akses'] == "Admin") {
-                      echo 'Accumulate Sales This Month : ';
-                    } else {
-                      echo 'Total Sales This Month : ';
-                    } ?>
-                    <span id="acumulateThisMonth"></span>
-                      / 
-                    <span id="ritThisMonth"></span> Rit
-                  </p>
-                  <div class="text-xs">
-                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong> 
+            <div class="col-12">
+              <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4">
+                  <div class="card" style="height: 100%;">
+                    <div class="card-body">
+                      <p class="font-weight-bold">
+                        <?php if ($_SESSION['hak_akses'] == "Admin") {
+                          echo 'Accumulate Shipment This Year : ';
+                        } else {
+                          echo 'Total Shipment This Year : ';
+                        } ?>
+                        <span id="acumulateShipmentThisYear"></span>
+                          / 
+                        <span id="shipmentThisYear"></span> Shipment
+                      </p>
+                      <p class="font-weight-bold">
+                        <?php if ($_SESSION['hak_akses'] == "Admin") {
+                          echo 'Accumulate Shipment This Month : ';
+                        } else {
+                          echo 'Total Shipment This Month : ';
+                        } ?>
+                        <span id="acumulateShipmentThisMonth"></span>
+                          / 
+                        <span id="shipmentThisMonth"></span> Shipment
+                      </p>
+                      <div class="text-xs">
+                        note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-lg-6 col-md-12 mb-4">
+                  <div class="card" style="height: 100%;">
+                    <div class="card-body">
+                      <p class="font-weight-bold">
+                        <?php if ($_SESSION['hak_akses'] == "Admin") {
+                          echo 'Accumulate Sales This Year : ';
+                        } else {
+                          echo 'Total Sales This Year : ';
+                        } ?>
+                        <span id="acumulateThisYear"></span>
+                          / 
+                        <span id="ritThisYear"></span> Rit
+                      </p>
+                      <p class="font-weight-bold">
+                        <?php if ($_SESSION['hak_akses'] == "Admin") {
+                          echo 'Accumulate Sales This Month : ';
+                        } else {
+                          echo 'Total Sales This Month : ';
+                        } ?>
+                        <span id="acumulateThisMonth"></span>
+                          / 
+                        <span id="ritThisMonth"></span> Rit
+                      </p>
+                      <div class="text-xs">
+                        note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong> 
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -774,7 +809,40 @@
 
             <!-- Area Chart -->
 
-            <div class="col-lg-12">
+            <div class="col-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="shipmentChart1-tab" data-toggle="tab" href="#shipmentChart1" role="tab" aria-controls="shipmentChart1" aria-selected="true">Shipment</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="truckingChart1-tab" data-toggle="tab" href="#truckingChart1" role="tab" aria-controls="truckingChart1" aria-selected="false">Trucking</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="shipmentChart1" role="tabpanel" aria-labelledby="shipmentChart1-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Shipment</h6>
+                      <div class="chart-area">
+                        <canvas id="ChartShipment1"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="truckingChart1" role="tabpanel" aria-labelledby="truckingChart1-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Penjualan</h6>
+                        <div class="chart-area">
+                        <canvas id="Chart1"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Pergerakan Penjualan</h6>
@@ -790,6 +858,52 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Shipment</h6>
+                </div>
+                <div class="card-body pt-0">
+                  <div class="chart-area">
+                    <canvas id="ChartShipment1"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="shipmentChart2-tab" data-toggle="tab" href="#shipmentChart2" role="tab" aria-controls="shipmentChart2" aria-selected="true">Shipment</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="truckingChart2-tab" data-toggle="tab" href="#truckingChart2" role="tab" aria-controls="truckingChart2" aria-selected="false">Trucking</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="shipmentChart2" role="tabpanel" aria-labelledby="shipmentChart2-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment</h6>
+                      <div class="chart-area">
+                        <canvas id="ChartShipment2"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="truckingChart2" role="tabpanel" aria-labelledby="truckingChart2-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya</h6>
+                        <div class="chart-area">
+                        <canvas id="Chart2"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya</h6>
                 </div>
                 <div class="card-body pt-0">
@@ -803,6 +917,52 @@
             <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment</h6>
+                </div>
+                <div class="card-body pt-0">
+                  <div class="chart-area">
+                    <canvas id="ChartShipment2"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-12">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="shipmentChart3-tab" data-toggle="tab" href="#shipmentChart3" role="tab" aria-controls="shipmentChart3" aria-selected="true">Shipment</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="truckingChart3-tab" data-toggle="tab" href="#truckingChart3" role="tab" aria-controls="truckingChart3" aria-selected="false">Trucking</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="shipmentChart3" role="tabpanel" aria-labelledby="shipmentChart3-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment Setiap Sales</h6>
+                      <div class="chart-area">
+                        <canvas id="ChartShipment3"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="truckingChart3" role="tabpanel" aria-labelledby="truckingChart3-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Transaksi Setiap Sales</h6>
+                        <div class="chart-area">
+                        <canvas id="Chart3"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Transaksi Setiap Sales</h6>
                 </div>
                 <div class="card-body pt-0">
@@ -813,12 +973,25 @@
               </div>
             </div>
 
+            <div class="col-lg-12">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment Setiap Sales</h6>
+                </div>
+                <div class="card-body pt-0">
+                  <div class="chart-area">
+                    <canvas id="ChartShipment3"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
             <div class="col-lg-12 mb-4">
               <div class="card">
                 <div class="card-header pt-3 pb-0">
                   <h6 class="m-0 font-weight-bold text-primary">Yearly Sales Users</h6>
                   <div class="text-xs">
-                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $datetime ?></strong>
+                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong>
                   </div>
                 </div>
                 <div class="card-body">
@@ -1247,7 +1420,7 @@
   </script>
 
 
-<script>
+  <script>
     var dataChart3 = [];
     var openChart3 = [];
     var closeChart3 = [];
@@ -1493,35 +1666,6 @@
   </script>
 
   <script>
-    // let dataGrid = null;
-    // let dataSourceTemp = null;
-    $.ajax({
-      url: '../../config/dashboardController.php',
-      type: 'get',
-      data: {
-        getShipmentDataChart1: true,
-        tahun: <?php echo $tahun ?>
-      },
-      dataType: 'json',
-      success: function(response){
-        console.log('anu', response);
-        // dataSourceTemp = response;
-      }
-    })
-
-    $.ajax({
-      url: '../../config/dashboardController.php',
-      type: 'get',
-      data: {
-        getShipmentDataChart2: true,
-        tahun: <?php echo $tahun ?>
-      },
-      dataType: 'json',
-      success: function(response){
-        console.log('anu', response);
-        // dataSourceTemp = response;
-      }
-    })
 
     $.ajax({
       url: '../../config/dashboardController.php',
@@ -1537,6 +1681,13 @@
       }
     })
 
+  </script>
+
+  <script>
+    $acumulateShipmentThisYear = document.getElementById('acumulateShipmentThisYear');
+    $shipmentThisYear = document.getElementById('shipmentThisYear');
+    $acumulateShipmentThisMonth = document.getElementById('acumulateShipmentThisMonth');
+    $shipmentThisMonth = document.getElementById('shipmentThisMonth');
     $.ajax({
       url: '../../config/dashboardController.php',
       type: 'get',
@@ -1546,10 +1697,376 @@
       },
       dataType: 'json',
       success: function(response){
-        console.log('anu', response);
-        // dataSourceTemp = response;
+        console.log(response);
+        $acumulateShipmentThisYear.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[0][0])
+        $shipmentThisYear.innerHTML = new Intl.NumberFormat('id-ID').format(response[0][1])
+        $acumulateShipmentThisMonth.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(response[1][0])
+        $shipmentThisMonth.innerHTML = new Intl.NumberFormat('id-ID').format(response[1][1])
       }
     })
+  </script>
+
+  <script>
+    var dataChartShipment1 = [];
+    var openChartShipment1 = [];
+    var closeChartShipment1 = [];
+    var labelChartShipment1 = [];
+
+    // get data chart shipment 1
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getShipmentDataChart1: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('res', response);
+        dataChartShipment1 = response;
+        for(let i=0;i<dataChartShipment1[0].length;i++) {
+          openChartShipment1.push(Number(dataChartShipment1[0][i]))
+        }
+        for(let i=0;i<dataChartShipment1[1].length;i++) {
+          closeChartShipment1.push(Number(dataChartShipment1[1][i]))
+        }
+        for(let i=0;i<dataChartShipment1[2].length;i++) {
+          labelChartShipment1.push((dataChartShipment1[2][i]))
+        }
+        console.log('open', labelChartShipment1);
+
+        // Chart 1
+        var ctx = document.getElementById("ChartShipment1");
+        var myLineChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labelChartShipment1,
+            datasets: [
+              {
+                label: "Shipment Open",
+                lineTension: 0.3,
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: openChartShipment1,
+                fill: false,
+                backgroundColor: "rgba(78, 115, 223, 1)",
+              },
+              {
+                label: "Shipment Close",
+                lineTension: 0.3,
+                borderColor: "rgba(255, 51, 51, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointBorderColor: "rgba(255, 51, 51, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointHoverBorderColor: "rgba(255, 51, 51, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: closeChartShipment1,
+                fill: false,
+                backgroundColor: "rgba(255, 51, 51, 1)",
+              }
+            ],
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  // maxTicksLimit: 7
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      }
+    });
+  </script>
+
+  <script>
+    var dataChartShipment2 = [];
+    var openChartShipment2 = [];
+    var closeChartShipment2 = [];
+    var labelChartShipment2 = [];
+
+    // get data chart shipment 2
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getShipmentDataChart2: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('res', response);
+        dataChartShipment2 = response;
+        for(let i=0;i<dataChartShipment2[0].length;i++) {
+          openChartShipment2.push(Number(dataChartShipment2[0][i]))
+        }
+        for(let i=0;i<dataChartShipment2[1].length;i++) {
+          closeChartShipment2.push(Number(dataChartShipment2[1][i]))
+        }
+        for(let i=0;i<dataChartShipment2[2].length;i++) {
+          labelChartShipment2.push((dataChartShipment2[2][i]))
+        }
+        console.log('open', labelChartShipment2);
+
+        // Chart 2
+        var ctx1 = document.getElementById("ChartShipment2");
+        var myLineChart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: labelChartShipment2,
+            datasets: [
+              {
+                label: "Shipment Open",
+                lineTension: 0.3,
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: openChartShipment2,
+                fill: false,
+                backgroundColor: "rgba(78, 115, 223, 1)",
+              },
+              {
+                label: "Shipment Close",
+                lineTension: 0.3,
+                borderColor: "rgba(255, 51, 51, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointBorderColor: "rgba(255, 51, 51, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointHoverBorderColor: "rgba(255, 51, 51, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: closeChartShipment2,
+                fill: false,
+                backgroundColor: "rgba(255, 51, 51, 1)",
+              }
+            ],
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  // maxTicksLimit: 7
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      },
+      error: function(response) {
+        console.log('err', response);
+      }
+    });
+  </script>
+
+  <script>
+    var dataChartShipment3 = [];
+    var openChartShipment3 = [];
+    var closeChartShipment3 = [];
+    var labelChartShipment3 = [];
+
+    // get data chart 3
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getShipmentDataChart3: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('res', response);
+        dataChartShipment3 = response;
+        for(let i=0;i<dataChartShipment3[0].length;i++) {
+          openChartShipment3.push(Number(dataChartShipment3[0][i]))
+        }
+        for(let i=0;i<dataChartShipment3[1].length;i++) {
+          closeChartShipment3.push(Number(dataChartShipment3[1][i]))
+        }
+        for(let i=0;i<dataChartShipment3[2].length;i++) {
+          labelChartShipment3.push((dataChartShipment3[2][i]))
+        }
+        console.log('open', labelChartShipment3);
+
+        // Chart 3
+        var ctx2 = document.getElementById("ChartShipment3");
+        var myLineChart = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labelChartShipment3,
+            datasets: [
+              {
+                label: "Transaksi Open",
+                borderColor: "rgba(78, 115, 223, 1)",
+                backgroundColor: "rgba(78, 115, 223, 1)",
+                data: openChartShipment3,
+              },
+              {
+                label: "Transaksi Close",
+                borderColor: "rgba(255, 51, 51, 1)",
+                backgroundColor: "rgba(255, 51, 51, 1)",
+                data: closeChartShipment3,
+              }
+            ],
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scaleShowValues: true,
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  // maxTicksLimit: 7,
+                  // autoSkip: false
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      },
+      error: function(response) {
+        console.log('err', response);
+      }
+    });
   </script>
 
 </body>
