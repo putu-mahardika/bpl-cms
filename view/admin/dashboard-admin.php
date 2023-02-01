@@ -1492,6 +1492,66 @@
 
   </script>
 
+  <script>
+    // let dataGrid = null;
+    // let dataSourceTemp = null;
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getShipmentDataChart1: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('anu', response);
+        // dataSourceTemp = response;
+      }
+    })
+
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getShipmentDataChart2: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('anu', response);
+        // dataSourceTemp = response;
+      }
+    })
+
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getShipmentDataChart3: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('anu', response);
+        // dataSourceTemp = response;
+      }
+    })
+
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getAccumulateShipmentData: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        console.log('anu', response);
+        // dataSourceTemp = response;
+      }
+    })
+  </script>
+
 </body>
 
 
