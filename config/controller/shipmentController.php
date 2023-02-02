@@ -327,7 +327,7 @@
       mss.id = ts.id_status_shipment and 
       tsh.id_shipment = ts.id and 
       ts.is_delete=0 and
-      ts.create_order between '".$year."-01-01 00:00:00' and '".$year."-12-31 23:59:59'";
+      ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59'";
     } else {
       $query = "select
       ts.id,
@@ -364,7 +364,7 @@
       tsh.id_shipment = ts.id and 
       ts.is_delete=0 and
       ts.UserId = '".$s_id."' and
-      ts.create_order between '".$year."-01-01 00:00:00' and '".$year."-12-31 23:59:59'";
+      ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59'";
     }
 
     $fetch = mysqli_query($koneksi,$query);
