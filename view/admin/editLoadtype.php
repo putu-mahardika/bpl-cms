@@ -458,7 +458,7 @@
               <label>No :</label>
               <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['atr1'];?>" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
               <label>Kode :</label>
-              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode'];?>" name="kode" minlength="3" maxlength="30" required>
+              <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['kode'];?>" name="kode" minlength="3" maxlength="30" style="text-transform:uppercase" required>
               <label>Nama :</label>
               <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" value ="<?php echo $data['nama'];?>" required>
               <label>Aktif :</label>

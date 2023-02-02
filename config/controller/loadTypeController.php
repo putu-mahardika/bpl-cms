@@ -29,12 +29,16 @@
     $j=0;
 
     while($data = mysqli_fetch_array($fetch_master_query)){
-      if(strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1']){
-          $j=1;
+      if(strtolower($kode) == strtolower($data['kode'])){
+        $j=1;
+      } elseif (strtolower($nama) == strtolower($data['nama'])) {
+        $j=2;
+      } elseif ($no == $data['atr1']) {
+        $j=3;
       }
     }
 
-    if($j != 1){
+    if($j == 0){
       $query = "insert into master_load_type values(null, '$kode', '$nama', '$isActive', '$datetime', '$datetime', '$s_id', '$no', '', '')";
       $result = mysqli_query($koneksi, $query);
       if ($result) {
@@ -46,10 +50,22 @@
           header("location:../../view/admin/loadType.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
       }
-    } else {
+    } elseif ($j == 1) {
         // echo 'ccc';
         header("location:../../view/admin/inputLoadType.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    } elseif ($j == 2) {
+      // echo 'ccc';
+      header("location:../../view/admin/inputLoadType.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nama Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    } elseif ($j == 3) {
+      // echo 'ccc';
+      header("location:../../view/admin/inputLoadType.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nomor Urutan Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    } else {
+      // echo 'ccc';
+      header("location:../../view/admin/inputLoadType.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
 
   } 
@@ -66,6 +82,8 @@
 		} else {
 			$isActive = 0;
 		}
+
+    $j=0;
 
     while($data = mysqli_fetch_array($fetch_master_query)){
       if((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['no'] ) && $id != $data['id']){
