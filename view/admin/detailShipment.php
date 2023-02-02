@@ -72,7 +72,7 @@
   $countOpenTrucking = mysqli_fetch_array($fetchCountOpenTrucking);
   // print_r($countOpenTrucking);
 
-  $queryMasterShipmentStatus = "select * from master_status_shipment where aktif=1";
+  $queryMasterShipmentStatus = "select * from master_status_shipment where aktif=1 order by atr1";
   $fetchMasterShipmentStatus = mysqli_query($koneksi, $queryMasterShipmentStatus);
   // $dataMasterShipmentStatus = mysqli_fetch_array($fetchMasterShipmentStatus);
 
