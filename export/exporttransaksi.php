@@ -18,19 +18,21 @@
 		<tr>
 			<th>No</th>
 			<th>Tgl</th>
+			<th>Kode Shipment</th>
+			<th>PIB</th>
 			<th>No PO</th>
 			<th>Tgl PO</th>
 			<th>No SPK</th>
 			<th>Tgl SPK</th>
-            <th>Nama Customer</th>
+			<th>Nama Customer</th>
 			<th>NPWP</th>
-            <th>Asal</th>
-            <th>Tujuan</th>
-            <th>Barang</th>
-            <th>Jumlah Armada</th>
-            <th>Keterangan</th>
-            <th>On Close</th>
-            <th>Tgl On Close</th>
+			<th>Asal</th>
+			<th>Tujuan</th>
+			<th>Barang</th>
+			<th>Jumlah Armada</th>
+			<th>Keterangan</th>
+			<th>On Close</th>
+			<th>Tgl On Close</th>
 			<th>User Saat Ini</th>
 			<th>User Sebelumnya</th>
 			<th>Tgl Perubahan</th>
@@ -79,17 +81,29 @@
 		<tr>
 			<td style="vertical-align: top;"><?php echo $no++; ?></td>
 			<td style="vertical-align: top;"><?php echo $d['create_date']; ?></td>
+			<?php if (is_null($d['id_shipment'])) { ?>
+				<td style="vertical-align: top;">-</td>
+				<td style="vertical-align: top;">-</td>
+			<?php } else { ?>
+			<?php 
+				$queryShipment = "select shipment_order, pib from trans_shipment where id='$d[id_shipment]'";
+				$fetchShipment = mysqli_query($koneksi, $queryShipment);
+				$dataShipment = mysqli_fetch_array($fetchShipment);
+			?>
+				<td style="vertical-align: top;"><?php echo $dataShipment['shipment_order']?></td>
+				<td style="vertical-align: top;"><?php echo $dataShipment['pib']?></td>
+			<?php } ?>
 			<td style="vertical-align: top;"><?php echo $d['NoPO']; ?></td>
 			<td style="vertical-align: top;"><?php echo $d['tgl_po']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d['NoSPK']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d['tgl_spk']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d1['nama']; ?></td>
+			<td style="vertical-align: top;"><?php echo $d['NoSPK']; ?></td>
+			<td style="vertical-align: top;"><?php echo $d['tgl_spk']; ?></td>
+			<td style="vertical-align: top;"><?php echo $d1['nama']; ?></td>
 			<td style="vertical-align: top;"><?php echo $d1['npwp']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d['kota_kirim']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d['kota_tujuan']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d['Barang']; ?></td>
-            <td style="vertical-align: top;"><?php echo $d['total_armada']; ?></td>
-            <td style="vertical-align: top;white-space:pre"><?php echo $keterangan?></td>
+			<td style="vertical-align: top;"><?php echo $d['kota_kirim']; ?></td>
+			<td style="vertical-align: top;"><?php echo $d['kota_tujuan']; ?></td>
+			<td style="vertical-align: top;"><?php echo $d['Barang']; ?></td>
+			<td style="vertical-align: top;"><?php echo $d['total_armada']; ?></td>
+			<td style="vertical-align: top;white-space:pre"><?php echo $keterangan?></td>
 			<?php if($d['OnClose'] == 0){ ?>
 				<td style="vertical-align: top;">OPEN</td>
 				<td style="vertical-align: top;"></td>

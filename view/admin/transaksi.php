@@ -766,103 +766,72 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
 
                     <thead class="thead-light">
-
                       <tr>
-
                         <th style="padding-left:16px;">Tgl</th>
-
                         <th style="padding-left:16px;">Customer</th>
-
+                        <th style="padding-left:16px;">Kode Shipment</th>
+                        <th style="padding-left:16px;">PIB</th>
                         <th style="padding-left:16px;">No. PO</th>
-
                         <!--<th>Tgl PO</th>-->
-
                         <th style="padding-left:16px;">No. SPK</th>
-
                         <!--<th>tgl SPK</th>-->
-
                         <th style="padding-left:16px;">Kota Asal</th>
-
                         <th style="padding-left:16px;">Kota Tujuan</th>
-
                         <th style="padding-left:16px;">Jumlah Armada</th>
-
                         <!--<th>Barang</th>
-
                         <th>Keterangan</th>-->
-
                         <th style="padding-left:16px;">On Close</th>
-
                         <!--<th>Tgl On Close</th>-->
-
                         <th style="padding-left:16px;">action</th>
-
                       </tr>
-
                     </thead>
-
                     
-
                     <tbody>
-
                     <?php
-
                       while($data = mysqli_fetch_array($fetch)){
-
                         $id = $data['HdId'];
-
                         $tgl = $data['create_date'];
-
                         $cancel = $data['atr1'];
-
                         $tgl1 = date('d-M-Y H:i:s', strtotime($tgl));
-
                       ?>
-
                       <tr>
-
                         <td style="font-size:13px;padding-left:16px;"><?php echo $tgl1?></td>
-
                         <?php
-
                           $query_temp = "select nama from master_customer where CustId='$data[CustId]'";
-
                           $fetch_temp = mysqli_query($koneksi, $query_temp);
-
                           $data_temp = mysqli_fetch_array($fetch_temp);
-
                         ?>
-
                         <td style="font-size:13px;padding-left:16px;"><?php echo $data_temp['nama'] ?? '-'?></td>
 
-                        <?php
 
-                          if($cancel==1){
-
-                        ?>
-
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO'] ?? '-'?> <p style="color:red;">(Canceled)</p> </td>
-
+                        <?php if (is_null($data['id_shipment'])) { ?>
+                          <td style="font-size:13px;padding-left:16px;">-</td>
+                          <td style="font-size:13px;padding-left:16px;">-</td>
                         <?php } else { ?>
+                        <?php 
+                          $queryShipment = "select shipment_order, pib from trans_shipment where id='$data[id_shipment]'";
+                          $fetchShipment = mysqli_query($koneksi, $queryShipment);
+                          $dataShipment = mysqli_fetch_array($fetchShipment);
+                        ?>
+                          <td style="font-size:13px;padding-left:16px;"><?php echo $dataShipment['shipment_order']?></td>
+                          <td style="font-size:13px;padding-left:16px;"><?php echo $dataShipment['pib']?></td>
+                        <?php } ?>
 
+                        <?php
+                          if($cancel==1){
+                        ?>
+                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO'] ?? '-'?> <p style="color:red;">(Canceled)</p> </td>
+                        <?php } else { ?>
                           <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoPO'] ?? '-'?></td>
-
                         <?php } ?>
 
                         <!--<td><?php echo $data['tgl_po']?></td>-->
-
                         <?php
-
                           if($cancel==1){
-
                         ?>
-
-                        <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK'] ?? '-'?> <p style="color:red;">(Canceled)</p> </td>
-
+                          <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK'] ?? '-'?> <p style="color:red;">(Canceled)</p> </td>
                         <?php } else {?>
-
                           <td style="font-size:13px;padding-left:16px;"><?php echo $data['NoSPK'] ?? '-'?></td>
-
                         <?php } ?>
 
                         <!--<td><?php echo $data['tgl_spk']?></td>-->

@@ -43,7 +43,17 @@
   $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
   $dataUnit = mysqli_fetch_array($fetchMasterUnit);
 
-  $queryTransHd = "select * from trans_hd where id_shipment='$shipmentId'";
+  // $queryTransHd = "select * from trans_hd where id_shipment='$shipmentId'";
+  $queryTransHd = "SELECT 
+      th.*,
+      ts.shipment_order,
+      ts.pib 
+    from 
+      trans_hd th,
+      trans_shipment ts 
+    where  
+      th.id_shipment = ts.id and 
+      th.id_shipment = '$shipmentId'";
   $fetchTransHd = mysqli_query($koneksi, $queryTransHd);
   // $dataTranshd = mysqli_fetch_array($fetchTransHd);
   $dataTransHd = array();
@@ -759,14 +769,14 @@
                           <span class="icon text-white-50">
                               <i class="fas fa-plus"></i>
                             </span>
-                          <span class="text">Tambah Shipment</span>
+                          <span class="text">Tambah Order Trucking</span>
                         </button>
                       <?php } else {?>
                         <a style="color: white;" class="btn btn-primary btn-icon-split" type="button" data-toggle="modal" data-target="#generateTruckingModal">
                           <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                           </span>
-                          <span class="text">Tambah Shipment</span>
+                          <span class="text">Tambah Order Trucking</span>
                         </a>
                       <?php } ?>
                       </div>
@@ -783,6 +793,8 @@
                           <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                             <thead class="thead-light">
                               <tr>
+                                <th>Kode Shipment</th>
+                                <th>PIB</th>
                                 <th>No. PO</th>
                                 <th>Tgl</th>
                                 <th>No. SPK</th>
@@ -796,6 +808,8 @@
                             <tbody>
                               <?php foreach ($dataTransHd as $id=>$data) {?>
                                 <tr>
+                                  <td><?php echo $data['shipment_order'] ?></td>
+                                  <td><?php echo $data['pib'] ?></td>
                                   <td><?php echo $data['NoPO'] ?? '-' ?></td>
                                   <td><?php echo date('d-M-Y H:i:s', strtotime($data['create_date'])) ?? '-' ?></td>
                                   <td><?php echo $data['NoSPK'] ?? '-' ?></td>
