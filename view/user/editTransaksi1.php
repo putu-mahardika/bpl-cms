@@ -1080,7 +1080,7 @@
                         <label>Jumlah Armada :</label>
 
                         <input type="number" min="1" class="form-control form-control-sm mb-3" value="<?php echo $t_armada ?>" name="armada" id="armada" onchange="armadaUbah()" required>
-
+                        <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $t_armada ?>" name="armada_old">
                       </div>
 
                       <div class="form-group col-sm-3">

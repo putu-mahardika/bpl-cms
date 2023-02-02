@@ -646,15 +646,25 @@
             $diffArmada = $armada-$armadaOld;
             $cekBiayaTurunan = true;
 
-            if ($diffArmada > 0) {
-                for ($i=1; $i <= $diffArmada; $i++) { 
-                    $addTurunan = $armadaOld+$i;
-                    $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $addTurunan, $id, $datetime, $s_id, $koneksi);
-                    if (!$resultCreateBiayaTurunan) {
-                        $cekBiayaTurunan = false;
-                    }
-                }
-            } elseif ($diffArmada < 0) {
+            // if ($diffArmada > 0) {
+            //     for ($i=1; $i <= $diffArmada; $i++) { 
+            //         $addTurunan = $armadaOld+$i;
+            //         $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $addTurunan, $id, $datetime, $s_id, $koneksi);
+            //         if (!$resultCreateBiayaTurunan) {
+            //             $cekBiayaTurunan = false;
+            //         }
+            //     }
+            // } elseif ($diffArmada < 0) {
+            //     for ($i=0; $i < -$diffArmada; $i++) { 
+            //         $minTurunan = $armadaOld-$i;
+            //         $resultDeleteBiayaTurunan = deleteBiayaTurunan($koneksi, $nospk, $minTurunan);
+            //         if (!$resultDeleteBiayaTurunan) {
+            //             $cekBiayaTurunan = false;
+            //         }
+            //     }
+            // }
+
+            if ($diffArmada < 0) {
                 for ($i=0; $i < -$diffArmada; $i++) { 
                     $minTurunan = $armadaOld-$i;
                     $resultDeleteBiayaTurunan = deleteBiayaTurunan($koneksi, $nospk, $minTurunan);
@@ -663,6 +673,8 @@
                     }
                 }
             }
+
+            
 
 			if ($result && $result1 && $cekBiayaTurunan) {
                 if($akses == 'Admin'){
@@ -850,6 +862,8 @@
         $querycek = "select count(*) as countSPKTurunan from trans_biayaturunan where NoSPK='$spk' and Turunan='$turunan'";
         $fetchquerycek = mysqli_query($koneksi, $querycek);
         $arrayquerycek = mysqli_fetch_array($fetchquerycek);
+
+        // echo $arrayquerycek['countSPKTurunan'];
         
         if ($arrayquerycek['countSPKTurunan'] < 1) {
             createBiayaTurunan($spk, $turunan, $hdid, $datetime, $s_id, $koneksi);
