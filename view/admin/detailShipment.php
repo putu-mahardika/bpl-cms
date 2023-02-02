@@ -31,7 +31,7 @@
   $dataCustomer = mysqli_fetch_array($fetchMasterCustomer);
   // echo $dataCustomer['nama'];
 
-  $queryMasterShipmentTerms = "select * from master_shipment_terms where aktif=1 and id='$shipmentTerm'";
+  $queryMasterShipmentTerms = "select * from master_shipment_terms where aktif=1 and id='$shipmentTerm' order by atr1";
   $fetchMasterShipmentTerms = mysqli_query($koneksi, $queryMasterShipmentTerms);
   $dataShipmentTerms = mysqli_fetch_array($fetchMasterShipmentTerms);
 

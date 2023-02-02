@@ -29,12 +29,18 @@
     $j=0;
 
     while($data = mysqli_fetch_array($fetch_master_query)){
-      if(strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1']){
-          $j=1;
+      if(strtolower($kode) == strtolower($data['kode'])){
+        $j=1;
+      }
+      elseif (strtolower($nama) == strtolower($data['nama'])) {
+        $j=2;
+      }
+      elseif($no == $data['atr1']) {
+        $j=3;
       }
     }
 
-    if($j != 1){
+    if($j == 0){
       $query = "insert into master_shipment_terms values(null, '$kode', '$nama', '$isActive', '$datetime', '$datetime', '$s_id', '$no', '', '')";
       $result = mysqli_query($koneksi, $query);
       if ($result) {
@@ -46,10 +52,23 @@
           header("location:../../view/admin/shipmentTerms.php");
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
       }
-    } else {
-        // echo 'ccc';
-        header("location:../../view/admin/inputShipmentTerms.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    } 
+    elseif ($j == 1) {
+      header("location:../../view/admin/inputShipmentTerms.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    }
+    elseif ($j == 2) {
+      header("location:../../view/admin/inputShipmentTerms.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nama Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    }
+    elseif ($j == 3) {
+      header("location:../../view/admin/inputShipmentTerms.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nomor Urutan Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    }
+    else {
+      // echo 'ccc';
+      header("location:../../view/admin/inputShipmentTerms.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
 
   } 
@@ -68,14 +87,28 @@
 		}
 
     while($data = mysqli_fetch_array($fetch_master_query)){
-      if((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['no'] ) && $id != $data['id']){
-          $j=1;
-      } elseif((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['no'] ) && $id == $data['id']){
-          $j=0;
-          break;
+      // echo strtolower($kode) == strtolower($data['kode']);
+      // echo 'xxx';
+      // echo strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1'];
+      if((strtolower($kode) == strtolower($data['kode'])) && $id != $data['id']){
+        $j=1;
+        break;
+      }
+      elseif ((strtolower($nama) == strtolower($data['nama'])) && $id != $data['id']) {
+        $j=1;
+        break;
+      } 
+      elseif (($no == $data['atr1']) && $id != $data['id']) {
+        $j=1;
+        break;
+      } 
+      elseif((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1'] ) && $id == $data['id']){
+        $j=0;
+        break;
       }
     }
 
+    // echo $j;
     // echo $_POST['aktif'];
     // echo $isActive;
 
@@ -91,7 +124,7 @@
       }
     } else {
         header("location:../../view/admin/editShipmentTerms.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
   }
 ?>

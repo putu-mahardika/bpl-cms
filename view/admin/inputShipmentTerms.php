@@ -449,9 +449,9 @@
                 <label>No :</label>
                 <input type="text" class="form-control form-control-sm mb-3 no" name="no" pattern="[0-9]{1,3}" title="Nomor urutan maksimal 3 digit angka" required>
                 <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="kode" minlength="3" maxlength="6" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="kode" minlength="3" maxlength="6" style="text-transform:uppercase" required>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="150" required>
+                <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="50" required>
                 <label>Aktif :</label>
 				        <input type="text" class="form-control form-control-sm mb-3" name="aktif" value="Ya" readonly>
                 <!--<select name="aktif" class="form-control form-control-sm mb-3" required>

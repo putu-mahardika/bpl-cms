@@ -70,6 +70,7 @@
     while($data = mysqli_fetch_array($fetch_master_query)){
       if((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['no'] ) && $id != $data['id']){
           $j=1;
+          break;
       } elseif((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['no'] ) && $id == $data['id']){
           $j=0;
           break;
