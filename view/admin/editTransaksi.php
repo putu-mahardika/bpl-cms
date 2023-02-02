@@ -624,8 +624,13 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-6">
-                        <label>Shipment Order :</label>
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['shipment_order'] ?>" readonly>
+                        <p class="mb-0">Shipment Order :</p>
+                        <!-- <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['shipment_order'] ?>" readonly> -->
+                        <?php if (is_null($t_idShipment)) { ?>
+                          <p><b>-</b></p>
+                        <?php } else { ?>
+                          <a href="detailShipment.php?id=<?php echo $dataShipment['id'] ?>"><b><?php echo $dataShipment['shipment_order']?></b></a>
+                        <?php } ?>
                       </div>
                       <div class="form-group col-sm-6">
                         <label>Nama Sales Shipment :</label>
@@ -634,7 +639,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
                     </div>
                     <div class="row" style="height: 70px;">
                       <div class="form-group col-sm-6">
-                        <label>No BIL :</label>
+                        <label>No BL :</label>
                         <input type="text" class="form-control form-control-sm mb-3" value="<?php echo is_null($t_idShipment) ? '-' : $dataShipment['bl'] ?>" readonly>
                       </div>
                       <div class="form-group col-sm-6">

@@ -15,6 +15,7 @@
 
   // ============= tambah status shipment ===============
   if (isset($_POST['inputShipment'])) {
+     
     $kodeShipment = $_POST['kodeShipment'];
     $customer = $_POST['customer'];
     $pib = $_POST['pib'];
@@ -45,11 +46,47 @@
     }
     $save = [$datetime, $kodeShipment, $s_id, $customer, $pib, $billLanding, $shipmentTerm, $loadType, $qty, $unit, $biayaFreight, $totalFreight, $tglKurs, $kurs, $namaBiayaHandling, $biayaHandling, $sumBiayaHandling];
 
-    // foreach ($namaBiayaHandling as $x) {
-    //   echo $x;
-    // }
+    if (array_key_exists('customer',$_POST)) {
+      header("location:../../view/admin/inputShipment.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Customer Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      $_SESSION['id_pesan1'] = $save;
+    } 
+    elseif (array_key_exists('shipmentTerm',$_POST)) {
+      header("location:../../view/admin/inputShipment.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Term Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      $_SESSION['id_pesan1'] = $save;
+    }
+    elseif (array_key_exists('loadType',$_POST)) {
+      header("location:../../view/admin/inputShipment.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      $_SESSION['id_pesan1'] = $save;
+    }
+    elseif (array_key_exists('unit',$_POST)) {
+      header("location:../../view/admin/inputShipment.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Unit Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      $_SESSION['id_pesan1'] = $save;
+    }
+    elseif (is_null($_POST['kodeShipment'])) {
+      header("location:../../view/admin/inputShipment.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      $_SESSION['id_pesan1'] = $save;
+    }
+    elseif (!is_null($_POST['tglKurs'])) {
+      if (date('Y-m-d') < $tglKurs) {
+        eader("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Tanggal tidak boleh lebih besar dari hari ini !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
+    }
 
-    // echo mysqli_query($koneksi, "select lastval()");
+
+
+
+    foreach ($namaBiayaHandling as $x) {
+      echo $x;
+    }
+
+    echo mysqli_query($koneksi, "select lastval()");
     if($j != 1){
       $query = "insert into trans_shipment values (null, '$datetime', '$kodeShipment', '$s_id', '$customer', null, '$pib', '$billLanding', '$shipmentTerm', '$loadType', '$qty', '$unit', '1', '$biayaFreight', '$totalFreight', '$tglKurs', '$kurs', '0', null, '0' , null, null, '$datetime', null, null, null)";
       $result = mysqli_query($koneksi, $query);

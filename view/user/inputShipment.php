@@ -408,17 +408,17 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="kodeShipment">Kode Shipment</label>
-                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment" value="<?php echo $save[1] ?>">
+                          <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="kodeShipment" name="kodeShipment" value="<?php echo $save[1] ?>" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                        <input type="text" class="form-control form-control-sm" id="pib" name="pib" value="<?php echo $save[4] ?>">
+                        <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="pib" name="pib" value="<?php echo $save[4] ?>" required>
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="billLanding">Bill of Landing (BL)</label>
-                          <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding" value="<?php echo $save[5] ?>">
+                          <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="billLanding" name="billLanding" value="<?php echo $save[5] ?>" required>
                         </div>
                       </div>
                     </div>
@@ -467,7 +467,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="qty">Quantity</label>
-                          <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $save[8] ?>">
+                          <input type="number" min=1 class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $save[8] ?>" required>
                           </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="unit">Unit</label>
@@ -609,8 +609,8 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="customer">Customer</label>
-                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
-                          <option value="" selected disabled>Pilih</option>
+                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer" required>
+                          <option value="" disabled>Pilih</option>
                           <?php
                             while($data = mysqli_fetch_array($fetchMasterCustomer)){
                               if($data['aktif']==1){
@@ -628,17 +628,17 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="kodeShipment">Kode Shipment</label>
-                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment">
+                          <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="kodeShipment" name="kodeShipment" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                        <input type="text" class="form-control form-control-sm" id="pib" name="pib">
+                        <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="pib" name="pib" required>
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="billLanding">Bill of Landing (BL)</label>
-                          <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding">
+                          <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="billLanding" name="billLanding" required>
                         </div>
                       </div>
                     </div>
@@ -687,7 +687,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="qty">Quantity</label>
-                          <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty">
+                          <input type="number" min=1 class="form-control form-control-sm" id="qty" name="qty" required>
                           </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="unit">Unit</label>
@@ -737,7 +737,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" required>
+                                <input type="text" class="form-control" name="tglKurs" id="tglKurs">
                               </div>
                             </div>
                           </div>

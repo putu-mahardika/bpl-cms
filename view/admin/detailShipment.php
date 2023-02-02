@@ -690,7 +690,7 @@
                       <p class="" style="color: black;"><strong><?php echo $dataShipment['pib'] ?></strong></p>
                     </div>
                     <div>
-                      <p class="mb-0">No. BIL</p>
+                      <p class="mb-0">No. BL</p>
                       <p class="" style="color: black;"><strong><?php echo $dataShipment['bl'] ?></strong></p>
                     </div>
                   </div>

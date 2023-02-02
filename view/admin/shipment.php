@@ -493,7 +493,7 @@ where
                         <th>Customer</th>
                         <th>Kode Shipment</th>
                         <th>No. PIB</th>
-                        <th>No. BIL</th>
+                        <th>No. BL</th>
                         <th>Sales</th>
                         <th>Qty</th>
                         <th>Unit</th>
