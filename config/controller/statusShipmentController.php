@@ -48,7 +48,7 @@
       }
     } else {
         // echo 'ccc';
-        header("location:../../view/admin/inputstatusShipment.php");
+        header("location:../../view/admin/inputStatusShipment.php");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
 

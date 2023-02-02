@@ -496,6 +496,9 @@
                           <?php if($data['id'] > 3) { ?>
                             <a href="editStatusShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning">
                               <i class="fas fa-edit"></i></a>
+                          <?php } else { ?>
+                            <button class="btn btn-warning" disabled>
+                              <i class="fas fa-edit"></i></button>
                           <?php } ?>
                         </td>
                       </tr>
