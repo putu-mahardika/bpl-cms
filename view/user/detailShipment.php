@@ -43,7 +43,17 @@
   $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
   $dataUnit = mysqli_fetch_array($fetchMasterUnit);
 
-  $queryTransHd = "select * from trans_hd where id_shipment='$shipmentId'";
+  // $queryTransHd = "select * from trans_hd where id_shipment='$shipmentId'";
+  $queryTransHd = "SELECT 
+    th.*,
+    ts.shipment_order,
+    ts.pib 
+  from 
+    trans_hd th,
+    trans_shipment ts 
+  where  
+    th.id_shipment = ts.id and 
+    th.id_shipment = '$shipmentId'";
   $fetchTransHd = mysqli_query($koneksi, $queryTransHd);
   // $dataTranshd = mysqli_fetch_array($fetchTransHd);
   $dataTransHd = array();
