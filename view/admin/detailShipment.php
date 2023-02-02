@@ -39,7 +39,7 @@
   $fetchMasterLoadType = mysqli_query($koneksi, $queryMasterLoadType);
   $dataLoadType = mysqli_fetch_array($fetchMasterLoadType);
 
-  $queryMasterUnit = "select * from master_unit where aktif=1 and id='$shipmentUnit'";
+  $queryMasterUnit = "select * from master_unit where aktif=1 and id='$shipmentUnit' order by atr1";
   $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
   $dataUnit = mysqli_fetch_array($fetchMasterUnit);
 

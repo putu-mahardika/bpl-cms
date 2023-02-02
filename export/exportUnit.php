@@ -8,12 +8,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Data Load Type - PT Berkah Permata Logistik</title>
+	<title>Data Unit - PT Berkah Permata Logistik</title>
 </head>
 <body>
     <?php
 	header("Content-type: application/vnd-ms-excel");
-	header("Content-Disposition: attachment; filename=Data Load Type - PT Berkah Permata Logistik.xls");
+	header("Content-Disposition: attachment; filename=Data Unit - PT Berkah Permata Logistik.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
 	?>
