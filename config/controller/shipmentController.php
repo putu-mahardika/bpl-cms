@@ -72,11 +72,11 @@
       if ($result) {
           // echo 'aaa';
           $save = [];
-          header("location:../../view/admin/shipment.php");
+          header("location:../../view/admin/shipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
        } else {
           // echo 'bbb';
-          header("location:../../view/admin/shipment.php");
+          header("location:../../view/admin/shipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
           $_SESSION['id_pesan1'] = $save;			
       }
@@ -154,7 +154,7 @@
       if ($result) {
           // echo 'aaa';
           $save = [];
-          header("location:../../view/admin/shipment.php");
+          header("location:../../view/admin/shipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
        } else {
           // echo 'bbb';
@@ -223,7 +223,14 @@
     // echo $id;
     $lastKurs = $_POST['lastKurs'];
 
-    $query = "update trans_shipment set id_status_shipment=3, close=1, close_date='$datetime', closed_by='$s_id', nilai_kurs='$lastKurs', kurs_date='$date', last_update='$datetime' where id='$id'";
+    $queryGetShipment = "select freight from trans_shipment where id=".$id;
+    $fetchGetShipment = mysqli_query($koneksi, $queryGetShipment);
+    $dataGetShipment = mysqli_fetch_array($fetchGetShipment);
+
+    $freight = $dataGetShipment['freight'];
+    $totalFreight = (double)$lastKurs * (double)$freight;
+
+    $query = "update trans_shipment set id_status_shipment=3, close=1, close_date='$datetime', closed_by='$s_id', total_freight='$totalFreight', nilai_kurs='$lastKurs', kurs_date='$date', last_update='$datetime' where id='$id'";
     // echo $query;
     $result = mysqli_query($koneksi, $query);
 
