@@ -144,15 +144,15 @@
       
     } 
     elseif ($j==1) {
-      header("location:../../view/admin/inputStatusShipment.php?id=$id");
+      header("location:../../view/admin/editStatusShipment.php?id=$id");
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">KodeStatus Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
     elseif ($j==2) {
-      header("location:../../view/admin/inputStatusShipment.php?id=$id");
+      header("location:../../view/admin/editStatusShipment.php?id=$id");
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nama Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
     elseif ($j==3) {
-      header("location:../../view/admin/inputStatusShipment.php?id=$id");
+      header("location:../../view/admin/editStatusShipment.php?id=$id");
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nomor Urutan Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
     }
     else {
