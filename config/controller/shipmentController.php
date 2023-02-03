@@ -330,10 +330,10 @@
     elseif ($j==1) {
       if ($akses == 'Admin') {
         header("location:../../view/admin/editShipment.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
       } else {
         header("location:../../view/user/editShipment.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
       }
     }
     elseif ($j==2) {
