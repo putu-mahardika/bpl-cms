@@ -81,7 +81,7 @@
     }
 
     echo mysqli_query($koneksi, "select lastval()");
-    if($j != 1){
+    if($j == 0){
       $query = "insert into trans_shipment values (null, '$datetime', '$kodeShipment', '$s_id', '$customer', null, '$pib', '$billLanding', '$shipmentTerm', '$loadType', '$qty', '$unit', '1', '$biayaFreight', '$totalFreight', '$tglKurs', '$kurs', '0', null, '0' , null, null, '$datetime', null, null, null)";
       $result = mysqli_query($koneksi, $query);
       
