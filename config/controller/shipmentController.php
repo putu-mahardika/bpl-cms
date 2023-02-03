@@ -52,16 +52,16 @@
       }
     }
 
-    if (array_key_exists('customer',$_POST)) {
+    if (!array_key_exists('customer',$_POST)) {
       $j=4;
     } 
-    elseif (array_key_exists('shipmentTerm',$_POST)) {
+    elseif (!array_key_exists('shipmentTerm',$_POST)) {
       $j=5;
     }
-    elseif (array_key_exists('loadType',$_POST)) {
+    elseif (!array_key_exists('loadType',$_POST)) {
       $j=6;
     }
-    elseif (array_key_exists('unit',$_POST)) {
+    elseif (!array_key_exists('unit',$_POST)) {
       $j=7;
     }
     elseif (is_null($_POST['kodeShipment'])) {
