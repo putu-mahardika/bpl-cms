@@ -544,7 +544,7 @@
     $(document).ready(function () {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
-        // "scrollX": true,
+        "scrollX": true,
         "columnDefs": [ { type: 'date', 'targets': [0] } ],
         // "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
         "order": [[0, "desc"]]

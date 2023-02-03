@@ -1061,6 +1061,7 @@
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
         "columnDefs": [ { type: 'date', 'targets': [0] } ],
+        "scrollX": true,
         "order": [[0, "desc"]]
 	  }); // ID From dataTable with Hover
     //$('.transinfo').click(function(){

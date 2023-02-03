@@ -607,8 +607,8 @@ order by
       //$.fn.table.moment('d-M-Y hh:mm:ss');
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
+        "scrollX": true,
         "order": [[0, "asc"]]
-        
       }); // ID From dataTable with Hover
     });
   </script>
