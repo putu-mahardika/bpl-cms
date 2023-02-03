@@ -794,7 +794,7 @@
                     <!-- <p>Jumlah Order Trucking</p> -->
                     <label for="generateTrucking">Jumlah Order Trucking :</label>
                     <input type="hidden" name="id" value="<?php echo $shipmentId ?>">
-				            <input type="number" id="generateTrucking" class="form-control form-control-sm mb-3" name="count" min="0" value="0" >
+				            <input type="number" id="generateTrucking" class="form-control form-control-sm mb-3" name="count" min="1" value="0" >
                   </div>
                   <div class="modal-footer">
                     <!-- <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button> -->
