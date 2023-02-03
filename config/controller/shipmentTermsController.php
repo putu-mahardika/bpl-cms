@@ -92,14 +92,20 @@
       // echo strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1'];
       if((strtolower($kode) == strtolower($data['kode'])) && $id != $data['id']){
         $j=1;
+        header("location:../../view/admin/editShipmentTerms.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         break;
       }
       elseif ((strtolower($nama) == strtolower($data['nama'])) && $id != $data['id']) {
         $j=1;
+        header("location:../../view/admin/editShipmentTerms.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nama Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         break;
       } 
       elseif (($no == $data['atr1']) && $id != $data['id']) {
         $j=1;
+        header("location:../../view/admin/editShipmentTerms.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Noor Urutan Shipment Term sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         break;
       } 
       elseif((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1'] ) && $id == $data['id']){

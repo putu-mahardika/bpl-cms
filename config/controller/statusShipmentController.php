@@ -29,8 +29,20 @@
     $j=0;
 
     while($data = mysqli_fetch_array($fetch_master_query)){
-      if(strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['atr1']){
-          $j=1;
+      if(strtolower($kode) == strtolower($data['kode'])){
+        $j=1;
+        header("location:../../view/admin/inputStatusShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+      elseif (strtolower($nama) == strtolower($data['nama'])) {
+        $j=1;
+        header("location:../../view/admin/inputStatusShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nama Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+      elseif ($no == $data['atr1']) {
+        $j=1;
+        header("location:../../view/admin/inputStatusShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nomor Urutan Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
       }
     }
 
@@ -74,6 +86,24 @@
       } elseif((strtolower($kode) == strtolower($data['kode']) || strtolower($nama) == strtolower($data['nama']) || $no == $data['no'] ) && $id == $data['id']){
           $j=0;
           break;
+      }
+    }
+
+    while($data = mysqli_fetch_array($fetch_master_query)){
+      if(strtolower($kode) == strtolower($data['kode']) && $id != $data['id']){
+        $j=1;
+        header("location:../../view/admin/inputStatusShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">KodeStatus Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+      elseif (strtolower($nama) == strtolower($data['nama']) && $id != $data['id']) {
+        $j=1;
+        header("location:../../view/admin/inputStatusShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nama Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+      elseif ($no == $data['atr1'] && $id != $data['id']) {
+        $j=1;
+        header("location:../../view/admin/inputStatusShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Nomor Urutan Status Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
       }
     }
 
