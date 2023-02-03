@@ -266,37 +266,16 @@
     while($data = mysqli_fetch_array($fetch_master_query)){
       if(strtolower($kodeShipment) == strtolower($data['shipment_order']) && $data['id'] != $id) {
         $j=1;
-        if ($akses == 'Admin') {
-          header("location:../../view/admin/editShipment.php?id=$id");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        } else {
-          header("location:../../view/user/editShipment.php?id=$id");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        }
       }
       elseif (strtolower($pib) == strtolower($data['pib']) && $data['id'] != $id) {
-        $j=1;
-        if ($akses == 'Admin') {
-          header("location:../../view/admin/editShipment.php?id=$id");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        } else {
-          header("location:../../view/user/editShipment.php?id=$id");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        }
+        $j=2;
       }
       elseif (strtolower($billLanding) == strtolower($data['bl']) && $data['id'] != $id) {
-        $j=1;
-        if ($akses == 'Admin') {
-          header("location:../../view/admin/editShipment.php?id=$id");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        } else {
-          header("location:../../view/user/editShipment.php?id=$id");
-          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        }
+        $j=3;
       }
     }
 
-    if($j != 1){
+    if($j == 0){
       // $query = "insert into trans_shipment values (null, '$datetime', '$kodeShipment', '$s_id', '$customer', null, '$pib', '$billLanding', '$shipmentTerm', '$loadType', '$qty', '$unit', '1', '$biayaFreight', '$totalFreight', '$tglKurs', '$kurs', '0', null, '0' , null, null, '$datetime', null, null, null)";
       $query = "update trans_shipment set shipment_order='$kodeShipment', UserId='$s_id', pib='$pib', bl='$billLanding', id_shipment_term='$shipmentTerm', id_shipment_load_type='$loadType', quantity='$qty', unit='$unit', freight='$biayaFreight', total_freight='$totalFreight', kurs_date='$tglKurs', nilai_kurs='$kurs', last_update='$datetime' where id='$id'";
       // printf($query);
@@ -347,7 +326,35 @@
         }
           // echo 'bbb';
       }
-    } else {
+    }
+    elseif ($j==1) {
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      } else {
+        header("location:../../view/user/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+    }
+    elseif ($j==2) {
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      } else {
+        header("location:../../view/user/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+    }
+    elseif ($j==3) {
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      } else {
+        header("location:../../view/user/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+    }
+    else {
       if ($akses == 'Admin') {
         header("location:../../view/admin/editShipment.php?id=$id");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
@@ -357,6 +364,8 @@
       }
     }
     
+
+
   } elseif (isset($_POST['changeStatusShipment'])) {
     // echo $_POST['statusId'];
     $id = $_POST['id'];
