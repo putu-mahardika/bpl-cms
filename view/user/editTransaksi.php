@@ -1051,7 +1051,7 @@
 
                         <label>No. SPK :</label>
 
-                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" minlength="3" maxlength="30" readonly>
+                        <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $t_nospk ?>" name="nospk" minlength="3" maxlength="30">
 
                       </div>
 
