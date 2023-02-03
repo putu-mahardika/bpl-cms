@@ -523,9 +523,9 @@
                                 if($data['aktif']==1){
                                   if($data['id'] == $save[6]){
                             ?>
-                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['kode'];?></option>
                                 <?php }else{?>
-                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['kode'];?></option>
                               <?php } } else {
                                 continue;
                                 }
@@ -743,9 +743,9 @@
                                 if($data['aktif']==1){
                                   if($data['id'] == 'x'){
                             ?>
-                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                            <option value="<?php echo $data['id'];?>" selected><?php echo $data['kode'];?></option>
                                 <?php }else{?>
-                            <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                            <option value="<?php echo $data['id'];?>"><?php echo $data['kode'];?></option>
                               <?php } } else {
                                 continue;
                                 }

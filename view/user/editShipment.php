@@ -453,9 +453,9 @@
                               if($data['aktif']==1){
                                 if($data['id'] == $dataShipment['id_shipment_term']){
                           ?>
-                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['nama'];?></option>
+                          <option value="<?php echo $data['id'];?>" selected><?php echo $data['kode'];?></option>
                               <?php }else{?>
-                          <option value="<?php echo $data['id'];?>"><?php echo $data['nama'];?></option>
+                          <option value="<?php echo $data['id'];?>"><?php echo $data['kode'];?></option>
                             <?php } } else {
                               continue;
                               }
