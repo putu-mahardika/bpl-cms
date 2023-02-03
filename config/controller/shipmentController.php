@@ -427,6 +427,8 @@
       }
     }
   
+
+
   } elseif (isset($_POST['dropShipment'])) {
     $id = $_POST['id'];
 
@@ -467,6 +469,10 @@
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
       }
     }
+
+
+
+
   } elseif (isset($_GET['reportShipment'])) {
     $startspk = $_GET['start'];
     $endspk = $_GET['end'];
@@ -474,88 +480,135 @@
     $end0 = str_replace('/', '-', $endspk);
     $start = date('Y-m-d', strtotime($start0));
     $end = date('Y-m-d', strtotime($end0));
+
+    $array = array();
+    $arrayTempShipment = array();
+    $arrayTempHandling = array();
+
     if($akses == "Admin") {
-      $query = "select
-      ts.id,
-      ts.create_order as create_order,
-      ts.shipment_order as kode_shipment,
-      mc.nama as customer,
-      mu.nama as sales,
-      ts.pib as pib,
-      ts.bl as bl,
-      mst.nama as shipment_term,
-      mlt.nama as load_type,
-      ts.quantity as qty,
-      mu2.nama as unit,
-      mss.nama as status,
-      ts.freight as freight,
-      ts.total_freight as total_freight,
-      sum(tsh.nominal) as total 
-    from 
-      trans_shipment ts,
-      master_customer mc,
-      master_user mu,
-      master_unit mu2,
-      master_load_type mlt,
-      master_shipment_terms mst,
-      master_status_shipment mss,
-      trans_shipment_handling tsh 
-    where 
-      mc.CustId = ts.CustId and 
-      mu.UserId = ts.UserId and 
-      mu2.id = ts.unit and
-      mlt.id = ts.id_shipment_load_type and 
-      mst.id = ts.id_shipment_term and 
-      mss.id = ts.id_status_shipment and 
-      tsh.id_shipment = ts.id and 
-      ts.is_delete=0 and
-      ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59'";
+      $queryShipment = "select
+        ts.id,
+        ts.create_order as create_order,
+        ts.shipment_order as kode_shipment,
+        mc.nama as customer,
+        mu.nama as sales,
+        ts.pib as pib,
+        ts.bl as bl,
+        mst.nama as shipment_term,
+        mlt.nama as load_type,
+        ts.quantity as qty,
+        mu2.nama as unit,
+        mss.nama as status,
+        ts.freight as freight,
+        ts.total_freight as total_freight
+      from 
+        trans_shipment ts,
+        master_customer mc,
+        master_user mu,
+        master_unit mu2,
+        master_load_type mlt,
+        master_shipment_terms mst,
+        master_status_shipment mss
+      where 
+        mu.atr1=0 and
+        mc.CustId = ts.CustId and 
+        mu.UserId = ts.UserId and 
+        mu2.id = ts.unit and
+        mlt.id = ts.id_shipment_load_type and 
+        mst.id = ts.id_shipment_term and 
+        mss.id = ts.id_status_shipment and 
+        ts.is_delete=0 and
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59'";
+
+      $queryHandling = "select 
+        tsh.id_shipment,
+        sum(tsh.nominal) as totalHandling
+      from 
+        trans_shipment_handling tsh,
+        trans_shipment ts 
+      where 
+        tsh.id_shipment = ts.id and 
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
+      group by
+        tsh.id_shipment ";
+
     } else {
-      $query = "select
-      ts.id,
-      ts.create_order as create_order,
-      ts.shipment_order as kode_shipment,
-      mc.nama as customer,
-      mu.nama as sales,
-      ts.pib as pib,
-      ts.bl as bl,
-      mst.nama as shipment_term,
-      mlt.nama as load_type,
-      ts.quantity as qty,
-      mu2.nama as unit,
-      mss.nama as status,
-      ts.freight as freight,
-      ts.total_freight as total_freight,
-      sum(tsh.nominal) as total 
-    from 
-      trans_shipment ts,
-      master_customer mc,
-      master_user mu,
-      master_unit mu2,
-      master_load_type mlt,
-      master_shipment_terms mst,
-      master_status_shipment mss,
-      trans_shipment_handling tsh 
-    where 
-      mc.CustId = ts.CustId and 
-      mu.UserId = ts.UserId and 
-      mu2.id = ts.unit and
-      mlt.id = ts.id_shipment_load_type and 
-      mst.id = ts.id_shipment_term and 
-      mss.id = ts.id_status_shipment and 
-      tsh.id_shipment = ts.id and 
-      ts.is_delete=0 and
-      ts.UserId = '".$s_id."' and
-      ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59'";
+
+      $queryShipment = "select
+        ts.id,
+        ts.create_order as create_order,
+        ts.shipment_order as kode_shipment,
+        mc.nama as customer,
+        mu.nama as sales,
+        ts.pib as pib,
+        ts.bl as bl,
+        mst.nama as shipment_term,
+        mlt.nama as load_type,
+        ts.quantity as qty,
+        mu2.nama as unit,
+        mss.nama as status,
+        ts.freight as freight,
+        ts.total_freight as total_freight
+      from 
+        trans_shipment ts,
+        master_customer mc,
+        master_user mu,
+        master_unit mu2,
+        master_load_type mlt,
+        master_shipment_terms mst,
+        master_status_shipment mss
+      where 
+        mc.CustId = ts.CustId and 
+        mu.UserId = ts.UserId and 
+        mu2.id = ts.unit and
+        mlt.id = ts.id_shipment_load_type and 
+        mst.id = ts.id_shipment_term and 
+        mss.id = ts.id_status_shipment and 
+        ts.is_delete=0 and
+        ts.UserId = '".$s_id."' and
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59'";
+
+      $queryHandling = "select 
+        tsh.id_shipment,
+        sum(tsh.nominal) as totalHandling
+      from 
+        trans_shipment_handling tsh,
+        trans_shipment ts 
+      where 
+        tsh.id_shipment = ts.id and 
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
+      group by
+        tsh.id_shipment ";
     }
 
-    $fetch = mysqli_query($koneksi,$query);
-    while($row =mysqli_fetch_assoc($fetch))
+    $fetchShipment = mysqli_query($koneksi,$queryShipment);
+    while($row = mysqli_fetch_assoc($fetchShipment))
     {
-      $emparray[] = $row;
+      $arrayTempShipment[] = $row;
     }
 
-    $data = json_encode($emparray);
+    $fetchHandling = mysqli_query($koneksi,$queryHandling);
+    while($row = mysqli_fetch_assoc($fetchHandling))
+    {
+      $arrayTempHandling[] = $row;
+    }
+
+    $array = $arrayTempShipment;
+
+    $arrayIdTemp = 0;
+
+    foreach ($array as $key => &$data) {
+      $temp = 0;
+      foreach ($arrayTempHandling as $key1 => &$dataHandling) {
+        if ($data['id'] == $dataHandling['id_shipment']) {
+          $temp = $dataHandling['totalHandling'];
+          break;
+        }
+      }
+      $data['totalHandling'] = $temp;
+    }
+
+    $data = json_encode($array);
     echo $data;
   }
 ?>

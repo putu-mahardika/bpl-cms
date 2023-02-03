@@ -757,7 +757,7 @@
           },
           {
             caption: 'Total Handling',
-            dataField: 'total'
+            dataField: 'totalHandling'
           },
           // {
           //   caption: 'Action',
