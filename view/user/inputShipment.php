@@ -12,13 +12,13 @@
   $queryMasterCustomer = "select * from master_customer where aktif=1 and UserId=".$s_id;
   $fetchMasterCustomer = mysqli_query($koneksi, $queryMasterCustomer);
 
-  $queryMasterShipmentTerms = 'select * from master_shipment_terms where aktif=1';
+  $queryMasterShipmentTerms = 'select * from master_shipment_terms where aktif=1 order by atr1 asc';
   $fetchMasterShipmentTerms = mysqli_query($koneksi, $queryMasterShipmentTerms);
 
-  $queryMasterLoadType = 'select * from master_load_type where aktif=1';
+  $queryMasterLoadType = 'select * from master_load_type where aktif=1 order by atr1 asc';
   $fetchMasterLoadType = mysqli_query($koneksi, $queryMasterLoadType);
 
-  $queryMasterUnit = 'select * from master_unit where aktif=1';
+  $queryMasterUnit = 'select * from master_unit where aktif=1 order by atr1 asc';
   $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
 
   //$query = 'select * from master_user where ...';
