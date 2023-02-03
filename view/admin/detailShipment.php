@@ -956,7 +956,7 @@
                     <p>Anda akan melakukan Close Shipment. Silahkan masukkan kurs terbaru sebelum melanjutkan proses.</p>
                     <label for="lastKurs">Kurs saat ini :</label>
                     <input type="hidden" name="id" value="<?php echo $shipmentId ?>">
-				            <input type="number" id="lastKurs" class="form-control form-control-sm mb-3" name="lastKurs" min="0" value="0" >
+				            <input type="number" id="lastKurs" class="form-control form-control-sm mb-3" name="lastKurs" min="1" value="0" >
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
