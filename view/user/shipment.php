@@ -41,7 +41,7 @@
     ts.UserId = '".$s_id."' and
     ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
   order by
-    ts.create_order desc";
+    ts.create_order asc";
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
