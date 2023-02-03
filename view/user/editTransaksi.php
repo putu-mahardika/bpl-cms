@@ -1235,7 +1235,7 @@
 
                       <div class="form-group col-sm-2" >
 
-                        <input type="reset" value="Reset" style="width:100%;" class="btn btn-danger">
+                        <input type="reset" value="Reset" style="width:100%;height:100%;" class="btn btn-danger">
 
                       </div>
 
@@ -1299,7 +1299,7 @@
 
                       <div class="form-group col-sm-8" style="padding-left:0px;height:100%;">
 
-                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;" class="btn btn-md btn-primary" id="submit" >
+                        <input type="submit" value="Submit" name="editTransaksi" style="width:100%;height:100%;" class="btn btn-md btn-primary" id="submit" >
 
                       </div>
 

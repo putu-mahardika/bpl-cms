@@ -1239,7 +1239,7 @@
 
                       <div class="form-group col-sm-2" >
 
-                        <input type="reset" value="Reset" style="width:100%;" class="btn btn-danger">
+                        <input type="reset" value="Reset" style="width:100%;height:100%;" class="btn btn-danger">
 
                       </div>
 
