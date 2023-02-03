@@ -14,7 +14,7 @@
   $s_id = $_SESSION['id'];
   $datetime = date('Y');
 	// $query = 'select * from master_customer';
-	$query = "select
+  $query = "select
     ts.id,
     ts.create_order as create_order,
     mc.nama as customer,
@@ -23,19 +23,23 @@
     ts.bl as bl,
     mu.nama as sales,
     ts.quantity as qty,
-    mu2.nama as unit 
+    mu2.nama as unit,
+    ts.id_status_shipment,
+    mss.nama
   from 
     trans_shipment ts,
     master_customer mc,
     master_user mu,
-    master_unit mu2
-  where 
+    master_unit mu2,
+    master_status_shipment mss
+  where
+    ts.id_status_shipment = mss.id and
     mc.CustId = ts.CustId and 
     mu.UserId = ts.UserId and 
     mu2.id = ts.unit and
+    ts.is_delete=0 and
     ts.UserId = '".$s_id."' and
-    ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59' and
-    ts.is_delete=0
+    ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
   order by
     ts.create_order desc";
 	$fetch = mysqli_query($koneksi,$query);
@@ -434,7 +438,15 @@
                           <td><?php echo $data['sales'] ?></td>
                           <td><?php echo $data['qty'] ?></td>
                           <td><?php echo $data['unit'] ?></td>
-                          <td><span class="badge badge-success">Aktif</span></td>
+                          <td>
+                            <?php if ($data['id_status_shipment'] == 1) { ?>
+                              <span class="badge badge-primary"><?php echo $data['nama'] ?></span></td>
+                            <?php } elseif ($data['id_status_shipment'] == 3) { ?>
+                              <span class="badge badge-success"><?php echo $data['nama'] ?></span></td>
+                            <?php } else { ?>
+                              <span class="badge badge-warning"><?php echo $data['nama']?></span></td>
+                            <?php } ?>
+                          <td>
                           <td>
                             <a href="editShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning btn-sm" style="margin-bottom:0.25rem;width:33px;">
                             <i class="fas fa-edit"></i></a>
