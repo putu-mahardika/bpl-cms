@@ -899,7 +899,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
+                          <div class="text-primary font-weight-bold" id="addRowHandling"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
                         </div>
                         <div class="col-md-12 col-lg-6">
                           <div class="form-group col-12 py-3 rounded bg-lightGrey">
@@ -983,11 +983,20 @@
   <script>
     $('.addRowHandling').click(function() {
       var node = document.getElementById('listBiayaHandling')
-      var clone = document.getElementById('parentInputBiayaHandling')
-      clonex = clone.cloneNode(true);
-      console.log('xxx', clonex);
-      // clonex.insertBefore($('.addRowHandling'))
-      node.appendChild(clonex);
+      var actionBtn = $('.listBiayaHandling').last();
+      var clone = $('#parentInputBiayaHandling').clone().find('input').val('').end().insertAfter(actionBtn)
+
+      // var node = document.getElementById('listBiayaHandling')
+      // var clone = document.getElementById('parentInputBiayaHandling')
+      // clonex = clone.cloneNode(true);
+
+      // clonex.setAttribute('id', ' ');
+      // clonex.querySelector('#biayaHandlingId').value = ' ';
+      // clonex.querySelector('#parentNameInputBiayaHandling').value = ' ';
+      // clonex.querySelector('#parentCostInputBiayaHandling').value = ' ';
+      
+      // // clonex.insertBefore($('.addRowHandling'))
+      // node.appendChild(clonex);
     });
     // Select2 Single  with Placeholder
     $('.select2-single-placeholder').select2({

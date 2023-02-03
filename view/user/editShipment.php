@@ -682,17 +682,21 @@
 
   <script>
     $('.addRowHandling').click(function() {
-      var node = document.getElementById('listBiayaHandling')
-      var clone = document.getElementById('parentInputBiayaHandling')
-      clonex = clone.cloneNode(true);
+      // var node = document.getElementById('listBiayaHandling')
+      // var clone = document.getElementById('parentInputBiayaHandling')
+      // clonex = clone.cloneNode(true);
 
-      clonex.setAttribute('id', ' ');
-      clonex.querySelector('#biayaHandlingId').value = ' ';
-      clonex.querySelector('#parentNameInputBiayaHandling').value = ' ';
-      clonex.querySelector('#parentCostInputBiayaHandling').value = ' ';
+      // clonex.setAttribute('id', ' ');
+      // clonex.querySelector('#biayaHandlingId').value = ' ';
+      // clonex.querySelector('#parentNameInputBiayaHandling').value = ' ';
+      // clonex.querySelector('#parentCostInputBiayaHandling').value = ' ';
       
-      // clonex.insertBefore($('.addRowHandling'))
-      node.appendChild(clonex);
+      // // clonex.insertBefore($('.addRowHandling'))
+      // node.appendChild(clonex);
+
+      var node = document.getElementById('listBiayaHandling')
+      var actionBtn = $('.listBiayaHandling').last();
+      var clone = $('#parentInputBiayaHandling').clone().find('input').val('').end().insertAfter(actionBtn)
     });
     // Select2 Single  with Placeholder
     $('.select2-single-placeholder').select2({

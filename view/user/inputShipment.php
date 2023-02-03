@@ -893,12 +893,16 @@
 
   <script>
     $('.addRowHandling').click(function() {
+      // var node = document.getElementById('listBiayaHandling')
+      // var clone = document.getElementById('parentInputBiayaHandling')
+      // clonex = clone.cloneNode(true);
+      // console.log('xxx', clonex);
+      // // clonex.insertBefore($('.addRowHandling'))
+      // node.appendChild(clonex);
+
       var node = document.getElementById('listBiayaHandling')
-      var clone = document.getElementById('parentInputBiayaHandling')
-      clonex = clone.cloneNode(true);
-      console.log('xxx', clonex);
-      // clonex.insertBefore($('.addRowHandling'))
-      node.appendChild(clonex);
+      var actionBtn = $('.listBiayaHandling').last();
+      var clone = $('#parentInputBiayaHandling').clone().find('input').val('').end().insertAfter(actionBtn)
     });
     // Select2 Single  with Placeholder
     $('.select2-single-placeholder').select2({
