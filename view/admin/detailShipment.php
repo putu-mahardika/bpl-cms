@@ -557,7 +557,7 @@
                         <!-- <span class="caret"></span></button> -->
                         <ul class="dropdown-menu">
                           <li>
-                            <a class="dropdown-item" tabindex="-1" href="editShipment?id=<?php echo $shipmentId?>" style="cursor: pointer;color:black;">
+                            <a class="dropdown-item" tabindex="-1" href="editShipment.php?id=<?php echo $shipmentId?>" style="cursor: pointer;color:black;">
                               <i class="fas fa-edit fa-sm fa-fw mr-2"></i>
                               Edit
                             </a>

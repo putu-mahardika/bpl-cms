@@ -29,7 +29,9 @@ where
 	mu.UserId = ts.UserId and 
 	mu2.id = ts.unit and
   ts.is_delete=0 and
-  ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'";
+  ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
+order by
+  ts.create_order desc";
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>

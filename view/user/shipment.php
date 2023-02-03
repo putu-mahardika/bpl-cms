@@ -9,6 +9,8 @@
   include '../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
+  $tahun = $_GET['tahun'];
+
   $s_id = $_SESSION['id'];
   $datetime = date('Y');
 	// $query = 'select * from master_customer';
@@ -32,7 +34,10 @@
     mu.UserId = ts.UserId and 
     mu2.id = ts.unit and
     ts.UserId = '".$s_id."' and
-    ts.is_delete=0";
+    ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59' and
+    ts.is_delete=0
+  order by
+    ts.create_order desc";
 	$fetch = mysqli_query($koneksi,$query);
 ?>
 <!DOCTYPE html>
@@ -369,7 +374,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">List Customer</h1>
+            <h1 class="h3 mb-0 text-gray-800">List Shipment</h1>
 			      <!-- <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportcustomer.php"><i class="fas fa-print"></i></a> -->
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
@@ -390,10 +395,15 @@
                     </span>
                     <span class="text">Tambah Shipment</span>
                   </a>
+                  <div>
+                    <label>Tahun: </label>
+                    <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
+                    <a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
+                  </div>
 
                 </div>
                 <div class="table-responsive p-3">
-				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+				          <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
@@ -522,7 +532,8 @@
     $(document).ready(function () {
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
-        "scrollX": true,
+        // "scrollX": true,
+        "columnDefs": [ { type: 'date', 'targets': [0] } ],
         // "columnDefs": [ { type: 'date', 'visible': false, 'targets': [0] } ],
         "order": [[0, "desc"]]
         //"columnDefs": [
@@ -569,6 +580,13 @@
           $('#detailModal').modal('show');
         }
       });
+    }
+  </script>
+
+  <script>
+    function tahunUbah(){
+      var tahun = document.getElementById("tahun").value;
+      $('#tahunGo').attr("href", "shipment.php?tahun="+tahun);
     }
   </script>
 

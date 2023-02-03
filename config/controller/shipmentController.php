@@ -43,54 +43,108 @@
     while($data = mysqli_fetch_array($fetch_master_query)){
       if(strtolower($kodeShipment) == strtolower($data['shipment_order'])) {
         $j=1;
-        header("location:../../view/admin/inputShipment.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order Sudah Ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        $_SESSION['id_pesan1'] = $save;
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order Sudah Ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        } else {
+          header("location:../../view/user/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order Sudah Ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        }
       }
       elseif (strtolower($pib) == strtolower($data['pib'])) {
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        } else {
+          header("location:../../view/user/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        }
         $j=1;
-        header("location:../../view/admin/inputShipment.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        $_SESSION['id_pesan1'] = $save;
       }
       elseif (strtolower($billLanding) == strtolower($data['shipment_order'])) {
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        } else {
+          header("location:../../view/user/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        }
         $j=1;
-        header("location:../../view/admin/inputShipment.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        $_SESSION['id_pesan1'] = $save;
       }
     }
 
     if (array_key_exists('customer',$_POST)) {
-      header("location:../../view/admin/inputShipment.php");
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Customer Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-      $_SESSION['id_pesan1'] = $save;
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Customer Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Customer Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
     } 
     elseif (array_key_exists('shipmentTerm',$_POST)) {
-      header("location:../../view/admin/inputShipment.php");
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Term Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-      $_SESSION['id_pesan1'] = $save;
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Term Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Term Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
     }
     elseif (array_key_exists('loadType',$_POST)) {
-      header("location:../../view/admin/inputShipment.php");
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-      $_SESSION['id_pesan1'] = $save;
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Load Type Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
     }
     elseif (array_key_exists('unit',$_POST)) {
-      header("location:../../view/admin/inputShipment.php");
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Unit Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-      $_SESSION['id_pesan1'] = $save;
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Unit Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Unit Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
     }
     elseif (is_null($_POST['kodeShipment'])) {
-      header("location:../../view/admin/inputShipment.php");
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-      $_SESSION['id_pesan1'] = $save;
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Kode Shipment Wajib Diisi !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
     }
     elseif (!is_null($_POST['tglKurs'])) {
       if (date('Y-m-d') < $tglKurs) {
-        eader("location:../../view/admin/inputShipment.php");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Tanggal tidak boleh lebih besar dari hari ini !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-        $_SESSION['id_pesan1'] = $save;
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Tanggal tidak boleh lebih besar dari hari ini !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        } else {
+          header("location:../../view/user/inputShipment.php");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Tanggal tidak boleh lebih besar dari hari ini !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        }
       }
     }
 
@@ -122,20 +176,38 @@
           
 
       if ($result) {
-          // echo 'aaa';
+        if ($akses == 'Admin') {
           $save = [];
           header("location:../../view/admin/shipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        } else {
+          $save = [];
+          header("location:../../view/user/shipment.php?tahun=".$year);
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
+        }
+          // echo 'aaa';
        } else {
-          // echo 'bbb';
+        if ($akses == 'Admin') {
           header("location:../../view/admin/shipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
           $_SESSION['id_pesan1'] = $save;			
+        } else {
+          header("location:../../view/user/shipment.php?tahun=".$year);
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+          $_SESSION['id_pesan1'] = $save;
+        }
+          // echo 'bbb';
       }
     } else {
+      if ($akses == 'Admin') {
         header("location:../../view/admin/inputShipment.php");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
         $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
     }
 
 
@@ -169,18 +241,33 @@
     while($data = mysqli_fetch_array($fetch_master_query)){
       if(strtolower($kodeShipment) == strtolower($data['shipment_order']) && $data['id'] != $id) {
         $j=1;
-        header("location:../../view/admin/editShipment.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        } else {
+          header("location:../../view/user/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment Order sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
       }
       elseif (strtolower($pib) == strtolower($data['pib']) && $data['id'] != $id) {
         $j=1;
-        header("location:../../view/admin/editShipment.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        } else {
+          header("location:../../view/user/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Pemberitahuan Impor Barang (PIB) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
       }
       elseif (strtolower($billLanding) == strtolower($data['bl']) && $data['id'] != $id) {
         $j=1;
-        header("location:../../view/admin/editShipment.php?id=$id");
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        if ($akses == 'Admin') {
+          header("location:../../view/admin/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        } else {
+          header("location:../../view/user/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
       }
     }
 
@@ -217,17 +304,32 @@
           
 
       if ($result) {
-          // echo 'aaa';
+        if ($akses == 'Admin') {
           header("location:../../view/admin/shipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        } else {
+          header("location:../../view/user/shipment.php?tahun=".$year);
+          $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+          // echo 'aaa';
        } else {
-          // echo 'bbb';
+        if ($akses == 'Admin') {
           header("location:../../view/admin/editShipment.php?id=$id");
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+        } else {
+          header("location:../../view/user/editShipment.php?id=$id");
+          $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+          // echo 'bbb';
       }
     } else {
+      if ($akses == 'Admin') {
         header("location:../../view/admin/editShipment.php?id=$id");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      } else {
+        header("location:../../view/user/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Shipment sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
     }
     
   } elseif (isset($_POST['changeStatusShipment'])) {
@@ -239,11 +341,21 @@
     $result = mysqli_query($koneksi, $query);
 
     if ($result) {
-      // header("location:../../view/admin/detailShipment.php?id='$id'");
-      $_SESSION['pesan'] = '<p><div class="alert alert-success">Status berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/detailShipment.php?id='$id'");
+        $_SESSION['pesan'] = '<p><div class="alert alert-success">Status berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      } else {
+        header("location:../../view/user/detailShipment.php?id='$id'");
+        $_SESSION['pesan'] = '<p><div class="alert alert-success">Status berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
     } else {
-      // header("location:../../view/admin/detailShipment.php?id='$id'");
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      if ($akses = 'Admin') {
+        header("location:../../view/admin/detailShipment.php?id='$id'");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      } else {
+        header("location:../../view/user/detailShipment.php?id='$id'");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Status gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
       // $_SESSION['id_pesan1'] = $save;			
     }
 
