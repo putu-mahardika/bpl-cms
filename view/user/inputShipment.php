@@ -389,7 +389,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="customer">Customer</label>
-                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
+                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer" required>
                           <option value="" selected disabled>Pilih</option>
                           <?php
                             while($data = mysqli_fetch_array($fetchMasterCustomer)){
@@ -427,7 +427,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="shipmentTerm">Shipment Term</label>
-                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
@@ -446,7 +446,7 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="ShipmentLoadType">Shipment Load Type</label>
-                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterLoadType)){
@@ -471,7 +471,7 @@
                           </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="unit">Unit</label>
-                          <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
+                          <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterUnit)){
@@ -517,7 +517,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $save[12] ?>" required>
+                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $save[12] ?>">
                               </div>
                             </div>
                           </div>
@@ -610,7 +610,7 @@
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="customer">Customer</label>
                         <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer" required>
-                          <option value="" disabled>Pilih</option>
+                          <option value="" selected disabled>Pilih</option>
                           <?php
                             while($data = mysqli_fetch_array($fetchMasterCustomer)){
                               if($data['aktif']==1){

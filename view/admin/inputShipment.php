@@ -478,7 +478,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="customer">Customer</label>
-                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
+                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer" required>
                           <option value="" selected disabled>Pilih</option>
                           <?php
                             while($data = mysqli_fetch_array($fetchMasterCustomer)){
@@ -497,17 +497,17 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="kodeShipment">Kode Shipment</label>
-                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment" value="<?php echo $save[1] ?>">
+                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment" minlength="3" maxlength="50" value="<?php echo $save[1] ?>" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                        <input type="text" class="form-control form-control-sm" id="pib" name="pib" value="<?php echo $save[4] ?>">
+                        <input type="text" class="form-control form-control-sm" id="pib" name="pib" minlength="3" maxlength="50" value="<?php echo $save[4] ?>">
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="billLanding">Bill of Landing (BL)</label>
-                          <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding" value="<?php echo $save[5] ?>">
+                          <input type="text" class="form-control form-control-sm" id="billLanding" minlength="3" maxlength="50" name="billLanding" value="<?php echo $save[5] ?>">
                         </div>
                       </div>
                     </div>
@@ -516,7 +516,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="shipmentTerm">Shipment Term</label>
-                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
@@ -535,7 +535,7 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="ShipmentLoadType">Shipment Load Type</label>
-                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterLoadType)){
@@ -556,11 +556,11 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="qty">Quantity</label>
-                          <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $save[8] ?>">
+                          <input type="number" min=1 class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $save[8] ?>">
                           </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="unit">Unit</label>
-                          <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit">
+                          <select id="unit" class="select2-single-placeholder3 form-control form-control-sm" name="unit" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterUnit)){
@@ -606,7 +606,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $save[12] ?>" required>
+                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $save[12] ?>">
                               </div>
                             </div>
                           </div>
@@ -698,7 +698,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="customer">Customer</label>
-                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer">
+                        <select id="customer" class="select2-single-placeholder form-control form-control-sm" name="customer" required>
                           <option value="" selected disabled>Pilih</option>
                           <?php
                             while($data = mysqli_fetch_array($fetchMasterCustomer)){
@@ -717,17 +717,17 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="kodeShipment">Kode Shipment</label>
-                          <input type="text" class="form-control form-control-sm" id="kodeShipment" name="kodeShipment">
+                          <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="kodeShipment" name="kodeShipment" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                        <input type="text" class="form-control form-control-sm" id="pib" name="pib">
+                        <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="pib" name="pib" reqiured>
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="billLanding">Bill of Landing (BL)</label>
-                          <input type="text" class="form-control form-control-sm" id="billLanding" name="billLanding">
+                          <input type="text" class="form-control form-control-sm" minlength="3" maxlength="50" id="billLanding" name="billLanding" required>
                         </div>
                       </div>
                     </div>
@@ -736,7 +736,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="shipmentTerm">Shipment Term</label>
-                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm">
+                          <select id="shipmentTerm" class="select2-single-placeholder1 form-control form-control-sm" name="shipmentTerm" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterShipmentTerms)){
@@ -755,7 +755,7 @@
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="ShipmentLoadType">Shipment Load Type</label>
-                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType">
+                          <select id="ShipmentLoadType" class="select2-single-placeholder2 form-control form-control-sm" name="loadType" required>
                             <option value="" selected disabled>Pilih</option>
                             <?php
                               while($data = mysqli_fetch_array($fetchMasterLoadType)){
@@ -776,7 +776,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="qty">Quantity</label>
-                          <input type="number" min=0 class="form-control form-control-sm" id="qty" name="qty">
+                          <input type="number" min=1 class="form-control form-control-sm" id="qty" name="qty">
                           </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="unit">Unit</label>
@@ -826,7 +826,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="tglKurs" id="tglKurs" required>
+                                <input type="text" class="form-control" name="tglKurs" id="tglKurs">
                               </div>
                             </div>
                           </div>
