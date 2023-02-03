@@ -440,13 +440,13 @@
                           <td><?php echo $data['unit'] ?></td>
                           <td>
                             <?php if ($data['id_status_shipment'] == 1) { ?>
-                              <span class="badge badge-primary"><?php echo $data['nama'] ?></span></td>
+                              <span class="badge badge-primary"><?php echo $data['nama'] ?></span>
                             <?php } elseif ($data['id_status_shipment'] == 3) { ?>
-                              <span class="badge badge-success"><?php echo $data['nama'] ?></span></td>
+                              <span class="badge badge-success"><?php echo $data['nama'] ?></span>
                             <?php } else { ?>
-                              <span class="badge badge-warning"><?php echo $data['nama']?></span></td>
+                              <span class="badge badge-warning"><?php echo $data['nama']?></span>
                             <?php } ?>
-                          <td>
+                          </td>
                           <td>
                             <a href="editShipment.php?id=<?php echo $data['id']?>" class="btn btn-warning btn-sm" style="margin-bottom:0.25rem;width:33px;">
                             <i class="fas fa-edit"></i></a>
