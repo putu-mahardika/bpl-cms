@@ -776,7 +776,7 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="qty">Quantity</label>
-                          <input type="number" min=1 class="form-control form-control-sm" id="qty" name="qty">
+                          <input type="number" min=1 class="form-control form-control-sm" id="qty" name="qty" value="0">
                           </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="unit">Unit</label>
