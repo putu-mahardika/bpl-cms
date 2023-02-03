@@ -503,11 +503,11 @@
                       <div class="form-row">
                         <div class="form-group col-md-12 col-lg-6">
                         <label for="pib">Pemberitahuan Impor Barang (PIB)</label>
-                        <input type="text" class="form-control form-control-sm" id="pib" name="pib" minlength="3" maxlength="50" value="<?php echo $save[4] ?>">
+                        <input type="text" class="form-control form-control-sm" id="pib" name="pib" minlength="3" maxlength="50" value="<?php echo $save[4] ?>" required>
                         </div>
                         <div class="form-group col-md-12 col-lg-6">
                           <label for="billLanding">Bill of Landing (BL)</label>
-                          <input type="text" class="form-control form-control-sm" id="billLanding" minlength="3" maxlength="50" name="billLanding" value="<?php echo $save[5] ?>">
+                          <input type="text" class="form-control form-control-sm" id="billLanding" minlength="3" maxlength="50" name="billLanding" value="<?php echo $save[5] ?>" required>
                         </div>
                       </div>
                     </div>
