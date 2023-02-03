@@ -608,7 +608,7 @@ order by
       $('#dataTable').DataTable(); // ID From dataTable 
       $('#dataTableHover').DataTable({
         "scrollX": true,
-        "order": [[0, "asc"]]
+        "order": [[0, "desc"]]
       }); // ID From dataTable with Hover
     });
   </script>
