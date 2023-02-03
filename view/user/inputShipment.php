@@ -549,7 +549,7 @@
                               <div class="form-row" id="parentInputBiayaHandling">
                                 <div class="form-group col-md-12 col-lg-6 mb-0">
                                   <label>Nama Biaya Handling</label>
-                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" value="<?php echo $save[14][$i] ?>">
+                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $save[14][$i] ?>">
                                 </div>
                                 <div class="form-group col-md-12 col-lg-6 mb-0">
                                   <label>Biaya</label>
@@ -565,7 +565,7 @@
                               <div class="form-row">
                                 <div class="form-group col-md-12 col-lg-6 mb-0">
                                   <label>Nama Biaya Handling</label>
-                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" value="<?php echo $save[14][$i] ?>">
+                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $save[14][$i] ?>">
                                 </div>
                                 <div class="form-group col-md-12 col-lg-6 mb-0">
                                   <label>Biaya</label>
@@ -767,7 +767,7 @@
                             <div class="form-row" id="parentInputBiayaHandling">
                               <div class="form-group col-md-12 col-lg-6 mb-0">
                                 <label>Nama Biaya Handling</label>
-                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
+                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50">
                               </div>
                               <div class="form-group col-md-12 col-lg-6 mb-0">
                                 <label>Biaya</label>
@@ -782,7 +782,7 @@
                             <div class="form-row">
                               <div class="form-group col-md-12 col-lg-6 mb-0">
                                 <label>Nama Biaya Handling</label>
-                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
+                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50">
                               </div>
                               <div class="form-group col-md-12 col-lg-6 mb-0">
                                 <label>Biaya</label>

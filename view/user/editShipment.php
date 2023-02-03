@@ -569,7 +569,7 @@
                               <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
                               <div class="form-group col-md-12 col-lg-6 mb-0">
                                 <label>Nama Biaya Handling</label>
-                                <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" value="<?php echo $datas['keterangan_biaya']?>">
+                                <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
                               </div>
                               <div class="form-group col-md-12 col-lg-6 mb-0">
                                 <label>Biaya</label>
