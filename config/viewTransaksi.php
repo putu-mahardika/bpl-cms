@@ -33,6 +33,7 @@ while($data = mysqli_fetch_array($fetch)){
     $cancel = $data['atr1'];
     $userid = $data['UserId'];
     $closedById = $data['closedById'];
+    $shipmentId = $data['id_shipment'];
 
     $query2 = mysqli_query($koneksi, "select count(*) as jumlah from trans_detail where NoSPK='$nospk'");
     $data0 = mysqli_fetch_array($query2);
@@ -55,12 +56,28 @@ while($data = mysqli_fetch_array($fetch)){
     $fetchGetGrandTotal = mysqli_query($koneksi, $queryGetGrandTotal);
     $arrayGetGrandTotal = mysqli_fetch_array($fetchGetGrandTotal);
     $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
+
+    if (!is_null($shipmentId)) {
+        $queryTransShipment = "select * from trans_shipment where id='$shipmentId'";
+        $fetchTransShipment = mysqli_query($koneksi, $queryTransShipment);
+        $dataTransShipment = mysqli_fetch_array($fetchTransShipment);
+    }
     // $data8 = mysqli_fetch_array($query8);
 
 
     $response = "<label><b>Tgl : </b>".$tgl."</label><br>";
     $response .= "<label><b>Customer : </b>".$data1['nama']."</label><br>";
     $response .= "<label><b>NPWP : </b>".$data1['npwp']."</label><br>";
+
+    if (!is_null($shipmentId)) {
+        $response .= "<div class='row'><div class='col-sm-12'><label><b>Kode Shipment : </b>".$dataTransShipment['shipment_order']."</label></div></div>";
+        $response .= "<div class='row'><div class='col-sm-6'><label><b>No BL : </b>".$dataTransShipment['bl']."</label></div>";
+        $response .= "<div class='col-sm-6'><label><b>No. PIB : </b>".$dataTransShipment['pib']."</label></div></div>";
+    } else {
+        $response .= "<div class='row'><div class='col-sm-12'><label><b>Kode Shipment : </b>-</label></div></div>";
+        $response .= "<div class='row'><div class='col-sm-6'><label><b>No BL : </b>-</label></div>";
+        $response .= "<div class='col-sm-6'><label><b>No. PIB : </b>-</label></div></div>";
+    }
 
     if($cancel!=1){
         $response .= "<div class='row'><div class='col-sm-6'><label><b>No PO : </b>".$nopo."</label></div>";
