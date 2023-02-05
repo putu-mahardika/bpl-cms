@@ -389,9 +389,14 @@
 
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          <div class="d-sm-flex align-items-center justify-content-start mb-4">
-            <a href="shipment.php?tahun=<?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit Shipment</h1>
+          <div class="d-md-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center justify-content-start">
+              <a href="shipment.php?tahun=<?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+              <h1 class="h3 mb-0 text-gray-800">Edit Shipment</h1>
+            </div>
+            <div>
+              <a style="font-weight: 600;" href="detailShipment?id=<?php echo $shipmentId ?>"> <i class="fas fa-search"></i> Lihat Detail</a>
+            </div>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
@@ -563,42 +568,82 @@
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                         <div class="listBiayaHandling" id="listBiayaHandling">
-                          <?php foreach ($dataShipmentHandling as $i => $datas) {
-                          if ($i == 0) { ?>
-                            <div class="form-row" id="parentInputBiayaHandling">
-                              <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Nama Biaya Handling</label>
-                                <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
-                              </div>
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Biaya</label>
-                                <div class="input-group input-group-sm mb-3">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                        <?php if (count($dataShipmentHandling) < 1) { ?>
+                            <?php for ($i=0; $i < 3; $i++) { ?>
+                              <?php if ($i==0) { ?>
+                                <div class="form-row" id="parentInputBiayaHandling">
+                                  <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="">
+                                  <div class="form-group col-md-12 col-lg-6 mb-0">
+                                    <label>Nama Biaya Handling</label>
+                                    <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">
                                   </div>
-                                  <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
+                                  <div class="form-group col-md-12 col-lg-6 mb-0">
+                                    <label>Biaya</label>
+                                    <div class="input-group input-group-sm mb-3">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">IDR</span>
+                                      </div>
+                                      <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="">
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
+                              <?php } else { ?>
+                                <div class="form-row">
+                                  <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                  <div class="form-group col-md-12 col-lg-6 mb-0">
+                                    <label>Nama Biaya Handling</label>
+                                    <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">
+                                  </div>
+                                  <div class="form-group col-md-12 col-lg-6 mb-0">
+                                    <label>Biaya</label>
+                                    <div class="input-group input-group-sm mb-3">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">IDR</span>
+                                      </div>
+                                      <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="">
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php } ?>
+                            <?php } ?>
                           <?php } else { ?>
-                            <div class="form-row">
-                              <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Nama Biaya Handling</label>
-                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" value="<?php echo $datas['keterangan_biaya']?>">
-                              </div>
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Biaya</label>
-                                <div class="input-group input-group-sm mb-3">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">IDR</span>
+                            <?php foreach ($dataShipmentHandling as $i => $datas) {
+                            if ($i == 0) { ?>
+                              <div class="form-row" id="parentInputBiayaHandling">
+                                <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Nama Biaya Handling</label>
+                                  <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
+                                </div>
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Biaya</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">IDR</span>
+                                    </div>
+                                    <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
                                   </div>
-                                  <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
                                 </div>
                               </div>
-                            </div>
-                        <?php } }?>
+                            <?php } else { ?>
+                              <div class="form-row">
+                                <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Nama Biaya Handling</label>
+                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
+                                </div>
+                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <label>Biaya</label>
+                                  <div class="input-group input-group-sm mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">IDR</span>
+                                    </div>
+                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
+                                  </div>
+                                </div>
+                              </div>
+                            <?php } }?>
+                          <?php } ?>
                         </div>
                         <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
                       </div>
@@ -756,6 +801,9 @@
           return false;
       return true;
     }
+
+    $('#countBiayaFreight').html(new Intl.NumberFormat('id-ID').format(<?php echo $dataShipment['total_freight']?>));
+    $('#countBiayaHandling').html(new Intl.NumberFormat('id-ID').format(<?php echo $totalHandling ?>));
   </script>
 
 </body>
