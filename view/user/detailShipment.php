@@ -473,12 +473,7 @@
                             </a>
                           </li>
                           <li class="dropdown-submenu">
-                            <?php if ($shipmentStatus == 3) { ?>
-                              <p class="test dropdown-item mb-0" style="cursor: pointer;color:black;">
-                                <i class="fas fa-tag fa-sm fa-fw mr-2"></i>
-                                Ubah Status
-                              </p>
-                            <?php } else { ?>
+                            <?php if ($shipmentStatus != 3) { ?>
                               <a class="test dropdown-item" style="cursor: pointer;color:black;" tabindex="-1" href="">
                                 <i class="fas fa-list fa-sm fa-fw mr-2"></i>
                                 Ubah Status
@@ -602,6 +597,10 @@
                     <div>
                       <p class="mb-0">No. BL</p>
                       <p class="" style="color: black;"><strong><?php echo $dataShipment['bl'] ?></strong></p>
+                    </div>
+                    <div>
+                      <p class="mb-0">User</p>
+                      <p class="" style="color: black;"><strong><?php echo $dataUser['nama']?></strong></p>
                     </div>
                   </div>
 
