@@ -534,11 +534,13 @@
                 }
             } else {
                 if($akses == 'Admin'){
-					header("location:../view/admin/transaksi.php?tahun=$year");
+					header("location:../view/admin/inputTransaksi.php?tahun=$year");
                     $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+                    $_SESSION['id_pesan1'] = $save;
                 } else {
-					header("location:../view/user/transaksi.php?tahun=$year");
-                    $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+					header("location:../view/user/inputTransaksi.php?tahun=$year");
+                    $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+                    $_SESSION['id_pesan1'] = $save;
                 }
             }
         } else if ($t == 2) {
