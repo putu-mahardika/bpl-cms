@@ -395,7 +395,7 @@
               <h1 class="h3 mb-0 text-gray-800">Edit Shipment</h1>
             </div>
             <div>
-              <a style="font-weight: 600;" href="detailShipment?id=<?php echo $shipmentId ?>"> <i class="fas fa-search"></i> Lihat Detail</a>
+              <a style="font-weight: 600;" href="detailShipment.php?id=<?php echo $shipmentId ?>"> <i class="fas fa-search"></i> Lihat Detail</a>
             </div>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>

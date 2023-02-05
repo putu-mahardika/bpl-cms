@@ -497,7 +497,7 @@
               <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
             <div>
-              <a style="font-weight: 600;" href="detailShipment?id=<?php echo $shipmentId ?>"> <i class="fas fa-search"></i> Lihat Detail</a>
+              <a style="font-weight: 600;" href="detailShipment.php?id=<?php echo $shipmentId ?>"> <i class="fas fa-search"></i> Lihat Detail</a>
             </div>
           </div>
 
