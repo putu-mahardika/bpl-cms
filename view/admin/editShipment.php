@@ -30,8 +30,13 @@
   $dataShipment = mysqli_fetch_array($fetchShipment);
 
   $shipmentId = $dataShipment['id'];
+  $shipmentUser = $dataShipment['UserId'];
   // print_r($dataShipment);
   // echo $shipmentId;
+
+  $queryGetUserShipment = "select * from master_user where UserId=$shipmentId";
+  $fetchGetUserShipment = mysqli_query($koneksi, $queryGetUserShipment);
+  $dataGetUserShipment = mysqli_fetch_array($fetchGetUserShipment);
 
   $queryShipmentHandling = "select * from trans_shipment_handling where id_shipment='$id'";
   $fetchShipmentHandling = mysqli_query($koneksi,$queryShipmentHandling);
@@ -757,8 +762,16 @@
                   </div>
                   
                   <input type="reset" value="Reset" class="btn  btn-danger " style="width:22%;">
-                  <input type="submit" value="Submit" name="editShipment" class="btn btn-md btn-primary " style="width:77%;">
+                  <?php if ($dataShipment['close'] == 1) {?>
+                    <button type="button" class="btn btn-md btn-primary " style="width:77%;" disabled>Submit</button>
+                    <div>
+                      <p class="mb-0">Ditutup Oleh <b><?php echo $dataGetUserShipment['nama'] ?></b> tanggal <b><?php echo $dataShipment['close_date'] ?></b></p>
+                    </div>
+                  <?php } else {?>
+                    <input type="submit" value="Submit" name="editShipment" class="btn btn-md btn-primary " style="width:77%;">
+                  <?php } ?>
                 </form>
+
               </div>
             </div>
           </div>
