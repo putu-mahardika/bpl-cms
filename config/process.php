@@ -267,7 +267,7 @@
         }
 
         if($j != 1){
-            $query = "insert into master_kota (Id, Kode, Nama, last_update, create_date, aktif, Attribute1, Attribute2) values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
+            $query = "insert into master_kota values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/kota.php");
