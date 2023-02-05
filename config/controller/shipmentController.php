@@ -28,12 +28,12 @@
 
     $biayaFreight = (double)$_POST['biayaFreight'];
     $kurs = (double)$_POST['kurs'];
-    $tglKursTemp = $_POST['tglKurs'];
-    if ($tglKursTemp == '' || is_null($tglKursTemp)) {
+    $tglKurs = $_POST['tglKurs'];
+    if ($tglKurs == '' || is_null($tglKurs)) {
       $tglKurs = null;
     } else {
-      $tglKurs1 = str_replace('/', '-', $tglKursTemp);
-      $tglKurs = date('Y-m-d', strtotime($tglKurs1));
+      $tglKurs = str_replace('/', '-', $tglKurs);
+      $tglKurs = date('Y-m-d', strtotime($tglKurs));
     }
     $totalFreight = $biayaFreight * $kurs;
 
@@ -86,7 +86,11 @@
 
     echo mysqli_query($koneksi, "select lastval()");
     if($j == 0){
-      $query = "insert into trans_shipment values (null, '$datetime', '$kodeShipment', '$s_id', '$customer', null, '$pib', '$billLanding', '$shipmentTerm', '$loadType', '$qty', '$unit', '1', '$biayaFreight', '$totalFreight', '$tglKurs', '$kurs', '0', null, '0' , null, null, '$datetime', null, null, null)";
+      if (is_null($tglKurs)) {
+        $query = "insert into trans_shipment values (null, '$datetime', '$kodeShipment', '$s_id', '$customer', null, '$pib', '$billLanding', '$shipmentTerm', '$loadType', '$qty', '$unit', '1', '$biayaFreight', '$totalFreight', null, '$kurs', '0', null, '0' , null, null, '$datetime', null, null, null)";
+      } else {
+        $query = "insert into trans_shipment values (null, '$datetime', '$kodeShipment', '$s_id', '$customer', null, '$pib', '$billLanding', '$shipmentTerm', '$loadType', '$qty', '$unit', '1', '$biayaFreight', '$totalFreight', '$tglKurs', '$kurs', '0', null, '0' , null, null, '$datetime', null, null, null)";
+      }
       $result = mysqli_query($koneksi, $query);
       
       if($result) {
