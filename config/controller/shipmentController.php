@@ -295,7 +295,7 @@
         // $lastInsertedId = $koneksi->insert_id;
         for ($i=0; $i < count($biayaHandlingId); $i++) { 
           // echo ($biayaHandlingId[$i] == ' ' ? 'true' : 'false');
-          if ($biayaHandlingId[$i] != ' ') {
+          if ($biayaHandlingId[$i] != '') {
             if ($biayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
               $biayaHandlingIdTemp = $biayaHandlingId[$i];
               $namaBiayaHandlingTemp = $namaBiayaHandling[$i];
