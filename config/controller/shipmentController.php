@@ -28,12 +28,12 @@
 
     $biayaFreight = (double)$_POST['biayaFreight'];
     $kurs = (double)$_POST['kurs'];
-    $tglKurs = $_POST['tglKurs'];
-    if ($tglKurs == '' || is_null($tglKurs)) {
+    $tglKursTemp = $_POST['tglKurs'];
+    if ($tglKursTemp == '' || is_null($tglKursTemp)) {
       $tglKurs = null;
     } else {
-      $tglKurs = str_replace('/', '-', $tglKurs);
-      $tglKurs = date('Y-m-d', strtotime($tglKurs));
+      $tglKurs1 = str_replace('/', '-', $tglKursTemp);
+      $tglKurs = date('Y-m-d', strtotime($tglKurs1));
     }
     $totalFreight = $biayaFreight * $kurs;
 
@@ -117,11 +117,11 @@
           // echo 'aaa';
        } else {
         if ($akses == 'Admin') {
-          header("location:../../view/admin/shipment.php?tahun=".$year);
+          header("location:../../view/admin/inputShipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
           $_SESSION['id_pesan1'] = $save;			
         } else {
-          header("location:../../view/user/shipment.php?tahun=".$year);
+          header("location:../../view/user/inputShipment.php?tahun=".$year);
           $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
           $_SESSION['id_pesan1'] = $save;
         }
