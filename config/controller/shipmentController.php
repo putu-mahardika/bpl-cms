@@ -29,8 +29,12 @@
     $biayaFreight = (double)$_POST['biayaFreight'];
     $kurs = (double)$_POST['kurs'];
     $tglKurs = $_POST['tglKurs'];
-    $tglKurs = str_replace('/', '-', $tglKurs);
-    $tglKurs = date('Y-m-d', strtotime($tglKurs));
+    if ($tglKurs == '' || is_null($tglKurs)) {
+      $tglKurs = null;
+    } else {
+      $tglKurs = str_replace('/', '-', $tglKurs);
+      $tglKurs = date('Y-m-d', strtotime($tglKurs));
+    }
     $totalFreight = $biayaFreight * $kurs;
 
     $namaBiayaHandling = $_POST['namaBiayaHandling'];
@@ -236,6 +240,8 @@
     }
 
 
+  // ============= edit shipment ===============
+  
   } elseif (isset($_POST['editShipment'])) {
     $id = $_POST['shipmentId'];
     // echo $id;
@@ -365,6 +371,7 @@
     }
     
 
+  // ============= ganti status shipment ===============
 
   } elseif (isset($_POST['changeStatusShipment'])) {
     // echo $_POST['statusId'];
@@ -393,6 +400,8 @@
       // $_SESSION['id_pesan1'] = $save;			
     }
 
+  // ============= generate trucking shipment ===============
+  
   } elseif (isset($_POST['inputGenerateTrucking'])) {
     $id = $_POST['id'];
     $count = $_POST['count'];
@@ -427,6 +436,8 @@
       }
     }
 
+  // ============= input last kurs shipment ===============
+  
   } elseif (isset($_POST['inputLastKursShipment'])) {
     $id = $_POST['id'];
     // echo $id;
@@ -462,7 +473,7 @@
     }
   
 
-
+  // ============= drop shipment ===============
   } elseif (isset($_POST['dropShipment'])) {
     $id = $_POST['id'];
 
@@ -504,8 +515,56 @@
       }
     }
 
+  // ============= ganti user shipment ===============
+  } elseif (isset($_POST['editUserShipment'])) {
+    $shipmentId = $_POST['shipmentId'];
+    $oldUserId = $_POST['userLama'];
+    $newUserId = $_POST['userBaru'];
+    $keterangan = str_replace(["\r\n", "\n", "\r"],"%%", $_POST['keterangan']);
+    $status = 0;
+
+    $dataArrayTrucking = array();
+    $queryGetTrucking = "select * from trans_hd th where th.id_shipment=$shipmentId";
+    $fetchGetTrucking = mysqli_query($koneksi, $queryGetTrucking);
+    while ($data = mysqli_fetch_array($fetchGetTrucking)) {
+      $dataArrayTrucking[] = array(
+        'id' => $data['HdId'],
+        'id_shipment' => $data['id_shipment']
+      );
+    }
 
 
+    $queryUpdateShipment = "update trans_shipment set UserId='$newUserId' where id='$shipmentId'";
+    $resultUpdateShipment = mysqli_query($koneksi, $queryUpdateShipment);
+
+    if ($resultUpdateShipment) {
+      $status = 1;
+      $queryLogShipment = "insert into log values (null, '$datetime', '$shipmentId', null, '$oldUserId', '$newUserId', '$keterangan')";
+      $resultLogShipment = mysqli_query($koneksi, $queryLogShipment);
+      
+      if (count($dataArrayTrucking) > 0) {
+        foreach ($dataArrayTrucking as $key=>$data) {
+          $truckingId = $data['id'];
+          $queryLogTrucking = "insert into log values (null, '$datetime', '$shipmentId', '$truckingId', '$oldUserId', '$newUserId', '$keterangan')";
+          $resultLogTrucking = mysqli_query($koneksi, $queryLogTrucking);
+        }
+      }
+    } else {
+      $status = 0;
+    }
+
+    if($status == 1){
+      header("location:../../view/admin/editShipment.php?id=$shipmentId");
+      $_SESSION['pesan'] = '<p><div class="alert alert-success">User berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    }else{
+      header("location:../../view/admin/editShipment.php?id=$shipmentId");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">User gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+    }
+
+    
+
+
+  // ============= report shipment ===============
 
   } elseif (isset($_GET['reportShipment'])) {
     $startspk = $_GET['start'];

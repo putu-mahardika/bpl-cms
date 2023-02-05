@@ -28,8 +28,14 @@
   $dataShipment = mysqli_fetch_array($fetchShipment);
 
   $shipmentId = $dataShipment['id'];
+  $shipmentUser = $dataShipment['UserId'];
+  $shipmentKursDate = is_null($dataShipment['kurs_date'])||$dataShipment['kurs_date'] == '' ? '' : date('d/m/Y', strtotime($dataShipment['kurs_date']));
   // print_r($dataShipment);
   // echo $shipmentId;
+
+  $queryGetUserShipment = "select * from master_user where UserId=$shipmentUser";
+  $fetchGetUserShipment = mysqli_query($koneksi, $queryGetUserShipment);
+  $dataGetUserShipment = mysqli_fetch_array($fetchGetUserShipment);
 
   $queryShipmentHandling = "select * from trans_shipment_handling where id_shipment='$id'";
   $fetchShipmentHandling = mysqli_query($koneksi,$queryShipmentHandling);
@@ -411,7 +417,12 @@
                 <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
                   <input type="hidden" name="shipmentId" value="<?php echo $shipmentId ?>">
                   <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Shipment</h5>
+                    <div class="d-md-flex align-items-center justify-content-between mb-3">
+                      <h5 class="font-weight-bold">Informasi Shipment</h5>
+                      <div>
+                        <span class="font-weight-bold">User :</span> <?php echo $dataGetUserShipment['nama'] ?>
+                      </div>
+                    </div>
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                       <label for="customer">Customer</label>
@@ -541,7 +552,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                               </div>
-                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo date('d/m/Y', strtotime($dataShipment['kurs_date'])) ?>">
+                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $shipmentKursDate ?>">
                             </div>
                           </div>
                         </div>
@@ -702,6 +713,7 @@
               </div>
             </div>
           </div>
+          
 
         </div>
         <!---Container Fluid-->

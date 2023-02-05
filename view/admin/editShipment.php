@@ -31,10 +31,11 @@
 
   $shipmentId = $dataShipment['id'];
   $shipmentUser = $dataShipment['UserId'];
+  $shipmentKursDate = is_null($dataShipment['kurs_date'])||$dataShipment['kurs_date'] == '' ? '' : date('d/m/Y', strtotime($dataShipment['kurs_date']));
   // print_r($dataShipment);
   // echo $shipmentId;
 
-  $queryGetUserShipment = "select * from master_user where UserId=$shipmentId";
+  $queryGetUserShipment = "select * from master_user where UserId=$shipmentUser";
   $fetchGetUserShipment = mysqli_query($koneksi, $queryGetUserShipment);
   $dataGetUserShipment = mysqli_fetch_array($fetchGetUserShipment);
 
@@ -52,7 +53,10 @@
     );
   }
 
-  $totalHandling = array_sum(array_column($dataShipmentHandling, 'nominal'))
+  $totalHandling = array_sum(array_column($dataShipmentHandling, 'nominal'));
+
+  $queryGetAllUser = "select * from master_user where aktif=1";
+  $fetchGetAllUser = mysqli_query($koneksi, $queryGetAllUser);
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +69,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Tambah Shipment - PT Berkah Permata Logistik</title>
+  <title>Edit Shipment - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
@@ -75,6 +79,9 @@
     .bg-lightGrey {
       background-color: #f1f1f1;
       color: black;
+    }
+    .select2 {
+      width: 100%;
     }
   </style>
 </head>
@@ -508,7 +515,13 @@
                 <form class="form group" id="shipmentForm" method="post" action="../../config/controller/shipmentController.php">
                   <input type="hidden" name="shipmentId" value="<?php echo $shipmentId ?>">
                   <div class="col-12">
-                    <h5 class="font-weight-bold">Informasi Shipment</h5>
+                    <div class="d-md-flex align-items-center justify-content-between mb-3">
+                      <h5 class="font-weight-bold">Informasi Shipment</h5>
+                      <div>
+                        <span class="font-weight-bold">User :</span> <?php echo $dataGetUserShipment['nama'] ?>
+                        <button type="button" class="btn btn-sm btn-primary ml-1" id="actionCountBiayaFreight" data-toggle="modal" data-target="#changeUserModal"><i class="fas fa-edit"></i> Ubah User</button>
+                      </div>
+                    </div>
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                       <label for="customer">Customer</label>
@@ -638,7 +651,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                               </div>
-                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo date('d/m/Y', strtotime($dataShipment['kurs_date'])) ?>">
+                              <input type="text" class="form-control" name="tglKurs" id="tglKurs" value="<?php echo $shipmentKursDate ?>">
                             </div>
                           </div>
                         </div>
@@ -796,6 +809,57 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
                   <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Ganti User -->
+          <div class="modal fade" id="changeUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabelLogout">Ganti User</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Masukkan user baru dan keterangan perubahan user</p>
+                  <form action="../../config/controller/shipmentController.php" method="post">
+                    <div>
+                      <input type="hidden" class="form-control form-control-sm mb-3" name="shipmentId" value="<?php echo $id ?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm mb-3" name="userLama" value="<?php echo $shipmentUser ?>" readonly>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label for="kodeShipment">User Lama</label>
+                          <input type="text" class="form-control form-control-sm" value="<?php echo $dataGetUserShipment['nama'] ?>" readonly>
+                        </div>
+                        <div class="form-group col-md-12 col-lg-6">
+                          <label>User Baru :</label>
+                          <select class="select2-single-placeholder form-control" id="userBaru" name="userBaru" style="width:100% !important;" required>
+                            <option value="">Pilih</option>
+
+                            <?php while ($dataUbahUser = mysqli_fetch_array($fetchGetAllUser)) { ?>
+                              <option value="<?php echo $dataUbahUser['UserId'] ?>"><?php echo $dataUbahUser['nama'] ?></option>
+                            <?php } ?>
+
+                          </select>
+                        </div>
+                      </div>
+                      <div class="">
+                        <div class="form-group">
+                          <label>Keterangan :</label>
+                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="50" required></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                  <input type="submit" value="Submit" name="editUserShipment" class="btn btn-md btn-primary ">
+                  </form>
                 </div>
               </div>
             </div>

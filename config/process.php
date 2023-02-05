@@ -1013,7 +1013,7 @@
 		//echo $keterangan;
 
         if ($cek) {
-            $query = "insert into log values (null, '$datetime', '$hdid', '$user', '$userbaru', '$keterangan1')";
+            $query = "insert into log values (null, '$datetime', null, '$hdid', '$user', '$userbaru', '$keterangan1')";
             //echo $query;
             $result = mysqli_query($koneksi, $query);
     
