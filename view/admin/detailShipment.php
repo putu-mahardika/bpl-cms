@@ -70,7 +70,10 @@
       'id' => $data['id'],
       'id_shipment' => $data['id_shipment'],
       'create_date' => $data['create_date'],
+      'handling_turunan' => $data['handling_turunan'],
       'keterangan_biaya' => $data['keterangan_biaya'],
+      'qty' => $data['qty'],
+      'nominal_satuan' => $data['nominal_satuan'],
       'nominal' => $data['nominal'] 
     );
   }
@@ -731,20 +734,66 @@
                   <hr class="sidebar-divider">
                   <div>
                     <p class="" style="color: black;"><strong>Informasi Biaya Handling</strong></p>
-                    <?php foreach ($dataShipmentHandling as $data) {?>
-                      <div>
-                        <p class="mb-0">
-                          <?php 
-                            if ($data['keterangan_biaya'] == ' ') {
-                              echo "-";
-                            } else {
-                              echo $data['keterangan_biaya'];
-                            }
-                          ?>
-                        </p>
-                        <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($data['nominal'],2,",",".")?> </strong></p>
-                      </div>
+
+                    <?php if (count($dataShipmentHandling) < 1) { ?>
+                      <?php for ($i=0; $i < 2; $i++) { ?>
+                        <?php if ($i==0) { ?>
+                          <p class="mb-0">-</p>
+                          <p class="" style="color: black;"><strong><?php echo "Rp 0" ?> </strong></p>
+                        <?php } else { ?>
+                          <p class="mb-0">-</p>
+                          <p class="" style="color: black;"><strong><?php echo "Rp 0"?> </strong></p>
+                        <?php } ?>
+                      <?php } ?>
+
+                    <?php } elseif (count($dataShipmentHandling) < 2 && count($dataShipmentHandling) == 1) {?>
+                      <?php for ($i=0; $i < 2; $i++) { ?>
+                        <?php if ($i==0) { ?>
+                          <?php foreach ($dataShipmentHandling as $datas) { ?>
+                            <?php if ($datas['handling_turunan'] == $i+1) { ?>
+                              <p class="mb-0"><?php echo $datas['keterangan_biaya']; ?></p>
+                              <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($datas['nominal'],2,",",".")?> </strong></p>
+                            <?php } else { ?>
+                              <p class="mb-0">-</p>
+                              <p class="" style="color: black;"><strong><?php echo "Rp 0" ?> </strong></p>
+                            <?php } ?>
+                          <?php } ?>
+
+                        <?php } else { ?>
+                          <?php foreach ($dataShipmentHandling as $datas) { ?>
+                            <?php if ($datas['handling_turunan'] == $i+1) { ?>
+                              <p class="mb-0"><?php echo $datas['keterangan_biaya']; ?></p>
+                              <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($datas['nominal'],2,",",".")?> </strong></p>
+                            <?php } else { ?>
+                              <p class="mb-0">-</p>
+                              <p class="" style="color: black;"><strong><?php echo "Rp 0" ?> </strong></p>
+                            <?php } ?>
+                          <?php } ?>
+                        <?php } ?>
+                      <?php } ?>
+
+                    <?php } else { ?>
+                      <?php for ($i=0; $i < count($dataShipmentHandling); $i++) { ?>
+                        <?php if ($i == 0) { ?>
+                          <?php foreach ($dataShipmentHandling as $index => $datas) {?>
+                            <?php if ($datas['handling_turunan'] == 1) { ?>
+                              <p class="mb-0"><?php echo $datas['keterangan_biaya']; ?></p>
+                              <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($datas['nominal'],2,",",".")?> </strong></p>
+                            <?php } ?>
+                          <?php } ?>
+                        <?php } else { ?>
+                          <?php foreach ($dataShipmentHandling as $index => $datas) {?>
+                            <?php if ($datas['handling_turunan'] == 2) { ?>
+                              <p class="mb-0"><?php echo $datas['keterangan_biaya']; ?></p>
+                              <p class="" style="color: black;"><strong><?php echo "Rp ".number_format($datas['nominal'],2,",",".")?> </strong></p>
+                            <?php } ?>
+                          <?php } ?>
+                        <?php } ?>
+
+                      <?php } ?>
+
                     <?php } ?>
+
                     <div>
                       <p class="mb-0">Total Handling</p>
                       <p class="text-primary"><strong><?php echo "Rp ".number_format($totalHandling,2,",",".")?></strong></p>

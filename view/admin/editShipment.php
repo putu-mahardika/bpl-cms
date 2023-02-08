@@ -681,7 +681,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                         <div class="listBiayaHandling" id="listBiayaHandling">
-                        <?php if (count($dataShipmentHandling) < 1) { ?>
+                          <?php if (count($dataShipmentHandling) < 1) { ?>
                             <?php for ($i=0; $i < 2; $i++) { ?>
                               <?php if ($i==0) { ?>
                                 <div class="form-row" id="parentInputBiayaHandling">
