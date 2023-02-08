@@ -522,7 +522,7 @@
                       <h5 class="font-weight-bold">Informasi Shipment</h5>
                       <div>
                         <span class="font-weight-bold">User :</span> <?php echo $dataGetUserShipment['nama'] ?>
-                        <button type="button" class="btn btn-sm btn-primary ml-1" id="actionCountBiayaFreight" data-toggle="modal" data-target="#changeUserModal"><i class="fas fa-edit"></i> Ubah User</button>
+                        <button type="button" class="btn btn-sm btn-primary ml-1" id="actionChangeUser" data-toggle="modal" data-target="#changeUserModal"><i class="fas fa-edit"></i> Ubah User</button>
                       </div>
                     </div>
                     <div class="form-row">
