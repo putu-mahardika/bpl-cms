@@ -602,6 +602,8 @@
     $array = array();
     $arrayTempShipment = array();
     $arrayTempHandling = array();
+    $arrayTempHandlingTurunan1 = array ();
+    $arrayTempHandlingTurunan2 = array ();
 
     if($akses == "Admin") {
       $queryShipment = "select
@@ -646,6 +648,34 @@
         trans_shipment ts 
       where 
         tsh.id_shipment = ts.id and 
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
+      group by
+        tsh.id_shipment ";
+
+      $queryHandlingTurunan1 = "select 
+        tsh.id_shipment,
+        sum(tsh.qty) as qtyHandlingTurunan1,
+        sum(tsh.nominal_satuan) as totalHandlingTurunan1
+      from 
+        trans_shipment_handling tsh,
+        trans_shipment ts 
+      where 
+        tsh.id_shipment = ts.id and
+        tsh.handling_turunan = 1 and 
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
+      group by
+        tsh.id_shipment ";
+
+      $queryHandlingTurunan2 = "select 
+        tsh.id_shipment,
+        sum(tsh.qty) as qtyHandlingTurunan2,
+        sum(tsh.nominal_satuan) as totalHandlingTurunan2
+      from 
+        trans_shipment_handling tsh,
+        trans_shipment ts 
+      where 
+        tsh.id_shipment = ts.id and
+        tsh.handling_turunan = 2 and 
         ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
       group by
         tsh.id_shipment ";
@@ -697,6 +727,34 @@
         ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
       group by
         tsh.id_shipment ";
+
+      $queryHandlingTurunan1 = "select 
+        tsh.id_shipment,
+        sum(tsh.qty) as qtyHandlingTurunan1,
+        sum(tsh.nominal_satuan) as totalHandlingTurunan1
+      from 
+        trans_shipment_handling tsh,
+        trans_shipment ts 
+      where 
+        tsh.id_shipment = ts.id and
+        tsh.handling_turunan = 1 and 
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
+      group by
+        tsh.id_shipment ";
+
+      $queryHandlingTurunan2 = "select 
+        tsh.id_shipment,
+        sum(tsh.qty) as qtyHandlingTurunan2,
+        sum(tsh.nominal_satuan) as totalHandlingTurunan2
+      from 
+        trans_shipment_handling tsh,
+        trans_shipment ts 
+      where 
+        tsh.id_shipment = ts.id and
+        tsh.handling_turunan = 2 and 
+        ts.create_order between '".$start." 00:00:00' and '".$end." 23:59:59' 
+      group by
+        tsh.id_shipment ";
     }
 
     $fetchShipment = mysqli_query($koneksi,$queryShipment);
@@ -711,6 +769,18 @@
       $arrayTempHandling[] = $row;
     }
 
+    $fetchHandlingTurunan1 = mysqli_query($koneksi,$queryHandlingTurunan1);
+    while($row = mysqli_fetch_assoc($fetchHandlingTurunan1))
+    {
+      $arrayTempHandlingTurunan1[] = $row;
+    }
+
+    $fetchHandlingTurunan2 = mysqli_query($koneksi,$queryHandlingTurunan2);
+    while($row = mysqli_fetch_assoc($fetchHandlingTurunan2))
+    {
+      $arrayTempHandlingTurunan2[] = $row;
+    }
+
     $array = $arrayTempShipment;
 
     $arrayIdTemp = 0;
@@ -723,7 +793,25 @@
           break;
         }
       }
-      $data['totalHandling'] = $temp;
+      $data['totalHandling'] = number_format($temp,0,',','.');
+
+      foreach ($arrayTempHandlingTurunan1 as $key1 => &$dataHandlingTurunan1) {
+        if ($data['id'] == $dataHandlingTurunan1['id_shipment']) {
+          // $temp = $dataHandlingTurunan1['totalHandlingTurunan1'];
+          $temp = (float)$dataHandlingTurunan1['totalHandlingTurunan1'] * (float)$dataHandlingTurunan1['qtyHandlingTurunan1'];
+          break;
+        }
+      }
+      // $data['totalHandlingTurunan1'] = $temp;
+      $data['totalHandlingTurunan1'] = number_format($temp,0,',','.');
+
+      foreach ($arrayTempHandlingTurunan2 as $key1 => &$dataHandlingTurunan2) {
+        if ($data['id'] == $dataHandlingTurunan2['id_shipment']) {
+          $temp = (float)$dataHandlingTurunan2['totalHandlingTurunan2'] * (float)$dataHandlingTurunan2['qtyHandlingTurunan2'];
+          break;
+        }
+      }
+      $data['totalHandlingTurunan2'] = number_format($temp,0,',','.');
     }
 
     $data = json_encode($array);

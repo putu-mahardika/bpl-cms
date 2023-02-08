@@ -831,6 +831,14 @@
             dataField: 'total_freight'
           },
           {
+            caption: 'Handling 1',
+            dataField: 'totalHandlingTurunan1'
+          },
+          {
+            caption: 'Handling Next',
+            dataField: 'totalHandlingTurunan2'
+          },
+          {
             caption: 'Total Handling',
             dataField: 'totalHandling'
           },
