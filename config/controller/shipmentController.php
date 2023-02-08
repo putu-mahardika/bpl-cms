@@ -52,6 +52,8 @@
     // $sumBiayaHandling = array_sum($biayaHandling);
 
     $save = [$datetime, $kodeShipment, $s_id, $customer, $pib, $billLanding, $shipmentTerm, $loadType, $qty, $unit, $biayaFreight, $totalFreight, $tglKurs, $kurs, $namaBiayaHandling, $qtyBiayaHandling, $biayaHandling, $sumBiayaHandling];
+    
+    
     $j=0;
 
     while($data = mysqli_fetch_array($fetch_master_query)){
@@ -86,7 +88,10 @@
         $j=9;
       }
     }
-
+    
+    if ($qty < array_sum($qtyBiayaHandling)) {
+      $j=10;
+    }
 
 
 
@@ -244,6 +249,17 @@
         $_SESSION['id_pesan1'] = $save;
       }
     }
+    elseif ($j==10) {
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Jumlah Qty Handling tidak boleh melebihi Qty Shipment !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      } else {
+        header("location:../../view/user/inputShipment.php");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Jumlah Qty Handling tidak boleh melebihi Qty Shipment !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        $_SESSION['id_pesan1'] = $save;
+      }
+    }
     else {
       if ($akses == 'Admin') {
         header("location:../../view/admin/inputShipment.php");
@@ -296,6 +312,9 @@
       }
       elseif (strtolower($billLanding) == strtolower($data['bl']) && $data['id'] != $id) {
         $j=3;
+      } 
+      elseif ($qty < array_sum($qtyBiayaHandling)) {
+        $j=4;
       }
     }
 
@@ -383,6 +402,15 @@
       } else {
         header("location:../../view/user/editShipment.php?id=$id");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Bill of Landing (BL) sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+    }
+    elseif ($j==4) {
+      if ($akses == 'Admin') {
+        header("location:../../view/admin/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Jumlah Qty Handling tidak boleh melebihi Qty Shipment !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      } else {
+        header("location:../../view/user/editShipment.php?id=$id");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Jumlah Qty Handling tidak boleh melebihi Qty Shipment !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
       }
     }
     else {
