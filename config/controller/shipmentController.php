@@ -39,9 +39,19 @@
 
     $namaBiayaHandling = $_POST['namaBiayaHandling'];
     $biayaHandling = $_POST['biayaHandling'];
-    $sumBiayaHandling = array_sum($biayaHandling);
+    $qtyBiayaHandling = $_POST['qtyBiayaHandling'];
+    $sumBiayaHandling = 0;
+    for ($i=0; $i<count($namaBiayaHandling); $i++) {
+      $qtyBiayaHandlingTemp = $qtyBiayaHandling[$i] == '' ? 0 : $qtyBiayaHandling[$i];
+      $biayaHandlingTemp = $biayaHandling[$i] == '' ? 0 : $biayaHandling[$i];
+      
+      $sumTemp = $biayaHandlingTemp * $qtyBiayaHandlingTemp;
+      $sumBiayaHandling += $sumTemp;
+    }
+    // echo $sumBiayaHandling;
+    // $sumBiayaHandling = array_sum($biayaHandling);
 
-    $save = [$datetime, $kodeShipment, $s_id, $customer, $pib, $billLanding, $shipmentTerm, $loadType, $qty, $unit, $biayaFreight, $totalFreight, $tglKurs, $kurs, $namaBiayaHandling, $biayaHandling, $sumBiayaHandling];
+    $save = [$datetime, $kodeShipment, $s_id, $customer, $pib, $billLanding, $shipmentTerm, $loadType, $qty, $unit, $biayaFreight, $totalFreight, $tglKurs, $kurs, $namaBiayaHandling, $qtyBiayaHandling, $biayaHandling, $sumBiayaHandling];
     $j=0;
 
     while($data = mysqli_fetch_array($fetch_master_query)){
@@ -96,11 +106,14 @@
       if($result) {
         $lastInsertedId = $koneksi->insert_id;
         for ($i=0; $i < count($namaBiayaHandling); $i++) { 
+          $index = $i+1;
           echo $biayaHandling[$i];
-          if($biayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
+          if($biayaHandling[$i] != '' || $qtyBiayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
             $namaBiayaHandlingTemp = $namaBiayaHandling[$i];
+            $qtyBiayaHandlingTemp = $qtyBiayaHandling[$i];
             $biayaHandlingTemp = $biayaHandling[$i];
-            $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$lastInsertedId', '$datetime', '$namaBiayaHandlingTemp', '$biayaHandlingTemp', null, null, null)";
+            $totalBiayaHandlingTemp = $biayaHandlingTemp * $qtyBiayaHandlingTemp;
+            $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$lastInsertedId', '$datetime', '$index', '$namaBiayaHandlingTemp', '$qtyBiayaHandlingTemp', '$biayaHandlingTemp', '$totalBiayaHandlingTemp', null, null, null)";
             $resultx = mysqli_query($koneksi, $queryShipmentHandling);
           }
           // echo $queryShipmentHandling;
@@ -268,6 +281,7 @@
 
     $biayaHandlingId = $_POST['biayaHandlingId'];
     $namaBiayaHandling = $_POST['namaBiayaHandling'];
+    $qtyBiayaHandling = $_POST['qtyBiayaHandling'];
     $biayaHandling = $_POST['biayaHandling'];
     $sumBiayaHandling = array_sum($biayaHandling);
 
@@ -294,21 +308,28 @@
       if ($result) {
         // $lastInsertedId = $koneksi->insert_id;
         for ($i=0; $i < count($biayaHandlingId); $i++) { 
+          $index = $i+1;
           // echo ($biayaHandlingId[$i] == ' ' ? 'true' : 'false');
           if ($biayaHandlingId[$i] != '') {
-            if ($biayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
+            if ($biayaHandling[$i] != '' || $qtyBiayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
               $biayaHandlingIdTemp = $biayaHandlingId[$i];
               $namaBiayaHandlingTemp = $namaBiayaHandling[$i];
+              $qtyBiayaHandlingTemp = $qtyBiayaHandling[$i];
               $biayaHandlingTemp = $biayaHandling[$i];
+              $totalBiayaHandlingTemp = $biayaHandlingTemp * $qtyBiayaHandlingTemp;
+
               // $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$lastInsertedId', '$datetime', '$namaBiayaHandlingTemp', '$biayaHandlingTemp', null, null, null)";
-              $queryShipmentHandling = "update trans_shipment_handling set keterangan_biaya='$namaBiayaHandlingTemp', nominal='$biayaHandlingTemp' where id='$biayaHandlingIdTemp'";
+              $queryShipmentHandling = "update trans_shipment_handling set keterangan_biaya='$namaBiayaHandlingTemp', qty='$qtyBiayaHandlingTemp', nominal_satuan='$biayaHandlingTemp', nominal='$totalBiayaHandlingTemp' where id='$biayaHandlingIdTemp'";
               $resultx = mysqli_query($koneksi, $queryShipmentHandling);
             }  
           } else {
-            if ($biayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
+            if ($biayaHandling[$i] != '' || $qtyBiayaHandling[$i] != '' || $namaBiayaHandling[$i] != '') {
               $namaBiayaHandlingTemp = $namaBiayaHandling[$i];
+              $qtyBiayaHandlingTemp = $qtyBiayaHandling[$i];
               $biayaHandlingTemp = $biayaHandling[$i];
-              $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$id', '$datetime', '$namaBiayaHandlingTemp', '$biayaHandlingTemp', null, null, null)";
+              $totalBiayaHandlingTemp = $biayaHandlingTemp * $qtyBiayaHandlingTemp;
+
+              $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$id', '$datetime', '$index', '$namaBiayaHandlingTemp', '$qtyBiayaHandlingTemp', '$biayaHandlingTemp', '$totalBiayaHandlingTemp', null, null, null)";
               $resultx = mysqli_query($koneksi, $queryShipmentHandling);
             }
           }

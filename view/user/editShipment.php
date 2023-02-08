@@ -46,7 +46,10 @@
       'id' => $data['id'],
       'id_shipment' => $data['id_shipment'],
       'create_date' => $data['create_date'],
+      'handling_turunan' => $data['handling_turunan'],
       'keterangan_biaya' => $data['keterangan_biaya'],
+      'qty' => $data['qty'],
+      'nominal_satuan' => $data['nominal_satuan'],
       'nominal' => $data['nominal'] 
     );
   }
@@ -579,16 +582,20 @@
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                         <div class="listBiayaHandling" id="listBiayaHandling">
-                        <?php if (count($dataShipmentHandling) < 1) { ?>
-                            <?php for ($i=0; $i < 3; $i++) { ?>
+                          <?php if (count($dataShipmentHandling) < 1) { ?>
+                            <?php for ($i=0; $i < 2; $i++) { ?>
                               <?php if ($i==0) { ?>
                                 <div class="form-row" id="parentInputBiayaHandling">
                                   <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="">
-                                  <div class="form-group col-md-12 col-lg-6 mb-0">
-                                    <label>Nama Biaya Handling</label>
+                                  <div class="form-group col-md-12 col-lg-5 mb-0">
+                                    <label>Nama Biaya Handling 1</label>
                                     <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">
                                   </div>
-                                  <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <div class="form-group col-md-6 col-lg-2 mb-0">
+                                    <label>Qty</label>
+                                    <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="">
+                                  </div>
+                                  <div class="form-group col-md-6 col-lg-5 mb-0">
                                     <label>Biaya</label>
                                     <div class="input-group input-group-sm mb-3">
                                       <div class="input-group-prepend">
@@ -601,11 +608,15 @@
                               <?php } else { ?>
                                 <div class="form-row">
                                   <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
-                                  <div class="form-group col-md-12 col-lg-6 mb-0">
-                                    <label>Nama Biaya Handling</label>
+                                  <div class="form-group col-md-12 col-lg-5 mb-0">
+                                    <label>Nama Biaya Handling Next</label>
                                     <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">
                                   </div>
-                                  <div class="form-group col-md-12 col-lg-6 mb-0">
+                                  <div class="form-group col-md-6 col-lg-2 mb-0">
+                                    <label>Qty</label>
+                                    <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="">
+                                  </div>
+                                  <div class="form-group col-md-6 col-lg-5 mb-0">
                                     <label>Biaya</label>
                                     <div class="input-group input-group-sm mb-3">
                                       <div class="input-group-prepend">
@@ -617,46 +628,165 @@
                                 </div>
                               <?php } ?>
                             <?php } ?>
+
+                          <?php } elseif (count($dataShipmentHandling) < 2 && count($dataShipmentHandling) == 1) {?>
+                            <?php for ($i=0; $i < 2; $i++) { ?>
+                              <?php if ($i==0) { ?>
+                                <?php foreach ($dataShipmentHandling as $datas) { ?>
+                                  <?php if ($datas['handling_turunan'] == $i+1) { ?>
+                                    <div class="form-row" id="parentInputBiayaHandling">
+                                      <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                      <div class="form-group col-md-12 col-lg-5 mb-0">
+                                        <label>Nama Biaya Handling 1</label>
+                                        <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-2 mb-0">
+                                        <label>Qty</label>
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-5 mb-0">
+                                        <label>Biaya</label>
+                                        <div class="input-group input-group-sm mb-3">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">IDR</span>
+                                          </div>
+                                          <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal_satuan'] ?>">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <?php } else { ?>
+                                    <div class="form-row" id="parentInputBiayaHandling">
+                                      <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="">
+                                      <div class="form-group col-md-12 col-lg-5 mb-0">
+                                        <label>Nama Biaya Handling 1</label>
+                                        <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-2 mb-0">
+                                        <label>Qty</label>
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-5 mb-0">
+                                        <label>Biaya</label>
+                                        <div class="input-group input-group-sm mb-3">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">IDR</span>
+                                          </div>
+                                          <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <?php } ?>
+                                <?php } ?>
+   
+                              <?php } else { ?>
+                                <?php foreach ($dataShipmentHandling as $datas) { ?>
+                                  <?php if ($datas['handling_turunan'] == $i+1) { ?>
+                                    <div class="form-row" id="parentInputBiayaHandling">
+                                      <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                      <div class="form-group col-md-12 col-lg-5 mb-0">
+                                        <label>Nama Biaya Handling Next</label>
+                                        <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-2 mb-0">
+                                        <label>Qty</label>
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-5 mb-0">
+                                        <label>Biaya</label>
+                                        <div class="input-group input-group-sm mb-3">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">IDR</span>
+                                          </div>
+                                          <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal_satuan'] ?>">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <?php } else { ?>
+                                    <div class="form-row" id="parentInputBiayaHandling">
+                                      <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="">
+                                      <div class="form-group col-md-12 col-lg-5 mb-0">
+                                        <label>Nama Biaya Handling Next</label>
+                                        <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-2 mb-0">
+                                        <label>Qty</label>
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-5 mb-0">
+                                        <label>Biaya</label>
+                                        <div class="input-group input-group-sm mb-3">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">IDR</span>
+                                          </div>
+                                          <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <?php } ?>
+                                <?php } ?>
+                              <?php } ?>
+                            <?php } ?>
+
                           <?php } else { ?>
-                            <?php foreach ($dataShipmentHandling as $i => $datas) {
-                            if ($i == 0) { ?>
-                              <div class="form-row" id="parentInputBiayaHandling">
-                                <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
-                                  <label>Nama Biaya Handling</label>
-                                  <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
-                                </div>
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
-                                  <label>Biaya</label>
-                                  <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1">IDR</span>
+                            <?php for ($i=0; $i < count($dataShipmentHandling); $i++) { ?>
+                              <?php if ($i == 0) { ?>
+                                <?php foreach ($dataShipmentHandling as $index => $datas) {?>
+                                  <?php if ($datas['handling_turunan'] == 1) { ?>
+                                    <div class="form-row" id="parentInputBiayaHandling">
+                                      <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                      <div class="form-group col-md-12 col-lg-5 mb-0">
+                                        <label>Nama Biaya Handling 1</label>
+                                        <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-2 mb-0">
+                                        <label>Qty</label>
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-5 mb-0">
+                                        <label>Biaya</label>
+                                        <div class="input-group input-group-sm mb-3">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">IDR</span>
+                                          </div>
+                                          <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal_satuan'] ?>">
+                                        </div>
+                                      </div>
                                     </div>
-                                    <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
-                                  </div>
-                                </div>
-                              </div>
-                            <?php } else { ?>
-                              <div class="form-row">
-                                <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
-                                  <label>Nama Biaya Handling</label>
-                                  <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
-                                </div>
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
-                                  <label>Biaya</label>
-                                  <div class="input-group input-group-sm mb-3">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1">IDR</span>
+                                  <?php } ?>
+                                <?php } ?>
+                              <?php } else { ?>
+                                <?php foreach ($dataShipmentHandling as $index => $datas) {?>
+                                  <?php if ($datas['handling_turunan'] == 2) { ?>
+                                    <div class="form-row" id="parentInputBiayaHandling">
+                                      <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                      <div class="form-group col-md-12 col-lg-5 mb-0">
+                                        <label>Nama Biaya Handling Next</label>
+                                        <input type="text" class="form-control form-control-sm" id="parentNameInputBiayaHandling" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $datas['keterangan_biaya']?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-2 mb-0">
+                                        <label>Qty</label>
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                      </div>
+                                      <div class="form-group col-md-6 col-lg-5 mb-0">
+                                        <label>Biaya</label>
+                                        <div class="input-group input-group-sm mb-3">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">IDR</span>
+                                          </div>
+                                          <input type="number" class="form-control inputBiayaHandling" id="parentCostInputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal_satuan'] ?>">
+                                        </div>
+                                      </div>
                                     </div>
-                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $datas['nominal'] ?>">
-                                  </div>
-                                </div>
-                              </div>
-                            <?php } }?>
+                                  <?php } ?>
+                                <?php } ?>
+                              <?php } ?>
+
+                            <?php } ?>
+
                           <?php } ?>
+                            
                         </div>
-                        <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
+                        <!-- <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div> -->
                       </div>
                       <div class="col-md-12 col-lg-6">
                         <div class="form-group col-12 py-3 rounded bg-lightGrey">
@@ -794,9 +924,11 @@
       var result = 0;
       for (i = 0; i < l; i++) { 
         //Push each element to the array
-        var temp = $('.inputBiayaHandling').eq(i).val() == '' ? 0 : $('.inputBiayaHandling').eq(i).val()
+        var temp = $('.inputBiayaHandling').eq(i).val() == '' ? 0 : $('.inputBiayaHandling').eq(i).val();
+        var qtyTemp = $('.qtyBiayaHandling').eq(i).val() == '' ? 0 : $('.qtyBiayaHandling').eq(i).val()
         console.log(temp);
-        result += parseFloat(temp)
+        var resultTemp = parseFloat(qtyTemp) * parseFloat(temp);
+        result += parseFloat(resultTemp)
       }
       //print the array or use it for your further logic
       console.log(result);

@@ -547,39 +547,47 @@
                             <?php for ($i=0; $i < count($save[14]); $i++) { 
                             if ($i == 0) { ?>
                               <div class="form-row" id="parentInputBiayaHandling">
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
-                                  <label>Nama Biaya Handling</label>
+                                <div class="form-group col-md-12 col-lg-5 mb-0">
+                                  <label>Nama Biaya Handling 1</label>
                                   <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $save[14][$i] ?>">
                                 </div>
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <div class="form-group col-md-6 col-lg-2 mb-0">
+                                  <label>Qty</label>
+                                  <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="<?php echo $save[15][$i] ?>">
+                                </div>
+                                <div class="form-group col-md-6 col-lg-5 mb-0">
                                   <label>Biaya</label>
                                   <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" id="basic-addon1">IDR</span>
                                     </div>
-                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $save[15][$i] ?>">
+                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $save[16][$i] ?>">
                                   </div>
                                 </div>
                               </div>
                             <?php } else { ?>
                               <div class="form-row">
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
-                                  <label>Nama Biaya Handling</label>
+                                <div class="form-group col-md-12 col-lg-5 mb-0">
+                                  <label>Nama Biaya Handling Next</label>
                                   <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="<?php echo $save[14][$i] ?>">
                                 </div>
-                                <div class="form-group col-md-12 col-lg-6 mb-0">
+                                <div class="form-group col-md-6 col-lg-2 mb-0">
+                                  <label>Qty</label>
+                                  <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="<?php echo $save[15][$i] ?>">
+                                </div>
+                                <div class="form-group col-md-6 col-lg-5 mb-0">
                                   <label>Biaya</label>
                                   <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" id="basic-addon1">IDR</span>
                                     </div>
-                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $save[15][$i] ?>">
+                                    <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]" value="<?php echo $save[16][$i] ?>">
                                   </div>
                                 </div>
                               </div>
                             <?php } } ?>
                           </div>
-                          <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
+                          <!-- <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div> -->
                         </div>
                         <div class="col-md-12 col-lg-6">
                           <div class="form-group col-12 py-3 rounded bg-lightGrey">
@@ -587,7 +595,7 @@
                             <!-- <h5 class="font-weight-bold">(dengan kurs)</h5> -->
                             <div class="d-flex justify-content-between align-items-center">
                               <div class="mb-0 text-primary">
-                                IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling"><?php echo $save[16] ?></span>
+                                IDR <span style="font-size: 36px;font-weight:700;" id="countBiayaHandling"><?php echo $save[17] ?></span>
                               </div>
                               <div>
                               <button type="button" class="btn btn-primary" id="actionCountBiayaHandling"><i class="fas fa-redo-alt"></i></button>
@@ -765,11 +773,15 @@
                         <div class="form-group col-md-12 col-lg-6">
                           <div class="listBiayaHandling" id="listBiayaHandling">
                             <div class="form-row" id="parentInputBiayaHandling">
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Nama Biaya Handling</label>
+                              <div class="form-group col-md-12 col-lg-5 mb-0">
+                                <label>Nama Biaya Handling 1</label>
                                 <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50">
                               </div>
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                              <div class="form-group col-md-6 col-lg-2 mb-0">
+                                <label>Qty</label>
+                                <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="">
+                              </div>
+                              <div class="form-group col-md-6 col-lg-5 mb-0">
                                 <label>Biaya</label>
                                 <div class="input-group input-group-sm mb-3">
                                   <div class="input-group-prepend">
@@ -780,26 +792,15 @@
                               </div>
                             </div>
                             <div class="form-row">
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Nama Biaya Handling</label>
+                              <div class="form-group col-md-12 col-lg-5 mb-0">
+                                <label>Nama Biaya Handling Next</label>
                                 <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50">
                               </div>
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Biaya</label>
-                                <div class="input-group input-group-sm mb-3">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">IDR</span>
-                                  </div>
-                                  <input type="number" class="form-control inputBiayaHandling" min="0" onkeypress="return isNumberKey(event)" placeholder="0.00" name="biayaHandling[]">
-                                </div>
+                              <div class="form-group col-md-6 col-lg-2 mb-0">
+                                <label>Qty</label>
+                                <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" placeholder="0" value="">
                               </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
-                                <label>Nama Biaya Handling</label>
-                                <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]">
-                              </div>
-                              <div class="form-group col-md-12 col-lg-6 mb-0">
+                              <div class="form-group col-md-6 col-lg-5 mb-0">
                                 <label>Biaya</label>
                                 <div class="input-group input-group-sm mb-3">
                                   <div class="input-group-prepend">
@@ -810,7 +811,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div>
+                          <!-- <div class="text-primary font-weight-bold"><span class="addRowHandling" style="cursor: pointer;"><i class="fas fa-plus"></i> Tambah Biaya Handling</span></div> -->
                         </div>
                         <div class="col-md-12 col-lg-6">
                           <div class="form-group col-12 py-3 rounded bg-lightGrey">
