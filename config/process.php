@@ -615,6 +615,7 @@
 		$tglpo1 = date('Y-m-d', strtotime($tglpo0));
         $tglspk1 = date('Y-m-d', strtotime($tglspk0));
         $x= " ";
+        $t=0;
         if (strstr($nospk, $x)){
             $nospk = str_replace($x, "", $nospk);
         }
@@ -645,7 +646,7 @@
             $result1 = mysqli_query($koneksi, $query1);  
             $result2 = mysqli_query($koneksi, $query2);   
             
-            $diffArmada = $armada-$armadaOld;
+            $diffArmada = (int)$armada-(int)$armadaOld;
             $cekBiayaTurunan = true;
 
             // if ($diffArmada > 0) {

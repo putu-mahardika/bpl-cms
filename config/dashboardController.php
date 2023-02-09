@@ -432,7 +432,7 @@
         trans_hd
       where 
         UserId='".$s_id."'"." AND
-        YEAR(b.DateOnClose)='".$year."'"." AND
+        YEAR(DateOnClose)='".$year."'"." AND
         atr1=0";
     }
 
