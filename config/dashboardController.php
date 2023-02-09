@@ -389,22 +389,33 @@
   function getSalesThisYear($koneksi, $year, $akses, $s_id) {
     if ($akses == "Admin") {
       $query = "SELECT
-        SUM(a.Total) AS Total,
-        COUNT(a.Id) AS Id,
-        SUM(b.total_armada) AS totalDetail
+        SUM(a.Total) AS Total
       FROM 
         trans_biayaturunan a,
-        trans_hd b
+        trans_hd b,
+        master_user c
       WHERE 
         a.atr1 IS NULL AND
         a.HdId = b.HdId AND
+        b.UserId = c.UserId AND
+        c.atr1 = 0 AND
         b.OnClose=1 AND
         YEAR(b.DateOnClose)='".$year."'";
+
+      $queryGetTotalArmada = "SELECT 
+        sum(a.total_armada) as total
+      FROM 
+        trans_hd a,
+        master_user b
+      where 
+        a.UserId = b.UserId and
+        b.atr1=0 and
+        YEAR(a.DateOnClose)='".$year."'"." AND
+        a.atr1=0";
+
     } else {
       $query = "SELECT
-        SUM(a.Total) AS Total,
-        COUNT(a.Id) AS Id,
-        SUM(b.total_armada) AS totalDetail
+        SUM(a.Total) AS Total
       FROM 
         trans_biayaturunan a,
         trans_hd b
@@ -412,12 +423,26 @@
         a.atr1 IS NULL AND
         a.HdId = b.HdId AND
         b.OnClose=1 AND
-        b.UserId='".$s_id."'"."AND
+        b.UserId='".$s_id."'"." AND
         YEAR(b.DateOnClose)='".$year."'"; 
+
+      $queryGetTotalArmada = "SELECT 
+        sum(total_armada) as total
+      FROM 
+        trans_hd
+      where 
+        UserId='".$s_id."'"." AND
+        YEAR(b.DateOnClose)='".$year."'"." AND
+        atr1=0";
     }
 
     $fetch = mysqli_query($koneksi, $query);
-    $data = mysqli_fetch_array($fetch);
+    $dataTotalBiaya = mysqli_fetch_array($fetch);
+    
+    $fetchTotalArmada = mysqli_query($koneksi, $queryGetTotalArmada);
+    $dataTotalArmada = mysqli_fetch_array($fetchTotalArmada);
+
+    $data = ["Total" => $dataTotalBiaya['Total'], "totalDetail" => $dataTotalArmada['total']];
 
     return $data;
   }
@@ -425,9 +450,7 @@
   function getSalesThisMonth($koneksi, $year, $month, $akses, $s_id) {
     if ($akses == "Admin") {
       $query = "SELECT
-        SUM(a.Total) AS Total,
-        COUNT(a.Id) AS Id,
-        SUM(b.total_armada) AS totalDetail
+        SUM(a.Total) AS Total
       FROM 
         trans_biayaturunan a,
         trans_hd b
@@ -437,11 +460,19 @@
         b.OnClose=1 AND
         YEAR(b.DateOnClose)='".$year."'"."AND
         MONTH(b.DateOnClose)='".$month."'";
+      
+      $queryGetTotalArmada = "SELECT 
+        sum(total_armada) as total
+      FROM 
+        trans_hd
+      where 
+        atr1=0 and
+        YEAR(DateOnClose)='".$year."'"." AND
+        MONTH(DateOnClose)='".$month."'";
+
     } else {
       $query = "SELECT
-        SUM(a.Total) AS Total,
-        COUNT(a.Id) AS Id,
-        SUM(b.total_armada) AS totalDetail
+        SUM(a.Total) AS Total
       FROM 
         trans_biayaturunan a,
         trans_hd b
@@ -452,11 +483,25 @@
         b.UserId='".$s_id."'"."AND
         YEAR(b.DateOnClose)='".$year."'"."AND
         MONTH(b.DateOnClose)='".$month."'"; 
+
+      $queryGetTotalArmada = "SELECT 
+        sum(total_armada) as total
+      FROM 
+        trans_hd
+      where 
+        UserId='".$s_id."'"." AND
+        atr1=0 and
+        YEAR(DateOnClose)='".$year."'"." AND
+        MONTH(DateOnClose)='".$month."'";
     }
 
     $fetch = mysqli_query($koneksi, $query);
-    $data = mysqli_fetch_array($fetch);
+    $dataTotalBiaya = mysqli_fetch_array($fetch);
+    
+    $fetchTotalArmada = mysqli_query($koneksi, $queryGetTotalArmada);
+    $dataTotalArmada = mysqli_fetch_array($fetchTotalArmada);
 
+    $data = ["Total" => $dataTotalBiaya['Total'], "totalDetail" => $dataTotalArmada['total']];
     return $data;
   }
 
