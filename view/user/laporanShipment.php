@@ -98,7 +98,7 @@
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
-          <span>Laporan Detail</span>
+          <span>Laporan Trucking</span>
         </a>
       </li>
       <li class="nav-item active">
@@ -683,7 +683,7 @@
             headerRow.height = 30;
             worksheet.mergeCells(2, 1, 2, 19);
 
-            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik';
+            headerRow.getCell(1).value = 'Laporan Shipment - PT Berkah Permata Logistik';
             headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
             headerRow.getCell(1).alignment = { horizontal: 'center' };
             

@@ -252,7 +252,7 @@ $grandTotal = number_format($arrayGetGrandTotal['totalBiaya'], 2, ',', '.');
       <li class="nav-item">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
-          <span>Laporan Detail</span>
+          <span>Laporan Trucking</span>
         </a>
       </li>
       <li class="nav-item">
