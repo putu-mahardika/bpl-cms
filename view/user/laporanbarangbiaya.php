@@ -136,7 +136,7 @@
           <i class="fas fa-fw fa-table"></i>
           <span>Laporan Trucking</span> 
         </a> 
-        <div id="collapseUnit" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseReportTruck" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Laporan Trucking</h6>
             <a class="collapse-item" href="laporanbarang.php">Laporan Detail</a>
