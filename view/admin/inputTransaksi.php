@@ -254,8 +254,8 @@
         Laporan
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
-          aria-controls="collapseUnit">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportTruck" aria-expanded="true"
+          aria-controls="collapseReportTruck">
           <i class="fas fa-fw fa-table"></i>
           <span>Laporan Trucking</span> 
         </a> 
