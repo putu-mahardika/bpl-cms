@@ -22,7 +22,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Transaksi - PT Berkah Permata Logistik</title>
+  <title>Laporan Detail Pergerakan Trucking - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -131,10 +131,18 @@
         Laporan
       </div>
       <li class="nav-item active">
-        <a class="nav-link" href="laporanbarang.php">
-          <i class="fas fa-fw fa-file-invoice"></i>
-          <span>Laporan Trucking</span>
-        </a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
+          aria-controls="collapseUnit">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Laporan Trucking</span> 
+        </a> 
+        <div id="collapseUnit" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Laporan Trucking</h6>
+            <a class="collapse-item active" href="laporanbarang.php">Laporan Detail</a>
+            <a class="collapse-item" href="laporanbarangbiaya.php">Laporan Biaya</a>
+          </div>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="laporanShipment.php">

@@ -150,12 +150,6 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="laporanbarang.php">
-          <i class="fas fa-fw fa-file-invoice"></i>
-          <span>Laporan Shipment</span>
-        </a>
-      </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
@@ -183,10 +177,18 @@
         Laporan
       </div>
       <li class="nav-item">
-        <a class="nav-link" href="laporanbarang.php">
-          <i class="fas fa-fw fa-file-invoice"></i>
-          <span>Laporan Trucking</span>
-        </a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
+          aria-controls="collapseUnit">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Laporan Trucking</span> 
+        </a> 
+        <div id="collapseUnit" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Laporan Trucking</h6>
+            <a class="collapse-item" href="laporanbarang.php">Laporan Detail</a>
+            <a class="collapse-item" href="laporanbarangbiaya.php">Laporan Biaya</a>
+          </div>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="laporanShipment.php">
