@@ -4,16 +4,17 @@
   date_default_timezone_set("Asia/Jakarta");
   $datetime = date('Y');
   
-  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
+  if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../index.php?pesan=belum_login");
   }
+  $s_id = $_SESSION['id'];
 
   include '../../config/koneksi.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,35 +22,52 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Laporan Shipment - PT Berkah Permata Logistik</title>
+  <title>Transaksi - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link href="../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
   <link href="../../css/style.css" rel="stylesheet">
-
   <!-- DevExtreme theme -->
   <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.1.6/css/dx.light.css">
 </head>
-
+ 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=<?php echo $datetime?>">
         <div class="sidebar-brand-icon">
           <img src="../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="dashboard.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
+        Master
+      </div>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+          aria-controls="collapseForm">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Customer</span>
+        </a>
+        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Customer</h6>
+            <a class="collapse-item" href="customer.php">List Customer</a>
+            <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
+          </div>
+        </div>
+      </li>
+      <!-- <hr class="sidebar-divider"> -->
+      <!--<div class="sidebar-heading">
         Master
       </div>
       <li class="nav-item">
@@ -87,68 +105,11 @@
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">Status Trucking</a>
-            <a class="collapse-item" href="statusShipment.php">Status Shipment</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+            <a class="collapse-item" href="status.php">List Status</a>
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span> 
-        </a>
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
-          aria-controls="collapseLoadType">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Load Type</span> 
-        </a> 
-        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="loadType.php">List Load Type</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShipmentTerms" aria-expanded="true"
-          aria-controls="collapseShipmentTerms">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Shipment Terms</span> 
-        </a> 
-        <div id="collapseShipmentTerms" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Shipment Terms</h6>
-            <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
-          aria-controls="collapseUnit">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Unit</span> 
-        </a> 
-        <div id="collapseUnit" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Unit</h6>
-            <a class="collapse-item" href="unit.php">List Unit</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
+      <hr class="sidebar-divider">-->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Transaksi
@@ -169,13 +130,13 @@
       <div class="sidebar-heading">
         Laporan
       </div>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Trucking</span>
         </a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="laporanShipment.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Shipment</span>
@@ -429,7 +390,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> Laporan Shipment</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Laporan Pergerakan Truck</h1>
             <!-- <?php if($fill == 1){?>
             <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportlaporantransaksi.php?start=<?php echo $start?>&end=<?php echo $end?>"><i class="fas fa-print"></i></a>
             <?php }else{?>
@@ -457,7 +418,7 @@
                 </div>
                 <div class="card-body col-12">
                   <!-- <form method="post" action="laporanbarang.php"> -->
-                    <div class="form-group" >
+                  <div class="form-group" >
                       <div class=" input-group" id="simple-date4">
                         <div class="input-daterange" style="width:190px;">
                           <input type="text" class="input-sm form-control form-control-sm" name="start" id="dateStart" />
@@ -482,7 +443,7 @@
                 <div id="gridContainer"></div> 
               </div>
             </div>
-            
+
           </div>
 
           <!--Row-->
@@ -615,7 +576,22 @@
         "order": [[0, "desc"]]
 	  }); // ID From dataTable with Hover
 
-      
+      //$('.transinfo').click(function(){
+      //  var hdid = $(this).data('id');
+
+        // AJAX request\
+      //  $.ajax({
+      //    url: '../../config/viewTransaksi.php',
+      //    type: 'post',
+      //    data: {hdid: hdid},
+      //    success: function(response){
+            // Add response in Modal body
+      //      $('.detail-body').html(response);
+            // Display Modal
+      //      $('#detailModal').modal('show');
+      //    }
+      //  });
+      //});
       $('#simple-date4 .input-daterange').datepicker({        
         format: 'dd/mm/yyyy',        
         autoclose: true,     
@@ -669,11 +645,12 @@
       dateStartInput = dateStartInputTemp.value;
       dateEndInput = dateEndInputTemp.value;
       console.log('start', dateStartInput);
+      // AJAX request\
       $.ajax({
-        url: '../../config/controller/shipmentController.php',
+        url: '../../config/reportController.php',
         type: 'get',
         data: {
-          reportShipment: true,
+          reportBiayaTransaksi: true,
           start: dateStartInput,
           end: dateEndInput
         },
@@ -689,7 +666,7 @@
     }
   </script>
 
-  <script>
+<script>
     $(document).ready(() => {
       // console.log('aaa');
       var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
@@ -758,7 +735,7 @@
             headerRow.height = 30;
             worksheet.mergeCells(2, 1, 2, 19);
 
-            headerRow.getCell(1).value = 'Laporan Shipment - PT Berkah Permata Logistik';
+            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik';
             headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
             headerRow.getCell(1).alignment = { horizontal: 'center' };
             
@@ -779,91 +756,97 @@
         },
         columns: [
           {
-            caption: 'Tgl',
-            dataField: 'create_order',
-          },
-          {
-            caption: 'Kode',
-            dataField: 'kode_shipment'
-          },
-          {
-            caption: 'Customer',
-            dataField: 'customer'
+            caption: 'Tgl Detail Pergerakan',
+            dataField: 'create_date',
           },
           {
             caption: 'Sales',
-            dataField: 'sales'
+            dataField: 'namaUser'
           },
           {
-            caption: 'PIB',
-            dataField: 'pib'
+            caption: 'No. SPK',
+            dataField: 'NoSPK'
           },
           {
-            caption: 'BL',
-            dataField: 'bl'
+            caption: 'Tgl SPK',
+            dataField: 'tgl_spk'
           },
           {
-            caption: 'Shipment Term',
-            dataField: 'shipment_term'
+            caption: 'No. SPK Turunan',
+            dataField: 'SPKTurunan'
           },
           {
-            caption: 'Load Type',
-            dataField: 'load_type'
+            caption: 'No. PO',
+            dataField: 'NoPO'
           },
           {
-            caption: 'QTY',
-            dataField: 'qty'
+            caption: 'Customer',
+            dataField: 'namaCustomer'
           },
           {
-            caption: 'Unit',
-            dataField: 'unit'
+            caption: 'NPWP',
+            dataField: 'npwp'
+          },
+          {
+            caption: 'Kota Asal',
+            dataField: 'kotaAsal'
+          },
+          {
+            caption: 'Detail Kota Asal',
+            dataField: 'kota_kirim'
+          },
+          {
+            caption: 'Kota Tujuan',
+            dataField: 'kotaTujuan'
+          },
+          {
+            caption: 'Detail Kota Tujuan',
+            dataField: 'kota_tujuan'
+          },
+          {
+            caption: 'Jenis Armada',
+            dataField: 'jenis_armada'
+          },
+          {
+            caption: 'Nopol',
+            dataField: 'nopol'
+          },
+          {
+            caption: 'Keterangan',
+            dataField: 'keterangan_kirim'
           },
           {
             caption: 'Status',
             dataField: 'status'
           },
           {
-            caption: 'Freight',
-            dataField: 'freight'
+            caption: 'Status OnClose SPK Turunan',
+            dataField: 'StatusTurunan'
           },
           {
-            caption: 'Total Freight',
-            dataField: 'total_freight'
-          },
-          {
-            caption: 'Handling 1',
-            dataField: 'totalHandlingTurunan1',
+            caption: 'Total Biaya',
+            dataField: 'totalBiaya',
             customizeText: function(cellInfo) {
                 return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
             },
           },
           {
-            caption: 'Handling Next',
-            dataField: 'totalHandlingTurunan2',
-            customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
-            },
+            caption: 'Status OnClose PO',
+            dataField: 'statusPO'
           },
           {
-            caption: 'Total Handling',
-            dataField: 'totalHandling',
-            customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
-            },
-          },
-          // {
-          //   caption: 'Action',
-          //   dataField: 'id',
-          //   cellTemplate: function(container, options) {
-          //       container.html(`
-          //       <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
-          //   `)},
-          //   allowExporting: false,
-          //   allowFiltering: false,
-          //   allowSearching: false,
-          //   allowSorting: false,
-          //   showInColumnChooser: false
-          // }
+            caption: 'Action',
+            dataField: 'HdId',
+            cellTemplate: function(container, options) {
+                container.html(`
+                <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
+            `)},
+            allowExporting: false,
+            allowFiltering: false,
+            allowSearching: false,
+            allowSorting: false,
+            showInColumnChooser: false
+          }
         ],
         scrolling: {
           rowRenderingMode: 'virtual',
@@ -935,7 +918,6 @@
     });
 
   </script>
-
 
 
 </body>

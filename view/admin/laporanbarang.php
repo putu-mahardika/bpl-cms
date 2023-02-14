@@ -21,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Transaksi - PT Berkah Permata Logistik</title>
+  <title>Laporan Detail Trucking - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -429,7 +429,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> Laporan Pergerakan Truck</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Laporan Detail Pergerakan Truck</h1>
             <!-- <?php if($fill == 1){?>
             <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportlaporantransaksi.php?start=<?php echo $start?>&end=<?php echo $end?>"><i class="fas fa-print"></i></a>
             <?php }else{?>
@@ -847,10 +847,10 @@
             caption: 'Status OnClose SPK Turunan',
             dataField: 'StatusTurunan'
           },
-          {
-            caption: 'Total Biaya',
-            dataField: 'totalBiaya'
-          },
+          // {
+          //   caption: 'Total Biaya',
+          //   dataField: 'totalBiaya'
+          // },
           {
             caption: 'Status OnClose PO',
             dataField: 'StatusPO'

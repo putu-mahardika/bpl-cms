@@ -21,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Laporan Shipment - PT Berkah Permata Logistik</title>
+  <title>Laporan Biaya Trucking - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -169,13 +169,13 @@
       <div class="sidebar-heading">
         Laporan
       </div>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="laporanbarang.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Trucking</span>
         </a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="laporanShipment.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Shipment</span>
@@ -429,7 +429,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> Laporan Shipment</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Laporan Biaya Pergerakan Truck</h1>
             <!-- <?php if($fill == 1){?>
             <a class="btn btn-info btn-lg " target="_blank" href="../../export/exportlaporantransaksi.php?start=<?php echo $start?>&end=<?php echo $end?>"><i class="fas fa-print"></i></a>
             <?php }else{?>
@@ -669,11 +669,12 @@
       dateStartInput = dateStartInputTemp.value;
       dateEndInput = dateEndInputTemp.value;
       console.log('start', dateStartInput);
+      // AJAX request\
       $.ajax({
-        url: '../../config/controller/shipmentController.php',
+        url: '../../config/reportController.php',
         type: 'get',
         data: {
-          reportShipment: true,
+          reportBiayaTransaksi: true,
           start: dateStartInput,
           end: dateEndInput
         },
@@ -758,7 +759,7 @@
             headerRow.height = 30;
             worksheet.mergeCells(2, 1, 2, 19);
 
-            headerRow.getCell(1).value = 'Laporan Shipment - PT Berkah Permata Logistik';
+            headerRow.getCell(1).value = 'Laporan Biaya Pergerakan Truck - PT Berkah Permata Logistik';
             headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
             headerRow.getCell(1).alignment = { horizontal: 'center' };
             
@@ -779,91 +780,97 @@
         },
         columns: [
           {
-            caption: 'Tgl',
-            dataField: 'create_order',
-          },
-          {
-            caption: 'Kode',
-            dataField: 'kode_shipment'
-          },
-          {
-            caption: 'Customer',
-            dataField: 'customer'
+            caption: 'Tgl Detail Pergerakan',
+            dataField: 'create_date',
           },
           {
             caption: 'Sales',
-            dataField: 'sales'
+            dataField: 'namaUser'
           },
           {
-            caption: 'PIB',
-            dataField: 'pib'
+            caption: 'No. SPK',
+            dataField: 'NoSPK'
           },
           {
-            caption: 'BL',
-            dataField: 'bl'
+            caption: 'Tgl SPK',
+            dataField: 'tgl_spk'
           },
           {
-            caption: 'Shipment Term',
-            dataField: 'shipment_term'
+            caption: 'No. SPK Turunan',
+            dataField: 'SPKTurunan'
           },
           {
-            caption: 'Load Type',
-            dataField: 'load_type'
+            caption: 'No. PO',
+            dataField: 'NoPO'
           },
           {
-            caption: 'QTY',
-            dataField: 'qty'
+            caption: 'Customer',
+            dataField: 'namaCustomer'
           },
           {
-            caption: 'Unit',
-            dataField: 'unit'
+            caption: 'NPWP',
+            dataField: 'npwp'
+          },
+          {
+            caption: 'Kota Asal',
+            dataField: 'kotaAsal'
+          },
+          {
+            caption: 'Detail Kota Asal',
+            dataField: 'kota_kirim'
+          },
+          {
+            caption: 'Kota Tujuan',
+            dataField: 'kotaTujuan'
+          },
+          {
+            caption: 'Detail Kota Tujuan',
+            dataField: 'kota_tujuan'
+          },
+          {
+            caption: 'Jenis Armada',
+            dataField: 'jenis_armada'
+          },
+          {
+            caption: 'Nopol',
+            dataField: 'nopol'
+          },
+          {
+            caption: 'Keterangan',
+            dataField: 'keterangan_kirim'
           },
           {
             caption: 'Status',
             dataField: 'status'
           },
           {
-            caption: 'Freight',
-            dataField: 'freight'
+            caption: 'Status OnClose SPK Turunan',
+            dataField: 'StatusTurunan'
           },
           {
-            caption: 'Total Freight',
-            dataField: 'total_freight'
-          },
-          {
-            caption: 'Handling 1',
-            dataField: 'totalHandlingTurunan1',
+            caption: 'Total Biaya',
+            dataField: 'totalBiaya',
             customizeText: function(cellInfo) {
                 return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
             },
           },
           {
-            caption: 'Handling Next',
-            dataField: 'totalHandlingTurunan2',
-            customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
-            },
+            caption: 'Status OnClose PO',
+            dataField: 'statusPO'
           },
           {
-            caption: 'Total Handling',
-            dataField: 'totalHandling',
-            customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
-            },
-          },
-          // {
-          //   caption: 'Action',
-          //   dataField: 'id',
-          //   cellTemplate: function(container, options) {
-          //       container.html(`
-          //       <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
-          //   `)},
-          //   allowExporting: false,
-          //   allowFiltering: false,
-          //   allowSearching: false,
-          //   allowSorting: false,
-          //   showInColumnChooser: false
-          // }
+            caption: 'Action',
+            dataField: 'HdId',
+            cellTemplate: function(container, options) {
+                container.html(`
+                <button title="detail" onclick="transinfo(${options.value})" class="btn btn-info btn-sm" style="margin-bottom:0.25rem;width:33px;"><i class="fas fa-search"></i></button>
+            `)},
+            allowExporting: false,
+            allowFiltering: false,
+            allowSearching: false,
+            allowSorting: false,
+            showInColumnChooser: false
+          }
         ],
         scrolling: {
           rowRenderingMode: 'virtual',

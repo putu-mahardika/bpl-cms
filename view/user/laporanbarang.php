@@ -823,10 +823,10 @@
             caption: 'Status OnClose SPK Turunan',
             dataField: 'StatusTurunan'
           },
-          {
-            caption: 'Total Biaya',
-            dataField: 'totalBiaya'
-          },
+          // {
+          //   caption: 'Total Biaya',
+          //   dataField: 'totalBiaya'
+          // },
           {
             caption: 'Status OnClose PO',
             dataField: 'StatusPO'
