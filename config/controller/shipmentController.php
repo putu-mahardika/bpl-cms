@@ -335,7 +335,7 @@
               $namaBiayaHandlingTemp = $namaBiayaHandling[$i];
               $qtyBiayaHandlingTemp = $qtyBiayaHandling[$i];
               $biayaHandlingTemp = $biayaHandling[$i];
-              $totalBiayaHandlingTemp = $biayaHandlingTemp * $qtyBiayaHandlingTemp;
+              $totalBiayaHandlingTemp = (float)$biayaHandlingTemp*(float)$qtyBiayaHandlingTemp;
 
               // $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$lastInsertedId', '$datetime', '$namaBiayaHandlingTemp', '$biayaHandlingTemp', null, null, null)";
               $queryShipmentHandling = "update trans_shipment_handling set keterangan_biaya='$namaBiayaHandlingTemp', qty='$qtyBiayaHandlingTemp', nominal_satuan='$biayaHandlingTemp', nominal='$totalBiayaHandlingTemp' where id='$biayaHandlingIdTemp'";
@@ -346,7 +346,7 @@
               $namaBiayaHandlingTemp = $namaBiayaHandling[$i];
               $qtyBiayaHandlingTemp = $qtyBiayaHandling[$i];
               $biayaHandlingTemp = $biayaHandling[$i];
-              $totalBiayaHandlingTemp = $biayaHandlingTemp * $qtyBiayaHandlingTemp;
+              $totalBiayaHandlingTemp = (float)$biayaHandlingTemp*(float)$qtyBiayaHandlingTemp;
 
               $queryShipmentHandling = "insert into trans_shipment_handling values (null, '$id', '$datetime', '$index', '$namaBiayaHandlingTemp', '$qtyBiayaHandlingTemp', '$biayaHandlingTemp', '$totalBiayaHandlingTemp', null, null, null)";
               $resultx = mysqli_query($koneksi, $queryShipmentHandling);

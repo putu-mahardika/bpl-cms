@@ -211,9 +211,9 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(a.create_date) as month, count(*) as total from trans_hd a, master_user b where a.OnClose=1 and a.atr1=0 and a.UserId=b.UserId and b.atr1=0 AND year(a.create_date)='".$year."' group by month(a.create_date)";
+      $query = "select month(a.DateOnClose) as month, count(*) as total from trans_hd a, master_user b where a.OnClose=1 and a.atr1=0 and a.UserId=b.UserId and b.atr1=0 AND year(a.DateOnClose)='".$year."' group by month(a.DateOnClose)";
     } else {
-      $query = "select month(create_date) as month, count(*) as total from trans_hd where OnClose=1 and atr1=0 AND year(create_date)='".$year."' AND UserId='".$s_id."' group by month(create_date)";
+      $query = "select month(DateOnClose) as month, count(*) as total from trans_hd where OnClose=1 and atr1=0 AND year(DateOnClose)='".$year."' AND UserId='".$s_id."' group by month(DateOnClose)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -265,11 +265,11 @@
     $array = array();
     $tempArray = array();
     if ($akses == "Admin") {
-      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b, master_user c WHERE b.UserId=c.UserId and c.atr1=0 and a.HdId=b.HdId AND b.OnClose=1 and b.atr1=0 AND year(a.create_date)='".$year."' GROUP BY month(a.create_date)";
+      $query = "select month(b.tgl_spk) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      trans_hd b, master_user c WHERE b.UserId=c.UserId and c.atr1=0 and a.HdId=b.HdId AND b.OnClose=1 and b.atr1=0 AND year(b.tgl_spk)='".$year."' GROUP BY month(b.tgl_spk)";
     } else {
-      $query = "select month(a.create_date) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
-      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 and b.atr1=0 AND year(a.create_date)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(a.create_date)";
+      $query = "select month(b.tgl_spk) as month, SUM(a.Total) as total FROM trans_biayaturunan a, 
+      trans_hd b WHERE a.HdId=b.HdId AND b.OnClose=1 and b.atr1=0 AND year(b.tgl_spk)='".$year."' AND b.UserId='".$s_id."' GROUP BY month(b.tgl_spk)";
     }
 
     $fetch = mysqli_query($koneksi, $query);
@@ -353,7 +353,7 @@
     WHERE
       b.atr1=0 and
       e.HdId = b.HdId and
-      b.OnClose=1 and year(b.DateOnClose)='".$year."'";
+      b.OnClose=1 and year(b.tgl_spk)='".$year."'";
     } else {
       $query = "SELECT 
       b.HdId,
@@ -365,7 +365,7 @@
     WHERE
       b.atr1=0 and
       e.HdId = b.HdId and
-      b.OnClose=1 and year(b.DateOnClose)='".$year."' and
+      b.OnClose=1 and year(b.tgl_spk)='".$year."' and
       a.UserId='".$s_id."'";
     }
 
@@ -399,19 +399,38 @@
         a.HdId = b.HdId AND
         b.UserId = c.UserId AND
         c.atr1 = 0 AND
+        b.atr1 = 0 and
         b.OnClose=1 AND
-        YEAR(b.DateOnClose)='".$year."'";
+        YEAR(b.tgl_spk)='".$year."'";
+
+      // $queryGetTotalArmada = "SELECT 
+      //   sum(a.total_armada) as total
+      // FROM 
+      //   trans_hd a,
+      //   master_user b
+      // where 
+      //   a.UserId = b.UserId and
+      //   a.OnClose=1 and
+      //   b.atr1=0 and
+      //   YEAR(a.tgl_spk)='".$year."'"." AND
+      //   a.atr1=0";
 
       $queryGetTotalArmada = "SELECT 
-        sum(a.total_armada) as total
-      FROM 
-        trans_hd a,
-        master_user b
-      where 
-        a.UserId = b.UserId and
-        b.atr1=0 and
-        YEAR(a.DateOnClose)='".$year."'"." AND
-        a.atr1=0";
+         *
+        FROM 
+          trans_hd a,
+          master_user b,
+          trans_detail c
+        where 
+          a.HdId = c.HdId and
+          a.UserId = b.UserId and
+          b.atr1=0 and
+          a.OnClose=1 and
+          -- YEAR(a.tgl_spk)='2023' AND
+          YEAR(a.tgl_spk)='".$year."'"." AND
+          a.atr1=0
+      GROUP BY c.NoSPK, c.turunan 
+      order by c.DtlId desc";
 
     } else {
       $query = "SELECT
@@ -424,25 +443,47 @@
         a.HdId = b.HdId AND
         b.OnClose=1 AND
         b.UserId='".$s_id."'"." AND
-        YEAR(b.DateOnClose)='".$year."'"; 
+        YEAR(b.tgl_spk)='".$year."'"; 
 
-      $queryGetTotalArmada = "SELECT 
-        sum(total_armada) as total
-      FROM 
-        trans_hd
-      where 
-        UserId='".$s_id."'"." AND
-        YEAR(DateOnClose)='".$year."'"." AND
-        atr1=0";
+      // $queryGetTotalArmada = "SELECT 
+      //   sum(total_armada) as total
+      // FROM 
+      //   trans_hd
+      // where 
+      //   UserId='".$s_id."'"." AND
+      //   YEAR(tgl_spk)='".$year."'"." AND
+      //   atr1=0";
+
+        $queryGetTotalArmada = "SELECT 
+         *
+        FROM 
+          trans_hd a,
+          master_user b,
+          trans_detail c
+        where 
+          a.HdId = c.HdId and
+          a.UserId = b.UserId and
+          b.atr1=0 and
+          a.OnClose=1 and
+          -- YEAR(a.tgl_spk)='2023' AND
+         UserId='".$s_id."'"." AND
+          YEAR(a.tgl_spk)='".$year."'"." AND
+          a.atr1=0
+      GROUP BY c.NoSPK, c.turunan 
+      order by c.DtlId desc";
     }
-
     $fetch = mysqli_query($koneksi, $query);
     $dataTotalBiaya = mysqli_fetch_array($fetch);
     
     $fetchTotalArmada = mysqli_query($koneksi, $queryGetTotalArmada);
-    $dataTotalArmada = mysqli_fetch_array($fetchTotalArmada);
+    // $dataTotalArmada = mysqli_fetch_array($fetchTotalArmada);
+    
+    $tempArray = array();
+    while($row = $fetchTotalArmada->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
 
-    $data = ["Total" => $dataTotalBiaya['Total'], "totalDetail" => $dataTotalArmada['total']];
+    $data = ["Total" => $dataTotalBiaya['Total'], "totalDetail" => count($tempArray)];
 
     return $data;
   }
@@ -458,17 +499,38 @@
         a.atr1 IS NULL AND
         a.HdId = b.HdId AND
         b.OnClose=1 AND
-        YEAR(b.DateOnClose)='".$year."'"."AND
-        MONTH(b.DateOnClose)='".$month."'";
+        b.atr1=0 and
+        YEAR(b.tgl_spk)='".$year."'"." AND
+        MONTH(b.tgl_spk)='".$month."'";
       
+      // $queryGetTotalArmada = "SELECT 
+      //   sum(total_armada) as total
+      // FROM 
+      //   trans_hd
+      // where 
+      //   atr1=0 and
+      //   YEAR(tgl_spk)='".$year."'"." AND
+      //   MONTH(tgl_spk)='".$month."'";
+
       $queryGetTotalArmada = "SELECT 
-        sum(total_armada) as total
+        *
       FROM 
-        trans_hd
+        trans_hd a,
+        master_user b,
+        trans_detail c
       where 
-        atr1=0 and
-        YEAR(DateOnClose)='".$year."'"." AND
-        MONTH(DateOnClose)='".$month."'";
+        a.atr1=0 and
+        a.HdId = c.HdId and
+        a.UserId = b.UserId and
+        b.atr1=0 and
+        a.OnClose=1 and
+        -- YEAR(a.tgl_spk)='2023' AND
+        -- month(a.tgl_spk)='01' AND
+        YEAR(a.tgl_spk)='".$year."'"." AND
+        MONTH(a.tgl_spk)='".$month."'"." AND
+        a.atr1=0
+      GROUP BY c.NoSPK, c.turunan 
+      order by c.DtlId desc";
 
     } else {
       $query = "SELECT
@@ -477,31 +539,57 @@
         trans_biayaturunan a,
         trans_hd b
       WHERE 
+        b.atr1=0 and
         a.atr1 IS NULL AND
         a.HdId = b.HdId AND
         b.OnClose=1 AND
         b.UserId='".$s_id."'"."AND
-        YEAR(b.DateOnClose)='".$year."'"."AND
-        MONTH(b.DateOnClose)='".$month."'"; 
+        YEAR(b.tgl_spk)='".$year."'"."AND
+        MONTH(b.tgl_spk)='".$month."'"; 
+
+      // $queryGetTotalArmada = "SELECT 
+      //   sum(total_armada) as total
+      // FROM 
+      //   trans_hd
+      // where 
+      //   UserId='".$s_id."'"." AND
+      //   atr1=0 and
+      //   YEAR(tgl_spk)='".$year."'"." AND
+      //   MONTH(tgl_spk)='".$month."'";
 
       $queryGetTotalArmada = "SELECT 
-        sum(total_armada) as total
+        *
       FROM 
-        trans_hd
+        trans_hd a,
+        master_user b,
+        trans_detail c
       where 
+        a.atr1=0 and
         UserId='".$s_id."'"." AND
-        atr1=0 and
-        YEAR(DateOnClose)='".$year."'"." AND
-        MONTH(DateOnClose)='".$month."'";
+        a.HdId = c.HdId and
+        a.UserId = b.UserId and
+        b.atr1=0 and
+        a.OnClose=1 and
+        -- YEAR(a.tgl_spk)='2023' AND
+        YEAR(a.tgl_spk)='".$year."'"." AND
+        MONTH(tgl_spk)='".$month."'"." AND
+        a.atr1=0
+      GROUP BY c.NoSPK, c.turunan 
+      order by c.DtlId desc";
     }
 
     $fetch = mysqli_query($koneksi, $query);
     $dataTotalBiaya = mysqli_fetch_array($fetch);
     
     $fetchTotalArmada = mysqli_query($koneksi, $queryGetTotalArmada);
-    $dataTotalArmada = mysqli_fetch_array($fetchTotalArmada);
+    // $dataTotalArmada = mysqli_fetch_array($fetchTotalArmada);
 
-    $data = ["Total" => $dataTotalBiaya['Total'], "totalDetail" => $dataTotalArmada['total']];
+    $tempArray = array();
+    while($row = $fetchTotalArmada->fetch_assoc()) {
+      $tempArray[] = $row;
+    }
+
+    $data = ["Total" => $dataTotalBiaya['Total'], "totalDetail" => count($tempArray)];
     return $data;
   }
 
@@ -518,12 +606,13 @@
         trans_biayaturunan a,
         trans_hd c 
       WHERE 
+        c.atr1=0 and
         -- a.UserId = c.UserId AND 
         a.HdId = c.HdId AND
         c.OnClose = 1 AND
         a.atr1 IS NULL AND 
         -- c.UserId = 17 AND
-        YEAR(c.DateOnClose) = '$year'
+        YEAR(c.tgl_spk) = '$year'
       GROUP BY 
         c.UserId";
     } else {
@@ -540,7 +629,7 @@
         c.OnClose = 1 AND
         a.atr1 IS NULL AND 
         c.UserId = '".$s_id."'"."AND
-        YEAR(c.DateOnClose) = '$year'
+        YEAR(c.tgl_spk) = '$year'
       GROUP BY 
         c.UserId";
     }

@@ -62,6 +62,7 @@
         left join master_customer h on a.CustId = h.CustId
       WHERE 
         b.atr1 = 0 AND
+        a.atr1=0 and
         a.tgl_spk BETWEEN "."'".$start."'"." AND "."'".$end."'";
     } else {
       $query = "SELECT
@@ -103,6 +104,7 @@
         left join master_customer h on a.CustId = h.CustId
       WHERE 
       b.atr1 = 0 AND
+      a.atr1=0 and
       -- b.create_date BETWEEN "."'".$start." 00:00:00'"." AND "."'".$end." 23:59:59'"." AND
       a.tgl_spk BETWEEN "."'".$start."'"." AND "."'".$end."'"." AND
       b.UserId = '".$s_id."'";
@@ -155,16 +157,18 @@
       trans_detail td
       left join trans_hd th on td.HdId = th.HdId
       left join master_user mu on td.UserId =mu.UserId 
-      left join trans_biayaturunan tb on td.NoSPK = tb.NoSPK and td.turunan = tb.Turunan  
+      left join trans_biayaturunan tb on td.NoSPK = tb.NoSPK and td.turunan = tb.Turunan and th.HdId = tb.HdId
       left join master_kota mk1 on th.kota_kirim_id = mk1.Id or th.kota_kirim_id is NULL
         left join master_kota mk2 on th.kota_tujuan_id = mk2.Id or th.kota_tujuan_id is null
         left join master_customer mc on th.CustId = mc.CustId	
     where
       td.HdId = th.HdId and 
       mu.UserId =th.UserId and 
-      -- mu.atr1 = 0 and
+      th.atr1=0 and
       th.tgl_spk BETWEEN "."'".$start."'"." AND "."'".$end."'"." AND
-      td.NoSPK = tb.NoSPK
+      td.atr1=0
+      -- mu.atr1 = 0 and
+      -- td.NoSPK = tb.NoSPK
     GROUP BY td.NoSPK, td.turunan 
     order by td.DtlId desc";
     } else {
@@ -200,13 +204,14 @@
       trans_detail td
       left join trans_hd th on td.HdId = th.HdId
       left join master_user mu on td.UserId =mu.UserId 
-      left join trans_biayaturunan tb on td.NoSPK = tb.NoSPK and td.turunan = tb.Turunan  
+      left join trans_biayaturunan tb on td.NoSPK = tb.NoSPK and td.turunan = tb.Turunan and th.HdId = tb.HdId
       left join master_kota mk1 on th.kota_kirim_id = mk1.Id or th.kota_kirim_id is NULL
         left join master_kota mk2 on th.kota_tujuan_id = mk2.Id or th.kota_tujuan_id is null
         left join master_customer mc on th.CustId = mc.CustId	
     where
       td.HdId = th.HdId and 
       mu.UserId =th.UserId and 
+      th.atr1=0 and
       -- mu.atr1 = 0 and
       td.NoSPK = tb.NoSPK and
       th.tgl_spk BETWEEN "."'".$start."'"." AND "."'".$end."'"." AND
