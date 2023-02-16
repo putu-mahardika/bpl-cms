@@ -632,7 +632,10 @@
       //   a.atr1=0";
 
       $queryGetTotalArmada = "SELECT 
-         *
+         a.HdId,
+         c.DtlId
+         c.NoSPK,
+         c.turunan,
         FROM 
           trans_hd a,
           master_user b,
@@ -671,7 +674,10 @@
       //   atr1=0";
 
         $queryGetTotalArmada = "SELECT 
-         *
+         a.HdId,
+         c.DtlId
+         c.NoSPK,
+         c.turunan,
         FROM 
           trans_hd a,
           master_user b,
@@ -729,7 +735,10 @@
       //   MONTH(tgl_spk)='".$month."'";
 
       $queryGetTotalArmada = "SELECT 
-        *
+        a.HdId,
+        c.DtlId
+        c.NoSPK,
+        c.turunan,
       FROM 
         trans_hd a,
         master_user b,
@@ -774,7 +783,10 @@
       //   MONTH(tgl_spk)='".$month."'";
 
       $queryGetTotalArmada = "SELECT 
-        *
+        a.HdId,
+        c.DtlId
+        c.NoSPK,
+        c.turunan,
       FROM 
         trans_hd a,
         master_user b,
