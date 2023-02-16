@@ -985,6 +985,9 @@
                         Pergerakan Total Biaya Keseluruhan Setiap Sales
                         <span data-toggle="tooltip" title="Menampilkan jumlah biaya Shipment dan biaya Trucking setiap Sales"><i class="fa fa-info-circle"></i></span>
                       </h6>
+                      <p class="text-xs mb-0"><em>note :</em></p>
+                      <p class="text-xs mb-0"><em>Biaya Shipment terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
                       <div class="chart-area">
                         <canvas id="ChartAll3"></canvas>
                       </div>
@@ -1034,23 +1037,38 @@
                     <li class="nav-item">
                       <a class="nav-link" id="truckingTable-tab" data-toggle="tab" href="#truckingTable" role="tab" aria-controls="truckingTable" aria-selected="false">Trucking</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="allTable-tab" data-toggle="tab" href="#allTable" role="tab" aria-controls="allTable" aria-selected="false">All</a>
+                    </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active" id="shipmentTable" role="tabpanel" aria-labelledby="shipmentTable-tab">
-                    <div class="p-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Transaksi Shipment Setiap Sales</h6>
-                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
-                      <div id="userSummaryShipmentTable"></div>
+                    <div class="tab-pane fade show active" id="shipmentTable" role="tabpanel" aria-labelledby="shipmentTable-tab">
+                      <div class="p-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Transaksi Shipment Setiap Sales</h6>
+                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <div id="userSummaryShipmentTable"></div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="truckingTable" role="tabpanel" aria-labelledby="truckingTable-tab">
+                      <div class="p-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Rit Trucking Setiap Sales</h6>
+                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <div id="userSummaryTable"></div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="allTable" role="tabpanel" aria-labelledby="allTable-tab">
+                      <div class="p-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                          Pergerakan Total Biaya Shipment dan Trucking Setiap Sales
+                          <span data-toggle="tooltip" title="Menampilkan total biaya Shipment dan biaya Trucking setiap Sales"><i class="fa fa-info-circle"></i></span>
+                        </h6>
+                        <p class="text-xs mb-0"><em>note :</em></p>
+                        <p class="text-xs mb-0"><em>Biaya Shipment terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <div id="userAllSummaryTable"></div>
+                      </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="truckingTable" role="tabpanel" aria-labelledby="truckingTable-tab">
-                    <div class="p-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Rit Trucking Setiap Sales</h6>
-                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
-                      <div id="userSummaryTable"></div>
-                    </div>
-                  </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -2453,6 +2471,100 @@
       }).dxDataGrid('instance');
 
       
+    });
+
+  </script>
+
+<script>
+    $(document).ready(() => {
+      // console.log('aaa');
+      // Globalize.culture().numberFormat.currency.symbol = "Rp";
+      // Globalize.culture().numberFormat.currency[','] = ".";
+      // Globalize.culture().numberFormat.currency['.'] = ",";
+      var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
+      dataGrid = $('#userAllSummaryTable').dxDataGrid({
+        // dataSource: generateData(100000),
+        dataSource: "../../config/dashboardController.php?getAllSalesSummary=true&tahun=<?php echo $tahun ?>",
+        // keyExpr: 'id',
+        // allowColumnReordering: true,
+        allowColumnResizing: true,
+        columnAutoWidth: true,
+        selection: {
+          mode: 'single',
+        },
+        showBorders: true,
+        showRowLines: true,
+        groupPanel: {
+          visible: false,
+        },
+        filterRow: {
+          visible: false,
+          applyFilter: 'auto',
+        },
+        searchPanel: {
+          visible: false,
+          width: 240,
+          placeholder: 'Search...',
+        },
+        headerFilter: {
+          visible: false,
+        },
+        columnChooser: {
+          enabled: false,
+          mode: 'select',
+        },
+        columnAutoWidth: true,
+        columns: [
+          {
+            caption: 'Nama',
+            dataField: 'Nama'
+          },
+          {
+            // caption: 'Sales/Rit',
+            // cellTemplate: function(container, options) {
+            //   // container.html(`${options.row.rowIndex + 1}`);
+            //   // let datax = options.row.data
+            //   container.html(`
+            //   <div class="row my-1">
+            //       <div class="col-auto">
+            //           <div> Rp ${new Intl.NumberFormat('id-ID').format(options.row.data.Total)} / ${new Intl.NumberFormat('id-ID').format(options.row.data.Rit)} Rit</div>
+            //       </div>
+            //   </div>
+
+            //   `);
+            // }
+            caption: 'Sales',
+            dataField: 'Total',
+            dataType: 'number',
+            // alignment: 'center',
+            format: 'currency',
+            customizeText: function(cellInfo) {
+                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+            },
+            width: 300
+          }
+          // {
+          //     dataField: 'Count',
+          //     caption: 'Shipment',
+          //     // alignment: 'center',
+          //     width: 100
+          // }
+        ],
+        scrolling: {
+          rowRenderingMode: 'virtual',
+        },
+        paging: {
+          pageSize: 5,
+        },
+        pager: {
+          visible: true,
+          allowedPageSizes: [5, 10, 'all'],
+          showPageSizeSelector: true,
+          showInfo: true,
+          showNavigationButtons: true,
+        },
+      }).dxDataGrid('instance');
+
     });
 
   </script>

@@ -120,7 +120,21 @@
     $resArrayAllDataCloseChart3 = sumDataChart($resArrayDataCloseChart3, $resArrayShipmentDataCloseChart3);
 
     $resArray = [$resArrayAllDataOpenChart3, $resArrayAllDataCloseChart3, $arrayUser[1]];
+  
+  } elseif (isset($_GET['getAllSalesSummary'])) {
+    $arrayUser = getUser($koneksi);
+    $arrayUserLength = count($arrayUser);
+    $arrayUserCloseShipment = getUserCloseShipment($koneksi, $year);
+
+    $resArrayDataCloseChart3 = getDataCloseChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
+
+    $resArrayShipmentDataCloseChart3 = getShipmentDataCloseChart3($koneksi, $year, $arrayUser[0], $arrayUserCloseShipment, $akses, $s_id);
+
+    $resArrayAllSalesSummary = combineAllSalesDataClose($arrayUser, $resArrayDataCloseChart3, $resArrayShipmentDataCloseChart3);
+
+    $resArray = $resArrayAllSalesSummary;
   }
+  
 
   echo json_encode($resArray);
 
@@ -128,7 +142,22 @@
 
 
 
-  
+
+
+  function combineAllSalesDataClose($arrUser, $arrTrucking, $arrShipment) {
+    $totalUser = count($arrUser[0]);
+    $arrUsername = $arrUser[1];
+    $array = array();
+
+    for ($i=0; $i < $totalUser; $i++) { 
+      $array[$i] = [
+        'Nama' => $arrUsername[$i],
+        'Total' => (float)$arrTrucking[$i]+(float)$arrShipment[$i]
+      ];
+    }
+
+    return $array;
+  }
 
   function combineShipmentDataClose($arrUser, $arrDataBiaya, $arrCount) {
     $totalUser = count($arrUser[0]);
