@@ -693,7 +693,7 @@
         stateStoring: {
           enabled: true,
           type: 'localStorage',
-          storageKey: 'storage',
+          storageKey: 'storageDetailTrucking',
         },
         groupPanel: {
           visible: true,
@@ -720,7 +720,7 @@
         },
         onExporting(e) {
           const workbook = new ExcelJS.Workbook();
-          const worksheet = workbook.addWorksheet('CountriesPopulation');
+          const worksheet = workbook.addWorksheet('Detail Trucking');
 
           DevExpress.excelExporter.exportDataGrid({
             component: e.component,
@@ -757,7 +757,7 @@
 
           }).then(() => {
             workbook.xlsx.writeBuffer().then((buffer) => {
-              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Truck - PT Berkah Permata Logistik.xlsx');
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik.xlsx');
             });
           });
           e.cancel = true;

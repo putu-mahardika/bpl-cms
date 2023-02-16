@@ -693,7 +693,7 @@
         stateStoring: {
           enabled: true,
           type: 'localStorage',
-          storageKey: 'storage',
+          storageKey: 'storageBiayaTrucking',
         },
         groupPanel: {
           visible: true,
@@ -720,7 +720,7 @@
         },
         onExporting(e) {
           const workbook = new ExcelJS.Workbook();
-          const worksheet = workbook.addWorksheet('CountriesPopulation');
+          const worksheet = workbook.addWorksheet('detail Biaya Trucking');
 
           DevExpress.excelExporter.exportDataGrid({
             component: e.component,
@@ -743,7 +743,7 @@
             headerRow.height = 30;
             worksheet.mergeCells(2, 1, 2, 19);
 
-            headerRow.getCell(1).value = 'Laporan Detail Pergerakan Truck - PT Berkah Permata Logistik';
+            headerRow.getCell(1).value = 'Laporan Detail Biaya Pergerakan Truck - PT Berkah Permata Logistik';
             headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 20 };
             headerRow.getCell(1).alignment = { horizontal: 'center' };
             
@@ -757,7 +757,7 @@
 
           }).then(() => {
             workbook.xlsx.writeBuffer().then((buffer) => {
-              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Pergerakan Truck - PT Berkah Permata Logistik.xlsx');
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Laporan Detail Biaya Pergerakan Truck - PT Berkah Permata Logistik.xlsx');
             });
           });
           e.cancel = true;
