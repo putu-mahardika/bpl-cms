@@ -675,9 +675,9 @@
 
         $queryGetTotalArmada = "SELECT 
          a.HdId,
-         c.DtlId
+         c.DtlId,
          c.NoSPK,
-         c.turunan,
+         c.turunan
         FROM 
           trans_hd a,
           master_user b,
