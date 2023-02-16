@@ -633,9 +633,9 @@
 
       $queryGetTotalArmada = "SELECT 
          a.HdId,
-         c.DtlId
+         c.DtlId,
          c.NoSPK,
-         c.turunan,
+         c.turunan
         FROM 
           trans_hd a,
           master_user b,
@@ -716,8 +716,11 @@
         SUM(a.Total) AS Total
       FROM 
         trans_biayaturunan a,
-        trans_hd b
+        trans_hd b,
+        master_user c
       WHERE 
+        b.UserId = c.UserId and
+        c.atr1=0 and
         a.atr1 IS NULL AND
         a.HdId = b.HdId AND
         b.OnClose=1 AND
