@@ -842,21 +842,24 @@
             caption: 'Handling 1',
             dataField: 'totalHandlingTurunan1',
             customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+                // return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+                return 'Rp ' + cellInfo.value;
             },
           },
           {
             caption: 'Handling Next',
             dataField: 'totalHandlingTurunan2',
             customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+                // return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+                return 'Rp ' + cellInfo.value;
             },
           },
           {
             caption: 'Total Handling',
             dataField: 'totalHandling',
             customizeText: function(cellInfo) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+                // return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+                return 'Rp ' + cellInfo.value;
             },
           },
           // {
