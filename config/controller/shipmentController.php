@@ -821,7 +821,8 @@
           break;
         }
       }
-      $data['totalHandling'] = number_format($temp,0,',','.');
+      $data['totalHandling'] = $temp;
+      // $data['totalHandling'] = number_format($temp,0,',','.');
 
       foreach ($arrayTempHandlingTurunan1 as $key1 => &$dataHandlingTurunan1) {
         if ($data['id'] == $dataHandlingTurunan1['id_shipment']) {
@@ -830,8 +831,8 @@
           break;
         }
       }
-      // $data['totalHandlingTurunan1'] = $temp;
-      $data['totalHandlingTurunan1'] = number_format($temp,0,',','.');
+      $data['totalHandlingTurunan1'] = $temp;
+      // $data['totalHandlingTurunan1'] = number_format($temp,0,',','.');
 
       foreach ($arrayTempHandlingTurunan2 as $key1 => &$dataHandlingTurunan2) {
         if ($data['id'] == $dataHandlingTurunan2['id_shipment']) {
@@ -839,7 +840,8 @@
           break;
         }
       }
-      $data['totalHandlingTurunan2'] = number_format($temp,0,',','.');
+      $data['totalHandlingTurunan2'] = $temp;
+      // $data['totalHandlingTurunan2'] = number_format($temp,0,',','.');
     }
 
     $data = json_encode($array);

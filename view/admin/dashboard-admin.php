@@ -16,6 +16,7 @@
   }
   date_default_timezone_set("Asia/Jakarta");
   $datetime = date('Y');
+  $month = date('m');
   // $prevdatetime = $datetime-1;
   $tahun = $_GET['tahun'];
   $prevdatetime = (int)$tahun-1;
@@ -745,7 +746,7 @@
                     </div>
                   </div>
                   <div class="text-xs">
-                    note : terhitung dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong>
+                    Keterangan : Terhitung dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong>
                   </div>
                 </div>
               </div>
@@ -761,13 +762,13 @@
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Shipment This Year</p>
                           <p id="acumulateShipmentThisYear" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="shipmentThisYear"></span> Shipment</p>
-                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan Shipment dengan Status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
                         </div>
                         <div class="col-lg-6 col-md-12 mb-lg-0 mb-4 pl-2 pl-lg-3 pr-2">
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Shipment This Month</p>
                           <p id="acumulateShipmentThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="shipmentThisMonth"></span> Shipment</p>
-                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan Shipment dengan Status <strong>Close</strong> pada bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>
                         </div>
                       </div>
                     </div>
@@ -781,13 +782,13 @@
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Sales This Year</p>
                           <p id="acumulateThisYear" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="ritThisYear"></span> Rit</p>
-                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>Tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan <strong>Tgl SPK</strong> dengan Status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
                         </div>
                         <div class="col-lg-6 col-md-12 mb-lg-0 mb-4 pl-2 pl-lg-3 pr-2">
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Sales This Month</p>
                           <p id="acumulateThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="ritThisMonth"></span> Rit</p>
-                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> pada bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>
                         </div>
                       </div>
                     </div>
@@ -816,7 +817,9 @@
                   <div class="tab-pane fade show active" id="shipmentChart1" role="tabpanel" aria-labelledby="shipmentChart1-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Shipment</h6>
-                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                      <p class="text-xs mb-0"><em>- Terhitung berdasarkan Shipment di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                       <div class="chart-area">
                         <canvas id="ChartShipment1"></canvas>
                       </div>
@@ -825,7 +828,9 @@
                   <div class="tab-pane fade" id="truckingChart1" role="tabpanel" aria-labelledby="truckingChart1-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Trucking</h6>
-                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                        <p class="text-xs mb-0"><em>- Terhitung berdasarkan <strong>tgl SPK</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                         <div class="chart-area">
                         <canvas id="Chart1"></canvas>
                       </div>
@@ -883,7 +888,9 @@
                   <div class="tab-pane fade show active" id="shipmentChart2" role="tabpanel" aria-labelledby="shipmentChart2-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment</h6>
-                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                      <p class="text-xs mb-0"><em>- Terhitung berdasarkan Shipment di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                       <div class="chart-area">
                         <canvas id="ChartShipment2"></canvas>
                       </div>
@@ -892,7 +899,9 @@
                   <div class="tab-pane fade" id="truckingChart2" role="tabpanel" aria-labelledby="truckingChart2-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Trucking</h6>
-                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                        <p class="text-xs mb-0"><em>- Terhitung berdasarkan <strong>tgl SPK</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</strong></em></p>
                         <div class="chart-area">
                         <canvas id="Chart2"></canvas>
                       </div>
@@ -904,9 +913,11 @@
                         Pergerakan Total Biaya Keseluruhan
                         <span data-toggle="tooltip" title="Menampilkan jumlah biaya Shipment dan biaya Trucking tiap bulan"><i class="fa fa-info-circle"></i></span>
                       </h6>
-                      <p class="text-xs mb-0"><em>note :</em></p>
-                      <p class="text-xs mb-0"><em>Biaya Shipment terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
-                      <p class="text-xs mb-0"><em>Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Keterangan :</em></p>
+                      <p class="text-xs mb-0"><em>- Biaya Shipment terhitung berdasarkan Shipment di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
+                      <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                       <div class="chart-area">
                         <canvas id="ChartAll2"></canvas>
                       </div>
@@ -964,7 +975,9 @@
                   <div class="tab-pane fade show active" id="shipmentChart3" role="tabpanel" aria-labelledby="shipmentChart3-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment Setiap Sales</h6>
-                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                      <p class="text-xs mb-0"><em>- Terhitung berdasarkan Shipment di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                       <div class="chart-area">
                         <canvas id="ChartShipment3"></canvas>
                       </div>
@@ -973,7 +986,9 @@
                   <div class="tab-pane fade" id="truckingChart3" role="tabpanel" aria-labelledby="truckingChart3-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Trucking Setiap Sales</h6>
-                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                      <p class="text-xs mb-0"><em>- Terhitung berdasarkan <strong>tgl SPK</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                       <div class="chart-area">
                         <canvas id="Chart3"></canvas>
                       </div>
@@ -985,9 +1000,11 @@
                         Pergerakan Total Biaya Keseluruhan Setiap Sales
                         <span data-toggle="tooltip" title="Menampilkan jumlah biaya Shipment dan biaya Trucking setiap Sales"><i class="fa fa-info-circle"></i></span>
                       </h6>
-                      <p class="text-xs mb-0"><em>note :</em></p>
-                      <p class="text-xs mb-0"><em>Biaya Shipment terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
-                      <p class="text-xs mb-0"><em>Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                      <p class="text-xs mb-0"><em>- Biaya Shipment terhitung berdasarkan Shipment di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
+                      <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                       <div class="chart-area">
                         <canvas id="ChartAll3"></canvas>
                       </div>
@@ -1045,14 +1062,18 @@
                     <div class="tab-pane fade show active" id="shipmentTable" role="tabpanel" aria-labelledby="shipmentTable-tab">
                       <div class="p-3">
                         <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Transaksi Shipment Setiap Sales</h6>
-                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>Keterangan : </em></p>
+                        <p class="text-xs mb-0"><em>- Terhitung berdasarkan Shipment dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                         <div id="userSummaryShipmentTable"></div>
                       </div>
                     </div>
                     <div class="tab-pane fade" id="truckingTable" role="tabpanel" aria-labelledby="truckingTable-tab">
                       <div class="p-3">
                         <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Rit Trucking Setiap Sales</h6>
-                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>Keterangan</em></p>
+                        <p class="text-xs mb-0"><em>- Terhitung berdasarkan <strong>tgl SPK</strong> dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                         <div id="userSummaryTable"></div>
                       </div>
                     </div>
@@ -1062,9 +1083,11 @@
                           Pergerakan Total Biaya Shipment dan Trucking Setiap Sales
                           <span data-toggle="tooltip" title="Menampilkan total biaya Shipment dan biaya Trucking setiap Sales"><i class="fa fa-info-circle"></i></span>
                         </h6>
-                        <p class="text-xs mb-0"><em>note :</em></p>
-                        <p class="text-xs mb-0"><em>Biaya Shipment terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
-                        <p class="text-xs mb-0"><em>Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>Keterangan :</em></p>
+                        <p class="text-xs mb-0"><em>- Biaya Shipment terhitung berdasarkan Shipment dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>- Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
+                        <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
+                        <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                         <div id="userAllSummaryTable"></div>
                       </div>
                     </div>
@@ -1721,16 +1744,16 @@
         scrolling: {
           rowRenderingMode: 'virtual',
         },
-        paging: {
-          pageSize: 5,
-        },
-        pager: {
-          visible: true,
-          allowedPageSizes: [5, 10, 'all'],
-          showPageSizeSelector: true,
-          showInfo: true,
-          showNavigationButtons: true,
-        },
+        // paging: {
+        //   pageSize: 5,
+        // },
+        // pager: {
+        //   visible: true,
+        //   allowedPageSizes: [5, 10, 'all'],
+        //   showPageSizeSelector: true,
+        //   showInfo: true,
+        //   showNavigationButtons: true,
+        // },
       }).dxDataGrid('instance');
 
       
@@ -2458,16 +2481,16 @@
         scrolling: {
           rowRenderingMode: 'virtual',
         },
-        paging: {
-          pageSize: 5,
-        },
-        pager: {
-          visible: true,
-          allowedPageSizes: [5, 10, 'all'],
-          showPageSizeSelector: true,
-          showInfo: true,
-          showNavigationButtons: true,
-        },
+        // paging: {
+        //   pageSize: 5,
+        // },
+        // pager: {
+        //   visible: true,
+        //   allowedPageSizes: [5, 10, 'all'],
+        //   showPageSizeSelector: true,
+        //   showInfo: true,
+        //   showNavigationButtons: true,
+        // },
       }).dxDataGrid('instance');
 
       
@@ -2553,16 +2576,16 @@
         scrolling: {
           rowRenderingMode: 'virtual',
         },
-        paging: {
-          pageSize: 5,
-        },
-        pager: {
-          visible: true,
-          allowedPageSizes: [5, 10, 'all'],
-          showPageSizeSelector: true,
-          showInfo: true,
-          showNavigationButtons: true,
-        },
+        // paging: {
+        //   pageSize: 5,
+        // },
+        // pager: {
+        //   visible: true,
+        //   allowedPageSizes: [5, 10, 'all'],
+        //   showPageSizeSelector: true,
+        //   showInfo: true,
+        //   showNavigationButtons: true,
+        // },
       }).dxDataGrid('instance');
 
     });
