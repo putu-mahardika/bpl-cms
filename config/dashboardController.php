@@ -26,9 +26,10 @@
   $arrayMonthLength = count($arrayMonth);
   $resArray = array();
 
+  // ========== TRUCKING ===========
   if(isset($_GET['getDataChart1'])) {
-    $resArrayDataOpenChart1 = getDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
-    $resArrayDataCloseChart1 = getDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArrayDataOpenChart1 = getNewDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArrayDataCloseChart1 = getNewDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
     $resArray = [$resArrayDataOpenChart1, $resArrayDataCloseChart1, $arrayMonth];
 
   } elseif (isset($_GET['getDataChart2'])) {
@@ -54,8 +55,7 @@
     $resArray = $resArraySalesSummary;
 
 
-
-
+  // ========== SHIPMENT ==========
   } elseif (isset($_GET['getShipmentDataChart1'])) {
     $resArrayShipmentDataOpenChart1 = getShipmentDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
     $resArrayShipmentDataCloseChart1 = getShipmentDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id);
@@ -82,8 +82,44 @@
 
   } elseif (isset($_GET['getShipmentSalesSummary'])) {
     $arrayUser = getUser($koneksi);
-    $resArrayShipmentSalesSummary = getShipmentSalesSummary($koneksi, $year, $arrayUser, $akses, $s_id);
+    $arrayUserLength = count($arrayUser);
+    $arrayUserCloseShipment = getUserCloseShipment($koneksi, $year);
+    $resArrayShipmentDataCloseChart3 = getShipmentDataCloseChart3($koneksi, $year, $arrayUser[0], $arrayUserCloseShipment, $akses, $s_id);
+    $resArrayCountDataCloseChart3 = getCountShipmentDataCloseChart3($koneksi, $arrayUser[0], $year, $akses);
+    $resArrayShipmentSalesSummary = combineShipmentDataClose($arrayUser, $resArrayShipmentDataCloseChart3, $resArrayCountDataCloseChart3);
     $resArray = $resArrayShipmentSalesSummary;
+  
+
+  // ========== ALL ==========
+  // } elseif (isset($_GET['getAllDataChart1'])) {
+
+  } elseif (isset($_GET['getAllDataChart2'])) {
+    $resArrayDataOpenChart2 = getDataOpenChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArrayDataCloseChart2 = getDataCloseChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+
+    $resArrayShipmentDataOpenChart2 = getShipmentDataOpenChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+    $resArrayShipmentDataCloseChart2 = getShipmentDataCloseChart2($koneksi, $year, $arrayMonthLength, $akses, $s_id);
+
+    $resArrayAllDataOpenChart2 = sumDataChart($resArrayDataOpenChart2, $resArrayShipmentDataOpenChart2);
+    $resArrayAllDataCloseChart2 = sumDataChart($resArrayDataCloseChart2, $resArrayShipmentDataCloseChart2);
+    
+    $resArray = [$resArrayAllDataOpenChart2, $resArrayAllDataCloseChart2, $arrayMonth];
+
+  } elseif (isset($_GET['getAllDataChart3'])) {
+    $arrayUser = getUser($koneksi);
+    $arrayUserLength = count($arrayUser);
+    $resArrayDataOpenChart3 = getDataOpenChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
+    $resArrayDataCloseChart3 = getDataCloseChart3($koneksi, $year, $arrayUser[0], $akses, $s_id);
+
+    $arrayUserOpenShipment = getUserOpenShipment($koneksi, $year);
+    $arrayUserCloseShipment = getUserCloseShipment($koneksi, $year);
+    $resArrayShipmentDataOpenChart3 = getShipmentDataOpenChart3($koneksi, $year, $arrayUser[0], $arrayUserOpenShipment, $akses, $s_id);
+    $resArrayShipmentDataCloseChart3 = getShipmentDataCloseChart3($koneksi, $year, $arrayUser[0], $arrayUserCloseShipment, $akses, $s_id);
+
+    $resArrayAllDataOpenChart3 = sumDataChart($resArrayDataOpenChart3, $resArrayShipmentDataOpenChart3);
+    $resArrayAllDataCloseChart3 = sumDataChart($resArrayDataCloseChart3, $resArrayShipmentDataCloseChart3);
+
+    $resArray = [$resArrayAllDataOpenChart3, $resArrayAllDataCloseChart3, $arrayUser[1]];
   }
 
   echo json_encode($resArray);
@@ -92,12 +128,68 @@
 
 
 
+  
 
+  function combineShipmentDataClose($arrUser, $arrDataBiaya, $arrCount) {
+    $totalUser = count($arrUser[0]);
+    $arrUsername = $arrUser[1];
+    $array = array();
 
+    for ($i=0; $i < $totalUser; $i++) { 
+      $array[$i] = [
+        'Nama' => $arrUsername[$i],
+        'Total' => $arrDataBiaya[$i],
+        'Count' => $arrCount[$i]
+      ];
+    }
 
+    return $array;
+  }
 
+  function getCountShipmentDataCloseChart3($koneksi, $arrayUserId, $year, $akses) {
+    $arrayUserLength = count($arrayUserId);
+    $array = array();
+    $arrayTemp = array();
+    if ($akses == "Admin") {
+      $query = "select
+        ts.UserId,
+        count(*) as total
+      from 
+        trans_shipment ts,
+        master_user mu 
+      where 
+        ts.UserId=mu.UserId and 
+        mu.atr1=0 and
+        ts.`close`=1 and 
+        year(ts.close_date)='".$year."'
+      group by 
+        ts.UserId";
+      $fetch = mysqli_query($koneksi, $query);
+      while($row = $fetch->fetch_assoc()) {
+        $arrayTemp[] = $row;
+      }
 
+      for ($i=0; $i < $arrayUserLength; $i++) { 
+        $array[$i] = 0;
+        foreach ($arrayTemp as $data) {
+          if($data['UserId'] == $arrayUserId[$i]) {
+            $array[$i] += (double)$data['total'];
+          }
+        }
+      }
+    }
 
+    return $array;
+  }
+
+  function sumDataChart($truckingData, $shipmentData) {
+    $data = array();
+    for ($i=0; $i < count($truckingData); $i++) { 
+      $data[$i] = (float)$truckingData[$i]+(float)$shipmentData[$i];
+    }
+
+    return $data;
+  }
 
   function getUser($koneksi) {
     $array = array();
@@ -226,6 +318,130 @@
       foreach ($tempArray as $data) {
         if($data['month'] == $i+1) {
           $array[$i] = $data['total'];
+        }
+      }
+    }
+
+    return $array;
+  }
+
+  function getNewDataOpenChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
+    $array = array();
+    $tempArray = array();
+    if ($akses == 'Admin') {
+      $query = "select 
+        month(a.tgl_spk) as month
+      from 
+        trans_hd a,
+        master_user b,
+        trans_detail c
+      where
+        a.HdId=c.HdId and
+        a.OnClose=0 and
+        a.atr1=0 and
+        a.UserId=b.UserId and
+        b.atr1=0 and
+        year(a.tgl_spk)='".$year."'
+      group by 
+        month(a.tgl_spk),
+        a.NoSPK,
+        c.turunan ";
+    } else {
+      $query = "select 
+        month(a.tgl_spk) as month
+      from 
+        trans_hd a,
+        master_user b,
+        trans_detail c
+      where
+        a.HdId=c.HdId and
+        a.OnClose=0 and
+        a.atr1=0 and
+        a.UserId=b.UserId and
+        b.atr1=0 and
+        year(a.tgl_spk)='".$year."' and
+        a.UserId='".$s_id."'
+      group by 
+        month(a.tgl_spk),
+        a.NoSPK,
+        c.turunan ";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    // $data = mysqli_fetch_array($fetch);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row['month'];
+    }
+
+    $datas = array_count_values($tempArray);
+
+    for ($i=0; $i < $arrayMonthLength; $i++) { 
+      $array[$i] = 0;
+      foreach ($datas as $key=>$data) {
+        if($key == $i+1) {
+          $array[$i] = $data;
+        }
+      }
+    }
+
+    return $array;
+  }
+
+  function getNewDataCloseChart1($koneksi, $year, $arrayMonthLength, $akses, $s_id) {
+    $array = array();
+    $tempArray = array();
+    if ($akses == 'Admin') {
+      $query = "select 
+        month(a.tgl_spk) as month
+      from 
+        trans_hd a,
+        master_user b,
+        trans_detail c
+      where
+        a.HdId=c.HdId and
+        a.OnClose=1 and
+        a.atr1=0 and
+        a.UserId=b.UserId and
+        b.atr1=0 and
+        year(a.tgl_spk)='".$year."'
+      group by 
+        month(a.tgl_spk),
+        a.NoSPK,
+        c.turunan ";
+    } else {
+      $query = "select 
+        month(a.tgl_spk) as month
+      from 
+        trans_hd a,
+        master_user b,
+        trans_detail c
+      where
+        a.HdId=c.HdId and
+        a.OnClose=1 and
+        a.atr1=0 and
+        a.UserId=b.UserId and
+        b.atr1=0 and
+        year(a.tgl_spk)='".$year."' and
+        a.UserId='".$s_id."'
+      group by 
+        month(a.tgl_spk),
+        a.NoSPK,
+        c.turunan ";
+    }
+
+    $fetch = mysqli_query($koneksi, $query);
+    // $data = mysqli_fetch_array($fetch);
+    while($row = $fetch->fetch_assoc()) {
+      $tempArray[] = $row['month'];
+    }
+
+    $datas = array_count_values($tempArray);
+
+    for ($i=0; $i < $arrayMonthLength; $i++) { 
+      $array[$i] = 0;
+      foreach ($datas as $key=>$data) {
+        if($key == $i+1) {
+          $array[$i] = $data;
         }
       }
     }
@@ -466,7 +682,7 @@
           b.atr1=0 and
           a.OnClose=1 and
           -- YEAR(a.tgl_spk)='2023' AND
-         UserId='".$s_id."'"." AND
+          a.UserId='".$s_id."'"." AND
           YEAR(a.tgl_spk)='".$year."'"." AND
           a.atr1=0
       GROUP BY c.NoSPK, c.turunan 
@@ -565,14 +781,14 @@
         trans_detail c
       where 
         a.atr1=0 and
-        UserId='".$s_id."'"." AND
+        a.UserId='".$s_id."'"." AND
         a.HdId = c.HdId and
         a.UserId = b.UserId and
         b.atr1=0 and
         a.OnClose=1 and
         -- YEAR(a.tgl_spk)='2023' AND
         YEAR(a.tgl_spk)='".$year."'"." AND
-        MONTH(tgl_spk)='".$month."'"." AND
+        MONTH(a.tgl_spk)='".$month."'"." AND
         a.atr1=0
       GROUP BY c.NoSPK, c.turunan 
       order by c.DtlId desc";
@@ -1070,7 +1286,7 @@
       WHERE
         ts.UserId=mu.UserId and
         mu.atr1=0 and
-        ts.id=tsh.id AND
+        ts.id=tsh.id_shipment AND
         ts.is_delete=0 AND
         ts.close=1 AND
         YEAR(close_date)='".$year."'";
@@ -1092,7 +1308,7 @@
         trans_shipment ts,
         trans_shipment_handling tsh
       WHERE
-        ts.id=tsh.id AND
+        ts.id=tsh.id_shipment AND
         ts.is_delete=0 AND
         ts.close=1 AND
         ts.UserId = '".$s_id."'"." AND
@@ -1140,7 +1356,7 @@
       WHERE
         ts.UserId=mu.UserId and
         mu.atr1=0 and
-        ts.id=tsh.id AND
+        ts.id=tsh.id_shipment AND
         ts.is_delete=0 AND
         ts.close=1 AND
         YEAR(ts.close_date)='".$year."'"." AND

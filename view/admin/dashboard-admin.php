@@ -754,60 +754,41 @@
             <div class="col-12">
               <div class="row">
                 <div class="col-lg-6 col-md-12 mb-4">
-                  <div class="card" style="height: 100%;">
+                  <div class="card" style="height:100%;">
                     <div class="card-body">
-                      <p class="font-weight-bold">
-                        <?php if ($_SESSION['hak_akses'] == "Admin") {
-                          echo 'Accumulate Shipment This Year : ';
-                        } else {
-                          echo 'Total Shipment This Year : ';
-                        } ?>
-                        <span id="acumulateShipmentThisYear"></span>
-                          / 
-                        <span id="shipmentThisYear"></span> Shipment
-                      </p>
-                      <p class="font-weight-bold">
-                        <?php if ($_SESSION['hak_akses'] == "Admin") {
-                          echo 'Accumulate Shipment This Month : ';
-                        } else {
-                          echo 'Total Shipment This Month : ';
-                        } ?>
-                        <span id="acumulateShipmentThisMonth"></span>
-                          / 
-                        <span id="shipmentThisMonth"></span> Shipment
-                      </p>
-                      <div class="text-xs">
-                        note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong> 
+                      <div class="row">
+                        <div class="col-lg-6 col-md-12 mb-lg-0 mb-4 pl-2 pr-2 pr-lg-3 border-md-0 border-right">
+                          <p class="font-weight-bold" style="font-size: 14px;">Accumulate Shipment This Year</p>
+                          <p id="acumulateShipmentThisYear" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
+                          <p class="text-right" style="font-size: 14px;">/ <span id="shipmentThisYear"></span> Shipment</p>
+                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        </div>
+                        <div class="col-lg-6 col-md-12 mb-lg-0 mb-4 pl-2 pl-lg-3 pr-2">
+                          <p class="font-weight-bold" style="font-size: 14px;">Accumulate Shipment This Month</p>
+                          <p id="acumulateShipmentThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
+                          <p class="text-right" style="font-size: 14px;">/ <span id="shipmentThisMonth"></span> Shipment</p>
+                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-  
                 <div class="col-lg-6 col-md-12 mb-4">
-                  <div class="card" style="height: 100%;">
+                  <div class="card" style="height:100%;">
                     <div class="card-body">
-                      <p class="font-weight-bold">
-                        <?php if ($_SESSION['hak_akses'] == "Admin") {
-                          echo 'Accumulate Sales This Year : ';
-                        } else {
-                          echo 'Total Sales This Year : ';
-                        } ?>
-                        <span id="acumulateThisYear"></span>
-                          / 
-                        <span id="ritThisYear"></span> Rit
-                      </p>
-                      <p class="font-weight-bold">
-                        <?php if ($_SESSION['hak_akses'] == "Admin") {
-                          echo 'Accumulate Sales This Month : ';
-                        } else {
-                          echo 'Total Sales This Month : ';
-                        } ?>
-                        <span id="acumulateThisMonth"></span>
-                          / 
-                        <span id="ritThisMonth"></span> Rit
-                      </p>
-                      <div class="text-xs">
-                        note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong> 
+                      <div class="row">
+                        <div class="col-lg-6 col-md-12 mb-lg-0 mb-4 pl-2 pr-2 pr-lg-3 border-right">
+                          <p class="font-weight-bold" style="font-size: 14px;">Accumulate Sales This Year</p>
+                          <p id="acumulateThisYear" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
+                          <p class="text-right" style="font-size: 14px;">/ <span id="ritThisYear"></span> Rit</p>
+                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>Tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        </div>
+                        <div class="col-lg-6 col-md-12 mb-lg-0 mb-4 pl-2 pl-lg-3 pr-2">
+                          <p class="font-weight-bold" style="font-size: 14px;">Accumulate Sales This Month</p>
+                          <p id="acumulateThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
+                          <p class="text-right" style="font-size: 14px;">/ <span id="ritThisMonth"></span> Rit</p>
+                          <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -819,7 +800,10 @@
 
             <div class="col-12">
               <div class="card mb-4">
-                <div class="card-body">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Transaksi Tiap Bulan</h6>
+                </div>
+                <div class="card-body pt-0">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active" id="shipmentChart1-tab" data-toggle="tab" href="#shipmentChart1" role="tab" aria-controls="shipmentChart1" aria-selected="true">Shipment</a>
@@ -832,6 +816,7 @@
                   <div class="tab-pane fade show active" id="shipmentChart1" role="tabpanel" aria-labelledby="shipmentChart1-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Shipment</h6>
+                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
                       <div class="chart-area">
                         <canvas id="ChartShipment1"></canvas>
                       </div>
@@ -839,7 +824,8 @@
                   </div>
                   <div class="tab-pane fade" id="truckingChart1" role="tabpanel" aria-labelledby="truckingChart1-tab">
                     <div class="p-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Penjualan</h6>
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Trucking</h6>
+                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
                         <div class="chart-area">
                         <canvas id="Chart1"></canvas>
                       </div>
@@ -878,7 +864,10 @@
 
             <div class="col-12">
               <div class="card mb-4">
-                <div class="card-body">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Transaksi Tiap Bulan</h6>
+                </div>
+                <div class="card-body pt-0">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active" id="shipmentChart2-tab" data-toggle="tab" href="#shipmentChart2" role="tab" aria-controls="shipmentChart2" aria-selected="true">Shipment</a>
@@ -886,11 +875,15 @@
                     <li class="nav-item">
                       <a class="nav-link" id="truckingChart2-tab" data-toggle="tab" href="#truckingChart2" role="tab" aria-controls="truckingChart2" aria-selected="false">Trucking</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="allChart2-tab" data-toggle="tab" href="#allChart2" role="tab" aria-controls="allChart2" aria-selected="false">All</a>
+                    </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="shipmentChart2" role="tabpanel" aria-labelledby="shipmentChart2-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment</h6>
+                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
                       <div class="chart-area">
                         <canvas id="ChartShipment2"></canvas>
                       </div>
@@ -898,9 +891,24 @@
                   </div>
                   <div class="tab-pane fade" id="truckingChart2" role="tabpanel" aria-labelledby="truckingChart2-tab">
                     <div class="p-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya</h6>
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Trucking</h6>
+                        <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
                         <div class="chart-area">
                         <canvas id="Chart2"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="allChart2" role="tabpanel" aria-labelledby="allChart2-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">
+                        Pergerakan Total Biaya Keseluruhan
+                        <span data-toggle="tooltip" title="Menampilkan jumlah biaya Shipment dan biaya Trucking tiap bulan"><i class="fa fa-info-circle"></i></span>
+                      </h6>
+                      <p class="text-xs mb-0"><em>note :</em></p>
+                      <p class="text-xs mb-0"><em>Biaya Shipment terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <p class="text-xs mb-0"><em>Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <div class="chart-area">
+                        <canvas id="ChartAll2"></canvas>
                       </div>
                     </div>
                   </div>
@@ -937,7 +945,10 @@
 
             <div class="col-12">
               <div class="card mb-4">
-                <div class="card-body">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Setiap Sales</h6>
+                </div>
+                <div class="card-body pt-0">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active" id="shipmentChart3-tab" data-toggle="tab" href="#shipmentChart3" role="tab" aria-controls="shipmentChart3" aria-selected="true">Shipment</a>
@@ -945,11 +956,15 @@
                     <li class="nav-item">
                       <a class="nav-link" id="truckingChart3-tab" data-toggle="tab" href="#truckingChart3" role="tab" aria-controls="truckingChart3" aria-selected="false">Trucking</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="allChart3-tab" data-toggle="tab" href="#allChart3" role="tab" aria-controls="allChart3" aria-selected="false">All</a>
+                    </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="shipmentChart3" role="tabpanel" aria-labelledby="shipmentChart3-tab">
                     <div class="p-3">
                       <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Shipment Setiap Sales</h6>
+                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
                       <div class="chart-area">
                         <canvas id="ChartShipment3"></canvas>
                       </div>
@@ -957,9 +972,21 @@
                   </div>
                   <div class="tab-pane fade" id="truckingChart3" role="tabpanel" aria-labelledby="truckingChart3-tab">
                     <div class="p-3">
-                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Transaksi Setiap Sales</h6>
-                        <div class="chart-area">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya Trucking Setiap Sales</h6>
+                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <div class="chart-area">
                         <canvas id="Chart3"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="allChart3" role="tabpanel" aria-labelledby="allChart3-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">
+                        Pergerakan Total Biaya Keseluruhan Setiap Sales
+                        <span data-toggle="tooltip" title="Menampilkan jumlah biaya Shipment dan biaya Trucking setiap Sales"><i class="fa fa-info-circle"></i></span>
+                      </h6>
+                      <div class="chart-area">
+                        <canvas id="ChartAll3"></canvas>
                       </div>
                     </div>
                   </div>
@@ -994,16 +1021,36 @@
               </div>
             </div> -->
 
-            <div class="col-lg-12 mb-4">
-              <div class="card">
-                <div class="card-header pt-3 pb-0">
-                  <h6 class="m-0 font-weight-bold text-primary">Yearly Sales Users</h6>
-                  <div class="text-xs">
-                    note : terhitung berdasarkan Transaksi dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong>
+            <div class="col-12">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Transaksi Setiap Sales</h6>
+                </div>
+                <div class="card-body pt-0">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="shipmentTable-tab" data-toggle="tab" href="#shipmentTable" role="tab" aria-controls="shipmentTable" aria-selected="true">Shipment</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="truckingTable-tab" data-toggle="tab" href="#truckingTable" role="tab" aria-controls="truckingTable" aria-selected="false">Trucking</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="shipmentTable" role="tabpanel" aria-labelledby="shipmentTable-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Transaksi Shipment Setiap Sales</h6>
+                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan Shipment dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <div id="userSummaryShipmentTable"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="truckingTable" role="tabpanel" aria-labelledby="truckingTable-tab">
+                    <div class="p-3">
+                      <h6 class="m-0 font-weight-bold text-primary">Pergerakan Total Biaya dan Rit Trucking Setiap Sales</h6>
+                      <p class="text-xs mb-0"><em>note : terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> dari <strong><?php echo $prevdatetime ?></strong> sampai <strong><?php echo $tahun ?></strong></em></p>
+                      <div id="userSummaryTable"></div>
+                    </div>
                   </div>
                 </div>
-                <div class="card-body">
-                  <div id="userSummaryTable"></div>
                 </div>
               </div>
             </div>
@@ -1209,7 +1256,7 @@
             labels: labelChart1,
             datasets: [
               {
-                label: "Transaksi Open",
+                label: "Rit Open",
                 lineTension: 0.3,
                 borderColor: "rgba(78, 115, 223, 1)",
                 pointRadius: 3,
@@ -1225,7 +1272,7 @@
                 backgroundColor: "rgba(78, 115, 223, 1)",
               },
               {
-                label: "Transaksi Close",
+                label: "Rit Close",
                 lineTension: 0.3,
                 borderColor: "rgba(255, 51, 51, 1)",
                 pointRadius: 3,
@@ -1578,9 +1625,9 @@
     })
   </script>
 
-<script>
-  $(document).ready(() => {
-    // console.log('aaa');
+  <script>
+    $(document).ready(() => {
+      // console.log('aaa');
       // Globalize.culture().numberFormat.currency.symbol = "Rp";
       // Globalize.culture().numberFormat.currency[','] = ".";
       // Globalize.culture().numberFormat.currency['.'] = ",";
@@ -2004,13 +2051,13 @@
             labels: labelChartShipment3,
             datasets: [
               {
-                label: "Transaksi Open",
+                label: "Shipment Open",
                 borderColor: "rgba(78, 115, 223, 1)",
                 backgroundColor: "rgba(78, 115, 223, 1)",
                 data: openChartShipment3,
               },
               {
-                label: "Transaksi Close",
+                label: "Shipment Close",
                 borderColor: "rgba(255, 51, 51, 1)",
                 backgroundColor: "rgba(255, 51, 51, 1)",
                 data: closeChartShipment3,
@@ -2076,6 +2123,342 @@
       }
     });
   </script>
+
+  <script>
+    var dataChartAll2 = [];
+    var openChartAll2 = [];
+    var closeChartAll2 = [];
+    var labelChartAll2 = [];
+
+    // get data chart All 2
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getAllDataChart2: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        // console.log('res', response);
+        dataChartAll2 = response;
+        for(let i=0;i<dataChartAll2[0].length;i++) {
+          openChartAll2.push(Number(dataChartAll2[0][i]))
+        }
+        for(let i=0;i<dataChartAll2[1].length;i++) {
+          closeChartAll2.push(Number(dataChartAll2[1][i]))
+        }
+        for(let i=0;i<dataChartAll2[2].length;i++) {
+          labelChartAll2.push((dataChartAll2[2][i]))
+        }
+        // console.log('open', labelChartShipment2);
+
+        // Chart 2
+        var ctx1 = document.getElementById("ChartAll2");
+        var myLineChart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: labelChartAll2,
+            datasets: [
+              {
+                label: "Open",
+                lineTension: 0.3,
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: openChartAll2,
+                fill: false,
+                backgroundColor: "rgba(78, 115, 223, 1)",
+              },
+              {
+                label: "Close",
+                lineTension: 0.3,
+                borderColor: "rgba(255, 51, 51, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointBorderColor: "rgba(255, 51, 51, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(255, 51, 51, 1)",
+                pointHoverBorderColor: "rgba(255, 51, 51, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: closeChartAll2,
+                fill: false,
+                backgroundColor: "rgba(255, 51, 51, 1)",
+              }
+            ],
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  // maxTicksLimit: 7
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      },
+      error: function(response) {
+        console.log('err', response);
+      }
+    });
+  </script>
+
+  <script>
+    var dataChartAll3 = [];
+    var openChartAll3 = [];
+    var closeChartAll3 = [];
+    var labelChartAll3 = [];
+
+    // get data chart 3
+    $.ajax({
+      url: '../../config/dashboardController.php',
+      type: 'get',
+      data: {
+        getAllDataChart3: true,
+        tahun: <?php echo $tahun ?>
+      },
+      dataType: 'json',
+      success: function(response){
+        // console.log('res', response);
+        dataChartAll3 = response;
+        for(let i=0;i<dataChartAll3[0].length;i++) {
+          openChartAll3.push(Number(dataChartAll3[0][i]))
+        }
+        for(let i=0;i<dataChartAll3[1].length;i++) {
+          closeChartAll3.push(Number(dataChartAll3[1][i]))
+        }
+        for(let i=0;i<dataChartAll3[2].length;i++) {
+          labelChartAll3.push((dataChartAll3[2][i]))
+        }
+        // console.log('open', labelChartShipment3);
+
+        // Chart 3
+        var ctx2 = document.getElementById("ChartAll3");
+        var myLineChart = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labelChartAll3,
+            datasets: [
+              {
+                label: "Open",
+                borderColor: "rgba(78, 115, 223, 1)",
+                backgroundColor: "rgba(78, 115, 223, 1)",
+                data: openChartAll3,
+              },
+              {
+                label: "Close",
+                borderColor: "rgba(255, 51, 51, 1)",
+                backgroundColor: "rgba(255, 51, 51, 1)",
+                data: closeChartAll3,
+              }
+            ],
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, chart) {
+                  var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                  return datasetLabel + ': Rp ' + new Intl.NumberFormat('id-ID').format(tooltipItem.yLabel);
+                }
+              }
+            },
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+              }
+            },
+            scaleShowValues: true,
+            scales: {
+              xAxes: [{
+                time: {
+                  unit: 'date'
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  // maxTicksLimit: 7,
+                  // autoSkip: false
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  // stepSize: 1,
+                  suggestedMax: 5,
+                  callback: function(value, index, values) {
+                    return 'Rp '+new Intl.NumberFormat('id-ID').format(value)
+                  }
+                },
+              }],
+            },
+            legend: {
+              display: true,
+              labels: {
+                  boxWidth: 20,
+                  boxHeight: 2,
+              },
+            },
+          }
+        });
+      },
+      error: function(response) {
+        console.log('err', response);
+      }
+    });
+  </script>
+
+  <script>
+    $(document).ready(() => {
+      // console.log('aaa');
+      // Globalize.culture().numberFormat.currency.symbol = "Rp";
+      // Globalize.culture().numberFormat.currency[','] = ".";
+      // Globalize.culture().numberFormat.currency['.'] = ",";
+      var borderStylePattern = { style: 'thin', color: { argb: 'FF7E7E7E' } };
+      dataGrid = $('#userSummaryShipmentTable').dxDataGrid({
+        // dataSource: generateData(100000),
+        dataSource: "../../config/dashboardController.php?getShipmentSalesSummary=true&tahun=<?php echo $tahun ?>",
+        // keyExpr: 'id',
+        // allowColumnReordering: true,
+        allowColumnResizing: true,
+        columnAutoWidth: true,
+        selection: {
+          mode: 'single',
+        },
+        showBorders: true,
+        showRowLines: true,
+        groupPanel: {
+          visible: false,
+        },
+        filterRow: {
+          visible: false,
+          applyFilter: 'auto',
+        },
+        searchPanel: {
+          visible: false,
+          width: 240,
+          placeholder: 'Search...',
+        },
+        headerFilter: {
+          visible: false,
+        },
+        columnChooser: {
+          enabled: false,
+          mode: 'select',
+        },
+        columnAutoWidth: true,
+        columns: [
+          {
+            caption: 'Nama',
+            dataField: 'Nama'
+          },
+          {
+            // caption: 'Sales/Rit',
+            // cellTemplate: function(container, options) {
+            //   // container.html(`${options.row.rowIndex + 1}`);
+            //   // let datax = options.row.data
+            //   container.html(`
+            //   <div class="row my-1">
+            //       <div class="col-auto">
+            //           <div> Rp ${new Intl.NumberFormat('id-ID').format(options.row.data.Total)} / ${new Intl.NumberFormat('id-ID').format(options.row.data.Rit)} Rit</div>
+            //       </div>
+            //   </div>
+
+            //   `);
+            // }
+            caption: 'Sales',
+            dataField: 'Total',
+            dataType: 'number',
+            // alignment: 'center',
+            format: 'currency',
+            customizeText: function(cellInfo) {
+                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+            },
+            width: 300
+          },
+          {
+              dataField: 'Count',
+              caption: 'Shipment',
+              // alignment: 'center',
+              width: 100
+          }
+        ],
+        scrolling: {
+          rowRenderingMode: 'virtual',
+        },
+        paging: {
+          pageSize: 5,
+        },
+        pager: {
+          visible: true,
+          allowedPageSizes: [5, 10, 'all'],
+          showPageSizeSelector: true,
+          showInfo: true,
+          showNavigationButtons: true,
+        },
+      }).dxDataGrid('instance');
+
+      
+    });
+
+  </script>
+  
+
+  
 
 </body>
 
