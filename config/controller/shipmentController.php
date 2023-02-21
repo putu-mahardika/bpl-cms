@@ -814,8 +814,9 @@
     $arrayIdTemp = 0;
 
     foreach ($array as $key => &$data) {
-      $temp = 0;
+      // $temp = 0;
       foreach ($arrayTempHandling as $key1 => &$dataHandling) {
+        $temp = 0;
         if ($data['id'] == $dataHandling['id_shipment']) {
           $temp = $dataHandling['totalHandling'];
           break;
@@ -825,6 +826,7 @@
       // $data['totalHandling'] = number_format($temp,0,',','.');
 
       foreach ($arrayTempHandlingTurunan1 as $key1 => &$dataHandlingTurunan1) {
+        $temp = 0;
         if ($data['id'] == $dataHandlingTurunan1['id_shipment']) {
           // $temp = $dataHandlingTurunan1['totalHandlingTurunan1'];
           $temp = (float)$dataHandlingTurunan1['totalHandlingTurunan1'] * (float)$dataHandlingTurunan1['qtyHandlingTurunan1'];
@@ -835,6 +837,7 @@
       // $data['totalHandlingTurunan1'] = number_format($temp,0,',','.');
 
       foreach ($arrayTempHandlingTurunan2 as $key1 => &$dataHandlingTurunan2) {
+        $temp = 0;
         if ($data['id'] == $dataHandlingTurunan2['id_shipment']) {
           $temp = (float)$dataHandlingTurunan2['totalHandlingTurunan2'] * (float)$dataHandlingTurunan2['qtyHandlingTurunan2'];
           break;

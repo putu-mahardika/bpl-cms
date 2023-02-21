@@ -356,7 +356,7 @@
 		}
 
         while($data = mysqli_fetch_array($fetch_c)){
-            if($npwp == $data['npwp'] || $telp == $data['telp'] || $email == $data['email'] || strtolower($kode) == strtolower($data['kode_customer']) || strtolower($nama) == strtolower($data['nama'])){
+            if($telp == $data['telp'] || $email == $data['email'] || strtolower($kode) == strtolower($data['kode_customer']) || strtolower($nama) == strtolower($data['nama'])){
                 $k=1;
             }
         }
@@ -410,9 +410,9 @@
         $aktif = $_POST['aktif'];
 
         while($data = mysqli_fetch_array($fetch_s)){
-            if($npwp == $data['npwp'] && $id != $data['CustId'] && $nama == $data['nama']){
+            if($id != $data['CustId'] && $nama == $data['nama']){
                 $k=1;
-            } elseif($npwp == $data['npwp'] && $id == $data['CustId'] && $nama == $data['nama']){
+            } elseif($id == $data['CustId'] && $nama == $data['nama']){
                 $k=0;
                 break;
             }

@@ -760,7 +760,7 @@
 
 				  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
 
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                  <table class="table align-items-center table-flush table-hover" id="dataTableHover" style="width:100%;">
 
                     <thead class="thead-light">
 

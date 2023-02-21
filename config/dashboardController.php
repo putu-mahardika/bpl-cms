@@ -800,7 +800,7 @@
         a.atr1 IS NULL AND
         a.HdId = b.HdId AND
         b.OnClose=1 AND
-        b.UserId='".$s_id."'"."AND
+        b.UserId='".$s_id."'"." AND
         YEAR(b.tgl_spk)='".$year."'"."AND
         MONTH(b.tgl_spk)='".$month."'"; 
 
@@ -1019,7 +1019,7 @@
       where 
         ts.is_delete=0 and 
         ts.`close`=0 and  
-        ts.UserId = '".$s_id."'"."AND  
+        ts.UserId = '".$s_id."'"." AND  
         year(ts.create_order)='".$year."'
       group by
         month(create_order)";
@@ -1034,7 +1034,7 @@
         ts.id = tsh.id_shipment and 
         ts.is_delete=0 and 
         ts.`close`=0 and  
-        ts.UserId = '".$s_id."'"."AND  
+        ts.UserId = '".$s_id."'"." AND  
         year(ts.create_order)='".$year."'
       group by 
           month(ts.create_order)";
@@ -1086,7 +1086,7 @@
         ts.`close`=1 and  
         year(ts.create_order)='".$year."'
       group by
-        month(create_order)";
+        month(ts.create_order)";
 
       $queryGetTotalHandling = "SELECT
         month(ts.create_order) as month,
@@ -1113,11 +1113,11 @@
         trans_shipment ts
       where 
         ts.is_delete=0 and 
-        ts.`close`=0 and  
+        ts.`close`=1 and  
         ts.UserId = '".$s_id."'"."AND  
         year(ts.create_order)='".$year."'
       group by
-        month(create_order)";
+        month(ts.create_order)";
 
       $queryGetTotalHandling = "SELECT
         month(ts.create_order) as month,
@@ -1128,7 +1128,7 @@
       where 
         ts.id = tsh.id_shipment and 
         ts.is_delete=0 and 
-        ts.`close`=0 and  
+        ts.`close`=1 and  
         ts.UserId = '".$s_id."'"."AND  
         year(ts.create_order)='".$year."'
       group by 

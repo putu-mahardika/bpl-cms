@@ -788,7 +788,7 @@
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Sales This Month</p>
                           <p id="acumulateThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="ritThisMonth"></span> Rit</p>
-                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> pada bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan <strong>tgl SPK</strong> di bulan <strong><?php echo $month.'-'.$tahun ?></strong> dari Trucking dengan Status <strong>Close</strong></em></p>
                         </div>
                       </div>
                     </div>
@@ -1065,7 +1065,7 @@
                         <p class="text-xs mb-0"><em>Keterangan : </em></p>
                         <p class="text-xs mb-0"><em>- Terhitung berdasarkan Shipment dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
                         <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
-                        <div id="userSummaryShipmentTable"></div>
+                        <div class="mt-4" id="userSummaryShipmentTable"></div>
                       </div>
                     </div>
                     <div class="tab-pane fade" id="truckingTable" role="tabpanel" aria-labelledby="truckingTable-tab">
@@ -1074,7 +1074,7 @@
                         <p class="text-xs mb-0"><em>Keterangan</em></p>
                         <p class="text-xs mb-0"><em>- Terhitung berdasarkan <strong>tgl SPK</strong> dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
                         <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
-                        <div id="userSummaryTable"></div>
+                        <div class="mt-4" id="userSummaryTable"></div>
                       </div>
                     </div>
                     <div class="tab-pane fade" id="allTable" role="tabpanel" aria-labelledby="allTable-tab">
@@ -1088,7 +1088,7 @@
                         <p class="text-xs mb-0"><em>- Biaya Trucking terhitung berdasarkan <strong>tgl SPK</strong> dengan status <strong>Close</strong> di tahun <strong><?php echo $tahun ?></strong></em></p>
                         <p class="text-xs mb-0"><em>- Shipment yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
                         <p class="text-xs mb-0"><em>- Trucking yang ditutup pada tahun yang berbeda dengan tahun pembuatan, akan terhitung sebagai transaksi di tahun pembuatan</em></p>
-                        <div id="userAllSummaryTable"></div>
+                        <div class="mt-4" id="userAllSummaryTable"></div>
                       </div>
                     </div>
                   </div>
@@ -1741,6 +1741,24 @@
               width: 100
           }
         ],
+        summary: {
+          totalItems: [
+            {
+              column: 'Total',
+              summaryType: 'sum',
+              customizeText: function(cellInfo) {
+                  return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+              }
+            },
+            {
+              column: 'Rit',
+              summaryType: 'sum',
+              customizeText: function(cellInfo) {
+                  return new Intl.NumberFormat('id-ID').format(cellInfo.value) + ' Rit';
+              }
+            }
+          ],
+        },
         scrolling: {
           rowRenderingMode: 'virtual',
         },
@@ -2475,9 +2493,27 @@
               dataField: 'Count',
               caption: 'Shipment',
               // alignment: 'center',
-              width: 100
+              width: 300
           }
         ],
+        summary: {
+          totalItems: [
+            {
+              column: 'Total',
+              summaryType: 'sum',
+              customizeText: function(cellInfo) {
+                  return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+              }
+            },
+            {
+              column: 'Count',
+              summaryType: 'sum',
+              customizeText: function(cellInfo) {
+                  return new Intl.NumberFormat('id-ID').format(cellInfo.value) + ' Shipment';
+              }
+            }
+          ],
+        },
         scrolling: {
           rowRenderingMode: 'virtual',
         },
@@ -2573,6 +2609,17 @@
           //     width: 100
           // }
         ],
+        summary: {
+          totalItems: [
+            {
+              column: 'Total',
+              summaryType: 'sum',
+              customizeText: function(cellInfo) {
+                  return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+              }
+            }
+          ],
+        },
         scrolling: {
           rowRenderingMode: 'virtual',
         },

@@ -825,7 +825,7 @@
           },
           {
             caption: 'Status',
-            dataField: 'status'
+            dataField: 'statusTurunan'
           },
           {
             caption: 'Status OnClose SPK Turunan',

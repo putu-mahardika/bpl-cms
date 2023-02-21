@@ -824,10 +824,6 @@
             dataField: 'keterangan_kirim'
           },
           {
-            caption: 'Status',
-            dataField: 'status'
-          },
-          {
             caption: 'Status OnClose SPK Turunan',
             dataField: 'StatusTurunan'
           },
@@ -856,6 +852,15 @@
             showInColumnChooser: false
           }
         ],
+        summary: {
+          totalItems: [{
+            column: 'totalBiaya',
+            summaryType: 'sum',
+            customizeText: function(cellInfo) {
+                return 'Rp ' + new Intl.NumberFormat('id-ID').format(cellInfo.value);
+            }
+          }],
+        },
         scrolling: {
           rowRenderingMode: 'virtual',
         },

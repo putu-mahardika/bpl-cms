@@ -945,9 +945,11 @@
       var result = 0;
       for (i = 0; i < l; i++) { 
         //Push each element to the array
-        var temp = $('.inputBiayaHandling').eq(i).val() == '' ? 0 : $('.inputBiayaHandling').eq(i).val()
+        var temp = $('.inputBiayaHandling').eq(i).val() == '' ? 0 : $('.inputBiayaHandling').eq(i).val();
+        var qtyTemp = $('.qtyBiayaHandling').eq(i).val() == '' ? 0 : $('.qtyBiayaHandling').eq(i).val()
         console.log(temp);
-        result += parseFloat(temp)
+        var resultTemp = parseFloat(qtyTemp) * parseFloat(temp);
+        result += parseFloat(resultTemp)
       }
       //print the array or use it for your further logic
       console.log(result);
