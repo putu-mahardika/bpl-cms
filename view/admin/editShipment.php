@@ -612,7 +612,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-12 col-lg-6">
                         <label for="qty">Quantity</label>
-                        <input type="number" min=0.1 step=".1" class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $dataShipment['quantity'] ?>">
+                        <input type="number" min=0.001 step=".001" class="form-control form-control-sm" id="qty" name="qty" value="<?php echo $dataShipment['quantity'] ?>">
                         </div>
                       <div class="form-group col-md-12 col-lg-6">
                         <label for="unit">Unit</label>
@@ -700,7 +700,7 @@
                                   </div>
                                   <div class="form-group col-md-6 col-lg-2 mb-0">
                                     <label>Qty</label>
-                                    <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="">
+                                    <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="">
                                   </div>
                                   <div class="form-group col-md-6 col-lg-5 mb-0">
                                     <label>Biaya</label>
@@ -721,7 +721,7 @@
                                   </div>
                                   <div class="form-group col-md-6 col-lg-2 mb-0">
                                     <label>Qty</label>
-                                    <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="">
+                                    <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="">
                                   </div>
                                   <div class="form-group col-md-6 col-lg-5 mb-0">
                                     <label>Biaya</label>
@@ -749,7 +749,7 @@
                                       </div>
                                       <div class="form-group col-md-6 col-lg-2 mb-0">
                                         <label>Qty</label>
-                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="<?php echo $datas['qty'] ?>">
                                       </div>
                                       <div class="form-group col-md-6 col-lg-5 mb-0">
                                         <label>Biaya</label>
@@ -770,7 +770,7 @@
                                       </div>
                                       <div class="form-group col-md-6 col-lg-2 mb-0">
                                         <label>Qty</label>
-                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="">
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="">
                                       </div>
                                       <div class="form-group col-md-6 col-lg-5 mb-0">
                                         <label>Biaya</label>
@@ -796,7 +796,7 @@
                                       </div>
                                       <div class="form-group col-md-6 col-lg-2 mb-0">
                                         <label>Qty</label>
-                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="<?php echo $datas['qty'] ?>">
                                       </div>
                                       <div class="form-group col-md-6 col-lg-5 mb-0">
                                         <label>Biaya</label>
@@ -817,7 +817,7 @@
                                       </div>
                                       <div class="form-group col-md-6 col-lg-2 mb-0">
                                         <label>Qty</label>
-                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="">
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="">
                                       </div>
                                       <div class="form-group col-md-6 col-lg-5 mb-0">
                                         <label>Biaya</label>
@@ -847,7 +847,7 @@
                                       </div>
                                       <div class="form-group col-md-6 col-lg-2 mb-0">
                                         <label>Qty</label>
-                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="<?php echo $datas['qty'] ?>">
                                       </div>
                                       <div class="form-group col-md-6 col-lg-5 mb-0">
                                         <label>Biaya</label>
@@ -872,7 +872,7 @@
                                       </div>
                                       <div class="form-group col-md-6 col-lg-2 mb-0">
                                         <label>Qty</label>
-                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".1" placeholder="0" value="<?php echo $datas['qty'] ?>">
+                                        <input type="number" class="form-control form-control-sm qtyBiayaHandling" name="qtyBiayaHandling[]" min="0" step=".001" placeholder="0" value="<?php echo $datas['qty'] ?>">
                                       </div>
                                       <div class="form-group col-md-6 col-lg-5 mb-0">
                                         <label>Biaya</label>
