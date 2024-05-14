@@ -3,12 +3,7 @@
     $dbhost = 'localhost';
     $dbuser = 'root';
     $dbpass = '';
-    $dbname = 'berkahpe_tracking4';
-
-    // $dbhost = '192.168.100.226';
-    // $dbuser = 'devuser';
-    // $dbpass = 'tog57588';
-    // $dbname = 'devuser_bpl';
+    $dbname = 'berkahpe_tracking5';
 
     $timeout = 1000;
 

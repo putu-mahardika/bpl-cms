@@ -182,16 +182,16 @@
       <div class="sidebar-heading">
         Laporan
       </div>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportTruck" aria-expanded="true"
           aria-controls="collapseReportTruck">
           <i class="fas fa-fw fa-table"></i>
           <span>Laporan Trucking</span> 
         </a> 
-        <div id="collapseReportTruck" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseReportTruck" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Laporan Trucking</h6>
-            <a class="collapse-item active" href="laporanbarang.php">Laporan Detail</a>
+            <a class="collapse-item" href="laporanbarang.php">Laporan Detail</a>
             <a class="collapse-item" href="laporanbarangbiaya.php">Laporan Biaya</a>
           </div>
         </div>

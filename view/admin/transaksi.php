@@ -16,7 +16,7 @@
   include '../../config/koneksi.php';
 	$tahun = $_GET['tahun'];
 	
-	$query = "select * from trans_hd where atr1=0 and create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'";
+	$query = "select * from trans_hd where create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'";
 	$fetch = mysqli_query($koneksi,$query);
 
 ?>

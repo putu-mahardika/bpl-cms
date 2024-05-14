@@ -615,7 +615,7 @@
                                 </div>
                               <?php } else { ?>
                                 <div class="form-row">
-                                  <input type="hidden" name="biayaHandlingId[]" value="<?php echo $datas['id']?>">
+                                  <input type="hidden" id="biayaHandlingId" name="biayaHandlingId[]" value="">
                                   <div class="form-group col-md-12 col-lg-5 mb-0">
                                     <label>Nama Biaya Handling Next</label>
                                     <input type="text" class="form-control form-control-sm" name="namaBiayaHandling[]" minlength="3" maxlength="50" value="">

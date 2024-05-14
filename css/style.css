@@ -7,9 +7,3 @@
 th td{
 	padding-left:0.5rem !important;
 }
-
-@media (max-width: 991px) {
-    .dropdown-shipment .dropdown-submenu .dropdown-menu {
-        left: -100% !important;
-    }
-}

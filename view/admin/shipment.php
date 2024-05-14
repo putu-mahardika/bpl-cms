@@ -32,6 +32,7 @@ where
 	mc.CustId = ts.CustId and 
 	mu.UserId = ts.UserId and 
 	mu2.id = ts.unit and
+	mu.atr1=0 and
   ts.is_delete=0 and
   ts.create_order between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
 order by

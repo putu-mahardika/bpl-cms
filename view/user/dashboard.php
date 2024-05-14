@@ -850,7 +850,8 @@
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Shipment This Month</p>
                           <p id="acumulateShipmentThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="shipmentThisMonth"></span> Shipment</p>
-                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan Shipment dengan Status <strong>Close</strong> pada bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>
+                          <!--<p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan Shipment dengan Status <strong>Close</strong> pada bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>-->
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan Shipment dengan Status <strong>Close</strong> di bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>
                         </div>
                       </div>
                     </div>
@@ -870,7 +871,7 @@
                           <p class="font-weight-bold" style="font-size: 14px;">Accumulate Sales This Month</p>
                           <p id="acumulateThisMonth" class="text-right text-primary mb-0 font-weight-bold" style="font-size: 22px;"></p>
                           <p class="text-right" style="font-size: 14px;">/ <span id="ritThisMonth"></span> Rit</p>
-                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan <strong>tgl SPK</strong> di bulan <strong><?php echo $month.'-'.$tahun ?></strong> dari Trucking dengan Status <strong>Close</strong></em></p>
+                          <p class="text-xs mb-0"><em>Keterangan : Terhitung berdasarkan <strong>tgl SPK</strong> dengan Status <strong>Close</strong> pada bulan <strong><?php echo $month.'-'.$tahun ?></strong></em></p>
                         </div>
                       </div>
                     </div>
