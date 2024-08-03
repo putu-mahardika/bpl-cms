@@ -15,11 +15,12 @@
     $s_query = 'select * from master_status';
     $k_query = 'select * from master_kota';
     $c_query = 'select * from master_customer';
+    $jk_query = 'select * from master_kendaraan';
 	$t_query = 'select * from trans_hd where atr1=0';
 
     $fetch_u = mysqli_query($koneksi,$u_query);
     $fetch_s = mysqli_query($koneksi,$s_query);
-    $fetch_k = mysqli_query($koneksi,$k_query);
+    $fetch_jk = mysqli_query($koneksi,$jk_query);
     $fetch_c = mysqli_query($koneksi,$c_query);
 	$fetch_t = mysqli_query($koneksi,$t_query);
 
@@ -328,6 +329,99 @@
             $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
         } else {
             header("location:../view/admin/kota.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        }
+    }
+
+    //jenis kendaraan
+    //input jenis kendaraan ===================================================================
+    elseif (isset($_POST['inputJenisKendaraan'])) {
+        // $kode = strtoupper($_POST['kode']);
+        $nama = $_POST['namaJenisKendaraan'];
+        // $keterangan = $_POST['keterangan'];
+        $aktif = $_POST['aktif'];
+        // $kode = strtoupper(substr($nama, 0, 3).time());
+
+		if($aktif == "Ya"){
+			$aktif1 = 1;
+		} else {
+			$aktif1 = 0;
+		}
+
+        //$querymax = "select max(atr1) as max from master_status";
+        //$fetchmax = mysqli_query($koneksi, $querymax);
+        //$datamax = mysqli_fetch_array($fetchmax);
+        //echo $datamax['max']
+        // $data = mysqli_fetch_array($fetch_jk);
+        $j = 0;
+        while($data = mysqli_fetch_array($fetch_jk)){
+            if(strtolower($nama) == strtolower($data['Nama'])){
+                $j=1;
+            }
+        }
+
+        if($j != 1){
+            $query = "insert into master_kendaraan values(null, '$nama', '$aktif1', '$datetime', '$datetime', NULL, NULL)";
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                header("location:../view/admin/jenisKendaraan.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+             } else {
+                header("location:../view/admin/jenisKendaraan.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            }
+        } else {
+            header("location:../view/admin/inputJenisKendaraan.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Jenis Kendaraan sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+    }
+
+    //edit jenis kendaraan ====================================================================
+    elseif (isset($_POST['editJenisKendaraan'])) {
+        $id = $_POST['id'];
+        // $kode = $_POST['kode'];
+        $nama = $_POST['namaJenisKendaraan'];
+        // $keterangan = $_POST['keterangan'];
+        $aktif = $_POST['aktif'];
+        // print_r([$id, $kode, $nama, $aktif]);
+        $j=0;
+        while($data = mysqli_fetch_array($fetch_jk)){
+            if(strtolower($nama) == strtolower($data['Nama']) && strtolower($id != $data['Id'])){
+                $j=1;
+            } 
+            // elseif(strtolower($id == $data['Id'])){
+            //     $j=0;
+            //     break;
+            // }
+        }
+
+        if($j != 1) {
+            $query = "update master_kendaraan set Nama='$nama', last_update='$datetime', IsActive='$aktif' where Id=$id";
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                header("location:../view/admin/jenisKendaraan.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            } else {
+                header("location:../view/admin/jenisKendaraan.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            }
+        } else {
+            header("location:../view/admin/editJenisKendaraan.php?id=$id");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Jenis Kendaraan sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+    }
+
+    //delete jenis kendaraan ==================================================================
+    elseif (isset($_GET['Id'])) {
+        $id = $_GET['Id'];
+
+        $query = "delete from master_kendaraan where Id='$id'";
+        $result = mysqli_query($koneksi, $query);
+        if ($result) {
+            header("location:../view/admin/jeniskendaraan.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        } else {
+            header("location:../view/admin/jenisKendaraan.php");
             $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
         }
     }

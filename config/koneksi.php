@@ -3,7 +3,7 @@
     $dbhost = 'localhost';
     $dbuser = 'root';
     $dbpass = '';
-    $dbname = 'berkahpe_tracking5';
+    $dbname = 'berkahpe_tracking6';
 
     $timeout = 1000;
 
