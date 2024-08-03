@@ -16,11 +16,13 @@
     $k_query = 'select * from master_kota';
     $c_query = 'select * from master_customer';
     $jk_query = 'select * from master_kendaraan';
+    $n_query = 'select * from master_negara';
 	$t_query = 'select * from trans_hd where atr1=0';
 
     $fetch_u = mysqli_query($koneksi,$u_query);
     $fetch_s = mysqli_query($koneksi,$s_query);
     $fetch_jk = mysqli_query($koneksi,$jk_query);
+    $fetch_n = mysqli_query($koneksi,$n_query);
     $fetch_c = mysqli_query($koneksi,$c_query);
 	$fetch_t = mysqli_query($koneksi,$t_query);
 
@@ -422,6 +424,100 @@
             $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
         } else {
             header("location:../view/admin/jenisKendaraan.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        }
+    }
+
+
+    //negara
+    //input negara ===================================================================
+    elseif (isset($_POST['inputNegara'])) {
+        $kode = strtoupper($_POST['kode']);
+        $nama = $_POST['namaNegara'];
+        // $keterangan = $_POST['keterangan'];
+        $aktif = $_POST['aktif'];
+        // $kode = strtoupper(substr($nama, 0, 3).time());
+
+		if($aktif == "Ya"){
+			$aktif1 = 1;
+		} else {
+			$aktif1 = 0;
+		}
+
+        //$querymax = "select max(atr1) as max from master_status";
+        //$fetchmax = mysqli_query($koneksi, $querymax);
+        //$datamax = mysqli_fetch_array($fetchmax);
+        //echo $datamax['max']
+        // $data = mysqli_fetch_array($fetch_jk);
+        $j = 0;
+        while($data = mysqli_fetch_array($fetch_n)){
+            if(strtolower($kode) == strtolower($data['Kode'])){
+                $j=1;
+            }
+        }
+
+        if($j != 1){
+            $query = "insert into master_negara values(null, '$kode', '$nama', '$aktif1', '$datetime', '$datetime', NULL, NULL)";
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                header("location:../view/admin/negara.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+             } else {
+                header("location:../view/admin/negara.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            }
+        } else {
+            header("location:../view/admin/inputNegara.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Negara sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+    }
+
+    //edit negara ====================================================================
+    elseif (isset($_POST['editNegara'])) {
+        $id = $_POST['id'];
+        $kode = $_POST['kode'];
+        $nama = $_POST['namaNegara'];
+        // $keterangan = $_POST['keterangan'];
+        $aktif = $_POST['aktif'];
+        // print_r([$id, $kode, $nama, $aktif]);
+        $j=0;
+        while($data = mysqli_fetch_array($fetch_n)){
+            if(strtolower($kode) == strtolower($data['Kode']) && strtolower($id != $data['Id'])){
+                $j=1;
+            } 
+            // elseif(strtolower($id == $data['Id'])){
+            //     $j=0;
+            //     break;
+            // }
+        }
+
+        if($j != 1) {
+            $query = "update master_negara set Kode='$kode', Nama='$nama', last_update='$datetime', IsActive='$aktif' where Id=$id";
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                header("location:../view/admin/negara.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            } else {
+                header("location:../view/admin/negara.php");
+                $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            }
+        } else {
+            header("location:../view/admin/editNegara.php?id=$id");
+            $_SESSION['pesan'] = '<p><div class="alert alert-warning">Negara sudah ada !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        }
+    }
+
+    //delete negara ==================================================================
+    elseif (isset($_GET['Id'])) {
+        $id = $_GET['Id'];
+
+        $query = "delete from master_negara where Id='$id'";
+        $result = mysqli_query($koneksi, $query);
+        if ($result) {
+            header("location:../view/admin/negara.php");
+            $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        } else {
+            header("location:../view/admin/negara.php");
             $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
         }
     }

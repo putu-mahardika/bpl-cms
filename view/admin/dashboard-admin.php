@@ -137,6 +137,20 @@
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNegara" aria-expanded="true"
+          aria-controls="collapseNegara">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Negara</span> 
+        </a>
+        <div id="collapseNegara" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Negara</h6>
+            <a class="collapse-item" href="negara.php">List Negara</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>

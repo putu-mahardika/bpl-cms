@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Data Jenis Kendaraan - PT Berkah Permata Logistik</title>
+	<title>Data Negara - PT Berkah Permata Logistik</title>
 </head>
 <body>
     <?php
 	header("Content-type: application/vnd-ms-excel");
-	header("Content-Disposition: attachment; filename=Data Jenis Kendaraan - PT Berkah Permata Logistik.xls");
+	header("Content-Disposition: attachment; filename=Data Negara - PT Berkah Permata Logistik.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
 	?>
@@ -17,14 +17,14 @@
 	<table border="1">
 		<tr>
 			<th>No</th>
-			<!-- <th>Kode</th> -->
+			<th>Kode</th>
 			<th>Nama</th>
 			<th>Status</th>
 		</tr>
 		<?php 
 		// koneksi database
         include '../config/koneksi.php';
-        $query = "select * from master_kendaraan";
+        $query = "select * from master_negara";
 		// menampilkan data pegawai
 		$data = mysqli_query($koneksi,$query);
 		$no = 1;
@@ -32,7 +32,7 @@
 		?>
 		<tr>
 			<td><?php echo $no++; ?></td>
-			<!-- <td><?php echo $d['Kode']; ?></td> -->
+			<td><?php echo $d['Kode']; ?></td>
 			<td><?php echo $d['Nama']; ?></td>
 			<?php if ($d['IsActive'] == 1) { ?>
 				<td>AKTIF</td>
