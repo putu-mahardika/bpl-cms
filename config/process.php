@@ -65,7 +65,10 @@
         $password1 = md5($acak . md5($password) . $acak);
         $nama = $_POST['nama'];
         $isAdmin = $_POST['isAdmin'];
+        $role = $_POST['role'];
         $aktif = $_POST['aktif'];
+        $isSales = 0;
+        $isVm = 0;
 
 		if($isAdmin == "Ya"){
 			$isAdmin1 = 1;
@@ -79,13 +82,22 @@
 			$aktif1 = 0;
 		}
 
+        if ($role == 0) {
+            $isSales = 1;
+        } elseif ($role == 1) {
+            $isVm = 1;
+        } elseif ($role == 2) {
+            $isSales = 1;
+            $isVm = 1;
+        }
+
         while($data = mysqli_fetch_array($fetch_u)){
             if($username == $data['username']){
                 $i=1;
             }
         }
         if($i != 1){
-            $query = "insert into master_user values(null, '$username', '$password1', '$nama', '$datetime', '$datetime', '$aktif1', '$isAdmin1', '0', '', '')";
+            $query = "insert into master_user values(null, '$username', '$password1', '$nama', '$datetime', '$datetime', '$aktif1', '$isAdmin1', '$isVm', '$isSales', '0', '', '')";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/user.php");
@@ -107,9 +119,23 @@
         $username = $_POST['username'];
         $password = $_POST['password'];
         $nama = $_POST['nama'];
-        $isAdmin = $_POST['isAdmin'];
+        $role = $_POST['role'];
         $aktif = $_POST['aktif'];
+        $isAdmin = 0;
+        $isSales = 0;
+        $isVm = 0;
         // echo $password;
+
+        if ($role == 0) {
+            $isSales = 1;
+        } elseif ($role == 1) {
+            $isVm = 1;
+        } elseif ($role == 2) {
+            $isSales = 1;
+            $isVm = 1;
+        } elseif ($role == 3) {
+            $isAdmin = 1;
+        }
 
         while($data = mysqli_fetch_array($fetch_u)){
             if($username == $data['username'] && $id != $data['UserId']){
@@ -122,9 +148,9 @@
         if($i != 1){
             if ($password != NULL) {
                 $password1 = md5($acak . md5($password) . $acak);
-                $query = "update master_user set username='$username', password='$password1', nama='$nama', isAdmin='$isAdmin', last_update='$datetime', aktif='$aktif' where UserId='$id'";
+                $query = "update master_user set username='$username', password='$password1', nama='$nama', isAdmin='$isAdmin', isVm='$isVm', isSales='$isSales', last_update='$datetime', aktif='$aktif' where UserId='$id'";
             } else {
-                $query = "update master_user set username='$username', nama='$nama', isAdmin='$isAdmin', last_update='$datetime', aktif='$aktif' where UserId='$id'";
+                $query = "update master_user set username='$username', nama='$nama', isAdmin='$isAdmin', isVm='$isVm', isSales='$isSales', last_update='$datetime', aktif='$aktif' where UserId='$id'";
             }
             $result = mysqli_query($koneksi, $query);
             if ($result) {
@@ -248,6 +274,8 @@
     elseif (isset($_POST['inputKota'])) {
         // $kode = strtoupper($_POST['kode']);
         $nama = $_POST['namaKota'];
+        $provinsi = $_POST['provinsi'];
+        $pulau = $_POST['pulau'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
         $kode = strtoupper(substr($nama, 0, 3).time());
@@ -270,7 +298,7 @@
         }
 
         if($j != 1){
-            $query = "insert into master_kota values(null, '$kode', '$nama', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
+            $query = "insert into master_kota values(null, '$kode', '$nama', '$provinsi', '$pulau', '$datetime', '$datetime', '$aktif1', NULL, NULL)";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/kota.php");
@@ -290,6 +318,8 @@
         $id = $_POST['id'];
         // $kode = $_POST['kode'];
         $nama = $_POST['namaKota'];
+        $provinsi = $_POST['provinsi'];
+        $pulau = $_POST['pulau'];
         // $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
         // print_r([$id, $kode, $nama, $aktif]);
@@ -305,7 +335,7 @@
         }
 
         if($j != 1) {
-            $query = "update master_kota set Kode='$kode', Nama='$nama', last_update='$datetime', aktif='$aktif' where Id=$id";
+            $query = "update master_kota set Kode='$kode', Nama='$nama', Provinsi='$provinsi', Pulau='$pulau', last_update='$datetime', aktif='$aktif' where Id=$id";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/kota.php");
@@ -538,6 +568,9 @@
         $pic_email = $_POST['pic_email'];
         $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
+        $k = 0;
+
+        $alamat = str_replace("'", "''", $alamat);
 
 		if($aktif == "Ya"){
 			$aktif1 = 1;
@@ -553,24 +586,25 @@
 
         if($k != 1){
             $query = "insert into master_customer values (null, '$kode', '$npwp', '$nama', '$alamat', '$telp', '$email', '$bidang', '$pic', '$pic_telp', '$pic_email', '$keterangan', '$datetime', '$datetime', '$s_id', '$aktif1', '', '', '')";
-            $result = mysqli_query($koneksi, $query);
-            if ($result) {
-                if($akses == 'Admin'){
-                    header("location:../view/admin/customer.php");
-                    $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-                } else {
-                    header("location:../view/user/customer.php");
-                    $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-                }
-            } else {
-                if($akses == 'Admin'){
-                    header("location:../view/admin/customer.php");
-                    $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-                } else {
-                    header("location:../view/user/customer.php");
-                    $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-                }
-            }
+            echo $query;
+            // $result = mysqli_query($koneksi, $query);
+            // if ($result) {
+            //     if($akses == 'Admin'){
+            //         header("location:../view/admin/customer.php");
+            //         $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            //     } else {
+            //         header("location:../view/user/customer.php");
+            //         $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+            //     }
+            // } else {
+            //     if($akses == 'Admin'){
+            //         header("location:../view/admin/customer.php");
+            //         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+            //     } else {
+            //         header("location:../view/user/customer.php");
+            //         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+            //     }
+            // }
         } else {
             if($akses == 'Admin'){
                 header("location:../view/admin/inputCustomer.php");
@@ -598,6 +632,9 @@
         $sales = $_POST['sales'];
         $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
+        $alamat = str_replace("'", "''", $alamat);
+
+        $k=0;
 
         while($data = mysqli_fetch_array($fetch_s)){
             if($id != $data['CustId'] && $nama == $data['nama']){
@@ -609,7 +646,7 @@
         }
 
         if($k != 1){
-            $query = "update master_customer set kode_customer='$kode', nama='$nama', bidang_usaha='$bidang', npwp='$npwp', alamat='$alamat', telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan='$keterangan', aktif='$aktif', last_update='$datetime', UserId='$sales' where CustId='$id'";
+            $query = "update master_customer set kode_customer='$kode', nama=`$nama`, bidang_usaha=`$bidang`, npwp='$npwp', alamat=`$alamat`, telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan=`$keterangan`, aktif='$aktif', last_update='$datetime', UserId='$sales' where CustId='$id'";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/customer.php");

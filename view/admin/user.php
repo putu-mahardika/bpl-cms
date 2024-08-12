@@ -478,7 +478,7 @@
                         <tr>
                           <th>tgl</th>
                           <th>Nama</th>
-                          <th>isAdmin</th>
+                          <th>Peran</th>
                           <th>Aktif</th>
                           <th>Action</th>
                         </tr>
@@ -495,9 +495,18 @@
                         <?php 
                           if($data['isAdmin'] == 1){
                         ?>
-                          <td style="font-size:13px;">Admin</td>
+                          <!-- <td style="font-size:13px;">Admin</td> -->
+                          <td ><span class="badge badge-primary">Admin</span></td>
                         <?php } else{ ?>
-                          <td style="font-size:13px;"></td>
+                          <!-- <td style="font-size:13px;"></td> -->
+                           <td>
+                          <?php if ($data['isSales'] == 1) { ?>
+                            <span class="badge badge-warning">Sales</span>
+                            <?php } ?>
+                          <?php if ($data['isVm'] == 1) { ?>
+                            <span class="badge badge-success">VM</span>
+                           <?php } ?>
+                          </td>
                         <?php } ?>
                         <?php 
                           if($data['aktif'] == 1){

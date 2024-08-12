@@ -460,14 +460,16 @@
                 <input type="text" class="form-control form-control-sm mb-3" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" required>
                 <label>Nama :</label>
                 <input type="text" class="form-control form-control-sm mb-3" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
-                <label>isAdmin :</label>
-				        <input type="text" class="form-control form-control-sm mb-3" name="isAdmin" value="Tidak" readonly>
+                <!-- <label>isAdmin :</label> -->
+				        <input type="hidden" class="form-control form-control-sm mb-3" name="isAdmin" value="Tidak">
                 <!--<input type="text" class="form-control" name="hak-akses">-->
-                <!--<select name="isAdmin" class="form-control form-control-sm mb-3">
+                <label>Peran :</label>
+                <select name="role" class="form-control form-control-sm mb-3">
                   <option disabled selected> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0> Tidak </option>
-                </select>-->
+                  <option value=0> Sales </option>
+                  <option value=1> VM </option>
+                  <option value=2> All </option>
+                </select>
                   <label>Aktif :</label>
                 <!--<select name="aktif" class="form-control form-control-sm mb-3">
                   <option disabled selected> Pilih </option>

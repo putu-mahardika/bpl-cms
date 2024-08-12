@@ -21,7 +21,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <!--<link href="img/logo/logo.png" rel="icon">-->
-  <title>Edit Kota - PT Berkah Permata Logistik</title>
+  <title>Edit Vendor - PT Berkah Permata Logistik</title>
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../css/ruang-admin.min.css" rel="stylesheet">
@@ -442,8 +442,8 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-          <a href="kota.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
-            <h1 class="h3 mb-0 text-gray-800">Edit Kota</h1>
+          <a href="vendor.php" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <h1 class="h3 mb-0 text-gray-800">Edit Vendor</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Pages</li>
@@ -453,40 +453,56 @@
 
           <?php
             $id = $_GET['id'];
-            $fetch = mysqli_query($koneksi, "select * from master_kota where Id='$id'");
+            $fetch = mysqli_query($koneksi, "select * from master_vendor where Id='$id'");
             $data = mysqli_fetch_array($fetch);
             //echo $id;
           ?>
           <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
 			
           <div class="card-body">
-              <form class="form group" method="post" action="../../config/process.php">
+              <form class="form group" method="post" action="../../config/controller/vendorController.php">
                 <!--<label>Id :</label>-->
                 <input type="hidden" class="form-control form-control-sm mb-3" value="<?php echo $data['Id'];?>" name="id" readonly>
-                <!-- <label>Kode :</label>
-                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['Kode'];?>" name="kode" maxlength="6" required> -->
+                <label>Kode :</label>
+                <input type="text" class="form-control form-control-sm mb-3" style="text-transform:uppercase" value="<?php echo $data['kode'];?>" name="kode" maxlength="6" required>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Nama'];?>" name="namaKota" minlength="3" maxlength="30" pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$" title="Nama Kota hanya boleh diisi huruf" required>
-                <label>Provinsi :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Provinsi'];?>" name="provinsi" minlength="3" maxlength="30" pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$" title="Nama Kota hanya boleh diisi huruf" required>
-                <label>Pulau :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['Pulau'];?>" name="pulau" minlength="3" maxlength="30" pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$" title="Nama Kota hanya boleh diisi huruf" required>
-                <!-- <label>Keterangan :</label>
-                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['keterangan'];?></textarea> -->
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="30" required>
+
+                <label>Alamat :</label>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['alamat'];?>" name="alamat" minlength="7" maxlength="150" required>
+                <label>NPWP :</label>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['npwp'];?>" name="npwp" pattern="^([\d]{2})[.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$" title="NPWP harus dituliskan seperti berikut XX.XXX.XXX.X-XXX.XXX" required>
+                <label>Nama PIC :</label>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['pic'];?>" name="pic" minlength="3" maxlength="50" required>
+                <label>Telp PIC :</label>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['pic_telp'];?>" name="pic_telp" pattern="^0\d{10,14}|62\d{10,14}$" title="nomor telp harus terdiri dari 10-14 angka dan harus berawalan 0 atau 62" required>
+                <label>Tipe :</label>
+                <select name="tipe" class="form-control form-control-sm mb-3">
+                  <option disabled> Pilih </option>
+                  <option value=Local <?php if ($data['type'] == "Local") "selected" ?>> Local </option>
+                  <option value=Oversea <?php if ($data['type'] == "Oversea") "selected" ?>> Oversea </option>
+                  <option value=All <?php if ($data['type'] == "All") "selected" ?>> Semua </option>
+                </select>
+                <label>Tipe Pengiriman :</label>
+                <select name="tipe_pengiriman" class="form-control form-control-sm mb-3">
+                  <option disabled> Pilih </option>
+                  <option value=Shipment <?php if ($data['delivery_type'] == "Shipment") "selected" ?>> Shipment </option>
+                  <option value=Trucking <?php if ($data['delivery_type'] == "Trucking") "selected" ?>> Trucking </option>
+                  <option value=All <?php if ($data['delivery_type'] == "All") "selected" ?>> Semua </option>
+                </select>
+                <label>Link Dokumen :</label>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['link'];?>" name="dokumen" minlength="3" required>
+
+                <label>Keterangan :</label>
+                <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan"><?php echo $data['note'];?></textarea>
                 <label>Aktif :</label>
                 <select name="aktif" class="form-control form-control-sm mb-3">
-                <?php if ($data['aktif'] == 1){ ?>
                   <option disabled> Pilih </option>
-                  <option value=1 selected> Ya </option>
-                  <option value=0> Tidak </option>
-                <?php } else { ?>
-                  <option disabled> Pilih </option>
-                  <option value=1> Ya </option>
-                  <option value=0 selected> Tidak </option>
-                <?php } ?>
+                  <option value=1 <?php if ($data['isActive'] == 1) "selected" ?>> Ya </option>
+                  <option value=0 <?php if ($data['isActive'] == 0) "selected" ?>> Tidak </option>
                 </select>
                 <input type="reset" value="Reset" class="btn btn-danger" style="width:22%;">
-                <input type="submit" value="Submit" name="editKota" class="btn btn-md btn-primary " style="width:77%;">
+                <input type="submit" value="Submit" name="editVendor" class="btn btn-md btn-primary " style="width:77%;">
               </form>
             </div>
 		  <!--<div class="text-center">

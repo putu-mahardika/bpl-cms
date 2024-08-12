@@ -474,8 +474,7 @@
                 <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
                 <label>Nama :</label>
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
-                <label>isAdmin :</label>
-                <!--<input type="text" class="form-control" name="hak-akses">-->
+                <!-- <label>isAdmin :</label>
                 <select name="isAdmin" class="form-control form-control-sm mb-3">
                 <?php if ($data['isAdmin'] == 1){ ?>
                   <option disabled> Pilih </option>
@@ -486,6 +485,14 @@
                   <option value=1> Ya </option>
                   <option value=0 selected> Tidak </option>
                 <?php } ?>
+                </select> -->
+                <label>Peran :</label>
+                <select name="role" class="form-control form-control-sm mb-3">
+                  <option disabled> Pilih </option>
+                  <option value=0 <?php if ($data['isSales'] == 1 && $data['isVm'] == 0) echo('selected'); ?>> Sales </option>
+                  <option value=1 <?php if ($data['isSales'] == 0 && $data['isVm'] == 1) echo('selected'); ?>> VM </option>
+                  <option value=2 <?php if ($data['isSales'] == 1 && $data['isVm'] == 1) echo('selected'); ?>> Sales & VM </option>
+                  <option value=3 <?php if ($data['isAdmin'] == 1) echo('selected'); ?>> Admin </option>
                 </select>
                 <label>Aktif :</label>
                 <select name="aktif" class="form-control form-control-sm mb-3">

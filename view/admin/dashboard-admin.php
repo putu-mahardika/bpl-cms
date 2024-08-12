@@ -151,6 +151,20 @@
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVendor" aria-expanded="true"
+          aria-controls="collapseVendor">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Vendor</span> 
+        </a>
+        <div id="collapseVendor" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Vendor</h6>
+            <a class="collapse-item" href="vendor.php">List Vendor</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>

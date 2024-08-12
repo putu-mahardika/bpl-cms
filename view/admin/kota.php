@@ -475,6 +475,8 @@
                         <th>No</th>
                         <!-- <th>Kode</th> -->
                         <th>Nama</th>
+                        <th>Provinsi</th>
+                        <th>Pulau</th>
                         <th>Aktif</th>
 						            <!--<th>Create Date</th>-->
 						            <!--<th>Last Update</th>-->
@@ -492,6 +494,8 @@
                         <td ><?php echo $i?></td>
                         <!-- <td><?php echo $data['Kode']?></td> -->
                         <td><?php echo $data['Nama']?></td>
+                        <td><?php echo $data['Provinsi']?></td>
+                        <td><?php echo $data['Pulau']?></td>
                     <?php 
                       if($data['aktif'] == 1){
                     ?>
