@@ -566,7 +566,7 @@
       //$.fn.table.moment('d-M-Y hh:mm:ss');
       $('#dataTableHover').DataTable({
         ajax: {
-          url: '../../../../config/controller/quotationController.php',
+          url: '../../../../config/controller/quotationTruckingController.php',
           type: 'get',
           data: {
             getAllQuo: true,

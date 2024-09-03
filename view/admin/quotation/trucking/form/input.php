@@ -9,20 +9,31 @@
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
+  $cityArray= [];
+  $kendaraanArray= [];
+  $customerArray=[];
+
   $queryMasterCustomer = 'select * from master_customer where aktif=1';
   $fetchMasterCustomer = mysqli_query($koneksi, $queryMasterCustomer);
 
-  $queryMasterShipmentTerms = 'select * from master_shipment_terms where aktif=1 order by atr1 asc';
-  $fetchMasterShipmentTerms = mysqli_query($koneksi, $queryMasterShipmentTerms);
+  $queryMasterKendaraan = 'select * from master_kendaraan where IsActive=1';
+  $fetchMasterKendaraan = mysqli_query($koneksi, $queryMasterKendaraan);
 
-  $queryMasterLoadType = 'select * from master_load_type where aktif=1 order by atr1 asc';
-  $fetchMasterLoadType = mysqli_query($koneksi, $queryMasterLoadType);
+  $queryMasterKota = 'select * from master_kota where aktif=1';
+  $fetchMasterKota = mysqli_query($koneksi, $queryMasterKota);
 
-  $queryMasterUnit = 'select * from master_unit where aktif=1 order by atr1 asc';
-  $fetchMasterUnit = mysqli_query($koneksi, $queryMasterUnit);
+  while($row = $fetchMasterKota->fetch_assoc()) {
+    $cityArray[] = $row;
+  }
 
-  //$query = 'select * from master_user where ...';
-  //$fetch = mysqli_query($koneksi,$query);
+  while($row = $fetchMasterKendaraan->fetch_assoc()) {
+    $kendaraanArray[] = $row;
+  }
+
+  while($row = $fetchMasterCustomer->fetch_assoc()) {
+    $customerArray[] = $row;
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +55,10 @@
     .bg-lightGrey {
       background-color: #f1f1f1;
       color: black;
+    }
+    .hidden {
+      visibility: hidden;
+      height: 0;
     }
   </style>
 </head>
@@ -472,161 +487,425 @@
               <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
             </ol>-->
           </div>
-
           <div class="row mb-3">
             <div class="col-xl-8 col-lg-8">
               <div class="card mb-4">
+                <?php if(isset($_SESSION['id_pesan1']) && isset($_SESSION['pesan'])){
+                  // echo $_SESSION['id_pesan1'][0];
+                  $save = $_SESSION['id_pesan1'];
+                ?>
                 <div class="card-body">
-                  <div class="mb-3">field card summary</div>
-                  <div class="mb-3">
-                    <div class="row">
-                      <div class="col-lg-4">
-                        <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Cetak Quo</button>
-                      </div>
-                      <div class="col-lg-4">
-                        <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Customer PO</button>
-                      </div>
-                      <div class="col-lg-4">
-                        <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Repeat Order</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mb-5">
-                    <div class="mb-3">
-                      <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Informasi Quotation Trucking</p>
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <div class="form-group">
-                            <label>Tanggal</label>
-                            <input type="text" class="form-control form-control-sm mb-3" value="-" readonly>
-                          </div>
-                          <div class="form-group">
-                            <label>Nomor Quo Trucking</label>
-                            <input type="text" class="form-control form-control-sm mb-3" value="-" readonly>
-                          </div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                  New Customer
-                                </label>
-                              </div>
-                            </div>
-                            <div class="col-6">
-                            <div class="form-group">
-                              <label>Nama</label>
-                              <input type="text" class="form-control form-control-sm mb-3" value="-">
-                            </div>
-                            <div class="form-group">
-                              <label>Alamat</label>
-                              <input type="text" class="form-control form-control-sm mb-3" value="-">
-                            </div>
-                            <div class="form-group">
-                              <label>PIC</label>
-                              <input type="text" class="form-control form-control-sm mb-3" value="-">
-                            </div>
-                            <div class="form-group">
-                              <label>Telp</label>
-                              <input type="text" class="form-control form-control-sm mb-3" value="-">
-                            </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <div class="form-group">
-                            <label>Sales</label>
-                            <input type="text" class="form-control form-control-sm mb-3" value="-">
-                          </div>
-                          <div class="form-group">
-                            <label>Jumlah Armada</label>
-                            <input type="text" class="form-control form-control-sm mb-3" value="-">
-                          </div>
-                          <div class="form-group">
-                            <label>Total Berat (Ton)</label>
-                            <input type="text" class="form-control form-control-sm mb-3" value="-">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label>Keterangan :</label>
-                        <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"></textarea>
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <div>
-                        <div>Jenis Trip</div>
-                        <div class="mb-3" style="display: flex;">
-                          <div class="mr-2"><button class="btn btn-primary btn-sm" type="button">Single Trip</button></div>
-                          <div class="mr-2"><button type="button" class="btn btn-outline-primary btn-sm">Multi Trip</button></div>
-                          <div class="mr-2"><button type="button" class="btn btn-outline-primary btn-sm">KGM/CBM</button></div>
-                        </div>
-                        <div class="mb-3">
-                          <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                            <thead class="thead-light">
-                              <tr>
-                                <th>No</th>
-                                <!-- <th>Kode</th> -->
-                                <th>Nama</th>
-                                <th>Provinsi</th>
-                                <th>Pulau</th>
-                                <th>Aktif</th>
-                                <!--<th>Create Date</th>-->
-                                <!--<th>Last Update</th>-->
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                          
-                            <!-- <tbody>
-                              <tr>
-                                <td ></td>
-                              </tr>
-                            </tbody> -->
-                          </table>
-                        </div>
-                      </div>
-                    </div>
+                  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <form role="form" method="post" action="../../../../../config/controller/quotationTruckingController.php">
+                    <div class="mb-3">field card summary</div>
                     <div class="mb-3">
                       <div class="row">
                         <div class="col-lg-4">
-                          <button class="btn btn-primary mb-3" style="width: 100%;" type="button">Reset</button>
-                          <button class="btn btn-primary" style="width: 100%;" type="button">Delete</button>
+                          <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Cetak Quo</button>
                         </div>
-                        <div class="col-lg-8">
-                          <div class="row" style="height: 100%;">
-                            <div class="col-lg-5">
-                              <button class="btn btn-primary" style="width: 100%; height:100%;" type="button">Batal</button>
+                        <div class="col-lg-4">
+                          <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Customer PO</button>
+                        </div>
+                        <div class="col-lg-4">
+                          <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Repeat Order</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-5">
+                      <div class="mb-3">
+                        <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Informasi Quotation Trucking</p>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="row">
+                              <div class="col-4">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="customerCheck" <?php $save[0] == '' || $save[0] == null ? printf('checked') : printf('') ?>>
+                                  <label class="form-check-label" for="customerCheck">
+                                    Customer Baru
+                                  </label>
+                                </div>
+                              </div>
+                              <div class="col-8">
+                                <div id="customerField" class="<?php $save[0] ? printf('') : printf('hidden') ?>">
+                                  <div class="form-group">
+                                    <label>Customer :</label>
+                                    <select class="select2-single-placeholder form-control" name="customer" id="customer">
+                                      <option value="" disabled selected>Pilih</option>
+                                      <?php
+                                        foreach($customerArray as $data){
+                                          if($data['aktif']==1){
+                                            if ($data['CustId'] == $save[0]){
+                                      ?>
+                                      <option value="<?php echo $data['CustId'];?>" selected><?php echo $data['nama'];?></option>
+                                          <?php } else { ?>
+                                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
+                                        <?php }} else {
+                                        continue;
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div id="customerTempField" class="<?php $save[1] ? print('') : printf('hidden') ?>">
+                                  <div class="form-group">
+                                    <label>Nama</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerTempName" id="customerTempName" placeholder="Masukkan nama customer" value="<?php echo $save[1] ?>">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Alamat</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerAddressTemp" id="customerAddressTemp" placeholder="Masukkan alamat customer" value="<?php echo $save[2] ?>">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>PIC</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPicTemp" id="customerPicTemp" placeholder="Masukkan nama PIC customer" value="<?php echo $save[3] ?>">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Telp</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer" value="<?php echo $save[4] ?>">
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div class="col-lg-7">
-                              <button class="btn btn-primary" style="width: 100%; height:100%;" type="button">Simpan</button>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label>Jumlah Armada</label>
+                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $save[5] ?>" required>
+                            </div>
+                            <div class="form-group">
+                              <label>Jenis Barang Bawaan</label>
+                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $save[6] ?>" required>
+                            </div>
+                            <div class="form-group">
+                              <label>Total Berat (Ton)</label>
+                              <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $save[7] ?>" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label>Keterangan :</label>
+                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"><?php echo $save[8] ?></textarea>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="form-group">
+                          <input type="hidden" class="form-control form-control-sm mb-3" id="selectedTab" name="selectedTab" value="<?php echo $save[18] ?>">
+                        </div>
+                        <div>
+                          <div class="mb-3">
+                            <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Jenis Trip</p>
+                            <div class="mb-3">
+                              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link <?php $save[18] == 0 ? printf('active') : printf('') ?>" id="singleTrip-tab" data-toggle="tab" href="#singleTrip" role="tab" aria-controls="singleTrip" aria-selected="true">Single Trip</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link <?php $save[18] == 1 ? printf('active') : printf('') ?>" id="multiTrip-tab" data-toggle="tab" href="#multiTrip" role="tab" aria-controls="multiTrip" aria-selected="false">Multi Trip</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link <?php $save[18] == 2 ? printf('active') : printf('') ?>" id="kgmCbm-tab" data-toggle="tab" href="#kgmCbm" role="tab" aria-controls="kgmCbm" aria-selected="false">KGM/CBM</a>
+                                </li>
+                              </ul>
+                              <div class="tab-content mt-3" id="myTabContent">
+                                <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Permintaan Customer</p>
+                                <div class="tab-pane fade <?php if ($save[18] == 0 ? printf('show active') : printf('')) ?>" id="singleTrip" role="tabpanel" aria-labelledby="singleTrip-tab">
+                                  <table class="table align-items-center table-flush table-hover">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Pickup</th>
+                                        <th>Tujuan</th>
+                                        <th>Keterangan Pickup</th>
+                                        <th>Keterangan Tujuan</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($kendaraanArray as $data){
+                                                if($data['IsActive']==1){
+                                                  if ($data['Id'] == $save[10]) {
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>                                            
+                                                <?php } else {?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if ($data['Id'] == $save[12]) {
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[13]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>    
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="tab-pane fade <?php if ($save[18] == 1 ? printf('show active') : printf('')) ?>" id="multiTrip" role="tabpanel" aria-labelledby="multiTrip-tab">
+                                  <table class="table align-items-center table-flush table-hover">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th rowspan="2">Jenis Kendaraan</th>
+                                        <th rowspan="2">Pickup</th>
+                                        <th colspan="3">Tujuan</th>
+                                        <th rowspan="2">Keterangan Pickup</th>
+                                        <th rowspan="2">Keterangan Tujuan</th>
+                                      </tr>
+                                      <tr>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($kendaraanArray as $data){
+                                                if($data['IsActive']==1){
+                                                  if($data['Id'] == $save[10]) {
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[12]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[13]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[14]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan3">
+                                          <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[15]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>    
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="tab-pane fade <?php if ($save[18] == 2 ? printf('show active') : printf('')) ?>" id="kgmCbm" role="tabpanel" aria-labelledby="kgmCbm-tab">
+                                  <table class="table align-items-center table-flush table-hover">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Qty</th>
+                                        <th>Pickup</th>
+                                        <th>Tujuan</th>
+                                        <th>Keterangan Pickup</th>
+                                        <th>Keterangan Tujuan</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <select class="form-control" name="deliveryType" id="kendaraan">
+                                            <option value="" disabled <?php $save[19] == '' ? printf('selected') : printf('') ?>>Pilih</option>
+                                            <option value="kgm" <?php $save[19] == 'kgm' ? printf('selected') : printf('') ?>>KGM</option>
+                                            <option value="cbm" <?php $save[19] == 'cbm' ? printf('selected') : printf('') ?>>CBM</option>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <input type="number" class="form-control form-control-sm mb-3" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $save[11] ?>">
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[14]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                            <option value="" disabled>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                                  if($data['Id'] == $save[14]){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                <?php } else { ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php }} else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <button class="btn btn-success mb-3" style="width: 100%;" type="button">Reset</button>
+                            <button class="btn btn-danger" style="width: 100%;" type="button">Delete</button>
+                          </div>
+                          <div class="col-lg-8">
+                            <div class="row" style="height: 100%;">
+                              <div class="col-lg-5">
+                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button">Batal</button>
+                              </div>
+                              <div class="col-lg-7">
+                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="inputQuoTrucking" >
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                   <div class="mb-3">
-                    <div class="form-group mb-3">
-                      <label>Input Follow Up </label>
-                      <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"></textarea>
-                    </div>
-                    <div class="d-flex flex-row-reverse">
-                      <button class="btn btn-primary" type="button">Submit Follow Up</button>
-                    </div>
-                  </div>
-                  <div class="mb-3">
+                    <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
                     <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                       <thead class="thead-light">
                         <tr>
-                          <th>No</th>
-                          <!-- <th>Kode</th> -->
-                          <th>Nama</th>
-                          <th>Provinsi</th>
-                          <th>Pulau</th>
-                          <th>Aktif</th>
-                          <!--<th>Create Date</th>-->
-                          <!--<th>Last Update</th>-->
-                          <th>Action</th>
+                          <th style="width: 300px;">Tanggal</th>
+                          <th>Keterangan</th>
                         </tr>
                       </thead>
                     
@@ -638,6 +917,406 @@
                     </table>
                   </div>
                 </div>
+                <?php } else { ?>
+                <div class="card-body">
+                  <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
+                  <form role="form" method="post" action="../../../../../config/controller/quotationTruckingController.php">
+                    <div class="mb-3">field card summary</div>
+                    <div class="mb-3">
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Cetak Quo</button>
+                        </div>
+                        <div class="col-lg-4">
+                          <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Customer PO</button>
+                        </div>
+                        <div class="col-lg-4">
+                          <button class="btn btn-primary" style="width: 100%;" type="button" disabled>Repeat Order</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-5">
+                      <div class="mb-3">
+                        <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Informasi Quotation Trucking</p>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="row">
+                              <div class="col-4">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="customerCheck">
+                                  <label class="form-check-label" for="customerCheck">
+                                    Customer Baru
+                                  </label>
+                                </div>
+                              </div>
+                              <div class="col-8">
+                                <div id="customerField" class="">
+                                  <div class="form-group">
+                                    <label>Customer :</label>
+                                    <select class="select2-single-placeholder form-control" name="customer" id="customer">
+                                      <option value="" disabled selected>Pilih</option>
+                                      <?php
+                                        foreach($customerArray as $data){
+                                          if($data['aktif']==1){
+                                      ?>
+                                      <option value="<?php echo $data['CustId'];?>"><?php echo $data['nama'];?></option>
+                                        <?php } else {
+                                        continue;
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div id="customerTempField" class="hidden">
+                                  <div class="form-group">
+                                    <label>Nama</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerNameTemp" id="customerTempName" placeholder="Masukkan nama customer">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Alamat</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerAddressTemp" id="customerAddressTemp" placeholder="Masukkan alamat customer">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>PIC</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPicTemp" id="customerPicTemp" placeholder="Masukkan nama PIC customer">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Telp</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label>Jumlah Armada</label>
+                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" required>
+                            </div>
+                            <div class="form-group">
+                              <label>Jenis Barang Bawaan</label>
+                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" required>
+                            </div>
+                            <div class="form-group">
+                              <label>Total Berat (Ton)</label>
+                              <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label>Keterangan :</label>
+                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"></textarea>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="form-group">
+                          <input type="hidden" class="form-control form-control-sm mb-3" id="selectedTab" name="selectedTab" value="0">
+                        </div>
+                        <div>
+                          <div class="mb-3">
+                            <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Jenis Trip</p>
+                            <div class="mb-3">
+                              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" id="singleTrip-tab" data-toggle="tab" href="#singleTrip" role="tab" aria-controls="singleTrip" aria-selected="true">Single Trip</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="multiTrip-tab" data-toggle="tab" href="#multiTrip" role="tab" aria-controls="multiTrip" aria-selected="false">Multi Trip</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="kgmCbm-tab" data-toggle="tab" href="#kgmCbm" role="tab" aria-controls="kgmCbm" aria-selected="false">KGM/CBM</a>
+                                </li>
+                              </ul>
+                              <div class="tab-content mt-3" id="myTabContent">
+                                <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Permintaan Customer</p>
+                                <div class="tab-pane fade show active" id="singleTrip" role="tabpanel" aria-labelledby="singleTrip-tab">
+                                  <table class="table align-items-center table-flush table-hover">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Pickup</th>
+                                        <th>Tujuan</th>
+                                        <th>Keterangan Pickup</th>
+                                        <th>Keterangan Tujuan</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($kendaraanArray as $data){
+                                                if($data['IsActive']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"></textarea>    
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"></textarea>    
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="tab-pane fade" id="multiTrip" role="tabpanel" aria-labelledby="multiTrip-tab">
+                                  <table class="table align-items-center table-flush table-hover">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th rowspan="2">Jenis Kendaraan</th>
+                                        <th rowspan="2">Pickup</th>
+                                        <th colspan="3">Tujuan</th>
+                                        <th rowspan="2">Keterangan Pickup</th>
+                                        <th rowspan="2">Keterangan Tujuan</th>
+                                      </tr>
+                                      <tr>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($kendaraanArray as $data){
+                                                if($data['IsActive']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan3">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"></textarea>    
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"></textarea>    
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="tab-pane fade" id="kgmCbm" role="tabpanel" aria-labelledby="kgmCbm-tab">
+                                  <table class="table align-items-center table-flush table-hover">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Qty</th>
+                                        <th>Pickup</th>
+                                        <th>Tujuan</th>
+                                        <th>Keterangan Pickup</th>
+                                        <th>Keterangan Tujuan</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($kendaraanArray as $data){
+                                                if($data['IsActive']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <input type="number" class="form-control form-control-sm mb-3" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="0">
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                            <option value="" disabled selected>Pilih</option>
+                                            <?php
+                                              foreach($cityArray as $data){
+                                                if($data['aktif']==1){
+                                            ?>
+                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                              <?php } else {
+                                              continue;
+                                              }
+                                            }
+                                            ?>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"></textarea>    
+                                        </td>
+                                        <td>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"></textarea>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <button class="btn btn-success mb-3" style="width: 100%;" type="button">Reset</button>
+                            <button class="btn btn-danger" style="width: 100%;" type="button">Delete</button>
+                          </div>
+                          <div class="col-lg-8">
+                            <div class="row" style="height: 100%;">
+                              <div class="col-lg-5">
+                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button">Batal</button>
+                              </div>
+                              <div class="col-lg-7">
+                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="inputQuoTrucking" >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="mb-3">
+                    <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
+                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                      <thead class="thead-light">
+                        <tr>
+                          <th style="width: 300px;">Tanggal</th>
+                          <th>Keterangan</th>
+                        </tr>
+                      </thead>
+                    
+                      <!-- <tbody>
+                        <tr>
+                          <td ></td>
+                        </tr>
+                      </tbody> -->
+                    </table>
+                  </div>
+                </div>
+                <?php } ?>
               </div>
             </div>
             <div class="col-xl-4 col-lg-4">
@@ -742,8 +1421,9 @@
   <script src="../../../../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
   <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
   <!-- Page level plugins -->
-  <script src="../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
-  <script src="../../../../vendor/datatables1/datatables.min.js"></script>
+  <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
+  <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
+  <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
   <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
 
@@ -751,11 +1431,57 @@
   <script>
     $(document).ready(function () {
       //$.fn.table.moment('d-M-Y hh:mm:ss');
-      $('#dataTable').DataTable(); // ID From dataTable 
+      $('.select2-single-placeholder').select2({
+        placeholder: "Pilih",
+        allowClear: true
+      });
       $('#dataTableHover').DataTable({
-        "order": [[0, "asc"]]
-        
-      }); // ID From dataTable with Hover
+        "order": [[0, "asc"]]    
+      }); // ID From dataTable with Hover 
+
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        console.log('e', e);
+        var id = e.target.id;
+        let selectedTab = '0';
+        $('#kendaraan option:eq("")').prop('selected', true);
+        $('#kotaAsal option:eq("")').prop('selected', true);
+        $('#kotaTujuan1 option:eq("")').prop('selected', true);
+        $('#kotaTujuan2 option:eq("")').prop('selected', true);
+        $('#kotaTujuan3 option:eq("")').prop('selected', true);
+
+        $('#qty').val('0')
+        $('textarea#detailKotaAsal0').val('')
+        $('textarea#detailKotaTujuan0').val('')
+        $('textarea#detailKotaAsal1').val('')
+        $('textarea#detailKotaTujuan1').val('')
+        $('textarea#detailKotaAsal2').val('')
+        $('textarea#detailKotaTujuan2').val('')
+        if (id === 'multiTrip-tab') {
+          selectedTab = '1';
+        } else if (id === 'kgmCbm-tab') {
+          selectedTab = '2';
+        } else {
+          selectedTab = '0';
+        }
+        $('#selectedTab').val(selectedTab)
+      });
+      
+      $('#customerCheck').click(function (e) {
+        // console.log('e', e);
+        var status = e.target.checked
+        $('#customer option:eq("")').prop('selected', true);
+        $('#customerTempName').val("");
+        $('#customerAddressTemp').val("");
+        $('#customerPicTemp').val("");
+        $('#customerPicPhoneTemp').val("");
+        if (status) {
+          $('#customerField').addClass('hidden');
+          $('#customerTempField').removeClass('hidden');
+        } else {
+          $('#customerField').removeClass('hidden');
+          $('#customerTempField').addClass('hidden')
+        }
+      })
     });
   </script>
 
