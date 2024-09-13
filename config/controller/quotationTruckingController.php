@@ -15,15 +15,17 @@
     $tempArray = array();
     $query = "SELECT
         mqt.*,
-        mc.nama AS CustomerName,
         mu.nama AS SalesName,
         mu1.nama AS VmName,
         mk.Nama AS VehicleName, 
+        CASE
+          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.PIC
+        END AS CustomerName,
         CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN mqt.PICNameTemp ELSE mc.PIC
+          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
         END AS Pic,
         CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
+          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
         END AS PicPhone,
         CASE 
           WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
@@ -37,7 +39,8 @@
         CASE 
           WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
         END AS VendorName,
-        mqst.name AS StatusName
+        mqst.name AS StatusName,
+        mqst.color AS StatusColor
     FROM
       master_quotation_trucking mqt
         LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
@@ -48,7 +51,9 @@
         LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
         LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
     WHERE
-      mqt.IsDelete = 0;";
+      mqt.IsDelete = 0
+    ORDER BY 
+      mqt.update_at desc";
     $fetch = mysqli_query($koneksi, $query);
     // $datas = mysqli_fetch_array($fetch);
     while($row = $fetch->fetch_assoc()) {
@@ -57,6 +62,7 @@
     foreach ($tempArray as $i=>$data) {
       $array[$i]['noQuotation'] = $data['NoQuotation'];
       $array[$i]['createDate'] = $data['create_date'];
+      $array[$i]['lastUpdate'] = $data['update_at'];
       $array[$i]['po'] = null;
       $array[$i]['customer'] = $data['CustomerName'];
       $array[$i]['pic'] = $data['Pic'];
@@ -74,6 +80,7 @@
       $array[$i]['vmName'] = $data['VmName'];
       $array[$i]['status'] = $data['StatusName'];
       $array[$i]['id'] = $data['Id'];
+      $array[$i]['statusColor'] = $data['StatusColor'];
       // print_r($data);
     }
 
@@ -141,9 +148,9 @@
       $detailKotaTujuan = $_POST['detailKotaTujuan1'];
       $tripType = 'multiTrip';
       $query = "INSERT INTO `master_quotation_trucking`
-      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
+      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$totalArmada', '$tripType', NULL, '0', NULL, NULL, NULL, NULL, '2024-09-02 09:37:43.000000', '2024-09-02 09:37:43.000000', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', '$kotaTujuanId2', '$kotaTujuanId3', NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', '$kotaTujuanId2', '$kotaTujuanId3', NULL, NULL, NULL);";
       $save = [
         $customerId, //0
         $customerNameTemp, //1
@@ -174,9 +181,9 @@
       $tripType = $_POST['tripType'];
       $deliveryType = $_POST['tipePengiriman'];
       $query = "INSERT INTO `master_quotation_trucking`
-      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
+      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$totalArmada', '$tripType', NULL, '0', NULL, NULL, NULL, NULL, '2024-09-02 09:37:43.000000', '2024-09-02 09:37:43.000000', '1', '0', NULL, NULL, NULL, '$deliveryType' '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, '$deliveryType' '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
       $save = [
         $customerId,
         $customerNameTemp,
@@ -205,9 +212,9 @@
       $detailKotaTujuan = $_POST['detailKotaTujuan0'];
       $tripType = 'singleTrip';
       $query = "INSERT INTO `master_quotation_trucking`
-      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
+      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$totalArmada', '$tripType', NULL, '0', NULL, NULL, NULL, NULL, '2024-09-02 09:37:43.000000', '2024-09-02 09:37:43.000000', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
       $save = [
         $customerId,
         $customerNameTemp,
@@ -231,43 +238,301 @@
         $deliveryType
       ];
     }
-
-    // $save = [
-    //   $customerId,
-    //   $customerNameTemp,
-    //   $customerAddressTemp,
-    //   $customerPicTemp,
-    //   $customerPicPhoneTemp,
-    //   $totalArmada,
-    //   $itemType,
-    //   $weight,
-    //   $note,
-    //   $tripType,
-    //   $kondaraanId,
-    //   $qty,
-    //   $kotaAsalId,
-    //   $kotaTujuanId1,
-    //   $kotaTujuanId2,
-    //   $kotaTujuanId3,
-    //   $detailKotaAsal,
-    //   $detailKotaTujuan
-    // ];
     // print_r($save);
-
-    // $query = "INSERT INTO `master_quotation_trucking`
-    //   (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
-    //   VALUES
-    //   (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$totalArmada', '$tripType', NULL, '0', NULL, NULL, NULL, NULL, '2024-09-02 09:37:43.000000', '2024-09-02 09:37:43.000000', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal, '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', $kotaTujuanId2, $kotaTujuanId3, NULL, NULL, NULL);";
     // echo $query;
-    // $result = mysqli_query($koneksi, $query);
+    $result = mysqli_query($koneksi, $query);
     // echo $result;
-    // if ($result) {
-    //   header("location:../../view/admin/quotation/trucking/index.php");
-    //   $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-    // } else {
+    if ($result) {
+      header("location:../../view/admin/quotation/trucking/index.php");
+      $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+    } else {
       header("location:../../view/admin/quotation/trucking/form/input.php");
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
       $_SESSION['id_pesan1'] = $save;
-    // }
+    }
+  }
+
+  elseif (isset($_POST['editQuoTruckingAdmin'])) {
+    print_r($_POST['itemType']);
+    $customerId = isset($_POST['customer']) ? $_POST['customer'] : 'null';
+    $customerNameTemp = isset($_POST['customerTempName']) && $_POST['customerTempName'] !== '' ? "'" . $_POST['customerTempName'] . "'" : 'null';
+    $customerAddressTemp = isset($_POST['customerAddressTemp']) && $_POST['customerAddressTemp'] !== '' ? "'" . $_POST['customerAddressTemp'] . "'" : 'null';
+    $customerPicTemp = isset($_POST['customerPicTemp']) && $_POST['customerPicTemp'] !== '' ? "'" . $_POST['customerPicTemp'] . "'" : 'null';
+    $customerPicPhoneTemp = isset($_POST['customerPicPhoneTemp']) && $_POST['customerPicPhoneTemp'] !== '' ? "'".$_POST['customerPicPhoneTemp']."'" : 'null';
+    $totalArmada = isset($_POST['totalArmada']) ? $_POST['totalArmada'] : 0;
+    $itemType = isset($_POST['itemType']) ? "'" . $_POST['itemType'] . "'" : 'null';
+    $weight = isset($_POST['weight']) ? $_POST['weight'] : 0;
+    $note = isset($_POST['keterangan']) ? "'".$_POST['keterangan']."'" : 'null';
+    $tripType = 'null';
+    $selectedTab = isset($_POST['selectedTab']) ? $_POST['selectedTab'] : 0;
+    $deliveryType = 'null';
+    $kendaraanId= isset($_POST['kendaraan']) ? $_POST['kendaraan'] : 'null';
+    $qty = isset($_POST['qty']) ? $_POST['qty'] : 0;
+    $kotaAsalId = isset($_POST['kotaAsal']) ? $_POST['kotaAsal'] : 'null';
+    $kotaTujuanId1 = isset($_POST['kotaTujuan1']) ? $_POST['kotaTujuan1'] : 'null';
+    $kotaTujuanId2 = isset($_POST['kotaTujuan2']) && $_POST['kotaTujuan2'] !== "" ? $_POST['kotaTujuan2'] : 'null';
+    $kotaTujuanId3 = isset($_POST['kotaTujuan3']) && $_POST['kotaTujuan3'] !== "" ? $_POST['kotaTujuan3'] : 'null';
+    $detailKotaAsal = isset($_POST['detailKotaAsal0']) ? "'".$_POST['detailKotaAsal0']."'" : 'null';
+    $detailKotaTujuan = isset($_POST['detailKotaTujuan0']) ? "'".$_POST['detailKotaTujuan0']."'" : 'null';
+    $vendor = isset($_POST['vendor']) ? $_POST['vendor'] : [];
+    $idDetailQuo = isset($_POST['idDetailQuo']) ? $_POST['idDetailQuo'] : [];
+    $costingFirst = isset($_POST['costingFirst']) ? $_POST['costingFirst'] : [];
+    $costingNext = isset($_POST['costingNext']) ? $_POST['costingNext'] : [];
+    $costingTotal = isset($_POST['costingTotal']) ? $_POST['costingTotal'] : [];
+    $budgetingFirst = isset($_POST['budgetingFirst']) ? $_POST['budgetingFirst'] : [];
+    $budgetingNext = isset($_POST['budgetingNext']) ? $_POST['budgetingNext'] : [];
+    $budgetingTotal = isset($_POST['budgetingTotal']) ? $_POST['budgetingTotal'] : [];
+    $pricingFirst = isset($_POST['pricingFirst']) ? $_POST['pricingFirst'] : [];
+    $pricingNext = isset($_POST['pricingNext']) ? $_POST['pricingNext'] : [];
+    $pricingTotal = isset($_POST['pricingTotal']) ? $_POST['pricingTotal'] : [];
+    $counter = isset($_POST['counterTableVendor']) ? $_POST['counterTableVendor'] : 0;
+    $quoId = isset($_POST['quoTruckingId']) ? $_POST['quoTruckingId'] : 'null';
+    $statusId = isset($_POST['statusId']) ? $_POST['statusId'] : 'null';
+    $vmId = isset($_POST['vmIdOld']) ? $_POST['vmIdOld'] : 'null';
+    $selectedVendor = isset($_POST['checkboxVendor']) ? $_POST['checkboxVendor'] : 'null';
+
+    $note = str_replace(["\r\n", "\n", "\r"],"%%", $note);
+    $detailKotaAsal = str_replace(["\r\n", "\n", "\r"],"%%", $detailKotaAsal);
+    $detailKotaTujuan = str_replace(["\r\n", "\n", "\r"],"%%", $detailKotaTujuan);
+
+
+    if ($selectedTab == 1) {
+      $tripType = 'multiTrip';
+    } elseif ($selectedTab == 2) {
+      $tripType = $_POST['tripType'];
+      $deliveryType = $_POST['tipePengiriman'];
+    } else {
+      $tripType = 'singleTrip';
+    }
+
+
+    if ($statusId == 1) {
+      $statusId = insertDetailQuo($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi);
+      $vmId = $s_id;
+    } elseif ($selectedVendor !== 'null') {
+      $statusId = 10;
+    } else {
+      $statusId = updateDetailQuo($vendor, $statusId, $idDetailQuo, $costingFirst, $costingNext, $costingTotal, $budgetingFirst, $budgetingNext, $budgetingTotal, $pricingFirst, $pricingNext, $pricingTotal, $quoId, $s_id, $koneksi);
+    }
+    // print_r($_POST['checkboxVendor']);
+
+    if ($selectedTab == 1) {
+      $query = "UPDATE master_quotation_trucking SET
+        IdCustomer=$customerId,
+        CustomerNameTemp=$customerNameTemp,
+        CustomerAddressTemp=$customerAddressTemp,
+        PICNameTemp=$customerPicTemp,
+        PICPhoneTemp=$customerPicPhoneTemp,
+        TotalArmada='$totalArmada',
+        ItemType=$itemType,
+        Weight='$weight',
+        note=$note,
+        IdKendaraan=$kendaraanId,
+        IdPickupCity=$kotaAsalId,
+        PickupNote=$detailKotaAsal,
+        DestinationNote=$detailKotaTujuan,
+        IdDestinationCity1=$kotaTujuanId1,
+        IdDestinationCity2=$kotaTujuanId2,
+        IdDestinationCity3=$kotaTujuanId3,
+        LastUpdatedById='$s_id',
+        LastUpdatedByName='$s_name',
+        deliveryTypeName=NULL,
+        update_at='$datetime',
+        IdVM='$vmId',
+        IdQuoStatus=$statusId,
+        quoDetailVendorId='$selectedVendor'
+        WHERE Id=$quoId
+      ";
+    } elseif ($selectedTab == 2) {
+      $query = "UPDATE master_quotation_trucking SET
+        IdCustomer=$customerId,
+        CustomerNameTemp=$customerNameTemp,
+        CustomerAddressTemp=$customerAddressTemp,
+        PICNameTemp=$customerPicTemp,
+        PICPhoneTemp=$customerPicPhoneTemp,
+        TotalArmada='$totalArmada',
+        ItemType=$itemType,
+        Weight='$weight',
+        note=$note,
+        IdKendaraan=NULL,
+        IdPickupCity=$kotaAsalId,
+        PickupNote=$detailKotaAsal,
+        DestinationNote=$detailKotaTujuan,
+        IdDestinationCity1=$kotaTujuanId1,
+        IdDestinationCity2=NULL,
+        IdDestinationCity3=NULL,
+        LastUpdatedById='$s_id',
+        LastUpdatedByName='$s_name',
+        deliveryTypeName=$deliveryType,
+        update_at='$datetime',
+        IdVM='$vmId',
+        IdQuoStatus='$statusId',
+        quoDetailVendorId=$selectedVendor
+        WHERE Id=$quoId
+      ";
+    } else {
+      $query = "UPDATE master_quotation_trucking SET
+        IdCustomer=$customerId,
+        CustomerNameTemp=$customerNameTemp,
+        CustomerAddressTemp=$customerAddressTemp,
+        PICNameTemp=$customerPicTemp,
+        PICPhoneTemp=$customerPicPhoneTemp,
+        TotalArmada='$totalArmada',
+        ItemType=$itemType,
+        Weight='$weight',
+        note=$note,
+        IdKendaraan=$kendaraanId,
+        IdPickupCity=$kotaAsalId,
+        PickupNote=$detailKotaAsal,
+        DestinationNote=$detailKotaTujuan,
+        IdDestinationCity1=$kotaTujuanId1,
+        IdDestinationCity2=NULL,
+        IdDestinationCity3=NULL,
+        LastUpdatedById='$s_id',
+        LastUpdatedByName='$s_name',
+        deliveryTypeName=NULL,
+        update_at='$datetime',
+        IdVM='$vmId',
+        IdQuoStatus='$statusId',
+        quoDetailVendorId=$selectedVendor
+        WHERE Id=$quoId
+      ";
+    }
+    echo $query;
+    $result = mysqli_query($koneksi, $query);
+    if ($result) {
+      // header("location:../../view/admin/quotation/trucking/index.php");
+      header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+      $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+    } else {
+        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+    }
+  }
+
+
+  elseif (isset($_POST['generateTrucking'])) {
+    $customerCode = $_POST['customerCode'];
+    $customerQuery = "SELECT CustId FROM master_customer WHERE kode_customer='$customerCode' LIMIT 1";
+    $fetchCustomer = mysqli_query($koneksi, $customerQuery);
+    $dataCustomer = mysqli_fetch_assoc($fetchCustomer);
+    $customerId = $dataCustomer['CustId'];
+
+    $poNumber = $_POST['poNumber'];
+    $poDate = $_POST['poDate'];
+    $spkNumber = $_POST['spkNumber'];
+    $spkDate = $_POST['spkDate'];
+    $totalArmada = $_POST['totalArmada'];
+    $originCity = $_POST['originCity'];
+    $destinationCity = $_POST['destinationCity'];
+    $originCityDesc = $_POST['originCityDesc'];
+    $destinationCityDesc = $_POST['destinationCityDesc'];
+    $item = $_POST['item'];
+    $idQuo = $_POST['idQuo'];
+
+    $tglpo0 = str_replace('/', '-', $poDate);
+    $tglspk0 = str_replace('/', '-', $spkDate);
+    $tglpo1 = date('Y-m-d', strtotime($tglpo0));
+    $tglspk1 = date('Y-m-d', strtotime($tglspk0));
+
+    $query = "INSERT INTO trans_hd (`CustId`, `UserId`, `NoPO`, `tgl_po`, `NoSPK`, `tgl_spk`, `total_armada`, `kota_kirim_id`, `kota_kirim`, `kota_tujuan_id`, `kota_tujuan`, `Barang`, `OnClose`, `create_date`, `last_update`, `IdQuotation`)
+    VALUES ('$customerId', '$s_id', '$poNumber', '$tglpo1', '$spkNumber', '$tglspk1', '$totalArmada', '$originCity', '$originCityDesc', '$destinationCity', '$destinationCityDesc', '$item', 0, '$datetime', '$datetime', '$idQuo')";
+
+    // echo $query;
+    $result = mysqli_query($koneksi, $query);
+    if ($result) {
+      $queryQuo = "UPDATE master_quotation_trucking SET IdQuoStatus=14 WHERE Id='$idQuo'";
+      $resultQuo = mysqli_query($koneksi, $queryQuo);
+      if ($resultQuo) {
+        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
+        $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      }
+    } else {
+      header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+    }
+  }
+
+
+  function insertDetailQuo ($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi) {
+    $newStatus = 5;
+    if (count($vendor) > 0) {
+      $queryArray = array();
+      $queryValues = '';
+      // echo count($vendor);
+      // print_r($vendor);
+      foreach ($vendor as $key => $data) {
+        array_push($queryArray, "('$quoId', '$data', '$costingFirst[$key]', '$costingNext[$key]', '$costingTotal[$key]', '$s_id')");
+      }
+      $queryValues = implode(', ', $queryArray);
+      // print_r($queryArray);
+      // print_r($queryValues);
+      $query = "INSERT INTO quotation_detail_trucking (`IdQuotation`, `IdVendor`, `CostingFirstPrice`, `CostingNextPrice`, `CostingTotalPrice`, `LastUpdatedById`) VALUES $queryValues;";
+      $result = mysqli_query($koneksi, $query);
+      // echo $query;
+      $newStatus = 2;
+      return $newStatus;
+    } else {
+      return $newStatus;
+    }
+  }
+
+  function updateDetailQuo ($vendor, $statusId, $idDetailQuo, $costingFirst, $costingNext, $costingTotal, $budgetingFirst, $budgetingNext, $budgetingTotal, $pricingFirst, $pricingNext, $pricingTotal, $quoId, $s_id, $koneksi) {
+    // print_r($idDetailQuo);
+    $newStatus = $statusId;
+    if (count($vendor) > 0) {
+      $statusTemp = null;
+      foreach ($vendor as $key => $data) {
+        $statusTempTemp = null;
+        $queryCheck = "SELECT * FROM quotation_detail_trucking WHERE Id='$idDetailQuo[$key]' LIMIT 1";
+        $fetchCheck = mysqli_query($koneksi, $queryCheck);
+        $dataCheck = mysqli_fetch_assoc($fetchCheck);
+        // print_r($dataCheck);
+        
+        $arrayCheck = [];
+        if ($dataCheck['CostingFirstPrice'] !== $costingFirst[$key] || $dataCheck['CostingNextPrice'] !== $costingNext[$key]) {
+          array_push($arrayCheck, 'a');
+        }
+        if ($dataCheck['BudgetingFirstPrice'] !== $budgetingFirst[$key] || $dataCheck['BudgetingNextPrice'] !== $budgetingNext[$key]) {
+          array_push($arrayCheck, 'b');
+        }
+        if ($dataCheck['PricingFirstPrice'] !== $pricingFirst[$key] || $dataCheck['PricingNextPrice'] !== $pricingNext[$key]) {
+          array_push($arrayCheck, 'c');
+        }
+        print_r($arrayCheck);
+        if (count($arrayCheck) == 1 && $statusTemp !== 5) {
+          if ($arrayCheck[0] == 'a') {
+            $statusTempTemp = 6;
+          } elseif ($arrayCheck[0] == 'b') {
+            $statusTempTemp = 7;
+          } elseif ($arrayCheck[0] == 'c') {
+            $statusTempTemp = 8;
+          }
+
+          if ($statusTemp == null) {
+            $statusTemp = $statusTempTemp;
+          } elseif ($statusTemp && $statusTemp !== $statusTempTemp) {
+            $statusTemp = 5;
+          }
+        } elseif (count($arrayCheck) > 1) {
+          $statusTempTemp = 5;
+        } else {
+          $statusTempTemp = $statusTemp;
+        }
+        echo $statusTempTemp;
+
+        echo $statusTemp;
+
+
+        $query = "UPDATE quotation_detail_trucking SET IdVendor='$data', CostingFirstPrice='$costingFirst[$key]', CostingNextPrice='$costingNext[$key]', CostingTotalPrice='$costingTotal[$key]', BudgetingFirstPrice='$budgetingFirst[$key]', BudgetingNextPrice='$budgetingNext[$key]', BudgetingTotalPrice='$budgetingTotal[$key]', PricingFirstPrice='$pricingFirst[$key]', PricingNextPrice='$pricingNext[$key]', PricingTotalPrice='$pricingTotal[$key]', LastUpdatedById='$s_id' WHERE Id='$idDetailQuo[$key]'";
+        // echo $query;
+        // print_r($query);
+        $result = mysqli_query($koneksi, $query);
+        
+      }
+      $newStatus = $statusTemp;
+      // echo $newStatus;
+    }
+    return $newStatus;
   }
 ?>

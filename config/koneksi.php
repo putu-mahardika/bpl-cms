@@ -1,9 +1,14 @@
 <?php
 
-    $dbhost = 'localhost';
-    $dbuser = 'root';
-    $dbpass = '';
-    $dbname = 'berkahpe_tracking6';
+    // $dbhost = 'localhost';
+    // $dbuser = 'root';
+    // $dbpass = '';
+    // $dbname = 'berkahpe_tracking6';
+
+    $dbhost = 'srv155.niagahoster.com';
+    $dbuser = 'u1732795_berkahpe';
+    $dbpass = 'tog57588';
+    $dbname = 'u1732795_berkahpe_tracking_demo';
 
     $timeout = 1000;
 

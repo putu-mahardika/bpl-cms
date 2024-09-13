@@ -9,12 +9,25 @@
   $s_id = $_SESSION['id'];
   $akses = $_SESSION['hak_akses'];
 
-
   $master_query = "select * from master_vendor";
   $fetch_master_query = mysqli_query($koneksi, $master_query);
 
+  if (isset($_GET['allData'])) {
+    $query = "select * from master_vendor where isActive=1 and isDelete=0";
+    $result = mysqli_query($koneksi, $query);
+
+    $vendor = [];
+
+    while($row = $result->fetch_assoc()) {
+      $vendor[] = $row;
+    }
+
+    echo json_encode($vendor);
+    // echo $query;
+  }
+
   // ============= tambah vendor ===============
-  if (isset($_POST['inputVendor'])) {
+  else if (isset($_POST['inputVendor'])) {
     $kode = $_POST['kode'];
     $nama = $_POST['nama'];
     $alamat = $_POST['alamat'];
@@ -139,5 +152,5 @@
         header("location:../view/admin/vendor.php");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal dihapus !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
     }
-}
+  }
 ?>

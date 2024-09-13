@@ -38,7 +38,7 @@
                 <div class="login-form">
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Login</h1>
-                    <p>v1.2.1</p>
+                    <p>v1.3.0 - DEV</p>
                   </div>
                   <?php 
                     if(isset($_GET['pesan'])){

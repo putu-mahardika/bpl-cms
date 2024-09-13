@@ -41,7 +41,7 @@
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard-admin.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="../../dashboard-admin.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -58,7 +58,7 @@
         <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
+            <a class="collapse-item" href="../../user.php">User Pengguna</a>
             <!--<a class="collapse-item" href="buttons.html">Buttons</a>
             <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
             <a class="collapse-item" href="modals.html">Modals</a>
@@ -76,7 +76,7 @@
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item" href="customer.php">List Customer</a>
+            <a class="collapse-item" href="../../customer.php">List Customer</a>
             <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
           </div>
         </div>
@@ -90,22 +90,78 @@
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">Status Trucking</a>
-            <a class="collapse-item" href="statusShipment.php">Status Shipment</a>
+            <a class="collapse-item" href="../../status.php">Status Trucking</a>
+            <a class="collapse-item" href="../../statusShipment.php">Status Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
           aria-controls="collapseKota">
           <i class="fas fa-fw fa-table"></i>
           <span>Kota</span>
         </a>
-        <div id="collapseKota" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item active" href="kota.php">List Kota</a>
+            <a class="collapse-item" href="../../kota.php">List Kota</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJenisKendaraan" aria-expanded="true"
+          aria-controls="collapseJenisKendaraan">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Jenis Kendaraan</span> 
+        </a>
+        <div id="collapseJenisKendaraan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Jenis Kendaraan</h6>
+            <a class="collapse-item" href="../../jenisKendaraan.php">List Jenis Kendaraan</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNegara" aria-expanded="true"
+          aria-controls="collapseNegara">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Negara</span> 
+        </a>
+        <div id="collapseNegara" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Negara</h6>
+            <a class="collapse-item" href="../../negara.php">List Negara</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVendor" aria-expanded="true"
+          aria-controls="collapseVendor">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Vendor</span> 
+        </a>
+        <div id="collapseVendor" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Vendor</h6>
+            <a class="collapse-item" href="../../vendor.php">List Vendor</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
+          aria-controls="collapseQuoTrucking">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Quo Trucking</span> 
+        </a>
+        <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Quo Trucking</h6>
+            <a class="collapse-item active" href="../../quotation/trucking/index.php">List Quo Trucking</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -119,7 +175,7 @@
         <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="loadType.php">List Load Type</a>
+            <a class="collapse-item" href="../../loadType.php">List Load Type</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -133,7 +189,7 @@
         <div id="collapseShipmentTerms" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Shipment Terms</h6>
-            <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
+            <a class="collapse-item" href="../../shipmentTerms.php">List Shipment Terms</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -147,7 +203,7 @@
         <div id="collapseUnit" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Unit</h6>
-            <a class="collapse-item" href="unit.php">List Unit</a>
+            <a class="collapse-item" href="../../unit.php">List Unit</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -163,13 +219,13 @@
         Transaksi
       </div>
 	    <li class="nav-item">
-        <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="../../shipment.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-ship"></i>
           <span>Shipment</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="transaksi.php?tahun=<?php echo $datetime?>">
+        <a class="nav-link" href="../../transaksi.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-truck"></i>
           <span>Pergerakan Truck</span>
         </a>
@@ -187,13 +243,13 @@
         <div id="collapseReportTruck" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Laporan Trucking</h6>
-            <a class="collapse-item" href="laporanbarang.php">Laporan Detail</a>
-            <a class="collapse-item" href="laporanbarangbiaya.php">Laporan Biaya</a>
+            <a class="collapse-item" href="../../laporanbarang.php">Laporan Detail</a>
+            <a class="collapse-item" href="../../laporanbarangbiaya.php">Laporan Biaya</a>
           </div>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="laporanShipment.php">
+        <a class="nav-link" href="../../laporanShipment.php">
           <i class="fas fa-fw fa-file-invoice"></i>
           <span>Laporan Shipment</span>
         </a>
@@ -475,8 +531,11 @@
                     <thead class="thead-light">
                       <tr>
                         <th>No</th>
-                        <th>Tanggal</th>
+                        <th>Tanggal Quo</th>
+                        <th>Tanggal Last Update</th>
+                        <th>Status</th>
                         <th>No PO</th>
+                        <th>Vendor Terpilih</th>
                         <th>Nama Perusahaan</th>
                         <th>PIC</th>
                         <th>No Telp PIC</th>
@@ -484,14 +543,8 @@
                         <th>Jenis Barang</th>
                         <th>Tonase</th>
                         <th>Total Armada</th>
-                        <th>Vendor</th>
-                        <th>Total Costing</th>
-                        <th>Total Budgeting</th>
                         <th>Total Pricing</th>
                         <th>Jenis Trip</th>
-                        <th>Tanggal Budgeting</th>
-                        <th>User VM</th>
-                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -534,8 +587,7 @@
       <footer class="sticky-footer bg-white" style="padding:10px 0 10px 0;">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>&copy; <script> document.write(new Date().getFullYear()); </script> - Supported by
-              <img src="../../../img/logo-group.png" style="height:45px;">
+            <span>&copy; <script> document.write(new Date().getFullYear()); </script>
             </span>
           </div>
         </div>
@@ -577,7 +629,12 @@
         columns: [
           { data: 'noQuotation' },
           { data: 'createDate' },
+          { data: 'lastUpdate' },
+          { render: function (data, type, row, meta) {
+              return `<div style="padding:5px 10px;border-radius:10px;color:white;background:`+row.statusColor+`">`+ row.status +`</div>`;
+          }},
           { data: 'po' },
+          { data: 'vendorName' },
           { data: 'customer' },
           { data: 'pic' },
           { data: 'picPhone' },
@@ -585,17 +642,13 @@
           { data: 'itemType' },
           { data: 'weight' },
           { data: 'totalArmada' },
-          { data: 'vendorName' },
-          { data: 'totalCosting' },
-          { data: 'totalBudgeting' },
           { data: 'totalPricing' },
           { data: 'tripType' },
-          { data: 'budgetingDate' },
-          { data: 'vmName' },
-          { data: 'status' },
-          { data: 'id' },
+          { render: function (data, type, row, meta) {
+              return `<a href="form/edit.php?id=` + row.id +`" class="btn btn-primary"><i class="fas fa-edit"></i></a>`;
+          }}
         ],
-        order: [[1, 'asc']],
+        order: [[2, "asc"]],
         rowId: 'id',
         stateSave: true
       }); 

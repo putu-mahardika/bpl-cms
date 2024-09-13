@@ -68,7 +68,8 @@
         $role = $_POST['role'];
         $aktif = $_POST['aktif'];
         $isSales = 0;
-        $isVm = 0;
+        $isVmTrucking = 0;
+        $isVmShipment = 0;
 
 		if($isAdmin == "Ya"){
 			$isAdmin1 = 1;
@@ -85,10 +86,9 @@
         if ($role == 0) {
             $isSales = 1;
         } elseif ($role == 1) {
-            $isVm = 1;
+            $isVmTrucking = 1;
         } elseif ($role == 2) {
-            $isSales = 1;
-            $isVm = 1;
+            $isVmShipment = 1;
         }
 
         while($data = mysqli_fetch_array($fetch_u)){
@@ -97,7 +97,7 @@
             }
         }
         if($i != 1){
-            $query = "insert into master_user values(null, '$username', '$password1', '$nama', '$datetime', '$datetime', '$aktif1', '$isAdmin1', '$isVm', '$isSales', '0', '', '')";
+            $query = "insert into master_user values(null, '$username', '$password1', '$nama', '$datetime', '$datetime', '$aktif1', '$isAdmin1', '$isVmTrucking', '$isVmShipment', '$isSales', '0', '', '')";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/user.php");
@@ -123,16 +123,16 @@
         $aktif = $_POST['aktif'];
         $isAdmin = 0;
         $isSales = 0;
-        $isVm = 0;
+        $isVmTrucking = 0;
+        $isVmShipment = 0;
         // echo $password;
 
         if ($role == 0) {
             $isSales = 1;
         } elseif ($role == 1) {
-            $isVm = 1;
+            $isVmTrucking = 1;
         } elseif ($role == 2) {
-            $isSales = 1;
-            $isVm = 1;
+            $isVmShipment = 1;
         } elseif ($role == 3) {
             $isAdmin = 1;
         }
@@ -148,9 +148,9 @@
         if($i != 1){
             if ($password != NULL) {
                 $password1 = md5($acak . md5($password) . $acak);
-                $query = "update master_user set username='$username', password='$password1', nama='$nama', isAdmin='$isAdmin', isVm='$isVm', isSales='$isSales', last_update='$datetime', aktif='$aktif' where UserId='$id'";
+                $query = "update master_user set username='$username', password='$password1', nama='$nama', isAdmin='$isAdmin', isVmTrucking='$isVmTrucking', isVMShipment='$isVmShipment', isSales='$isSales', last_update='$datetime', aktif='$aktif' where UserId='$id'";
             } else {
-                $query = "update master_user set username='$username', nama='$nama', isAdmin='$isAdmin', isVm='$isVm', isSales='$isSales', last_update='$datetime', aktif='$aktif' where UserId='$id'";
+                $query = "update master_user set username='$username', nama='$nama', isAdmin='$isAdmin', isVmTrucking='$isVmTrucking', isVMShipment='$isVmShipment', isSales='$isSales', last_update='$datetime', aktif='$aktif' where UserId='$id'";
             }
             $result = mysqli_query($koneksi, $query);
             if ($result) {
@@ -731,7 +731,7 @@
 		//echo $tglspk1;
 
 		if ($t == 0) {
-			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, null, null, '0', '', '')";
+			$query = "insert into trans_hd values (null, '$cust', '$s_id', '$datetime', '$nopo', '$tglpo1', '$nospk', '$tglspk1', '$armada', '$kotaAsalId', '$detailKotaAsal', '$kotaTujuanId', '$detailKotaTujuan', '$barang', '$keterangan', '$status', $tglclose, '$datetime', null, null, null, null, null, '0', '', '')";
             $result = mysqli_query($koneksi, $query);
             //create biaya turunan ================================================================
             // $resultCreateBiayaTurunan = createBiayaTurunan($nospk, $datetime, $s_id, $koneksi);

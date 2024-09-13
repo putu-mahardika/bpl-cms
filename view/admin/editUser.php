@@ -109,6 +109,62 @@
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJenisKendaraan" aria-expanded="true"
+          aria-controls="collapseJenisKendaraan">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Jenis Kendaraan</span> 
+        </a>
+        <div id="collapseJenisKendaraan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Jenis Kendaraan</h6>
+            <a class="collapse-item" href="jenisKendaraan.php">List Jenis Kendaraan</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNegara" aria-expanded="true"
+          aria-controls="collapseNegara">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Negara</span> 
+        </a>
+        <div id="collapseNegara" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Negara</h6>
+            <a class="collapse-item" href="negara.php">List Negara</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVendor" aria-expanded="true"
+          aria-controls="collapseVendor">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Vendor</span> 
+        </a>
+        <div id="collapseVendor" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Vendor</h6>
+            <a class="collapse-item" href="vendor.php">List Vendor</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
+          aria-controls="collapseQuoTrucking">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Quo Trucking</span> 
+        </a>
+        <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Quo Trucking</h6>
+            <a class="collapse-item" href="quotation/trucking/index.php">List Quo Trucking</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>
@@ -473,7 +529,7 @@
                 <input style="margin-bottom:0rem!important;" type="text" class="form-control form-control-sm mb-3" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Password harus terdiri dari 8 karakter, mengandung minimal 1 huruf, 1 angka dan 1 karakter spesial (!, @, #, $, dll)" name="password">
                 <p style="font-size:12px; margin-top:0; margin-bottom:1rem;"><i>*Jika tidak ingin mengganti password dapat mengosongkan kolom ini</i></p>
                 <label>Nama :</label>
-                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" pattern="[a-zA-Z]+" title="Nama hanya boleh diisi huruf" required>
+                <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['nama'];?>" name="nama" minlength="3" maxlength="60" title="Nama hanya boleh diisi huruf" required>
                 <!-- <label>isAdmin :</label>
                 <select name="isAdmin" class="form-control form-control-sm mb-3">
                 <?php if ($data['isAdmin'] == 1){ ?>
@@ -489,9 +545,9 @@
                 <label>Peran :</label>
                 <select name="role" class="form-control form-control-sm mb-3">
                   <option disabled> Pilih </option>
-                  <option value=0 <?php if ($data['isSales'] == 1 && $data['isVm'] == 0) echo('selected'); ?>> Sales </option>
-                  <option value=1 <?php if ($data['isSales'] == 0 && $data['isVm'] == 1) echo('selected'); ?>> VM </option>
-                  <option value=2 <?php if ($data['isSales'] == 1 && $data['isVm'] == 1) echo('selected'); ?>> Sales & VM </option>
+                  <option value=0 <?php if ($data['isSales'] == 1 && $data['isVmTrucking'] == 0 && $data['isVMShipment'] == 0) echo('selected'); ?>> Sales </option>
+                  <option value=1 <?php if ($data['isSales'] == 0 && $data['isVmTrucking'] == 1 && $data['isVMShipment'] == 1) echo('selected'); ?>> VM Trucking </option>
+                  <option value=2 <?php if ($data['isSales'] == 0 && $data['isVmTrucking'] == 0 && $data['isVMShipment'] == 1) echo('selected'); ?>> VM Shipment </option>
                   <option value=3 <?php if ($data['isAdmin'] == 1) echo('selected'); ?>> Admin </option>
                 </select>
                 <label>Aktif :</label>
@@ -543,8 +599,7 @@
       <footer class="sticky-footer bg-white" style="padding:10px 0 10px 0;">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>&copy; <script> document.write(new Date().getFullYear()); </script> - Supported by
-              <img src="../../img/logo-group.png" style="height:45px;">
+            <span>&copy; <script> document.write(new Date().getFullYear()); </script>
             </span>
           </div>
         </div>

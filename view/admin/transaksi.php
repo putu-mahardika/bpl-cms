@@ -177,6 +177,62 @@
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJenisKendaraan" aria-expanded="true"
+          aria-controls="collapseJenisKendaraan">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Jenis Kendaraan</span> 
+        </a>
+        <div id="collapseJenisKendaraan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Jenis Kendaraan</h6>
+            <a class="collapse-item" href="jenisKendaraan.php">List Jenis Kendaraan</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNegara" aria-expanded="true"
+          aria-controls="collapseNegara">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Negara</span> 
+        </a>
+        <div id="collapseNegara" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Negara</h6>
+            <a class="collapse-item" href="negara.php">List Negara</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVendor" aria-expanded="true"
+          aria-controls="collapseVendor">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Vendor</span> 
+        </a>
+        <div id="collapseVendor" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Vendor</h6>
+            <a class="collapse-item" href="vendor.php">List Vendor</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
+          aria-controls="collapseQuoTrucking">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Quo Trucking</span> 
+        </a>
+        <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Quo Trucking</h6>
+            <a class="collapse-item" href="quotation/trucking/index.php">List Quo Trucking</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
           aria-controls="collapseLoadType">
           <i class="fas fa-fw fa-table"></i>
@@ -751,14 +807,14 @@
 
             <div class="col-lg-12">
               <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-end">
                   <!--<h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>-->
-                  <a href="inputTransaksi.php" class="btn btn-primary btn-icon-split">
+                  <!-- <a href="inputTransaksi.php" class="btn btn-primary btn-icon-split">
                     <span class="icon text-white-50">
                       <i class="fas fa-plus"></i>
                     </span>
                     <span class="text">Tambah Transaksi</span>
-                  </a>
+                  </a> -->
                   <div>
                     <label>Tahun: </label>
                     <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
@@ -1019,8 +1075,7 @@
       <footer class="sticky-footer bg-white" style="padding:10px 0 10px 0;">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>&copy; <script> document.write(new Date().getFullYear()); </script> - Supported by
-              <img src="../../img/logo-group.png" style="height:45px;">
+            <span>&copy; <script> document.write(new Date().getFullYear()); </script>
             </span>
           </div>
         </div>

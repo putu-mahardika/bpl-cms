@@ -1243,8 +1243,7 @@
       <footer class="sticky-footer bg-white" style="padding:10px 0 10px 0;">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>&copy; <script> document.write(new Date().getFullYear()); </script> - Supported by
-              <img src="../../img/logo-group.png" style="height:45px;">
+            <span>&copy; <script> document.write(new Date().getFullYear()); </script>
             </span>
           </div>
         </div>
