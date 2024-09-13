@@ -48,113 +48,42 @@
         Master
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-          aria-controls="collapseForm">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Customer</span>
-        </a>
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item" href="customer.php">List Customer</a>
-            <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="status.php">Status Trucking</a>
-            <a class="collapse-item" href="statusShipment.php">Status Shipment</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
+        <a class="nav-link" href="user.php">
+          <i class="fas fa-fw fa-users"></i>
+          <span>User Pengguna</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+          aria-controls="collapseForm">
+          <i class="fas fa-fw fa-database"></i>
+          <span>Database</span>
         </a>
-        <div id="collapseKota" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseForm" class="collapse show" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item active" href="kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJenisKendaraan" aria-expanded="true"
-          aria-controls="collapseJenisKendaraan">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Jenis Kendaraan</span> 
-        </a>
-        <div id="collapseJenisKendaraan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Jenis Kendaraan</h6>
-            <a class="collapse-item" href="jenisKendaraan.php">List Jenis Kendaraan</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNegara" aria-expanded="true"
-          aria-controls="collapseNegara">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Negara</span> 
-        </a>
-        <div id="collapseNegara" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Negara</h6>
-            <a class="collapse-item" href="negara.php">List Negara</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVendor" aria-expanded="true"
-          aria-controls="collapseVendor">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Vendor</span> 
-        </a>
-        <div id="collapseVendor" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Vendor</h6>
+            <!-- <h6 class="collapse-header">Customer</h6> -->
+            <a class="collapse-item" href="customer.php">List Customer</a>
             <a class="collapse-item" href="vendor.php">List Vendor</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+            <a class="collapse-item" href="kota.php">List Kota</a>
+            <a class="collapse-item active" href="negara.php">List Negara</a>
+            <a class="collapse-item" href="unit.php">List Unit</a>
+            <a class="collapse-item" href="jenisKendaraan.php">List Jenis Kendaraan</a>
+            <a class="collapse-item" href="loadType.php">List Load Type</a>
+            <a class="collapse-item" href="status.php">List Status Trucking</a>
+            <a class="collapse-item" href="statusShipment.php">List Status Shipment</a>
+            <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
           </div>
         </div>
       </li>
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Transaksi
+      </div>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
           aria-controls="collapseQuoTrucking">
           <i class="fas fa-fw fa-table"></i>
-          <span>Quo Trucking</span> 
+          <span>Quotation</span> 
         </a>
         <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -164,58 +93,6 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
-          aria-controls="collapseLoadType">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Load Type</span> 
-        </a> 
-        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="loadType.php">List Load Type</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShipmentTerms" aria-expanded="true"
-          aria-controls="collapseShipmentTerms">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Shipment Terms</span> 
-        </a> 
-        <div id="collapseShipmentTerms" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Shipment Terms</h6>
-            <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
-          aria-controls="collapseUnit">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Unit</span> 
-        </a> 
-        <div id="collapseUnit" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Unit</h6>
-            <a class="collapse-item" href="unit.php">List Unit</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>UI Colors</span>
-        </a>
-      </li>-->
-      <hr class="sidebar-divider">
-      <div class="sidebar-heading">
-        Transaksi
-      </div>
 	    <li class="nav-item">
         <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-ship"></i>
@@ -252,53 +129,22 @@
           <span>Laporan Shipment</span>
         </a>
       </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="laporanbarang.php">
-          <div class="row">
-            <div style="padding-left:12px;">
-              <i class="fas fa-fw fa-file-invoice"></i>
-            </div>
-            <div>
-              <span>Laporan Pergerakan Truck</span>
-            </div>
-          </div>
-        </a>
-      </li>-->
-      <!--<li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
-          aria-controls="collapsePage">
-          <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
-        </a>
-      </li>-->
+
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Bantuan
       </div>
+
       <li class="nav-item">
         <a class="nav-link" href="http://www.berkahpermatalogistik.com/Howto/index.htm" target="_blank">
           <i class="fas fa-fw fa-question"></i>
           <span>Bantuan</span>
         </a>
       </li>
+
       <hr class="sidebar-divider">
       <!--<div class="version" id="version-ruangadmin"></div>-->
-	  <li class="nav-item">
+	    <li class="nav-item">
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>

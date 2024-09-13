@@ -147,7 +147,6 @@
         <div class="sidebar-brand-icon">
           <img src="../../../../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
-        
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -160,174 +159,51 @@
         Master
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-          aria-expanded="true" aria-controls="collapseBootstrap">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Akun</span>
-        </a>
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Akun</h6>
-            <a class="collapse-item" href="../../../user.php">User Pengguna</a>
-            <!--<a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-            <a class="collapse-item" href="modals.html">Modals</a>
-            <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>-->
-          </div>
-        </div>
+        <a class="nav-link" href="../../../user.php">
+          <i class="fas fa-fw fa-users"></i>
+          <span>User Pengguna</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Customer</span>
+          <i class="fas fa-fw fa-database"></i>
+          <span>Database</span>
         </a>
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Customer</h6>
+            <!-- <h6 class="collapse-header">Customer</h6> -->
             <a class="collapse-item" href="../../../customer.php">List Customer</a>
-            <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-          aria-controls="collapseTable">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Status</span>
-        </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status</h6>
-            <a class="collapse-item" href="../../../status.php">Status Trucking</a>
-            <a class="collapse-item" href="../../../statusShipment.php">Status Shipment</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKota" aria-expanded="true"
-          aria-controls="collapseKota">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Kota</span> 
-        </a>
-        <div id="collapseKota" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Kota</h6>
-            <a class="collapse-item" href="../../../kota.php">List Kota</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJenisKendaraan" aria-expanded="true"
-          aria-controls="collapseJenisKendaraan">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Jenis Kendaraan</span> 
-        </a>
-        <div id="collapseJenisKendaraan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Jenis Kendaraan</h6>
-            <a class="collapse-item" href="jenisKendaraan.php">List Jenis Kendaraan</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNegara" aria-expanded="true"
-          aria-controls="collapseNegara">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Negara</span> 
-        </a>
-        <div id="collapseNegara" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Negara</h6>
-            <a class="collapse-item" href="../../../negara.php">List Negara</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVendor" aria-expanded="true"
-          aria-controls="collapseVendor">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Vendor</span> 
-        </a>
-        <div id="collapseVendor" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Vendor</h6>
             <a class="collapse-item" href="../../../vendor.php">List Vendor</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
-          aria-controls="collapseQuoTrucking">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Quo Trucking</span> 
-        </a>
-        <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Quo Trucking</h6>
-            <a class="collapse-item active" href="../../../quotation/trucking/index.php">List Quo Trucking</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLoadType" aria-expanded="true"
-          aria-controls="collapseLoadType">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Load Type</span> 
-        </a> 
-        <div id="collapseLoadType" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Load Type</h6>
-            <a class="collapse-item" href="../../../loadType.php">List Load Type</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShipmentTerms" aria-expanded="true"
-          aria-controls="collapseShipmentTerms">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Shipment Terms</span> 
-        </a> 
-        <div id="collapseShipmentTerms" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Shipment Terms</h6>
-            <a class="collapse-item" href="../../../shipmentTerms.php">List Shipment Terms</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true"
-          aria-controls="collapseUnit">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Unit</span> 
-        </a> 
-        <div id="collapseUnit" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Unit</h6>
+            <a class="collapse-item" href="../../../kota.php">List Kota</a>
+            <a class="collapse-item" href="../../../negara.php">List Negara</a>
             <a class="collapse-item" href="../../../unit.php">List Unit</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+            <a class="collapse-item" href="../../../jenisKendaraan.php">List Jenis Kendaraan</a>
+            <a class="collapse-item" href="../../../loadType.php">List Load Type</a>
+            <a class="collapse-item" href="../../../status.php">List Status Trucking</a>
+            <a class="collapse-item" href="../../../statusShipment.php">List Status Shipment</a>
+            <a class="collapse-item" href="../../../shipmentTerms.php">List Shipment Terms</a>
           </div>
         </div>
       </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>UI Colors</span>
-        </a>
-      </li>-->
+
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Transaksi
       </div>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
+          aria-controls="collapseQuoTrucking">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Quotation</span> 
+        </a>
+        <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Quo Trucking</h6>
+            <a class="collapse-item" href="../../../quotation/trucking/index.php">List Quo Trucking</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 	    <li class="nav-item">
         <a class="nav-link" href="../../../shipment.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-ship"></i>
@@ -364,59 +240,27 @@
           <span>Laporan Shipment</span>
         </a>
       </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="laporanbarang.php">
-          <div class="row">
-            <div style="padding-left:12px;">
-              <i class="fas fa-fw fa-file-invoice"></i>
-            </div>
-            <div>
-              <span>Laporan Pergerakan Truck</span>
-            </div>
-          </div>
-        </a>
-      </li>-->
-      <!--<li class="nav-item active">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
-          aria-controls="collapsePage">
-          <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePage" class="collapse show" aria-labelledby="headingPage" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item active" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
-        </a>
-      </li>-->
+
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Bantuan
       </div>
+
       <li class="nav-item">
         <a class="nav-link" href="http://www.berkahpermatalogistik.com/Howto/index.htm" target="_blank">
           <i class="fas fa-fw fa-question"></i>
           <span>Bantuan</span>
         </a>
       </li>
+
       <hr class="sidebar-divider">
-	  <li class="nav-item">
-        
+      <!--<div class="version" id="version-ruangadmin"></div>-->
+	    <li class="nav-item">
         <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
-      <!--<div class="version" id="version-ruangadmin"></div>-->
     </ul>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -790,269 +634,275 @@
                               <div class="tab-content mt-3" id="myTabContent">
                                 <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Permintaan Customer</p>
                                 <div class="tab-pane fade <?php if ($dataForm['TripType'] == 'singleTrip' ? printf('show active') : printf('')) ?>" id="singleTrip" role="tabpanel" aria-labelledby="singleTrip-tab">
-                                  <table class="table align-items-center table-flush table-hover">
-                                    <thead class="thead-light">
-                                      <tr>
-                                        <th>Jenis Kendaraan</th>
-                                        <th>Pickup</th>
-                                        <th>Tujuan</th>
-                                        <th>Keterangan Pickup</th>
-                                        <th>Keterangan Tujuan</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
-                                            <option value="" disabled>Pilih</option>
-                                            <?php
-                                              foreach($kendaraanArray as $data){
-                                                if($data['IsActive']==1){
-                                                  if ($data['Id'] == $dataForm['IdKendaraan']) {
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>                                            
-                                                <?php } else {?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                  <div class="table-responsive">
+                                    <table class="table align-items-center table-flush table-hover">
+                                      <thead class="thead-light">
+                                        <tr>
+                                          <th>Jenis Kendaraan</th>
+                                          <th>Pickup</th>
+                                          <th>Tujuan</th>
+                                          <th>Keterangan Pickup</th>
+                                          <th>Keterangan Tujuan</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <select class="form-control" name="kendaraan" id="kendaraan" style="width: 200px;">
+                                              <option value="" disabled>Pilih</option>
+                                              <?php
+                                                foreach($kendaraanArray as $data){
+                                                  if($data['IsActive']==1){
+                                                    if ($data['Id'] == $dataForm['IdKendaraan']) {
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>                                            
+                                                  <?php } else {?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
-                                            <option value="" disabled>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if ($data['Id'] == $dataForm['IdPickupCity']) {
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
+                                              <option value="" disabled>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if ($data['Id'] == $dataForm['IdPickupCity']) {
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
-                                            <option value="" disabled>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IdDestinationCity1']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan1" style="width: 200px;">
+                                              <option value="" disabled>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IdDestinationCity1']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
-                                        </td>
-                                        <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
+                                          </td>
+                                          <td>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>   
                                 </div>
                                 <div class="tab-pane fade <?php if ($dataForm['TripType'] == 'multiTrip' ? printf('show active') : printf('')) ?>" id="multiTrip" role="tabpanel" aria-labelledby="multiTrip-tab">
-                                  <table class="table align-items-center table-flush table-hover">
-                                    <thead class="thead-light">
-                                      <tr>
-                                        <th rowspan="2">Jenis Kendaraan</th>
-                                        <th rowspan="2">Pickup</th>
-                                        <th colspan="3">Tujuan</th>
-                                        <th rowspan="2">Keterangan Pickup</th>
-                                        <th rowspan="2">Keterangan Tujuan</th>
-                                      </tr>
-                                      <tr>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
-                                            <option value="" disabled>Pilih</option>
-                                            <?php
-                                              foreach($kendaraanArray as $data){
-                                                if($data['IsActive']==1){
-                                                  if($data['Id'] == $dataForm['IdKendaraan']) {
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                  <div class="table-responsive">
+                                    <table class="table align-items-center table-flush table-hover">
+                                      <thead class="thead-light">
+                                        <tr>
+                                          <th rowspan="2">Jenis Kendaraan</th>
+                                          <th rowspan="2">Pickup</th>
+                                          <th colspan="3">Tujuan</th>
+                                          <th rowspan="2">Keterangan Pickup</th>
+                                          <th rowspan="2">Keterangan Tujuan</th>
+                                        </tr>
+                                        <tr>
+                                          <th>1</th>
+                                          <th>2</th>
+                                          <th>3</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <select class="form-control" name="kendaraan" id="kendaraan" style="width: 200px;">
+                                              <option value="" disabled>Pilih</option>
+                                              <?php
+                                                foreach($kendaraanArray as $data){
+                                                  if($data['IsActive']==1){
+                                                    if($data['Id'] == $dataForm['IdKendaraan']) {
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
-                                            <option value="" disabled>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IdPickupCity']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
+                                              <option value="" disabled>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IdPickupCity']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
-                                            <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity1']) ? printf('selected') : printf('') ?>>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IdDestinationCity1']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan1" style="width: 200px;">
+                                              <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity1']) ? printf('selected') : printf('') ?>>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IdDestinationCity1']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2">
-                                            <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity2']) ? printf('selected') : printf('') ?>>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IdDestinationCity2']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaTujuan2" id="kotaTujuan2" style="width: 200px;">
+                                              <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity2']) ? printf('selected') : printf('') ?>>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IdDestinationCity2']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan3">
-                                          <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity3']) ? printf('selected') : printf('') ?>>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IddestinationCity3']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaTujuan3" id="kotaTujuan3" style="width: 200px;">
+                                            <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity3']) ? printf('selected') : printf('') ?>>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IddestinationCity3']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
-                                        </td>
-                                        <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
+                                          </td>
+                                          <td>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                 </div>
                                 <div class="tab-pane fade <?php if ($dataForm['TripType'] == 'kgm' || $dataForm['TripType'] == 'cbm' ? printf('show active') : printf('')) ?>" id="kgmCbm" role="tabpanel" aria-labelledby="kgmCbm-tab">
-                                  <table class="table align-items-center table-flush table-hover">
-                                    <thead class="thead-light">
-                                      <tr>
-                                        <th>Jenis Kendaraan</th>
-                                        <th>Qty</th>
-                                        <th>Pickup</th>
-                                        <th>Tujuan</th>
-                                        <th>Keterangan Pickup</th>
-                                        <th>Keterangan Tujuan</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          <select class="form-control" name="deliveryType" id="kendaraan">
-                                            <option value="" disabled <?php !isset($dataFrom ['deliveryTypeName']) ? printf('selected') : printf('') ?>>Pilih</option>
-                                            <option value="kgm" <?php $dataForm['TripType'] == 'kgm' ? printf('selected') : printf('') ?>>KGM</option>
-                                            <option value="cbm" <?php $dataForm['TripType'] == 'cbm' ? printf('selected') : printf('') ?>>CBM</option>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <input type="number" class="form-control form-control-sm mb-3" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $dataForm[11] ?>">
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
-                                            <option value="" disabled selected>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IdPickupCity']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                  <div class="table-responsive">
+                                    <table class="table align-items-center table-flush table-hover">
+                                      <thead class="thead-light">
+                                        <tr>
+                                          <th>Jenis Kendaraan</th>
+                                          <th>Qty</th>
+                                          <th>Pickup</th>
+                                          <th>Tujuan</th>
+                                          <th>Keterangan Pickup</th>
+                                          <th>Keterangan Tujuan</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <select class="form-control" name="deliveryType" id="kendaraan" style="width: 150px;">
+                                              <option value="" disabled <?php !isset($dataFrom ['deliveryTypeName']) ? printf('selected') : printf('') ?>>Pilih</option>
+                                              <option value="kgm" <?php $dataForm['TripType'] == 'kgm' ? printf('selected') : printf('') ?>>KGM</option>
+                                              <option value="cbm" <?php $dataForm['TripType'] == 'cbm' ? printf('selected') : printf('') ?>>CBM</option>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <input type="number" class="form-control form-control-sm mb-3" style="width: 100px;" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $dataForm[11] ?>">
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
+                                              <option value="" disabled selected>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IdPickupCity']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
-                                            <option value="" disabled>Pilih</option>
-                                            <?php
-                                              foreach($cityArray as $data){
-                                                if($data['aktif']==1){
-                                                  if($data['Id'] == $dataForm['IdDestinationCity1']){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
-                                                <?php } else { ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php }} else {
-                                              continue;
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan1" style="width: 200px;">
+                                              <option value="" disabled>Pilih</option>
+                                              <?php
+                                                foreach($cityArray as $data){
+                                                  if($data['aktif']==1){
+                                                    if($data['Id'] == $dataForm['IdDestinationCity1']){
+                                              ?>
+                                              <option value="<?php echo $data['Id'];?>" selected><?php echo $data['Nama'];?></option>
+                                                  <?php } else { ?>
+                                              <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
+                                                <?php }} else {
+                                                continue;
+                                                }
                                               }
-                                            }
-                                            ?>
-                                          </select>
-                                        </td>
-                                        <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
-                                        </td>
-                                        <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                              ?>
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
+                                          </td>
+                                          <td>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1064,7 +914,11 @@
                           <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">List Rekomendasi Vendor</p>
                           <?php if ($dataForm['IdQuoStatus'] == 1 || $dataForm['IdQuoStatus'] == 5) {?>
                           <div class="mb-2" style="display: flex; justify-content: end;">
-                            <button type="button" class="btn btn-md btn-primary" id="addRow" >Tambah</button>
+                            <button type="button" class="btn btn-md btn-primary" id="addRow" >
+                              <span class="icon text-white-50">
+                                <i class="fas fa-plus"></i>
+                              </span>
+                            </button>
                           </div>
                           <?php } ?>
                         </div>
@@ -1169,8 +1023,8 @@
                             <table class="table align-items-center table-flush table-hover vendorTable">
                               <thead class="thead-light">
                                 <tr>
-                                  <th rowspan="2">Vendor</th>
                                   <th rowspan="2">Pilih</th>
+                                  <th rowspan="2">Vendor</th>
                                   <th colspan="3">Costing</th>
                                   <th colspan="3">Budgeting</th>
                                   <th colspan="3">Pricing</th>
@@ -1194,6 +1048,10 @@
                                 ?>
                                 <tr>
                                   <td>
+                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor" value="<?php echo $dataDetail['Id']?>" id="vendorCheck" <?php $dataForm['quoDetailVendorId'] == $dataDetail['Id'] ? printf('checked') : '' ?> <?php $dataForm['IdQuoStatus'] == 8 && $dataDetail['PricingTotalPrice'] > 0 ? printf('') : printf('disabled') ?>>
+                                    <input name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
+                                  </td>
+                                  <td>
                                     <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
                                       <option value="" <?php isset($dataDetail['IdVendor']) ? printf('') : printf('selected') ?> disabled> Pilih </option>
                                       <?php
@@ -1210,10 +1068,6 @@
                                       }
                                       ?>
                                     </select>
-                                  </td>
-                                  <td>
-                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor" value="<?php echo $dataDetail['Id']?>" id="vendorCheck" <?php $dataForm['quoDetailVendorId'] == $dataDetail['Id'] ? printf('checked') : '' ?> <?php $dataForm['IdQuoStatus'] == 8 && $dataDetail['PricingTotalPrice'] > 0 ? printf('') : printf('disabled') ?>>
-                                    <input name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
                                   </td>
                                   <td>
                                     <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingFirstPrice'] ?>">
