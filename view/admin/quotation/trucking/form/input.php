@@ -1110,18 +1110,10 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                          <select class="form-control" name="deliveryType" id="kendaraan" style="width: 150px;">
                                             <option value="" disabled selected>Pilih</option>
-                                            <?php
-                                              foreach($kendaraanArray as $data){
-                                                if($data['IsActive']==1){
-                                            ?>
-                                            <option value="<?php echo $data['Id'];?>"><?php echo $data['Nama'];?></option>
-                                              <?php } else {
-                                              continue;
-                                              }
-                                            }
-                                            ?>
+                                            <option value="kgm">KGM</option>
+                                            <option value="cbm">CBM</option>
                                           </select>
                                         </td>
                                         <td>

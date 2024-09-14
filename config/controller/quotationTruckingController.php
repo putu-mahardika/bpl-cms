@@ -101,7 +101,7 @@
     echo json_encode($array);
   }
   else if (isset($_POST['inputQuoTrucking'])) {
-    // print_r($_POST);
+    print_r($_POST);
     $customerId = null;
     $customerNameTemp = null;
     $customerAddressTemp = null;
@@ -132,7 +132,7 @@
       $customerPicPhoneTemp = $_POST['customerPicPhoneTemp'];
     }
     
-    $kendaraanId = $_POST['kendaraan'];
+    $kendaraanId = isset($_POST['kendaraan']) && $_POST['kendaraan'] !== '' ? printf("'".$_POST['kendaraan']."'") : 'null';
     $kotaAsalId = $_POST['kotaAsal'];
     $note = $_POST['keterangan'];
     $weight = $_POST['weight'];
@@ -150,7 +150,7 @@
       $query = "INSERT INTO `master_quotation_trucking`
       (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', '$kotaTujuanId2', '$kotaTujuanId3', NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', '$kotaTujuanId2', '$kotaTujuanId3', NULL, NULL, NULL);";
       $save = [
         $customerId, //0
         $customerNameTemp, //1
@@ -178,12 +178,12 @@
       $qty = $_POST['qty'];
       $detailKotaAsal = $_POST['detailKotaAsal2'];
       $detailKotaTujuan = $_POST['detailKotaTujuan2'];
-      $tripType = $_POST['tripType'];
-      $deliveryType = $_POST['tipePengiriman'];
+      $tripType = $_POST['deliveryType'];
+      $deliveryType = $_POST['deliveryType'];
       $query = "INSERT INTO `master_quotation_trucking`
       (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, '$deliveryType' '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, '$deliveryType', $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
       $save = [
         $customerId,
         $customerNameTemp,
@@ -214,7 +214,7 @@
       $query = "INSERT INTO `master_quotation_trucking`
       (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, '$kendaraanId', '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
       $save = [
         $customerId,
         $customerNameTemp,

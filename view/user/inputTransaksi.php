@@ -100,120 +100,34 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Customer</span>
+          <i class="fas fa-fw fa-database"></i>
+          <span>Database</span>
         </a>
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Customer</h6>
-            <a class="collapse-item" href="customer.php">List Customer</a>
-            <!--<a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>-->
+            <!-- <h6 class="collapse-header">Customer</h6> -->
+            <a class="collapse-item" href="../../../customer.php">List Customer</a>
           </div>
         </div>
       </li>
-
-      <!--<hr class="sidebar-divider">
-
-      <div class="sidebar-heading">
-
-        MASTER
-
-      </div>
-
-      <li class="nav-item">
-
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-
-          aria-expanded="true" aria-controls="collapseBootstrap">
-
-          <i class="fas fa-fw fa-table"></i>
-
-          <span>Akun</span>
-
-        </a>
-
-        <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-
-          <div class="bg-white py-2 collapse-inner rounded">
-
-            <h6 class="collapse-header">Akun</h6>
-
-            <a class="collapse-item" href="user.php">User Pengguna</a>
-
-          </div>
-
-        </div>
-
-      </li>
-
-      <li class="nav-item">
-
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-
-          aria-controls="collapseForm">
-
-          <i class="fas fa-fw fa-table"></i>
-
-          <span>Customer</span>
-
-        </a>
-
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-
-          <div class="bg-white py-2 collapse-inner rounded">
-
-            <h6 class="collapse-header">Customer</h6>
-
-            <a class="collapse-item" href="customer.php">List Customer</a>
-
-          </div>
-
-        </div>
-
-      </li>
-
-      <li class="nav-item">
-
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-
-          aria-controls="collapseTable">
-
-          <i class="fas fa-fw fa-table"></i>
-
-          <span>Status</span>
-
-        </a>
-
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-
-          <div class="bg-white py-2 collapse-inner rounded">
-
-            <h6 class="collapse-header">Status</h6>
-
-            <a class="collapse-item" href="status.php">List Status</a>
-
-          </div>
-
-        </div>
-
-      </li>-->
-
-      <!--<li class="nav-item">
-
-        <a class="nav-link" href="ui-colors.html">
-
-          <i class="fas fa-fw fa-palette"></i>
-
-          <span>UI Colors</span>
-
-        </a>
-
-      </li>-->
-
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Transaksi
       </div>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
+          aria-controls="collapseQuoTrucking">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Quotation</span> 
+        </a>
+        <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Quo Trucking</h6>
+            <a class="collapse-item" href="quotation/trucking/index.php">List Quo Trucking</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
 	    <li class="nav-item">
         <a class="nav-link" href="shipment.php?tahun=<?php echo $datetime?>">
           <i class="fas fa-fw fa-ship"></i>
