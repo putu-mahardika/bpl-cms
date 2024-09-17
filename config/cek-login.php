@@ -35,7 +35,7 @@
 					header("location:../view/admin/dashboard-admin.php?tahun=$datetime");
 					exit();
 				} 
-				elseif ($data['isAdmin'] == '0') {
+				elseif ($data['isSales'] == '1') {
 					$_SESSION['nama'] = $data['nama'];
 					$_SESSION['id'] = $data['UserId'];
 					$_SESSION['hak_akses'] = "User";
@@ -43,6 +43,16 @@
 					//header("location:../views/user/dashboard.php");
 					header("location:../view/user/dashboard.php?tahun=$datetime");
 					exit();
+				}
+				elseif ($data['isVmTrucking']) {
+					$_SESSION['nama'] = $data['nama'];
+					$_SESSION['id'] = $data['UserId'];
+					$_SESSION['hak_akses'] = "VmTrucking";
+				}
+				elseif ($data['isVMShipment']) {
+					$_SESSION['nama'] = $data['nama'];
+					$_SESSION['id'] = $data['UserId'];
+					$_SESSION['hak_akses'] = "VmShipment";
 				} else {
 					header("location:../index.php?pesan=gagal");
 				}

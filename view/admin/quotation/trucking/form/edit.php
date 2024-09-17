@@ -602,7 +602,7 @@
                               <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $dataForm['ItemType'] ?>" required>
                             </div>
                             <div class="form-group">
-                              <label>Total Berat (Ton)</label>
+                              <label>Total Berat (Kg) KGM/CBM</label>
                               <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $dataForm['Weight'] ?>" required>
                             </div>
                           </div>
@@ -805,7 +805,7 @@
                                           </td>
                                           <td>
                                             <select class="form-control" name="kotaTujuan3" id="kotaTujuan3" style="width: 200px;">
-                                            <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity3']) ? printf('selected') : printf('') ?>>Pilih</option>
+                                              <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity3']) ? printf('selected') : printf('') ?>>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
                                                   if($data['aktif']==1){
@@ -838,7 +838,7 @@
                                       <thead class="thead-light">
                                         <tr>
                                           <th>Jenis Kendaraan</th>
-                                          <th>Qty</th>
+                                          <th>Qty First</th>
                                           <th>Pickup</th>
                                           <th>Tujuan</th>
                                           <th>Keterangan Pickup</th>
@@ -855,7 +855,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <input type="number" class="form-control form-control-sm mb-3" style="width: 100px;" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $dataForm[11] ?>">
+                                            <input type="number" class="form-control form-control-sm mb-3" style="width: 100px;" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $dataForm[36] ?>">
                                           </td>
                                           <td>
                                             <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
@@ -1019,6 +1019,129 @@
                             </div>
                           </div>
                           </div>
+                          <?php if ($dataForm['TripType'] === 'singleTrip') { ?>
+                            <div class="table-responsive">
+                            <table class="table align-items-center table-flush table-hover vendorTable">
+                              <thead class="thead-light">
+                                <tr>
+                                  <th rowspan="2">Pilih</th>
+                                  <th rowspan="2">Vendor</th>
+                                  <th colspan="2">Costing</th>
+                                  <th colspan="2">Budgeting</th>
+                                  <th colspan="2">Pricing</th>
+                                  <th rowspan="2">Action</th>
+                                </tr>
+                                <tr>
+                                  <th>Price</th>
+                                  <th>Total</th>
+                                  <th>Price</th>
+                                  <th>Total</th>
+                                  <th>Price</th>
+                                  <th>Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php if (count($detailArray) > 0) {
+                                    foreach ($detailArray as $dataDetail) {
+                                ?>
+                                <tr>
+                                  <td>
+                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor" value="<?php echo $dataDetail['Id']?>" id="vendorCheck" <?php $dataForm['quoDetailVendorId'] == $dataDetail['Id'] ? printf('checked') : '' ?> <?php $dataForm['IdQuoStatus'] == 8 && $dataDetail['PricingTotalPrice'] > 0 ? printf('') : printf('disabled') ?>>
+                                    <input name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
+                                  </td>
+                                  <td>
+                                    <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
+                                      <option value="" <?php isset($dataDetail['IdVendor']) ? printf('') : printf('selected') ?> disabled> Pilih </option>
+                                      <?php
+                                        foreach($vendorArray as $key => $data){
+                                          if($data['isActive']==1){
+                                            if($data['Id'] == $dataDetail['IdVendor']){
+                                      ?>
+                                      <option value="<?php echo $data['Id'];?>" selected><?php echo $data['nama'];?></option>
+                                          <?php } else { ?>
+                                      <option value="<?php echo $data['Id'];?>"><?php echo $data['nama'];?></option>
+                                        <?php }} else {
+                                        continue;
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingFirstPrice'] ?>">
+                                    <input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingTotalPrice'] ?>" readonly>
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingFirstPrice'] ?>">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingTotalPrice'] ?>" readonly>
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingFirstPrice'] ?>">
+                                    <input type="hidden" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingTotalPrice'] ?>" readonly>
+                                  </td>
+                                  <td>
+                                  <!-- <a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a> -->
+                                  </td>
+                                </tr>
+                                <?php } } else {?>
+                                <tr>
+                                  <td>
+                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor-0" value="" id="customerCheck" disabled>
+                                    <input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
+                                  </td>
+                                  <td>
+                                    <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
+                                      <option value="" disabled selected>Pilih</option>
+                                      <?php
+                                        foreach($vendorArray as $data){
+                                          if($data['isActive']==1){
+                                      ?>
+                                      <option value="<?php echo $data['Id'];?>"><?php echo $data['nama'];?></option>
+                                      <?php } else {
+                                        continue;
+                                      }}
+                                      ?>
+                                    </select>
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-0" placeholder="masukkan nominal" min="0" value="0">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-0" placeholder="masukkan nominal" min="0" value="0">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm prising-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                  </td>
+                                  <td>
+                                  <!-- <a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a> -->
+                                  </td>
+                                </tr>
+                                <?php } ?>
+                              </tbody>
+                            </table>
+                          </div>
+                          <?php } else { ?>
                           <div class="table-responsive">
                             <table class="table align-items-center table-flush table-hover vendorTable">
                               <thead class="thead-light">
@@ -1103,6 +1226,10 @@
                                 <?php } } else {?>
                                 <tr>
                                   <td>
+                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor-0" value="" id="customerCheck" disabled>
+                                    <input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
+                                  </td>
+                                  <td>
                                     <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
                                       <option value="" disabled selected>Pilih</option>
                                       <?php
@@ -1115,10 +1242,6 @@
                                       }}
                                       ?>
                                     </select>
-                                  </td>
-                                  <td>
-                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor-0" value="" id="customerCheck" disabled>
-                                    <input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
                                   </td>
                                   <td>
                                     <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-0" placeholder="masukkan nominal" min="0" value="0">
@@ -1155,6 +1278,7 @@
                               </tbody>
                             </table>
                           </div>
+                          <?php } ?>
                         </div>
                       </div>
                       <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="statusId" value="<?php echo $dataForm['IdQuoStatus']?>" readonly>
@@ -1237,7 +1361,7 @@
                   </div>
                   <div class="mb-3">
                     <div class="mb-1">Nama VM</div>
-                    <div class="sideInfo"><?php isset($dataForm['IdVM']) && $dataForm['IdVM'] !== 0 && $dataForm['IdVM'] !== '' && $dataForm['IdVM'] !== null ? printf($dataVM['nama']) : printf('-') ?></div>
+                    <div class="sideInfo"><?php isset($dataForm['IdVM']) && $dataForm['IdVM'] != 0 && $dataForm['IdVM'] != '' && $dataForm['IdVM'] != null ? printf($dataVM['nama']) : printf('-') ?></div>
                   </div>
                 </div>
               </div>
@@ -1519,6 +1643,7 @@
       function addRow() {
         counterRow++;
         getDataVendor(function(vendor) {
+        <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
           var dropdown = '<select class="form-control" style="width: 200px;" name="vendor[]" id="vendor-'+counterRow+'">';
           dropdown += '<option value="" disabled selected>Pilih</option>';
           vendor.forEach(function(p) {
@@ -1540,12 +1665,38 @@
 
           // Add new row to the DataTable
           table.row.add([
-            dropdown, checkbox,
+            checkbox, dropdown,
             costingFirst, costingNext, costingTotal,
             budgetingFirst, budgetingNext, budgetingTotal,
             pricingFirst, pricingNext, pricingTotal,
             actionButton
           ]).draw(false);
+        <?php } else { ?>
+          var dropdown = '<select class="form-control" style="width: 200px;" name="vendor[]" id="vendor-'+counterRow+'">';
+          dropdown += '<option value="" disabled selected>Pilih</option>';
+          vendor.forEach(function(p) {
+            dropdown += '<option value="' + p.Id + '">' + p.nama + '</option>';
+          });
+          dropdown += '</select>';
+
+          var checkbox = '<input class="form-check-input" style="position: relative; margin-left: revert;" name="checkboxVendor[]" type="checkbox" value="" id="customerCheck" disabled><input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-'+counterRow+'">';
+          var actionButton = '<a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a>';
+          var costingFirst = '<input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
+          var costingTotal = '<input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var budgetingFirst = '<input type="number" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
+          var budgetingTotal = '<input type="number" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var pricingFirst = '<input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
+          var pricingTotal = '<input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+
+          // Add new row to the DataTable
+          table.row.add([
+            checkbox, dropdown,
+            costingFirst, costingTotal,
+            budgetingFirst, budgetingTotal,
+            pricingFirst, pricingTotal,
+            actionButton
+          ]).draw(false);
+        <?php } ?>
         });
       }
 
@@ -1719,14 +1870,6 @@
         $('#SubmitNewCustomer').modal('hide');
         $('#SubmitPOFormModal').modal('show');
       });
-
-      $('#editQuoTruckingAdmin').click(function (e) {
-        $('#editQuoTruckingAdmin').prop('disabled', true);
-      })
-
-      $('#generateTrucking').click(function (e) {
-        $('#generateTrucking').prop('disabled', true);
-      })
 
 
       $('#applyCostingAll').click(function (e) {
