@@ -378,18 +378,18 @@
                       <tr>
                         <th>No</th>
                         <th>Tanggal Quo</th>
-                        <th>Tanggal Last Update</th>
+                        <!-- <th>Tanggal Last Update</th> -->
                         <th>Status</th>
                         <th>No PO</th>
                         <th>Vendor Terpilih</th>
                         <th>Nama Perusahaan</th>
                         <th>PIC</th>
-                        <th>No Telp PIC</th>
+                        <!-- <th>No Telp PIC</th> -->
                         <th>Sales</th>
-                        <th>Jenis Barang</th>
+                        <!-- <th>Jenis Barang</th> -->
                         <th>Tonase</th>
                         <th>Total Armada</th>
-                        <th>Total Pricing</th>
+                        <!-- <th>Total Pricing</th> -->
                         <th>Jenis Trip</th>
                         <th>Action</th>
                       </tr>
@@ -420,7 +420,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
-                  <a href="../../../config/logout.php" class="btn btn-primary">Logout</a>
+                  <a href="../../../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>
@@ -474,64 +474,30 @@
         },
         columns: [
           { data: 'noQuotation' },
-          { data: 'createDate' },
+          // { data: 'createDate' },
           { data: 'lastUpdate' },
           { render: function (data, type, row, meta) {
-              return `<div style="padding:5px 10px;border-radius:10px;color:white;background:`+row.statusColor+`">`+ row.status +`</div>`;
+              return `<div style="font-size: 12px; padding:5px 10px;border-radius:10px;color:white;background:`+row.statusColor+`">`+ row.status +`</div>`;
           }},
           { data: 'po' },
           { data: 'vendorName' },
           { data: 'customer' },
           { data: 'pic' },
-          { data: 'picPhone' },
+          // { data: 'picPhone' },
           { data: 'salesName' },
-          { data: 'itemType' },
+          // { data: 'itemType' },
           { data: 'weight' },
           { data: 'totalArmada' },
-          { data: 'totalPricing' },
+          // { data: 'totalPricing' },
           { data: 'tripType' },
           { render: function (data, type, row, meta) {
               return `<a href="form/edit.php?id=` + row.id +`" class="btn btn-primary"><i class="fas fa-edit"></i></a>`;
           }}
         ],
-        order: [[2, "asc"]],
         rowId: 'id',
-        stateSave: true
+        stateSave: true,
+        order: [[1, "desc"]]
       }); 
-      // ID From dataTable 
-      // let table = new DataTable('#dataTableHover', {
-      //     ajax: '../../config/controller/quotationController.php',
-      //     columns: [
-      //         {
-      //             className: 'dt-control',
-      //             orderable: false,
-      //             data: {
-      //               getAllQuo: true
-      //             },
-      //             defaultContent: ''
-      //         },
-      //         { data: 'NoQuotation' },
-      //         { data: 'create_date' },
-      //         // { data: 'name' },
-      //         { data: 'customerName' },
-      //         { data: 'pic' },
-      //         { data: 'picTelp' },
-      //         { data: 'salesName' },
-      //         { data: 'itemType' },
-      //         { data: 'Weight' },
-      //         { data: 'TotalArmada' },
-      //         { data: 'TotalCosting' },
-      //         { data: 'totalPricing' },
-      //         { data: 'TripType' },
-      //         { data: 'budgeting_date' },
-      //         { data: 'vmName' },
-      //         { data: 'statusName' },
-      //         { data: 'statusName' },
-      //     ],
-      //     order: [[1, 'asc']],
-      //     rowId: 'id',
-      //     stateSave: true
-      // });
     });
   </script>
 

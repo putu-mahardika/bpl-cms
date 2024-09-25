@@ -478,7 +478,7 @@
                               <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $save[6] ?>" required>
                             </div>
                             <div class="form-group">
-                              <label>Total Berat (Ton)</label>
+                              <label>Total Berat (Kg) KGM/CBM</label>
                               <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $save[7] ?>" required>
                             </div>
                           </div>
@@ -709,7 +709,7 @@
                                     <thead class="thead-light">
                                       <tr>
                                         <th>Jenis Kendaraan</th>
-                                        <th>Qty</th>
+                                        <th>Qty First</th>
                                         <th>Pickup</th>
                                         <th>Tujuan</th>
                                         <th>Keterangan Pickup</th>
@@ -893,7 +893,7 @@
                               <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" required>
                             </div>
                             <div class="form-group">
-                              <label>Total Berat (Ton)</label>
+                              <label>Total Berat (Kg) KGM/CBM</label>
                               <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" required>
                             </div>
                           </div>
@@ -1100,7 +1100,7 @@
                                     <thead class="thead-light">
                                       <tr>
                                         <th>Jenis Kendaraan</th>
-                                        <th>Qty</th>
+                                        <th>Qty First</th>
                                         <th>Pickup</th>
                                         <th>Tujuan</th>
                                         <th>Keterangan Pickup</th>
@@ -1266,7 +1266,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
-                  <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
+                  <a href="../../../../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>

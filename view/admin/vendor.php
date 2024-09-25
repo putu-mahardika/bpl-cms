@@ -378,13 +378,13 @@
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Alamat</th>
-                        <th>NPWP</th>
+                        <!-- <th>NPWP</th> -->
                         <th>PIC</th>
                         <th>Telp PIC</th>
                         <th>Tipe</th>
                         <th>Tipe Pengiriman</th>
-                        <th>Tgl Terdaftar</th>
-                        <th>Keterangan</th>
+                        <!-- <th>Tgl Terdaftar</th> -->
+                        <!-- <th>Keterangan</th> -->
                         <th>Link</th>
                         <th>Aktif</th>
                         <th>Action</th>
@@ -402,14 +402,14 @@
                         <td><?php echo $data['kode']?></td>
                         <td><?php echo $data['nama']?></td>
                         <td><?php echo $data['alamat']?></td>
-                        <td><?php echo $data['npwp']?></td>
+                        <!-- <td><?php echo $data['npwp']?></td> -->
                         <td><?php echo $data['pic']?></td>
                         <td><?php echo $data['pic_telp']?></td>
                         <td><?php echo $data['type']?></td>
                         <td><?php echo $data['delivery_type']?></td>
-                        <td><?php echo $data['create_date']?></td>
-                        <td><?php echo $data['note']?></td>
-                        <td><?php echo $data['link']?></td>
+                        <!-- <td><?php echo $data['create_date']?></td> -->
+                        <!-- <td><?php echo $data['note']?></td> -->
+                        <td><a href="<?php echo $data['link']?>"><?php echo $data['link']?></a> </td>
                     <?php 
                       if($data['isActive'] == 1){
                     ?>

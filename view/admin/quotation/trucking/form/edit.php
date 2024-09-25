@@ -3,7 +3,7 @@
   session_start();
 
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
-    // header("location:../../../index.php?pesan=belum_login");
+    header("location:../../../../../index.php?pesan=belum_login");
   }
   include '../../../../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
@@ -470,7 +470,7 @@
                   <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
                   <form role="form" id="quoTruckForm" method="post" action="../../../../../config/controller/quotationTruckingController.php">
                     <?php if ($dataForm['IdQuoStatus'] >= 10) { ?>
-                    <div class="mb-3" style="color: #6E6E6E; font-size: 18px; font-weight: 700;">Vendor Terpilih : <?php isset($dataForm['quoDetailVendorId']) || $dataForm['quoDetailVendorId'] !== 0 ? printf($dataVendor['nama']) : printf('-') ?></div>
+                    <div class="mb-3" style="color: #6E6E6E; font-size: 18px; font-weight: 700;">Vendor Terpilih : <?php isset($dataForm['quoDetailVendorId']) || $dataForm['quoDetailVendorId'] != 0 ? printf($dataVendor['nama']) : printf('-') ?></div>
                     <?php } ?>
                     <div class="mb-3">
                       <div class="row">
@@ -482,7 +482,7 @@
                               </div>
                               <div style="font-size: 16px; font-weight: 700; color: #4557C6;">Total Costing</div>
                             </div>
-                            <div style="font-size: 12px; color: #4557C6;">IDR <span style="font-size: 20px; font-weight: 600;" id="nominalCosting"><?php isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] !== '' && $dataForm['quoDetailVendorId'] !== 0 && $dataForm['quoDetailVendorId'] !== null ? printf($dataVendor['CostingTotalPrice']) : printf('0') ?></span></div>
+                            <div style="font-size: 12px; color: #4557C6;">IDR <span style="font-size: 20px; font-weight: 600;" id="nominalCosting"><?php isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] != '' && $dataForm['quoDetailVendorId'] != 0 && $dataForm['quoDetailVendorId'] != null ? printf($dataVendor['CostingTotalPrice']) : printf('0') ?></span></div>
                           </div>
                         </div>
                         <div class="col-lg-4">
@@ -493,12 +493,12 @@
                               </div>
                               <div style="font-size: 16px; font-weight: 700; color: #71A5B5;">Total Budgeting</div>
                             </div>
-                            <div style="font-size: 12px; color: #71A5B5;">IDR <span style="font-size: 20px; font-weight: 600;" id="nominalBudgeting"><?php isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] !== '' && $dataForm['quoDetailVendorId'] !== 0 && $dataForm['quoDetailVendorId'] !== null ? printf($dataVendor['BudgetingTotalPrice']) : printf('0') ?></span></div>
+                            <div style="font-size: 12px; color: #71A5B5;">IDR <span style="font-size: 20px; font-weight: 600;" id="nominalBudgeting"><?php isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] != '' && $dataForm['quoDetailVendorId'] != 0 && $dataForm['quoDetailVendorId'] != null ? printf($dataVendor['BudgetingTotalPrice']) : printf('0') ?></span></div>
                           </div>
                         </div>
                         <div class="col-lg-4">
                           
-                          <?php if (isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] !== '' && $dataForm['quoDetailVendorId'] !== 0 && $dataForm['quoDetailVendorId'] !== null) { ?>
+                          <?php if (isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] != '' && $dataForm['quoDetailVendorId'] != 0 && $dataForm['quoDetailVendorId'] != null) { ?>
                             <?php if ($dataVendor['PricingTotalPrice'] < $dataVendor['CostingTotalPrice']) { ?>
                               <div class="p-3 pricing-card below-costing" id="pricing-card" style="border-radius: 10px;">
                             <?php } elseif ($dataVendor['PricingTotalPrice'] < $dataVendor['BudgetingTotalPrice']) { ?>
@@ -517,7 +517,7 @@
                               </div>
                               <div class="title" style="font-size: 16px; font-weight: 700;">Total Pricing</div>
                             </div>
-                            <div class="nominal" style="font-size: 12px;">IDR <span style="font-size: 20px; font-weight: 600;" id="nominalPricing"><?php isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] !== '' && $dataForm['quoDetailVendorId'] !== 0 && $dataForm['quoDetailVendorId'] !== null ? printf($dataVendor['PricingTotalPrice']) : printf('0') ?></span></div>
+                            <div class="nominal" style="font-size: 12px;">IDR <span style="font-size: 20px; font-weight: 600;" id="nominalPricing"><?php isset($dataForm['quoDetailVendorId']) && $dataForm['quoDetailVendorId'] != '' && $dataForm['quoDetailVendorId'] != 0 && $dataForm['quoDetailVendorId'] !== null ? printf($dataVendor['PricingTotalPrice']) : printf('0') ?></span></div>
                           </div>
                         </div>
                       </div>
@@ -525,7 +525,11 @@
                     <div class="mb-3">
                       <div class="row">
                         <div class="col-lg-4">
-                          <button class="btn btn-info" style="width: 100%;" type="button" <?php $dataForm['IdQuoStatus'] >= 10 ? printf('') : printf('disabled') ?>>Cetak Quo</button>
+                          <?php if ($dataForm['IdQuoStatus'] >= 10) { ?>
+                            <a class="btn btn-info" style="width: 100%;" type="button" target="_blank" href="../../../../generateQuo/trucking/quo.php?quo=<?php echo $dataForm['NoQuotation'] ?>">Cetak Quo</a>
+                          <?php } else { ?>
+                            <button class="btn btn-info" style="width: 100%;" type="button" disabled>Cetak Quo</button>
+                          <?php } ?>
                         </div>
                         <div class="col-lg-4">
                           <button class="btn btn-warning" style="width: 100%;" type="button" data-toggle="modal" <?php isset($dataForm['IdCustomer']) ? printf('data-target="#SubmitPOFormModal"') : printf('data-target="#SubmitNewCustomer"') ?> data-target="#SubmitPOFormModal" <?php $dataForm['IdQuoStatus'] == 10 ? printf('') : printf('disabled') ?>>Customer PO</button>
@@ -543,7 +547,7 @@
                             <div class="row">
                               <div class="col-4">
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="" id="customerCheck" <?php isset($dataForm['IdCustomer']) || $dataForm['IdCustomer'] !== 0 ? printf('checked') : printf('') ?>>
+                                  <input class="form-check-input" type="checkbox" value="" id="customerCheck" <?php isset($dataForm['IdCustomer']) && $dataForm['IdCustomer'] !== 0 ? printf('') : printf('checked') ?>>
                                   <label class="form-check-label" for="customerCheck">
                                     Customer Baru
                                   </label>
@@ -595,7 +599,7 @@
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label>Jumlah Armada</label>
-                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $dataForm['TotalArmada'] ?>" required>
+                              <input type="number" class="form-control form-control-sm mb-3" id="totalArmada" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $dataForm['TotalArmada'] ?>" required>
                             </div>
                             <div class="form-group">
                               <label>Jenis Barang Bawaan</label>
@@ -603,7 +607,7 @@
                             </div>
                             <div class="form-group">
                               <label>Total Berat (Kg) KGM/CBM</label>
-                              <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $dataForm['Weight'] ?>" required>
+                              <input type="number" class="form-control form-control-sm mb-3" id="weight" name="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $dataForm['Weight'] ?>" required>
                             </div>
                           </div>
                         </div>
@@ -614,13 +618,13 @@
                       </div>
                       <div class="mb-3">
                         <div class="form-group">
-                          <input type="hidden" class="form-control form-control-sm mb-3" id="selectedTab" name="selectedTab" value="<?php if($dataForm['TripType'] == 'multiTrip') { printf('1'); } else if (($dataForm['TripType'] == 'kgm' || $dataForm['TripType'] == 'cbm')) { printf('2'); } else { printf('0'); } ?>">
+                          <input type="hidden" class="form-control form-control-sm mb-3" id="selectedTab" name="selectedTab" value="<?php if($dataForm['TripType'] == 'multiTrip') { printf('1'); } else if ($dataForm['TripType'] == 'kgm' || $dataForm['TripType'] == 'cbm') { printf('2'); } else { printf('0'); } ?>">
                         </div>
                         <div>
                           <div class="mb-3">
                             <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Jenis Trip</p>
                             <div class="mb-3">
-                              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                              <ul class="nav nav-tabs" id="tripTypeTab" role="tablist">
                                 <li class="nav-item">
                                   <a class="nav-link <?php $dataForm['TripType'] == 'singleTrip' ? printf('active') : printf('') ?>" id="singleTrip-tab" data-toggle="tab" href="#singleTrip" role="tab" aria-controls="singleTrip" aria-selected="true">Single Trip</a>
                                 </li>
@@ -910,117 +914,117 @@
                         </div>
                       </div>
                       <div class="" style="margin-bottom: 60px;">
-                        <div class="mb-1 d-flex justify-content-between">
-                          <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">List Rekomendasi Vendor</p>
-                          <?php if ($dataForm['IdQuoStatus'] == 1 || $dataForm['IdQuoStatus'] == 5) {?>
-                          <div class="mb-2" style="display: flex; justify-content: end;">
-                            <button type="button" class="btn btn-md btn-primary" id="addRow" >
-                              <span class="icon text-white-50">
-                                <i class="fas fa-plus"></i>
-                              </span>
-                            </button>
-                          </div>
-                          <?php } ?>
-                        </div>
                         <div>
                           <div class="mb-3">
-                          <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                              <a class="nav-link active" id="costing-tab" data-toggle="tab" href="#costing" role="tab" aria-controls="costing" aria-selected="true">Costing</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="budgeting-tab" data-toggle="tab" href="#budgeting" role="tab" aria-controls="budgeting" aria-selected="false">Budgeting</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="pricing-tab" data-toggle="tab" href="#pricing" role="tab" aria-controls="pricing" aria-selected="false">Pricing</a>
-                            </li>
-                          </ul>
-                          <div class="tab-content mt-3" id="myTabContent">
-                            <div class="tab-pane fade show active" id="costing" role="tabpanel" aria-labelledby="costing-tab">
-                              <div class="d-flex align-items-end gap-3 ">
-                                <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
-                                <div class="form-group">
-                                  <label>Harga Costing First</label>
-                                  <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga costing first" id="allCostingFirst" min="0" value="0">
-                                </div>
-                                <div class="form-group" style="margin-bottom: 16px;">
-                                  <label>Harga Costing Next</label>
-                                  <input type="number" class="form-control form-control-sm ml-2" placeholder="Masukkan harga costing next" id="allCostingNext" min="0" value="0">
-                                </div>
-                                <?php } else { ?>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="costing-tab" data-toggle="tab" href="#costing" role="tab" aria-controls="costing" aria-selected="true">Costing</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="budgeting-tab" data-toggle="tab" href="#budgeting" role="tab" aria-controls="budgeting" aria-selected="false">Budgeting</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="pricing-tab" data-toggle="tab" href="#pricing" role="tab" aria-controls="pricing" aria-selected="false">Pricing</a>
+                              </li>
+                            </ul>
+                            <div class="tab-content mt-3" id="myTabContent">
+                              <div class="tab-pane fade show active" id="costing" role="tabpanel" aria-labelledby="costing-tab">
+                                <div class="d-flex align-items-end gap-3 ">
+                                  <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
                                   <div class="form-group">
-                                  <label>Harga Costing</label>
-                                  <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga costing" id="allCostingFirst" min="0" value="0">
-                                </div>
-                                <?php } ?>
-                                <div style="margin-bottom: 16px; margin-left: 16px;">
-                                  <button type="button" class="btn btn-primary btn-icon-split" id="applyCostingAll">
-                                    <span class="icon text-white-50">
-                                      <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Apply All</span>
-                                  </button>
+                                    <label>Harga Costing First</label>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga costing first" id="allCostingFirst" min="0" value="0">
+                                  </div>
+                                  <div class="form-group" style="margin-bottom: 16px;">
+                                    <label>Harga Costing Next</label>
+                                    <input type="number" class="form-control form-control-sm ml-2" placeholder="Masukkan harga costing next" id="allCostingNext" min="0" value="0">
+                                  </div>
+                                  <?php } else { ?>
+                                    <div class="form-group">
+                                    <label>Harga Costing</label>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga costing" id="allCostingFirst" min="0" value="0">
+                                  </div>
+                                  <?php } ?>
+                                  <div style="margin-bottom: 16px; margin-left: 16px;">
+                                    <button type="button" class="btn btn-primary btn-icon-split" id="applyCostingAll">
+                                      <span class="icon text-white-50">
+                                        <i class="fas fa-plus"></i>
+                                      </span>
+                                      <span class="text">Apply All</span>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="tab-pane fade" id="budgeting" role="tabpanel" aria-labelledby="budgeting-tab">
-                              <div class="d-flex align-items-end gap-3 ">
-                                <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
-                                <div class="form-group">
-                                  <label>Harga Budgeting First</label>
-                                  <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga budgeting first" id="allBudgetingFirst" min="0" value="0">
-                                </div>
-                                <div class="form-group" style="margin-bottom: 16px;">
-                                  <label>Harga Budgeting Next</label>
-                                  <input type="number" class="form-control form-control-sm ml-2" placeholder="Masukkan harga budgeting next" id="allBudgetingNext" min="0" value="0">
-                                </div>
-                                <?php } else { ?>
+                              <div class="tab-pane fade" id="budgeting" role="tabpanel" aria-labelledby="budgeting-tab">
+                                <div class="d-flex align-items-end gap-3 ">
+                                  <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
                                   <div class="form-group">
-                                  <label>Harga Budgeting</label>
-                                  <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga budgeting" id="allBudgetingFirst" min="0" value="0">
-                                </div>
-                                <?php } ?>
-                                <div style="margin-bottom: 16px; margin-left: 16px;">
-                                  <button type="button" class="btn btn-primary btn-icon-split" id="applyBudgetingAll">
-                                    <span class="icon text-white-50">
-                                      <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Apply All</span>
-                                  </button>
+                                    <label>Harga Budgeting First</label>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga budgeting first" id="allBudgetingFirst" min="0" value="0">
+                                  </div>
+                                  <div class="form-group" style="margin-bottom: 16px;">
+                                    <label>Harga Budgeting Next</label>
+                                    <input type="number" class="form-control form-control-sm ml-2" placeholder="Masukkan harga budgeting next" id="allBudgetingNext" min="0" value="0">
+                                  </div>
+                                  <?php } else { ?>
+                                    <div class="form-group">
+                                    <label>Harga Budgeting</label>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga budgeting" id="allBudgetingFirst" min="0" value="0">
+                                  </div>
+                                  <?php } ?>
+                                  <div style="margin-bottom: 16px; margin-left: 16px;">
+                                    <button type="button" class="btn btn-primary btn-icon-split" id="applyBudgetingAll">
+                                      <span class="icon text-white-50">
+                                        <i class="fas fa-plus"></i>
+                                      </span>
+                                      <span class="text">Apply All</span>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="tab-pane fade" id="pricing" role="tabpanel" aria-labelledby="pricing-tab">
-                            <div class="d-flex align-items-end gap-3 ">
-                                <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
-                                <div class="form-group">
-                                  <label>Harga Pricing First</label>
-                                  <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga pricing first" id="allPricingFirst" min="0" value="0">
-                                </div>
-                                <div class="form-group" style="margin-bottom: 16px;">
-                                  <label>Harga Pricing Next</label>
-                                  <input type="number" class="form-control form-control-sm ml-2" placeholder="Masukkan harga pricing next" id="allPricingNext" min="0" value="0">
-                                </div>
-                                <?php } else { ?>
+                              <div class="tab-pane fade" id="pricing" role="tabpanel" aria-labelledby="pricing-tab">
+                              <div class="d-flex align-items-end gap-3 ">
+                                  <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
                                   <div class="form-group">
-                                  <label>Harga Pricing</label>
-                                  <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga pricing" id="allPricingFirst" min="0" value="0">
-                                </div>
-                                <?php } ?>
-                                <div style="margin-bottom: 16px; margin-left: 16px;">
-                                  <button type="button" class="btn btn-primary btn-icon-split" id="applyPricingAll">
-                                    <span class="icon text-white-50">
-                                      <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Apply All</span>
-                                  </button>
+                                    <label>Harga Pricing First</label>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga pricing first" id="allPricingFirst" min="0" value="0">
+                                  </div>
+                                  <div class="form-group" style="margin-bottom: 16px;">
+                                    <label>Harga Pricing Next</label>
+                                    <input type="number" class="form-control form-control-sm ml-2" placeholder="Masukkan harga pricing next" id="allPricingNext" min="0" value="0">
+                                  </div>
+                                  <?php } else { ?>
+                                    <div class="form-group">
+                                    <label>Harga Pricing</label>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Masukkan harga pricing" id="allPricingFirst" min="0" value="0">
+                                  </div>
+                                  <?php } ?>
+                                  <div style="margin-bottom: 16px; margin-left: 16px;">
+                                    <button type="button" class="btn btn-primary btn-icon-split" id="applyPricingAll">
+                                      <span class="icon text-white-50">
+                                        <i class="fas fa-plus"></i>
+                                      </span>
+                                      <span class="text">Apply All</span>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
+                          <div class="mb-1 d-flex justify-content-between">
+                            <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">List Rekomendasi Vendor</p>
+                            <?php if ($dataForm['IdQuoStatus'] == 1 || $dataForm['IdQuoStatus'] == 5) {?>
+                            <div class="mb-2" style="display: flex; justify-content: end;">
+                              <button type="button" class="btn btn-md btn-primary" id="addRow" >
+                                <span class="icon text-white-50">
+                                  <i class="fas fa-plus"></i>
+                                </span>
+                              </button>
+                            </div>
+                            <?php } ?>
                           </div>
                           <?php if ($dataForm['TripType'] === 'singleTrip') { ?>
-                            <div class="table-responsive">
+                          <div class="table-responsive">
                             <table class="table align-items-center table-flush table-hover vendorTable">
                               <thead class="thead-light">
                                 <tr>
@@ -1419,7 +1423,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
-                  <a href="../../config/logout.php" class="btn btn-primary">Logout</a>
+                  <a href="../../../../../config/logout.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>
@@ -1569,7 +1573,7 @@
         order: [[0, "desc"]]
       });
 
-      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      $('#tripTypeTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         console.log('e', e);
         var id = e.target.id;
         let selectedTab = '0';
@@ -1713,9 +1717,21 @@
       });
 
       function calculateRowSumCosting(row) {
+        var selectedTab = parseFloat($("#selectedTab").val()) || 0;
+        var totalArmada = parseFloat($("#totalArmada").val()) || 0;
+        var weight = parseFloat($("#weight").val()) || 0;
         var costingFirst = parseFloat(row.find(".costing-first").val()) || 0;
         var costingNext = parseFloat(row.find(".costing-next").val()) || 0;
-        var sumCosting = costingFirst + costingNext;
+        let sumCosting = 0;
+        if (selectedTab == 1) {
+          sumCosting = costingFirst + (costingNext * totalArmada-1);
+        } else if (selectedTab == 2) {
+          var qty = parseFloat($("#qty").val()) || 0;
+          sumCosting = costingFirst + (costingNext * (weight-qty)); 
+        } else {
+          sumCosting = costingFirst * totalArmada;
+        }
+        // var sumCosting = costingFirst + costingNext;
         row.find(".costing-total").val(sumCosting);
       }
 
@@ -1728,9 +1744,21 @@
       });
 
       function calculateRowSumBudgeting(row) {
+        var selectedTab = parseFloat($("#selectedTab").val()) || 0;
+        var totalArmada = parseFloat($("#totalArmada").val()) || 0;
+        var weight = parseFloat($("#weight").val()) || 0;
         var budgetingFirst = parseFloat(row.find(".budgeting-first").val()) || 0;
         var budgetingNext = parseFloat(row.find(".budgeting-next").val()) || 0;
-        var sumBudgeting = budgetingFirst + budgetingNext;
+        let sumBudgeting = 0;
+        if (selectedTab == 1) {
+          sumBudgeting = budgetingFirst + (budgetingNext * totalArmada-1);
+        } else if (selectedTab == 2) {
+          var qty = parseFloat($("#qty").val()) || 0;
+          sumBudgeting = budgetingFirst + (budgetingNext * (weight-qty)); 
+        } else {
+          sumBudgeting = budgetingFirst * totalArmada;
+        }
+        // var sumBudgeting = budgetingFirst + budgetingNext;
         row.find(".budgeting-total").val(sumBudgeting);
       }
 
@@ -1742,9 +1770,21 @@
       });
 
       function calculateRowSumPricing(row) {
+        var selectedTab = parseFloat($("#selectedTab").val()) || 0;
+        var totalArmada = parseFloat($("#totalArmada").val()) || 0;
+        var weight = parseFloat($("#weight").val()) || 0;
         var pricingFirst = parseFloat(row.find(".pricing-first").val()) || 0;
         var pricingNext = parseFloat(row.find(".pricing-next").val()) || 0;
-        var sumPricing = pricingFirst + pricingNext;
+        let sumPricing = 0;
+        if (selectedTab == 1) {
+          sumPricing = pricingFirst + (pricingNext * totalArmada-1);
+        } else if (selectedTab == 2) {
+          var qty = parseFloat($("#qty").val()) || 0;
+          sumPricing = pricingFirst + (pricingNext * (weight-qty)); 
+        } else {
+          sumPricing = pricingFirst * totalArmada;
+        }
+        // var sumPricing = pricingFirst + pricingNext;
         row.find(".pricing-total").val(sumPricing);
       }
 
@@ -1836,6 +1876,16 @@
             if ($('#pricing-card').hasClass('below-costing')) {
               $('#pricing-card').toggleClass('below-costing');
             }
+          } else {
+            if ($('#pricing-card').hasClass('above')) {
+              $('#pricing-card').toggleClass('above');
+            }
+            if ($('#pricing-card').hasClass('below-budget')) {
+              $('#pricing-card').toggleClass('below-budget');
+            }
+            if ($('#pricing-card').hasClass('below-costing')) {
+              $('#pricing-card').toggleClass('below-costing');
+            }
           }
           
           // Jika checkbox ini di-check
@@ -1873,46 +1923,110 @@
 
 
       $('#applyCostingAll').click(function (e) {
-        <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
+        // <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
+        // var costingFirst = parseFloat($('#allCostingFirst').val()) || 0;
+        // var costingNext = parseFloat($('#allCostingNext').val()) || 0;
+        // $('.costing-first').val(costingFirst);
+        // $('.costing-next').val(costingNext);
+        // $('.costing-total').val(costingFirst + costingNext);
+        // <?php } else { ?>
+        // var costingFirst = parseFloat($('#allCostingFirst').val()) || 0;
+        // $('.costing-first').val(costingFirst);
+        // $('.costing-total').val(costingFirst);
+        // <?php } ?>
+
+        var selectedTab = parseFloat($("#selectedTab").val()) || 0;
+        var totalArmada = parseFloat($("#totalArmada").val()) || 0;
+        var weight = parseFloat($("#weight").val()) || 0;
         var costingFirst = parseFloat($('#allCostingFirst').val()) || 0;
         var costingNext = parseFloat($('#allCostingNext').val()) || 0;
-        $('.costing-first').val(costingFirst);
-        $('.costing-next').val(costingNext);
-        $('.costing-total').val(costingFirst + costingNext);
-        <?php } else { ?>
-        var costingFirst = parseFloat($('#allCostingFirst').val()) || 0;
-        $('.costing-first').val(costingFirst);
-        $('.costing-total').val(costingFirst);
-        <?php } ?>
+        let sumCosting = 0;
+        if (selectedTab == 1) {
+          $(".costing-first").val(costingFirst);
+          $(".costing-next").val(costingNext);
+          sumCosting = costingFirst + (costingNext * (totalArmada-1));
+          $(".costing-total").val(sumCosting);
+        } else if (selectedTab == 2) {
+          var qty = parseFloat($("#qty").val()) || 0;
+          $(".costing-first").val(costingFirst);
+          $(".costing-next").val(costingNext);
+          sumCosting = costingFirst + (costingNext * (weight-qty));
+          $(".costing-total").val(sumCosting);
+        } else {
+          $(".costing-first").val(costingFirst);
+          sumCosting = costingFirst * totalArmada;
+          $(".costing-total").val(sumCosting);
+        }
       })
 
       $('#applyBudgetingAll').click(function (e) {
-        <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
+        var selectedTab = parseFloat($("#selectedTab").val()) || 0;
+        var totalArmada = parseFloat($("#totalArmada").val()) || 0;
+        var weight = parseFloat($("#weight").val()) || 0;
         var budgetingFirst = parseFloat($('#allBudgetingFirst').val()) || 0;
         var budgetingNext = parseFloat($('#allBudgetingNext').val()) || 0;
-        $('.budgeting-first').val(budgetingFirst);
-        $('.budgeting-next').val(budgetingNext);
-        $('.budgeting-total').val(budgetingFirst + budgetingNext);
-        <?php } else { ?>
-        var budgetingFirst = parseFloat($('#allBudgetingFirst').val()) || 0;
-        $('.budgeting-first').val(budgetingFirst);
-        $('.budgeting-total').val(budgetingFirst);
-        <?php } ?>
+        let sumBudgeting = 0;
+        if (selectedTab == 1) {
+          $(".budgeting-first").val(budgetingFirst);
+          $(".budgeting-next").val(budgetingNext);
+          // const totalCostings = document.querySelectorAll('.costing-total');
+          // var values = Array.from(totalCostings).map(val => parseFloat(val.value));
+          // var maxCosting = Math.max(...values);
+          sumBudgeting = budgetingFirst + (budgetingNext * (totalArmada-1));
+          $(".budgeting-total").val(sumBudgeting);
+        } else if (selectedTab == 2) {
+          var qty = parseFloat($("#qty").val()) || 0;
+          $(".budgeting-first").val(budgetingFirst);
+          $(".budgeting-next").val(budgetingNext);
+          sumBudgeting = budgetingFirst + (budgetingNext * (weight-qty));
+          $(".budgeting-total").val(sumBudgeting);
+        } else {
+          $(".budgeting-first").val(budgetingFirst);
+          sumBudgeting = budgetingFirst * totalArmada;
+          $(".budgeting-total").val(sumBudgeting);
+        }
       })
 
       $('#applyPricingAll').click(function (e) {
-        <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
+        var selectedTab = parseFloat($("#selectedTab").val()) || 0;
+        var totalArmada = parseFloat($("#totalArmada").val()) || 0;
+        var weight = parseFloat($("#weight").val()) || 0;
         var pricingFirst = parseFloat($('#allPricingFirst').val()) || 0;
         var pricingNext = parseFloat($('#allPricingNext').val()) || 0;
-        $('.pricing-first').val(pricingFirst);
-        $('.pricing-next').val(pricingNext);
-        $('.pricing-total').val(pricingFirst + pricingNext);
-        <?php } else { ?>
-        var pricingFirst = parseFloat($('#allPricingFirst').val()) || 0;
-        $('.pricing-first').val(pricingFirst);
-        $('.pricing-total').val(pricingFirst);
-        <?php } ?>
+        let sumPricing = 0;
+        if (selectedTab == 1) {
+          $(".pricing-first").val(pricingFirst);
+          $(".pricing-next").val(pricingNext);
+          sumPricing = pricingFirst + (pricingNext * (totalArmada-1));
+          $(".pricing-total").val(sumPricing);
+        } else if (selectedTab == 2) {
+          var qty = parseFloat($("#qty").val()) || 0;
+          $(".pricing-first").val(pricingFirst);
+          $(".pricing-next").val(pricingNext);
+          sumPricing = pricingFirst + (pricingNext * (weight-qty));
+          $(".pricing-total").val(sumPricing);
+        } else {
+          $(".pricing-first").val(pricingFirst);
+          sumPricing = pricingFirst * totalArmada;
+          $(".pricing-total").val(sumPricing);
+        }
       })
+
+      if (parseFloat($("#selectedTab").val()) == 1) {
+        const totalCostings = document.querySelectorAll('.costing-total');
+        var values = Array.from(totalCostings).map(val => parseFloat(val.value));
+        var maxCosting = Math.max(...values);
+        console.log('arrayCosting', values);
+        console.log('maxCosting', maxCosting);
+        console.log('afterCount', maxCosting * 0.15);
+        sumBudgeting = maxCosting + (maxCosting*0.15);
+        $(".budgeting-first").val(sumBudgeting);
+        $(".budgeting-total").val(sumBudgeting);
+      }
+
+      function nominalFormatter(val) {
+        return new Intl.NumberFormat('id-ID').format(val);
+      }
 
     });
 

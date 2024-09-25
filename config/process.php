@@ -587,24 +587,24 @@
         if($k != 1){
             $query = "insert into master_customer values (null, '$kode', '$npwp', '$nama', '$alamat', '$telp', '$email', '$bidang', '$pic', '$pic_telp', '$pic_email', '$keterangan', '$datetime', '$datetime', '$s_id', '$aktif1', '', '', '')";
             echo $query;
-            // $result = mysqli_query($koneksi, $query);
-            // if ($result) {
-            //     if($akses == 'Admin'){
-            //         header("location:../view/admin/customer.php");
-            //         $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            //     } else {
-            //         header("location:../view/user/customer.php");
-            //         $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-            //     }
-            // } else {
-            //     if($akses == 'Admin'){
-            //         header("location:../view/admin/customer.php");
-            //         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-            //     } else {
-            //         header("location:../view/user/customer.php");
-            //         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-            //     }
-            // }
+            $result = mysqli_query($koneksi, $query);
+            if ($result) {
+                if($akses == 'Admin'){
+                    header("location:../view/admin/customer.php");
+                    $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+                } else {
+                    header("location:../view/user/customer.php");
+                    $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+                }
+            } else {
+                if($akses == 'Admin'){
+                    header("location:../view/admin/customer.php");
+                    $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+                } else {
+                    header("location:../view/user/customer.php");
+                    $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+                }
+            }
         } else {
             if($akses == 'Admin'){
                 header("location:../view/admin/inputCustomer.php");

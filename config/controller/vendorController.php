@@ -26,6 +26,21 @@
     // echo $query;
   }
 
+  else if (isset($_GET['allDataTrucking'])) {
+    $query = "select * from master_vendor where isActive=1 and isDelete=0 and delivery_type in ('All', 'Trucking')";
+    $result = mysqli_query($koneksi, $query);
+
+    $vendor = [];
+
+    while($row = $result->fetch_assoc()) {
+      $vendor[] = $row;
+    }
+
+    echo json_encode($vendor);
+    // echo $query;
+  }
+
+
   // ============= tambah vendor ===============
   else if (isset($_POST['inputVendor'])) {
     $kode = $_POST['kode'];

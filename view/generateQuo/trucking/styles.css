@@ -1,0 +1,128 @@
+/* Reset Margin dan Padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Atur Margin pada Body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Container Utama */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    page-break-inside: avoid;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    color: #007bff;
+}
+
+/* Detail Quotation */
+.quotation-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.quotation-info p, .client-info p {
+    margin: 0;
+    padding: 2px 0;
+}
+
+/* Pesan di bawah Header */
+.message {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+/* Tabel Penawaran */
+.table-section {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f8f8;
+}
+
+/* Section Keterangan */
+.notes, .note-section {
+    margin-bottom: 20px;
+}
+
+.signature {
+    text-align: right;
+}
+
+.signature p {
+    margin: 0;
+    padding: 2px 0;
+}
+
+/* Style untuk Print */
+@media print {
+    /* Menyembunyikan semua shadow */
+    .container {
+        box-shadow: none;
+    }
+
+    /* Mengatur margin untuk print ke full page */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    /* Mencegah elemen terpotong saat cetak */
+    table, h1, p, div {
+        page-break-inside: avoid;
+    }
+
+    /* Menghilangkan background warna saat cetak */
+    body, table {
+        background: white;
+        color: black;
+    }
+
+    /* Menyesuaikan ukuran font jika tabel terlalu besar */
+    table {
+        font-size: 12px;
+    }
+
+    /* Ukuran font untuk seluruh halaman */
+    body {
+        font-size: 14px;
+    }
+}

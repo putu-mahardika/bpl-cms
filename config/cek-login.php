@@ -44,15 +44,17 @@
 					header("location:../view/user/dashboard.php?tahun=$datetime");
 					exit();
 				}
-				elseif ($data['isVmTrucking']) {
+				elseif ($data['isVmTrucking'] == '1') {
 					$_SESSION['nama'] = $data['nama'];
 					$_SESSION['id'] = $data['UserId'];
 					$_SESSION['hak_akses'] = "VmTrucking";
+					header("location:../view/vm/dashboard.php?tahun=$datetime");
 				}
-				elseif ($data['isVMShipment']) {
+				elseif ($data['isVMShipment'] == '1') {
 					$_SESSION['nama'] = $data['nama'];
 					$_SESSION['id'] = $data['UserId'];
 					$_SESSION['hak_akses'] = "VmShipment";
+					header("location:../view/vm/dashboard.php?tahun=$datetime");
 				} else {
 					header("location:../index.php?pesan=gagal");
 				}

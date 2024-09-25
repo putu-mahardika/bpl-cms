@@ -19,7 +19,7 @@
         mu1.nama AS VmName,
         mk.Nama AS VehicleName, 
         CASE
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.PIC
+          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
         END AS CustomerName,
         CASE 
           WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
@@ -239,16 +239,28 @@
       ];
     }
     // print_r($save);
-    // echo $query;
+    echo $query;
     $result = mysqli_query($koneksi, $query);
     // echo $result;
     if ($result) {
-      header("location:../../view/admin/quotation/trucking/index.php");
-      $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+      $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
+      if ($akses == 'User') {
+        header("location:../../view/user/quotation/trucking/index.php");
+      } elseif ($akses == 'Admin') {
+        header("location:../../view/admin/quotation/trucking/index.php");
+      } else {
+        header("location:../../view/vm/quotation/trucking/index.php");	
+      }
     } else {
-      header("location:../../view/admin/quotation/trucking/form/input.php");
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
       $_SESSION['id_pesan1'] = $save;
+      if ($akses == 'User') {
+        header("location:../../view/user/quotation/trucking/form/input.php");
+      } elseif ($akses == 'Admin') {
+        header("location:../../view/admin/quotation/trucking/form/input.php");
+      } else {
+        header("location:../../view/vm/quotation/trucking/form/input.php");
+      }
     }
   }
 
@@ -383,16 +395,17 @@
           WHERE Id=$quoId
         ";
       }
-      echo $query;
+
+      // echo $query;
       $result = mysqli_query($koneksi, $query);
       if ($result) {
         // header("location:../../view/admin/quotation/trucking/index.php");
         if ($statusId == 1) {
           $statusId = insertDetailQuo($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi);
           $vmId = $s_id;
-          $queryd = "UPDATE master_quotation_trucking SET IdVM='$vmId', IdQuoStatus='$statusId' WHERE Id=$quoId";
+          $queryd = "UPDATE master_quotation_trucking SET IdVM='$vmId', IdQuoStatus='$statusId', CostingDate='$datetime' WHERE Id=$quoId";
           mysqli_query($koneksi, $queryd);
-        } elseif ($selectedVendor !== 'null') {
+        } elseif ($selectedVendor != 'null') {
           $statusId = 10;
           $queryd = "UPDATE master_quotation_trucking SET IdVM='$vmId', IdQuoStatus='$statusId' WHERE Id=$quoId";
           mysqli_query($koneksi, $queryd);
@@ -400,18 +413,40 @@
           $statusId = updateDetailQuo($vendor, $statusId, $idDetailQuo, $costingFirst, $costingNext, $costingTotal, $budgetingFirst, $budgetingNext, $budgetingTotal, $pricingFirst, $pricingNext, $pricingTotal, $quoId, $s_id, $koneksi);
           $queryd = "UPDATE master_quotation_trucking SET IdVM='$vmId', IdQuoStatus='$statusId' WHERE Id=$quoId";
           mysqli_query($koneksi, $queryd);
+          if ($budgetingTotal > 0) {
+            $queryd = "UPDATE master_quotation_trucking SET budgeting_date='$datetime' WHERE Id=$quoId AND budgeting_date IS NULL OR budgeting_date=''";
+            mysqli_query($koneksi, $queryd);
+          }
         }
         // insertDetailQuo($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi);
 
-        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
         $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        if ($akses == 'User') {
+          header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
+        } elseif ($akses == 'Admin') {
+          header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+        } else {
+          header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
+        }
       } else {
-        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
         $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        if ($akses == 'User') {
+          header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
+        } elseif ($akses == 'Admin') {
+          header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+        } else {
+          header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
+        }
       }
     } catch (\Throwable $th) {
-      // header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
-      // $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      if ($akses == 'User') {
+        header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
+      } elseif ($akses == 'Admin') {
+        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+      } else {
+        header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
+      }
     }
 
   }
@@ -450,12 +485,20 @@
       $queryQuo = "UPDATE master_quotation_trucking SET IdQuoStatus=14 WHERE Id='$idQuo'";
       $resultQuo = mysqli_query($koneksi, $queryQuo);
       if ($resultQuo) {
-        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
         $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+        if ($akses == 'User') {
+          header("location:../../view/user/quotation/trucking/form/edit.php?id=$idQuo");
+        } else {
+          header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
+        }
       }
     } else {
-      header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';	
+      if ($akses == 'User') {
+        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
+      } else {
+        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$idQuo");
+      }
     }
   }
 
@@ -487,7 +530,7 @@
   }
 
   function updateDetailQuo ($vendor, $statusId, $idDetailQuo, $costingFirst, $costingNext, $costingTotal, $budgetingFirst, $budgetingNext, $budgetingTotal, $pricingFirst, $pricingNext, $pricingTotal, $quoId, $s_id, $koneksi) {
-    // print_r($idDetailQuo);
+    print_r($vendor);
     $newStatus = $statusId;
     if (count($vendor) > 0) {
       $statusTemp = null;
@@ -533,8 +576,8 @@
         echo $statusTemp;
 
 
-        $query = "UPDATE quotation_detail_trucking SET IdVendor='$data', CostingFirstPrice='$costingFirst[$key]', CostingNextPrice='$costingNext[$key]', CostingTotalPrice=fn_sum_calculation('$quoId', '$costingFirst[$key]', '$costingNext[$key]', FALSE), BudgetingFirstPrice='$budgetingFirst[$key]', BudgetingNextPrice='$budgetingNext[$key]', BudgetingTotalPrice=fn_sum_calculation('$quoId', '$budgetingFirst[$key]', '$budgetingNext[$key]', TRUE), PricingFirstPrice='$pricingFirst[$key]', PricingNextPrice='$pricingNext[$key]', PricingTotalPrice=fn_sum_calculation('$quoId', '$pricingFirst[$key]', '$pricingNext[$key]', FALSE), LastUpdatedById='$s_id' WHERE Id='$idDetailQuo[$key]'";
-        // echo $query;
+        $query = "UPDATE quotation_detail_trucking SET IdVendor='$data', CostingFirstPrice='$costingFirst[$key]', CostingNextPrice='$costingNext[$key]', CostingTotalPrice=fn_sum_calculation('$quoId', '$costingFirst[$key]', '$costingNext[$key]', FALSE), BudgetingFirstPrice='$budgetingFirst[$key]', BudgetingNextPrice='$budgetingNext[$key]', BudgetingTotalPrice='$budgetingTotal[$key]', PricingFirstPrice='$pricingFirst[$key]', PricingNextPrice='$pricingNext[$key]', PricingTotalPrice=fn_sum_calculation('$quoId', '$pricingFirst[$key]', '$pricingNext[$key]', FALSE), LastUpdatedById='$s_id' WHERE Id='$idDetailQuo[$key]'";
+        echo $query;
         // print_r($query);
         $result = mysqli_query($koneksi, $query);
         

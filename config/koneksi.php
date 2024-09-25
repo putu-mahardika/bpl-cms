@@ -3,7 +3,7 @@
     // $dbhost = 'localhost';
     // $dbuser = 'root';
     // $dbpass = '';
-    // $dbname = 'berkahpe_tracking6';
+    // $dbname = 'berkahpe_tracking2';
 
     $dbhost = 'srv155.niagahoster.com';
     $dbuser = 'u1732795_berkahpe';
