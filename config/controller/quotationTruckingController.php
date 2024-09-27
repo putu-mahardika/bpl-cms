@@ -514,14 +514,9 @@
         array_push($queryArray, "('$quoId', '$data', '$costingFirst[$key]', '$costingNext[$key]', fn_sum_calculation('$quoId', '$costingFirst[$key]', '$costingNext[$key]', FALSE), '$s_id')");
       }
       $queryValues = implode(', ', $queryArray);
-      // print_r($queryArray);
-      // print_r($queryValues);
       $query = "INSERT INTO quotation_detail_trucking (`IdQuotation`, `IdVendor`, `CostingFirstPrice`, `CostingNextPrice`, `CostingTotalPrice`, `LastUpdatedById`) VALUES $queryValues;";
       printf($query);
       $result = mysqli_query($koneksi, $query);
-      // $lastId = $koneksi->insert_id;
-      // $querytotal = "UPDATE INTO quotation_detail_trucking SET CostingTotalPrice=fn_sum_calculation('$quoId', '$costingFirst[$key]', '$costingNext[$key]', FALSE) WHERE Id=$lastId";
-      // echo $querytotal;
       $newStatus = 2;
       return $newStatus;
     } else {
@@ -569,7 +564,7 @@
         } elseif (count($arrayCheck) > 1) {
           $statusTempTemp = 5;
         } else {
-          $statusTempTemp = $statusTemp;
+          $statusTempTemp = $statusId;
         }
         echo $statusTempTemp;
 

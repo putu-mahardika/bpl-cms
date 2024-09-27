@@ -35,42 +35,75 @@ body {
     color: #007bff;
 }
 
-/* Detail Quotation */
+.header p {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+/* Detail Quotation dan Client Info */
 .quotation-details {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 20px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.quotation-info, .client-info {
+    margin-bottom: 10px;
 }
 
 .quotation-info p, .client-info p {
-    margin: 0;
-    padding: 2px 0;
+    margin: 5px 0; /* Memberikan jarak antar baris */
+}
+
+.quotation-info p:first-child, .client-info p:first-child {
+    font-weight: bold;
+    color: #007bff; /* Warna biru untuk penekanan */
+}
+
+/* Atur Alignment */
+.quotation-info, .client-info {
+    text-align: left;
+}
+
+/* Menambah border bawah untuk pemisahan */
+.quotation-details::after {
+    content: "";
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 /* Pesan di bawah Header */
 .message {
-    margin-bottom: 20px;
-    font-size: 16px;
+    margin-bottom: 30px;
+    font-size: 16px; /* Ukuran font konsisten */
+    font-family: Arial, sans-serif; /* Font konsisten */
+    line-height: 1.6; /* Jarak antar baris */
 }
-
 /* Tabel Penawaran */
 .table-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     page-break-inside: avoid;
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
 }
 
 th, td {
-    padding: 8px;
+    padding: 10px;
     text-align: left;
 }
 
@@ -78,13 +111,55 @@ th {
     background-color: #f8f8f8;
 }
 
+tr:hover {
+    background-color: #f1f1f1;
+}
+
 /* Section Keterangan */
 .notes, .note-section {
     margin-bottom: 20px;
+    font-size: 12px; /* Ukuran font lebih kecil */
+    line-height: 1.4; /* Jarak antar baris lebih rapat */
+    color: #333;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
+.note-section ol {
+    margin-left: 20px;
+}
+
+.note-section ol li {
+    margin-bottom: 8px; /* Jarak antar item lebih rapat */
+    padding-left: 5px;
+}
+
+.note-section ul {
+    margin-left: 40px;
+    list-style-type: circle;
+}
+
+.note-section ul li {
+    margin-bottom: 5px;
+}
+
+.note-section li::marker {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.note-section li {
+    font-weight: normal;
+}
+
+.note-section p {
+    margin-top: 10px;
+}
+
+/* Signature */
 .signature {
     text-align: right;
+    margin-right: 20px;
 }
 
 .signature p {
@@ -94,35 +169,52 @@ th {
 
 /* Style untuk Print */
 @media print {
-    /* Menyembunyikan semua shadow */
     .container {
         box-shadow: none;
     }
 
-    /* Mengatur margin untuk print ke full page */
     @page {
         size: A4;
         margin: 10mm;
     }
 
-    /* Mencegah elemen terpotong saat cetak */
     table, h1, p, div {
         page-break-inside: avoid;
     }
 
-    /* Menghilangkan background warna saat cetak */
     body, table {
         background: white;
         color: black;
     }
 
-    /* Menyesuaikan ukuran font jika tabel terlalu besar */
     table {
         font-size: 12px;
     }
 
-    /* Ukuran font untuk seluruh halaman */
     body {
         font-size: 14px;
+    }
+}
+
+/* Responsive Design untuk Mobile */
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    table {
+        font-size: 10px;
+    }
+
+    th, td {
+        padding: 6px;
+    }
+
+    .quotation-details {
+        flex-direction: column;
+    }
+
+    .signature {
+        text-align: center;
     }
 }
