@@ -22,7 +22,7 @@
 		
 		if ($cek > 0) {
 			$data = mysqli_fetch_assoc($fetch);
-
+			
 			if($data['aktif'] == '1'){
 
 				if ($data['isAdmin'] == '1') {
