@@ -82,7 +82,25 @@
     $detailArray[] = $row;
   }
 
-  $fetchLog = mysqli_query($koneksi, "select * from quotation_log where IdQuoTrucking='$quoId' order by created_date desc limit 20");
+  // $fetchLog = mysqli_query($koneksi, "select * from quotation_log where IdQuoTrucking='$quoId' order by created_date desc limit 20");
+  $queryLog = "select ql.created_date,
+       ql.IdQuoTrucking,
+       ql.IdQuoShipment,
+       ql.NoQuotation,
+       ql.IdUser,
+       case
+           when mu2.isAdmin = 1 then
+               ql.Note
+           else
+               CONCAT('[ ', mu.nama, ' ] ', ql.Action)
+           end as Action
+from quotation_log ql
+inner join master_user mu on ql.IdUser = mu.UserId
+left join master_user mu2 on mu2.UserId = '".$s_id."'
+where (ql.IdQuoTrucking = '".$quoId."')
+order by ql.created_date desc
+limit 20;";
+  $fetchLog = mysqli_query($koneksi, $queryLog);
   while($row = $fetchLog->fetch_assoc()) {
     $logArray[] = $row;
   }
@@ -136,6 +154,55 @@
     }
     .pagination {
       justify-content: end !important;
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      padding-left: 10px;
+      
+    }
+
+    li {
+      display: block;
+      border-left: 2px solid #bbb;
+      padding-left: 11px;
+      height: 30px;
+      font-size: 13px;
+    }
+
+    li.main {
+      font-weight: bold;
+      height: 40px;
+      color: #6777ef;
+      font-size: 16px;
+    }
+
+    li::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background-color: #bbb;
+      display: inline-block;
+      border-radius: 6px;
+      position: relative;
+      margin-left: -17px;
+      margin-right: 10px;
+      margin-top: 3px;
+    }
+
+    li.main::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      background-color: #6777ef;
+      display: inline-block;
+      border-radius: 15px;
+      position: relative;
+      top: 3px;
+      margin-left: -19px;
+      margin-right: 10px;
+      border: 1px solid #6777ef;
     }
   </style>
 </head>
@@ -1121,23 +1188,27 @@
                   </form>
                   <div class="mb-3">
                     <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
-                    <table class="table align-items-center table-flush table-hover" id="log-table">
-                      <thead class="thead-light">
-                        <tr>
-                          <th style="width: 300px;">Tanggal</th>
-                          <th>Keterangan</th>
-                        </tr>
-                      </thead>
-                    
-                      <tbody>
-                        <?php foreach ($logArray as $key => $data) { ?>
-                        <tr>
-                          <td><?php echo $data['created_date']?></td>
-                          <td><?php echo $data['Note'] ?></td>
-                        </tr>
-                        <?php } ?>
-                      </tbody>
-                    </table>
+                    <div class="mt-4">
+                      <?php if (count($logArray) > 0) {
+                          printf('<ul>');
+                          foreach ($logArray as $key => $row) {
+                            if ($key == 0) {
+                              echo '<li class="main">';
+                              echo $row['Action'] .' - ';
+                              echo '<em>' . date('d-m-Y, H:i', strtotime($row['created_date'])) . '</em>';
+                              echo '</li>';
+                            } else {
+                              echo '<li>';
+                              echo $row['Action'] .' - ';
+                              echo '<em>' . date('d-m-Y, H:i', strtotime($row['created_date'])) . '</em>';
+                              echo '</li>';
+                            }
+                          }
+                          echo '</ul>';
+                      } else {
+                          echo 'No log entries found.';
+                      } ?>
+                    </div>
                   </div>
                 </div>
               </div>

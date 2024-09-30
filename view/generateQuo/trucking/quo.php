@@ -19,16 +19,16 @@
     $query = "SELECT * FROM `vw_quotation_trucking` WHERE NoQuotation='".$noQuo."';";
     $fetch = mysqli_query($koneksi, $query);
     $data = mysqli_fetch_array($fetch);
-
     $template = str_replace('{{ quotation_number }}', $data['NoQuotation'], $template);
     $template = str_replace('{{ quotation_date }}', (date("d-m-Y", strtotime($data['create_date']))), $template);
     $template = str_replace('{{ client_name }}', $data['Company_Pic'], $template);
-    $template = str_replace('{{ client_company }}', $data['nama'], $template);
+    $template = str_replace('{{ client_company }}', $data['Company_Name'], $template);
     $template = str_replace('{{ keterangan }}', $data['note'], $template);
     $template = str_replace('{{ total_armada }}', $data['TotalArmada'], $template);
     $template = str_replace('{{ total_berat }}', $data['Weight'], $template);
     $template = str_replace('{{ harga }}', $data['PricingFirstPrice'], $template);
     $template = str_replace('{{ total_harga }}', $data['PricingTotalPrice'], $template);
+    $template = str_replace('{{ sales_name }}', $data['sales_name'], $template);
 
     $table = '';
     if ($data['TripType'] == 'singleTrip') {
