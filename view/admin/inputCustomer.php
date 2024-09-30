@@ -375,6 +375,8 @@
                 <input type="text" class="form-control form-control-sm mb-3" name="pic_telp" pattern="^0\d{10,14}|62\d{10,14}$" title="nomor telp harus terdiri dari 10-14 angka dan harus berawalan 0 atau 62" required>
                 <label>email PIC :</label>
                 <input type="email" class="form-control form-control-sm mb-3" name="pic_email" required>
+                <label>Payemnt Terms :</label>
+                <input type="number" class="form-control form-control-sm mb-3" name="paymentTerms" min="0" required>
                 <label>Keterangan :</label>
                 <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150" ></textarea>
                 <label>Aktif :</label>

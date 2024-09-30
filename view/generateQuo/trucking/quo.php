@@ -26,8 +26,8 @@
     $template = str_replace('{{ keterangan }}', $data['note'], $template);
     $template = str_replace('{{ total_armada }}', $data['TotalArmada'], $template);
     $template = str_replace('{{ total_berat }}', $data['Weight'], $template);
-    $template = str_replace('{{ harga }}', $data['PricingFirstPrice'], $template);
-    $template = str_replace('{{ total_harga }}', $data['PricingTotalPrice'], $template);
+    $template = str_replace('{{ harga }}', number_format($data['PricingFirstPrice'],2,",","."), $template);
+    $template = str_replace('{{ total_harga }}', number_format($data['PricingTotalPrice'],2,",","."), $template);
     $template = str_replace('{{ sales_name }}', $data['sales_name'], $template);
 
     $table = '';

@@ -100,7 +100,7 @@
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <h6 class="collapse-header">Customer</h6> -->
-            <a class="collapse-item" href="../../../customer.php">List Customer</a>
+            <a class="collapse-item" href="customer.php">List Customer</a>
           </div>
         </div>
       </li>

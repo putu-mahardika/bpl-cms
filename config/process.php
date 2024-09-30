@@ -568,6 +568,7 @@
         $pic_email = $_POST['pic_email'];
         $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
+        $paymentTerms = $_POST['paymentTerms'];
         $k = 0;
 
         $alamat = str_replace("'", "''", $alamat);
@@ -585,7 +586,7 @@
         }
 
         if($k != 1){
-            $query = "insert into master_customer values (null, '$kode', '$npwp', '$nama', '$alamat', '$telp', '$email', '$bidang', '$pic', '$pic_telp', '$pic_email', '$keterangan', '$datetime', '$datetime', '$s_id', '$aktif1', '', '', '')";
+            $query = "insert into master_customer values (null, '$kode', '$npwp', '$nama', '$alamat', '$telp', '$email', '$bidang', '$pic', '$pic_telp', '$pic_email', '$keterangan', '$datetime', '$datetime', '$s_id', '$aktif1', '', '', '', '$paymentTerms')";
             echo $query;
             $result = mysqli_query($koneksi, $query);
             if ($result) {
@@ -633,6 +634,7 @@
         $keterangan = $_POST['keterangan'];
         $aktif = $_POST['aktif'];
         $alamat = str_replace("'", "''", $alamat);
+        $paymentTerms = $_POST['paymentTerms'];
 
         $k=0;
 
@@ -646,7 +648,7 @@
         }
 
         if($k != 1){
-            $query = "update master_customer set kode_customer='$kode', nama=`$nama`, bidang_usaha=`$bidang`, npwp='$npwp', alamat=`$alamat`, telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan=`$keterangan`, aktif='$aktif', last_update='$datetime', UserId='$sales' where CustId='$id'";
+            $query = "update master_customer set kode_customer='$kode', nama=`$nama`, bidang_usaha=`$bidang`, npwp='$npwp', alamat=`$alamat`, telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan=`$keterangan`, aktif='$aktif', last_update='$datetime', UserId='$sales', terms_payment_days='$paymentTerms' where CustId='$id'";
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/customer.php");

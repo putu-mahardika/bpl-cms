@@ -389,6 +389,8 @@
                 <input type="text" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_telp'];?>" name="pic_telp" pattern="^0\d{10,14}|62\d{10,14}$" title="nomor telp harus terdiri dari 10-14 angka dan harus berawalan 0 atau 62" required>
                 <label>email PIC :</label>
                 <input type="email" class="form-control form-control-sm mb-3" value="<?php echo $data['PIC_email'];?>" name="pic_email" maxlength="150" required>
+                <label>Payment Terms :</label>
+                <input type="number" class="form-control form-control-sm mb-3" value="<?php echo $data['terms_payment_days'];?>" name="paymentTerms" min="0" required>
                 <div class="form-group">
                   <label>Sales :</label>
                   <select class="select2-single-placeholder form-control" name="sales" id="sales" required>
