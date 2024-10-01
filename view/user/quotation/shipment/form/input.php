@@ -290,7 +290,7 @@ $countries = getCountries($koneksi);
                                 </div>
                                 <div class="col-md-12 mb-3">
                                   <label for="pic_phone_temp">Telp</label>
-                                  <input type="text" class="form-control" id="pic_phone_temp" name="pic_phone_temp" placeholder="Masukkan no telp...">
+                                  <input type="text" class="form-control inputmask_phone" id="pic_phone_temp" name="pic_phone_temp" placeholder="Masukkan no telp...">
                                 </div>
                               </div>
                             </div>
@@ -594,22 +594,24 @@ $countries = getCountries($koneksi);
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function() {
-      // $('#dataTableInfoMuatan').DataTable({
-      //   columns: [],
-      //   stateSave: true,
-      //   pagging: false,
-      // });
       $('.inputmask_currency').inputmask('numeric', {
         digits: 0,
         groupSeparator: '.',
         autoUnmask: true,
         stripLeadingZeroes: false,
       });
+
       $('.inputmask_qty').inputmask('numeric', {
         digits: 0,
         autoUnmask: true,
         stripLeadingZeroes: false,
       });
+
+      $('.inputmask_phone').inputmask({
+        'mask': '9999-9999-9999', 
+        'autoUnmask': true
+      });
+
       $('#checkboxNewCustomer').change(function() {
         if ($(this).is(':checked')) {
           $('#customer_select').hide();
@@ -624,33 +626,27 @@ $countries = getCountries($koneksi);
           $('#pic_phone_temp').val(null);
         }
       });
-      // $.ajax({
-      //   url: '../../../../../config/controller/quotationShipments/quotationShipmentController.php',
-      //   type: 'GET',
-      //   data: {
-      //     action: 'getCustomers'
-      //   },
-      //   success: function(data) {
-      //     let resp = JSON.parse(data);
-      //     console.log(`RESP: ${resp.data}`);
-      //   }
-      // });
+
       $('#customer_id').select2({
         placeholder: 'Pilih Customer',
         width: '100%',
       }).val(null).trigger('change');
+
       $('#master_unit_id').select2({
         placeholder: 'Pilih Shipment Container',
         width: '100%',
       }).val(null).trigger('change');
+
       $('#shipment_terms_id').select2({
         placeholder: 'Pilih Shipment Terms',
         width: '100%',
       }).val(null).trigger('change');
+
       $('#shipment_load_type_id').select2({
         placeholder: 'Pilih Shipment Load Types',
         width: '100%',
       }).val(null).trigger('change');
+
       $('#origin_country_id').select2({
         placeholder: 'Pilih Country Origin',
         width: '130px',
@@ -664,6 +660,7 @@ $countries = getCountries($koneksi);
           $(this).val(null).trigger('change');
         }
       });
+
       $('#destination_country_id').select2({
         placeholder: 'Pilih Country Destination',
         width: '130px',
@@ -677,6 +674,7 @@ $countries = getCountries($koneksi);
           $(this).val(null).trigger('change');
         }
       });
+      
     });
 
     getValidate = () => {
