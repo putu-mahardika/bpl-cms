@@ -57,7 +57,7 @@
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <h6 class="collapse-header">Customer</h6> -->
-            <a class="collapse-item" href="../../../customer.php">List Customer</a>
+            <a class="collapse-item" href="customer.php">List Customer</a>
           </div>
         </div>
       </li>
@@ -393,6 +393,8 @@
                 <input type="text" class="form-control form-control-sm mb-3" name="pic_telp" pattern="^0\d{10,14}|62\d{10,14}$" title="nomor telp harus terdiri dari 10-14 angka dan harus berawalan 0 atau 62" required>
                 <label>email PIC :</label>
                 <input type="email" class="form-control form-control-sm mb-3" name="pic_email" required>
+                <label>Payment Terms :</label>
+                <input type="number" class="form-control form-control-sm mb-3" name="paymentTerms" min="0" required>
                 <label>Keterangan :</label>
                 <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" maxlength="150"></textarea>
                 <label>Aktif :</label>
