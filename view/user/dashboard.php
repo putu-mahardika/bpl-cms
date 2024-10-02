@@ -61,9 +61,6 @@
 
     <!-- Sidebar -->
 
-<<<<<<< HEAD
-    <?php include '../layouts/menu.php' ?>
-=======
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
 
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=<?php echo $tahun?>">
@@ -245,7 +242,6 @@
       </li>
 
     </ul>
->>>>>>> e9d6e4b887f2575539cfd6ebdb262792a00c6b07
 
     <!-- Sidebar -->
 
