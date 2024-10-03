@@ -2,7 +2,7 @@
 session_save_path('../../../../../tmp');
 session_start();
 
-if ($_SESSION['hak_akses'] == "" || ($_SESSION['hak_akses'] != "VmTrucking" && $_SESSION['hak_akses'] != "VmShipment")) {
+if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
   header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
@@ -11,6 +11,8 @@ date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
 $vendors = getVendors($koneksi);
+$dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
+$dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 
 ?>
 <!DOCTYPE html>
@@ -632,58 +634,173 @@ $vendors = getVendors($koneksi);
                     <div class="col-md-12 mb-3">
                       <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-costing" type="button" role="tab" aria-controls="pills-costing" aria-selected="true">
+                          <button class="nav-link" id="pills-costing-tab" data-toggle="pill" data-target="#pills-costing" type="button" role="tab" aria-controls="pills-costing" aria-selected="true">
                             Costing
                           </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link" id="pills-budgeting-tab">
+                          <button class="nav-link active" id="pills-budgeting-tab" data-toggle="pill" data-target="#pills-budgeting" type="button" role="tab" aria-controls="pills-budgeting" aria-selected="true">
                             Budgeting
                           </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link" id="pills-pricing-tab">
+                          <button class="nav-link" id="pills-pricing-tab" data-toggle="pill" data-target="#pills-pricing" type="button" role="tab" aria-controls="pills-pricing" aria-selected="true">
                             Pricing
                           </button>
                         </li>
                       </ul>
                       <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-costing" role="tabpanel" aria-labelledby="pills-home-tab">
-                          <div class="table-responsive">
-                            <table class="table align-items-center table-bordered" id="table_list_vendor">
-                              <thead class="thead-light">
-                                <tr>
-                                  <th class="text-nowrap px-3" style="font-size: 14px;">Vendor</th>
-                                  <th class="text-nowrap px-3" style="font-size: 14px; width: 150px !important">1ST</th>
-                                  <th class="text-nowrap px-3" style="font-size: 14px; width: 150px !important">Next</th>
-                                  <th class="text-nowrap px-3" style="font-size: 14px; width: 150px !important">Total</th>
-                                  <th class="text-nowrap" style="font-size: 14px;">&nbsp;</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="px-3">
-                                    <select name="vendor_id" class="form-control vendor_id">
-                                      <?php foreach ($vendors as $val) { ?>
-                                        <option value="<?php echo $val['Id'] ?>"><?php echo $val['nama'] ?></option>
-                                      <?php } ?>
-                                    </select>
-                                  </td>
-                                  <td class="px-3">
-                                    <input type="text" class="form-control text-right vendor_price_1st inputmask_currency" placeholder="0">
-                                  </td>
-                                  <td class="px-3">
-                                    <input type="text" class="form-control text-right vendor_price_next inputmask_currency" placeholder="0">
-                                  </td>
-                                  <td class="px-3">
-                                    <input type="text" class="form-control text-right vendor_price_total inputmask_currency" placeholder="0" disabled>
-                                  </td>
-                                  <td class="text-center"><button type="button" class="btn btn-danger remove-row" onclick="removeRow()"><i class="fas fa-trash"></i></button></td>
-                                </tr>
-                              </tbody>
-                            </table>
+                        <div class="tab-pane fade" id="pills-costing" role="tabpanel" aria-labelledby="pills-costing-tab">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="">Costing 1ST</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control text-right inputmask_currency" id="apply_costing_first" placeholder="0">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" type="button" onclick="calcApplyAllCosting('first')">
+                                    Apply All
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="">Costing Next</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control text-right inputmask_currency" id="apply_costing_next" placeholder="0">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" type="button" onclick="calcApplyAllCosting('next')">
+                                    Apply All
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        <div class="tab-pane fade show active" id="pills-budgeting" role="tabpanel" aria-labelledby="pills-budgeting-tab">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="">Budgeting 1ST</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control text-right inputmask_currency" id="apply_budgeting_first" placeholder="0">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" type="button" onclick="calcApplyAllBudgeting('first')">
+                                    Apply All
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="">Budgeting Next</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control text-right inputmask_currency" id="apply_budgeting_next" placeholder="0">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" type="button" onclick="calcApplyAllBudgeting('next')">
+                                    Apply All
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-pricing" role="tabpanel" aria-labelledby="pills-pricing-tab">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="">Pricing 1ST</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control text-right inputmask_currency" id="apply_pricing_first" placeholder="0">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" type="button" onclick="calcApplyAllPricing('first')">
+                                    Apply All
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="">Pricing Next</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control text-right inputmask_currency" id="apply_pricing_next" placeholder="0">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" type="button" onclick="calcApplyAllPricing('next')">
+                                    Apply All
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="table-responsive">
+                        <table class="table table-bordered" style="width: 1800px" id="table_list_vendor">
+                          <thead class="thead-light">
+                            <tr>
+                              <th class="text-nowrap px-3 text-center" rowspan="2" style="font-size: 14px;">&nbsp;</th>
+                              <th class="text-nowrap px-3 text-center align-middle" rowspan="2" style="font-size: 14px;">Vendor</th>
+                              <th class="text-nowrap px-3 text-center" colspan="3" style="font-size: 14px;">Costing</th>
+                              <th class="text-nowrap px-3 text-center" colspan="3" style="font-size: 14px;">Budgeting</th>
+                              <th class="text-nowrap px-3 text-center" colspan="3" style="font-size: 14px;">Pricing</th>
+                            </tr>
+                            <tr>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">1ST</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">Next</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">Total</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">1ST</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">Next</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">Total</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">1ST</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">Next</th>
+                              <th class="text-nowrap px-3" style="font-size: 14px;">Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach($dataDtlQuoShipment as $key => $val) {?>
+                              <tr>
+                                <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                                  <div class="custom-control custom-checkbox" style="padding-left: 2rem">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck<?php echo $key ?>">
+                                    <label class="custom-control-label" for="customCheck<?php echo $key ?>"></label>
+                                  </div>
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; min-width: 250px !important">
+                                  <select name="vendor_id" class="form-control vendor_id">
+                                    <?php foreach ($vendors as $valVendor) { ?>
+                                      <option value="<?php echo $valVendor['Id'] ?>" <?php if($valVendor['id'] == $val['vendor_id']) {?> selected <?php }?>><?php echo $valVendor['nama'] ?></option>
+                                    <?php } ?>
+                                  </select>
+                                </td>
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right costing_first_price inputmask_currency" placeholder="0" value="<?php echo $val['costing_first_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right costing_next_price inputmask_currency" placeholder="0" value="<?php echo $val['costing_next_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right costing_total_price inputmask_currency" disabled placeholder="0" value="<?php echo $val['costing_total_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right budgeting_first_price inputmask_currency" placeholder="0" value="<?php echo $val['budgeting_first_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right budgeting_next_price inputmask_currency" placeholder="0" value="<?php echo $val['budgeting_next_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right budgeting_total_price inputmask_currency" disabled placeholder="0" value="<?php echo $val['budgeting_total_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right pricing_first_price inputmask_currency" placeholder="0" value="<?php echo $val['pricing_first_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right pricing_next_price inputmask_currency" placeholder="0" value="<?php echo $val['pricing_next_price']?>">
+                                </td>
+                                <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                                  <input type="text" class="form-control text-right pricing_total_price inputmask_currency" disabled placeholder="0" value="<?php echo $val['pricing_total_price']?>">
+                                </td>
+                              </tr>
+                            <?php }?>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
@@ -711,18 +828,24 @@ $vendors = getVendors($koneksi);
                             </tr>
                           </thead>
                           <tbody>
-                            <td class="px-3">
-                              <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling...">
-                            </td>
-                            <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
-                            </td>
-                            <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0">
-                            </td>
-                            <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled>
-                            </td>
+                            <?php foreach($dataDtlQuoShipmentHandlingCosts as $key => $val) {?>
+                              <?php if($val['handling_turunan'] == 1) {?>
+                                <tr>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description']?>">
+                                  </td>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
+                                  </td>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0" value="<?php echo $val['unit_cost']?>">
+                                  </td>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled value="<?php echo $val['total_cost']?>">
+                                  </td>
+                                </tr>
+                              <?php }?>
+                            <?php }?>
                           </tbody>
                         </table>
                       </div>
@@ -751,26 +874,33 @@ $vendors = getVendors($koneksi);
                             </tr>
                           </thead>
                           <tbody>
-                            <td class="px-3">
-                              <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling...">
-                            </td>
-                            <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
-                            </td>
-                            <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0">
-                            </td>
-                            <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled>
-                            </td>
+                            <?php foreach($dataDtlQuoShipmentHandlingCosts as $key => $val) {?>
+                              <?php $total_unit_cost += $val['unit_cost']; $total_cost += $val['total_cost'] ?>
+                              <?php if($val['handling_turunan'] == 1) {?>
+                                <tr>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description']?>">
+                                  </td>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
+                                  </td>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0" value="<?php echo $val['unit_cost']?>">
+                                  </td>
+                                  <td class="px-3">
+                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled value="<?php echo $val['total_cost']?>">
+                                  </td>
+                                </tr>
+                              <?php }?>
+                            <?php }?>
                           </tbody>
                           <tfoot>
                             <td class="px-3" colspan="2"></td>
                             <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="total_handling_unit_cost" name="total_handling_unit_cost" placeholder="0" disabled>
+                              <input type="text" class="form-control text-right inputmask_currency" id="total_handling_unit_cost" name="total_handling_unit_cost" placeholder="0" disabled value="<?php echo $total_unit_cost?>">
                             </td>
                             <td class="px-3">
-                              <input type="text" class="form-control text-right inputmask_currency" id="total_handling_cost" name="total_handling_cost" placeholder="0" disabled>
+                              <input type="text" class="form-control text-right inputmask_currency" id="total_handling_cost" name="total_handling_cost" placeholder="0" disabled value="<?php echo $total_cost?>">
                             </td>
                           </tfoot>
                         </table>
@@ -1018,7 +1148,7 @@ $vendors = getVendors($koneksi);
           let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
           let total = handling_unit_cost_1 * handling_qty_1;
           row.find('#handling_total_cost_1').val(total);
-          setCalcTotalHandling();
+          calcTotalHandling();
         });
 
         $('#table_handling_next').on('keyup', '#handling_unit_cost_next', function() {
@@ -1027,16 +1157,34 @@ $vendors = getVendors($koneksi);
           let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
           let total = handling_unit_cost_next * handling_qty_next;
           row.find('#handling_total_cost_next').val(total);
-          setCalcTotalHandling();
+          calcTotalHandling();
         });
 
-        $('#table_list_vendor').on('keyup', '.vendor_price_1st, .vendor_price_next', function() {
+        $('#table_list_vendor').on('keyup', '.costing_first_price, .costing_next_price', function() {
           let row = $(this).closest('tr');
           let total_container = parseFloat($('#total_container').val());
-          let vendor_price_1st = parseFloat(row.find('.vendor_price_1st').val()) || 0;
-          let vendor_price_next = parseFloat(row.find('.vendor_price_next').val()) || 0;
-          let total = (total_container - 1) * (vendor_price_1st + vendor_price_next);
-          row.find('.vendor_price_total').val(total);
+          let costing_first_price = parseFloat(row.find('.costing_first_price').val()) || 0;
+          let costing_next_price = parseFloat(row.find('.costing_next_price').val()) || 0;
+          let total = (total_container - 1) * (costing_first_price + costing_next_price);
+          row.find('.costing_total_price').val(total);
+        });
+
+        $('#table_list_vendor').on('keyup', '.budgeting_first_price, .budgeting_next_price', function() {
+          let row = $(this).closest('tr');
+          let total_container = parseFloat($('#total_container').val());
+          let budgeting_first_price = parseFloat(row.find('.budgeting_first_price').val()) || 0;
+          let budgeting_next_price = parseFloat(row.find('.budgeting_next_price').val()) || 0;
+          let total = (total_container - 1) * (budgeting_first_price + budgeting_next_price);
+          row.find('.budgeting_total_price').val(total);
+        });
+
+        $('#table_list_vendor').on('keyup', '.pricing_first_price, .pricing_next_price', function() {
+          let row = $(this).closest('tr');
+          let total_container = parseFloat($('#total_container').val());
+          let pricing_first_price = parseFloat(row.find('.pricing_first_price').val()) || 0;
+          let pricing_next_price = parseFloat(row.find('.pricing_next_price').val()) || 0;
+          let total = (total_container - 1) * (pricing_first_price + pricing_next_price);
+          row.find('.pricing_total_price').val(total);
         });
 
         let id = '<?php echo $_GET['id']; ?>';
@@ -1106,26 +1254,49 @@ $vendors = getVendors($koneksi);
         };
         // Function to add a new row to the table
         addRow = () => {
+          let lastIndex = $('#table_list_vendor tbody tr').length;
+
           let newRow = `
             <tr>
-              <td>
+              <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                <div class="custom-control custom-checkbox" style="padding-left: 2rem">
+                  <input type="checkbox" class="custom-control-input" id="customCheck${lastIndex}">
+                  <label class="custom-control-label" for="customCheck${lastIndex}"></label>
+                </div>
+              </td>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 50px !important">
                 <select name="vendor_id" class="form-control vendor_id">
                   <?php foreach ($vendors as $val) { ?>
                     <option value="<?php echo $val['Id'] ?>"><?php echo $val['nama'] ?></option>
                   <?php } ?>
                 </select>
               </td>
-              <td class="px-3">
-                <input type="text" class="form-control text-right vendor_price_1st inputmask_currency" name="vendor_price_1st" placeholder="0">
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right costing_first_price inputmask_currency" placeholder="0">
               </td>
-              <td class="px-3">
-                <input type="text" class="form-control text-right vendor_price_next inputmask_currency" name="vendor_price_next" placeholder="0">
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right costing_next_price inputmask_currency" placeholder="0">
               </td>
-              <td class="px-3">
-                <input type="text" class="form-control text-right vendor_price_total inputmask_currency" name="vendor_price_total" placeholder="0" disabled>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right costing_total_price inputmask_currency" disabled placeholder="0">
               </td>
-              <td class="text-center">
-                <button type="button" class="btn btn-danger remove-row" onclick="removeRow()"><i class="fas fa-trash"></i></button>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right budgeting_first_price inputmask_currency" placeholder="0">
+              </td>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right budgeting_next_price inputmask_currency" placeholder="0">
+              </td>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right budgeting_total_price inputmask_currency" disabled placeholder="0">
+              </td>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right pricing_first_price inputmask_currency" placeholder="0">
+              </td>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right pricing_next_price inputmask_currency" placeholder="0">
+              </td>
+              <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                <input type="text" class="form-control text-right pricing_total_price inputmask_currency" disabled placeholder="0">
               </td>
             </tr>
           `;
@@ -1148,7 +1319,40 @@ $vendors = getVendors($koneksi);
           });
         }
 
-        setCalcTotalHandling = () => {
+        calcApplyAllCosting = (state) => {
+          if(state == 'first') {
+            let apply_costing_first = parseFloat($('#apply_costing_first').val()) || 0;
+            $('.costing_first_price').val(apply_costing_first);
+          } else {
+            let apply_costing_next = parseFloat($('#apply_costing_next').val()) || 0;
+            $('.costing_next_price').val(apply_costing_next);
+          }
+          $('.costing_total_price').val(parseFloat($('.costing_first_price').val())+parseFloat($('.costing_next_price').val()));
+        }
+
+        calcApplyAllBudgeting = (state) => {
+          if(state == 'first') {
+            let apply_budgeting_first = parseFloat($('#apply_budgeting_first').val()) || 0;
+            $('.budgeting_first_price').val(apply_budgeting_first);
+          } else {
+            let apply_budgeting_next = parseFloat($('#apply_budgeting_next').val()) || 0;
+            $('.budgeting_next_price').val(apply_budgeting_next);
+          }
+          $('.budgeting_total_price').val(parseFloat($('.budgeting_first_price').val())+parseFloat($('.budgeting_next_price').val()));
+        }
+
+        calcApplyAllPricing = (state) => {
+          if(state == 'first') {
+            let apply_pricing_first = parseFloat($('#apply_pricing_first').val()) || 0;
+            $('.pricing_first_price').val(apply_pricing_first);
+          } else {
+            let apply_pricing_next = parseFloat($('#apply_pricing_next').val()) || 0;
+            $('.pricing_next_price').val(apply_pricing_next);
+          }
+          $('.pricing_total_price').val(parseFloat($('.pricing_first_price').val())+parseFloat($('.pricing_next_price').val()));
+        }
+
+        calcTotalHandling = () => {
           let handling_total_cost_1 = parseFloat($('#handling_total_cost_1').val())
           let handling_unit_cost_1 = parseFloat($('#handling_unit_cost_1').val())
           let handling_unit_cost_next = parseFloat($('#handling_unit_cost_next').val())
