@@ -9,6 +9,16 @@
     $s_id = $_SESSION['id'];
     $s_name = $_SESSION['nama'];
     $akses = $_SESSION['hak_akses'];
+    
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+    // Pastikan untuk menangani permintaan OPTIONS (preflight)
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        http_response_code(200);
+        exit;
+    }
 
     function getCustomers($koneksi, $s_id)
     {

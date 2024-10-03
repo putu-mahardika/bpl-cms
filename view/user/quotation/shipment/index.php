@@ -277,7 +277,7 @@ $fetch = mysqli_query($koneksi, $query);
       //$.fn.table.moment('d-M-Y hh:mm:ss');
       $('#dataQuoShipment').DataTable({
         ajax: {
-          url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+          url: '../../../../config/controller/quotationShipments/quotationShipmentController.php',
           type: 'GET',
           data: {
             method: 'getHdQuoShipments',
