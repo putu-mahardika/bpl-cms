@@ -402,6 +402,7 @@
                         <th>Bidang Usaha</th>
                         <th>PIC</th>
                         <th>PIC Telp</th>
+                        <th>Payment Terms</th>
                         <!--<th>Keterangan</th>-->
                         <th>Aktif</th>
                         <!--<th>Create Date</th>-->
@@ -431,6 +432,7 @@
                         <td style="font-size:13px;"><?php echo $data['bidang_usaha']?></td>
                         <td style="font-size:13px;"><?php echo $data['PIC']?></td>
                         <td style="font-size:13px;"><?php echo $data['PIC_telp']?></td>
+                        <td style="font-size:13px;"><?php echo $data['terms_payment_days']?></td>
                         <!--<td><?php echo $data['PIC_email']?></td>-->
                         <!--<td><?php echo $data['keterangan']?></td>-->
                       <?php 

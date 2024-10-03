@@ -155,7 +155,7 @@ limit 20;";
     .pagination {
       justify-content: end !important;
     }
-    ul {
+    ul.logList {
       display: flex;
       flex-direction: column;
       list-style: none;
@@ -163,22 +163,22 @@ limit 20;";
       
     }
 
-    li {
+    .logList li {
       display: block;
       border-left: 2px solid #bbb;
       padding-left: 11px;
-      height: 30px;
+      padding-bottom: 10px;
       font-size: 13px;
     }
 
-    li.main {
+    .logList li.main {
       font-weight: bold;
-      height: 40px;
+      padding-bottom: 20px;
       color: #6777ef;
-      font-size: 16px;
+      font-size: 18px;
     }
 
-    li::before {
+    .logList li::before {
       content: "";
       width: 10px;
       height: 10px;
@@ -191,7 +191,7 @@ limit 20;";
       margin-top: 3px;
     }
 
-    li.main::before {
+    .logList li.main::before {
       content: "";
       width: 14px;
       height: 14px;

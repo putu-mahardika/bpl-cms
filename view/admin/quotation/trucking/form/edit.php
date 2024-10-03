@@ -8,6 +8,7 @@
   include '../../../../../config/koneksi.php';
   date_default_timezone_set("Asia/Jakarta");
 
+  $s_id = $_SESSION['id'];
   $datetime = date('Y');
   $cityArray= [];
   $kendaraanArray= [];
@@ -91,12 +92,15 @@
            when mu2.isAdmin = 1 then
                ql.Note
            else
-               CONCAT('[ ', mu.nama, ' ]', ql.Action)
+               CONCAT('[ ', mu.nama, ' ] ', ql.Action)
            end as Action
 from quotation_log ql
-where (ql.IdQuoTrucking = 6 or ql.IdQuoShipment = '".$quoId."')
+inner join master_user mu on ql.IdUser = mu.UserId
+left join master_user mu2 on mu2.UserId = '".$s_id."'
+where (ql.IdQuoTrucking = '".$quoId."')
 order by ql.created_date desc
 limit 20;";
+  // print_r($queryLog);
   $fetchLog = mysqli_query($koneksi, $queryLog);
   while($row = $fetchLog->fetch_assoc()) {
     $logArray[] = $row;
@@ -108,7 +112,6 @@ limit 20;";
     $dataTrucking = mysqli_fetch_assoc($fetchTrucking);
   }
 
-  // print_r($dataForm);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -152,7 +155,7 @@ limit 20;";
     .pagination {
       justify-content: end !important;
     }
-    ul {
+    ul.logList {
       display: flex;
       flex-direction: column;
       list-style: none;
@@ -160,22 +163,22 @@ limit 20;";
       
     }
 
-    li {
+    .logList li {
       display: block;
       border-left: 2px solid #bbb;
       padding-left: 11px;
-      height: 30px;
+      padding-bottom: 10px;
       font-size: 13px;
     }
 
-    li.main {
+    .logList li.main {
       font-weight: bold;
-      height: 40px;
+      padding-bottom: 20px;
       color: #6777ef;
-      font-size: 16px;
+      font-size: 18px;
     }
 
-    li::before {
+    .logList li::before {
       content: "";
       width: 10px;
       height: 10px;
@@ -188,7 +191,7 @@ limit 20;";
       margin-top: 3px;
     }
 
-    li.main::before {
+    .logList li.main::before {
       content: "";
       width: 14px;
       height: 14px;
@@ -1378,7 +1381,7 @@ limit 20;";
                     <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
                     <div class="mt-4">
                       <?php if (count($logArray) > 0) {
-                          printf('<ul>');
+                          printf('<ul class="logList">');
                           foreach ($logArray as $key => $row) {
                             if ($key == 0) {
                               echo '<li class="main">';

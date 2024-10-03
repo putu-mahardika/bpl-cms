@@ -47,3 +47,8 @@
 table > thead > tr > th, table > tbody > tr > td {
   padding: 0.5rem 0.775rem !important;
 }
+
+.nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+}

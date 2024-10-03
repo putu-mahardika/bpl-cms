@@ -27,6 +27,24 @@
         return $customers;
     }
 
+    function getVendors($koneksi)
+    {
+        $query = "SELECT * FROM master_vendor where type = 'ALL' or type = 'Shipment'";
+        $result = mysqli_query($koneksi, $query);
+        
+        if (!$result) {
+            die("Query failed: " . mysqli_error($koneksi));
+        }
+        
+        $vendors = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $vendors[] = $row;
+        }
+
+        
+        return $vendors;
+    }
+
     function getShipmentTerms($koneksi)
     {
         $query = "SELECT * FROM master_shipment_terms where aktif=1";
@@ -131,6 +149,58 @@
             $data[$key]['qty'] = '-';
         }
         
+        echo json_encode($data);
+    }
+
+    function getHdQuoShipmentDetails($koneksi)
+    {
+        $id = $_GET['id'];
+
+        $query = "SELECT 
+                hqs.*,
+                DATE_FORMAT(hqs.created_at, '%d-%m-%Y %H:%i:%s') as `created_at`,
+                CASE
+                    WHEN hqs.customer_id IS NULL THEN hqs.customer_name_temp ELSE mc.nama
+                END AS `customer_name`,
+                hqs.pic_name_temp as `pic_name_temp`,
+                hqs.pic_phone_temp as `pic_phone_temp`,
+                mqs.name as `status`,
+                mqs.color as `status_color`,
+                mn_o.Nama as `origin_country_name`,
+                mn_d.Nama as `destination_country_name`,
+                mu.id as `master_unit_id`,
+                mu.nama as `master_unit_name`,
+                musr.UserId as `sales_id`,
+                musr.nama as `sales_name`,
+                mst.id as `shipment_terms_id`,
+                mst.nama as `shipment_terms_name`,
+                mlt.id as `shipment_load_type_id`,
+                mlt.nama as `shipment_load_type_name`
+            FROM hd_quo_shipments as hqs
+            LEFT JOIN master_quo_status as mqs ON hqs.quo_status_id = mqs.id
+            LEFT JOIN master_negara as mn_o ON hqs.origin_country_id = mn_o.id
+            LEFT JOIN master_negara as mn_d ON hqs.destination_country_id = mn_d.id
+            LEFT JOIN master_customer as mc on hqs.customer_id = mc.CustId
+            LEFT JOIN master_unit as mu on hqs.master_unit_id = mu.id
+            LEFT JOIN master_user as musr on hqs.sales_id = musr.UserId
+            LEFT JOIN master_shipment_terms as mst on hqs.shipment_terms_id = mst.id
+            LEFT JOIN master_load_type as mlt on hqs.shipment_load_type_id = mlt.id
+            WHERE hqs.id = $id;
+        ";
+
+        // print_r($query);die();
+        $result = mysqli_query($koneksi, $query);
+        
+        if (!$result) {
+            die("Query failed: " . mysqli_error($koneksi));
+        }
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data = $row;
+        }
+
         echo json_encode($data);
     }
 
@@ -256,15 +326,63 @@
         return json_encode(['status' => 200, 'data' => $lastInsertedId, 'message' => 'Success']);
     }
 
+    function updateHdQuoShipments($koneksi)
+    {
+        $id = $_POST['id'];
+        // print_r($_POST);die();
+
+        $query = "UPDATE `hd_quo_shipments` SET `quo_status_id` = 2 WHERE `id` = $id;";
+        
+        $result = mysqli_query($koneksi, $query);
+        
+        if($result) {
+            $lastInsertedId = $koneksi->insert_id;
+        }
+
+        $queryArray = array();
+
+        foreach ($_POST['vendor_data'] as $key => $value) {
+            array_push($queryArray, "('$id', '{$value['vendor_id']}', '{$value['vendor_price_1st']}', '{$value['vendor_price_next']}', '{$value['vendor_price_total']}')");
+        }
+
+        $queryDtlQuoShipment = "INSERT INTO `dtl_quo_shipment`
+            (
+            `hd_quotation_id`,
+            `vendor_id`,
+            `costing_first_price`,
+            `costing_next_price`,
+            `costing_total_price`
+            ) VALUES";
+        // print_r($queryDtlQuoShipment);die();
+
+        $queryDtlQuoShipment .= implode(', ', $queryArray);
+
+        $resultDtlQuoShipment = mysqli_query($koneksi, $queryDtlQuoShipment);
+
+
+        if (!$resultDtlQuoShipment) {
+            die("Query failed: " . mysqli_error($koneksi));
+        }
+
+        return json_encode(['status' => 200, 'data' => $lastInsertedId, 'message' => 'Success']);
+    }
     switch ($_POST['method']) {
         case 'createHdQuoShipments':
             $resp = createHdQuoShipments($koneksi);
+            echo $resp;
+            break;
+        case 'updateHdQuoShipments':
+            $resp = updateHdQuoShipments($koneksi);
             echo $resp;
             break;
     }
     switch ($_GET['method']) {
         case 'getHdQuoShipments':
             $resp = getHdQuoShipments($koneksi);
+            echo $resp;
+            break;
+        case 'getHdQuoShipmentDetails':
+            $resp = getHdQuoShipmentDetails($koneksi);
             echo $resp;
             break;
     }
