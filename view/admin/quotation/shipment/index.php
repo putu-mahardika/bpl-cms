@@ -28,7 +28,7 @@ $fetch = mysqli_query($koneksi, $query);
   <link href="../../../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css">
-  <link href="<?php echo $base_url ?>/css/new-style.css" rel="stylesheet">
+  <link href="../../../../css/new-style.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
