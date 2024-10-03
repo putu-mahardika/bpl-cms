@@ -781,16 +781,16 @@
                       </div>
                       <div class="mb-3">
                         <div class="row">
-                          <div class="col-lg-4">
-                            <button class="btn btn-success mb-3" style="width: 100%;" type="button">Reset</button>
-                            <button class="btn btn-danger" style="width: 100%;" type="button">Delete</button>
+                          <div class="col-lg-2">
+                            <button class="btn btn-success mb-3" style="width: 100%; height: 100%" type="button">Reset</button>
+                            <!-- <button class="btn btn-danger" style="width: 100%;" type="button">Delete</button> -->
                           </div>
-                          <div class="col-lg-8">
+                          <div class="col-lg-10">
                             <div class="row" style="height: 100%;">
-                              <div class="col-lg-5">
+                              <div class="col-lg-4">
                                 <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button">Batal</button>
                               </div>
-                              <div class="col-lg-7">
+                              <div class="col-lg-8">
                                 <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="inputQuoTrucking" >
                               </div>
                             </div>
@@ -1166,16 +1166,16 @@
                       </div>
                       <div class="mb-3">
                         <div class="row">
-                          <div class="col-lg-4">
-                            <button class="btn btn-success mb-3" style="width: 100%;" type="button">Reset</button>
-                            <button class="btn btn-danger" style="width: 100%;" type="button">Delete</button>
+                          <div class="col-lg-2">
+                            <button class="btn btn-success mb-3" style="width: 100%; height: 100%" type="button">Reset</button>
+                            <!-- <button class="btn btn-danger" style="width: 100%;" type="button">Delete</button> -->
                           </div>
-                          <div class="col-lg-8">
+                          <div class="col-lg-10">
                             <div class="row" style="height: 100%;">
-                              <div class="col-lg-5">
+                              <div class="col-lg-4">
                                 <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button">Batal</button>
                               </div>
-                              <div class="col-lg-7">
+                              <div class="col-lg-8">
                                 <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="inputQuoTrucking" >
                               </div>
                             </div>

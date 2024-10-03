@@ -1167,16 +1167,16 @@ limit 20;";
                       <?php if (isset($dataForm['IdVM']) || $dataForm['IdVM'] == '' || $dataForm['IdVM'] == null || $dataForm['IdVm'] == $s_id) { ?>
                         <div class="mb-3">
                           <div class="row">
-                            <div class="col-lg-4">
-                              <button class="btn btn-success mb-3" style="width: 100%;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Reset</button>
-                              <button class="btn btn-danger" style="width: 100%;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Delete</button>
+                            <div class="col-lg-2">
+                              <button class="btn btn-success mb-3" style="width: 100%; height: 100%" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Reset</button>
+                              <!-- <button class="btn btn-danger" style="width: 100%;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Delete</button> -->
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                               <div class="row" style="height: 100%;">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                   <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Batal</button>
                                 </div>
-                                <div class="col-lg-7">
+                                <div class="col-lg-8">
                                   <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="editQuoTruckingAdmin" id="editQuoTruckingAdmin" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >
                                 </div>
                               </div>
