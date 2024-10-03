@@ -8,7 +8,6 @@ if ($_SESSION['hak_akses'] == "" || ($_SESSION['hak_akses'] != "VmTrucking" && $
 include '../../../../config/koneksi.php';
 date_default_timezone_set("Asia/Jakarta");
 
-print_r($base_url);
 $datetime = date('Y');
 $query = 'select * from master_kota';
 $fetch = mysqli_query($koneksi, $query);
