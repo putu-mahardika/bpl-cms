@@ -2,7 +2,7 @@
 session_save_path('../../../../tmp');
 session_start();
 
-if ($_SESSION['hak_akses'] == "" || ($_SESSION['hak_akses'] != "VmTrucking" && $_SESSION['hak_akses'] != "VmShipment")) {
+if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
   header("location:../../../../index.php?pesan=belum_login");
 }
 include '../../../../config/koneksi.php';

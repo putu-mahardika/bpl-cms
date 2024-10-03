@@ -3,7 +3,7 @@
     date_default_timezone_set("Asia/Jakarta");
     $datetime = date('Y-m-d H:i:s');
     $year = date('Y', strtotime($datetime));
-    session_save_path('../../../../tmp');
+    session_save_path('../../../tmp');
     session_start();
     //$s_username = $_SESSION['username'];
     $s_id = $_SESSION['id'];
@@ -159,6 +159,7 @@
         $query = "SELECT 
                 hqs.*,
                 DATE_FORMAT(hqs.created_at, '%d-%m-%Y %H:%i:%s') as `created_at`,
+                DATE_FORMAT(hqs.updated_at, '%d-%m-%Y %H:%i:%s') as `updated_at`,
                 CASE
                     WHEN hqs.customer_id IS NULL THEN hqs.customer_name_temp ELSE mc.nama
                 END AS `customer_name`,
@@ -201,11 +202,81 @@
             $data = $row;
         }
 
+        $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $id);
+        $data['dtl_quo_shipment'] = $dataDtlQuoShipment;
+        $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $id);
+        $data['dtl_quo_shipment_handling_costs'] = $dataDtlQuoShipmentHandlingCosts;
+
         echo json_encode($data);
+    }
+
+    function getDtlQuoShipment($koneksi, $id)
+    {
+        $query = "SELECT 
+                dqs.*,
+                DATE_FORMAT(dqs.created_at, '%d-%m-%Y %H:%i:%s') as `created_at`,
+                DATE_FORMAT(dqs.updated_at, '%d-%m-%Y %H:%i:%s') as `updated_at`,
+                mv.nama as `vendor_name`
+            FROM dtl_quo_shipment as dqs
+            LEFT JOIN master_vendor as mv ON mv.Id = dqs.vendor_id
+            WHERE dqs.hd_quotation_id = $id;
+        ";
+        
+        // print_r($query);die();
+        $result = mysqli_query($koneksi, $query);
+        
+        if (!$result) {
+            die("Query failed: " . mysqli_error($koneksi));
+        }
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    function getDtlQuoShipmentHandlingCosts($koneksi, $id)
+    {
+        $query = "SELECT 
+                dqshc.*,
+                DATE_FORMAT(dqshc.created_at, '%d-%m-%Y %H:%i:%s') as `created_at`,
+                DATE_FORMAT(dqshc.updated_at, '%d-%m-%Y %H:%i:%s') as `updated_at`,
+                mvm.UserId as `vm_id`,
+                mvm.nama as `vm_name`,
+                msl.UserId as `sales_id`,
+                msl.nama as `sales_name`
+            FROM dtl_quo_shipment_handling_costs as dqshc
+            LEFT JOIN master_user as msl ON msl.UserId = dqshc.sales_id
+            LEFT JOIN master_user as mvm ON mvm.UserId = dqshc.vm_id
+            WHERE dqshc.hd_quotation_id = $id;
+        ";
+        
+        // print_r($query);die();
+        $result = mysqli_query($koneksi, $query);
+        
+        if (!$result) {
+            die("Query failed: " . mysqli_error($koneksi));
+        }
+
+        $data = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
     }
 
     function createHdQuoShipments($koneksi)
     {
+        session_save_path('../../../tmp');
+        session_start();
+
+        $last_updated_by_id = $_SESSION['id'];
+        $last_updated_by_name = $_SESSION['nama'];
         $customer_id = isset($_POST['customer_id']) ? $_POST['customer_id'] : null;
         $sales_id = $_POST['sales_id'];
         $total_container = $_POST['total_container'];
@@ -311,8 +382,8 @@
                 NULL, -- from_quotation_id
                 1, -- is_active
                 0, -- is_deleted
-                NULL, -- last_updated_by_id
-                NULL  -- last_updated_by_name
+                " . $last_updated_by_id . ", -- last_updated_by_id
+                '" . $last_updated_by_name . "' -- last_updated_by_name
             );";
 
         // echo $query;die();
@@ -328,10 +399,29 @@
 
     function updateHdQuoShipments($koneksi)
     {
+        session_save_path('../../../tmp');
+        session_start();
+
         $id = $_POST['id'];
+        $sales_id = $_POST['sales_id'];
+        $vm_id = $_POST['vm_id'];
+        $handling_name_1 = $_POST['handling_name_1'];
+        $handling_qty_1 = $_POST['handling_qty_1'];
+        $handling_unit_cost_1 = $_POST['handling_unit_cost_1'];
+        $handling_total_cost_1 = $_POST['handling_total_cost_1'];
+        $handling_name_next = $_POST['handling_name_next'];
+        $handling_qty_next = $_POST['handling_qty_next'];
+        $handling_unit_cost_next = $_POST['handling_unit_cost_next'];
+        $handling_total_cost_next = $_POST['handling_total_cost_next'];
+        $last_updated_by_id = $_SESSION['id'];
+        $last_updated_by_name = $_SESSION['nama'];
         // print_r($_POST);die();
 
-        $query = "UPDATE `hd_quo_shipments` SET `quo_status_id` = 2 WHERE `id` = $id;";
+        $query = "UPDATE `hd_quo_shipments` SET 
+                `quo_status_id` = 2, 
+                `last_updated_by_id` = $last_updated_by_id,
+                `last_updated_by_name` = $last_updated_by_name
+            WHERE `id` = $id;";
         
         $result = mysqli_query($koneksi, $query);
         
@@ -339,6 +429,20 @@
             $lastInsertedId = $koneksi->insert_id;
         }
 
+        createDtlQuoShipment($koneksi, $id);
+
+        if ($handling_qty_1 > 0) {
+            createDtlQuoShipmentHandlingCostsFirst($koneksi, $id, $sales_id, $vm_id, 1, $handling_name_1, $handling_qty_1, $handling_unit_cost_1, $handling_total_cost_1, $last_updated_by_id, $last_updated_by_name);
+        }
+        if ($handling_qty_next > 0) {
+            createDtlQuoShipmentHandlingCostsNext($koneksi, $id, $sales_id, $vm_id, 2, $handling_name_next, $handling_qty_next, $handling_unit_cost_next, $handling_total_cost_next, $last_updated_by_id, $last_updated_by_name);
+        }
+
+        return json_encode(['status' => 200, 'data' => $lastInsertedId, 'message' => 'Success']);
+    }
+
+    function createDtlQuoShipment($koneksi, $id)
+    {
         $queryArray = array();
 
         foreach ($_POST['vendor_data'] as $key => $value) {
@@ -359,13 +463,115 @@
 
         $resultDtlQuoShipment = mysqli_query($koneksi, $queryDtlQuoShipment);
 
-
         if (!$resultDtlQuoShipment) {
             die("Query failed: " . mysqli_error($koneksi));
         }
-
-        return json_encode(['status' => 200, 'data' => $lastInsertedId, 'message' => 'Success']);
     }
+
+    function createDtlQuoShipmentHandlingCostsFirst(
+        $koneksi, 
+        $id, 
+        $sales_id, 
+        $vm_id, 
+        $handling_turunan, 
+        $handling_description, 
+        $quantity, 
+        $unit_cost, 
+        $total_cost, 
+        $last_updated_by_id, 
+        $last_updated_by_name
+    )
+    {
+        $query = "INSERT INTO `dtl_quo_shipment_handling_costs`
+            (
+                `hd_quotation_id`,
+                `created_at`,
+                `updated_at`,
+                `sales_id`,
+                `vm_id`,
+                `handling_turunan`,
+                `handling_description`,
+                `quantity`,
+                `unit_cost`,
+                `total_cost`,
+                `last_updated_unit_at`,
+                `last_updated_prices_at`,
+                `last_updated_by_id`,
+                `last_updated_by_name`
+            ) VALUES (
+                " . $id . ", -- hd_quotation_id
+                '" . date('Y-m-d H:i:s') . "', -- created_at
+                '" . date('Y-m-d H:i:s') . "', -- updated_at
+                " . ($sales_id ? "'$sales_id'" : "NULL") . ", -- sales_id
+                " . ($vm_id ? "'$vm_id'" : "NULL") . ", -- vm_id
+                " . ($handling_turunan ? "'$handling_turunan'" : "NULL") . ", -- handling_turunan
+                " . ($handling_description ? "'$handling_description'" : "NULL") . ", -- handling_description
+                " . ($quantity ? "'$quantity'" : "NULL") . ", -- quantity
+                " . ($unit_cost ? "'$unit_cost'" : "NULL") . ", -- unit_cost
+                " . ($total_cost ? "'$total_cost'" : "NULL") . ", -- total_cost
+                '" . date('Y-m-d H:i:s') . "', -- last_updated_unit_at
+                '" . date('Y-m-d H:i:s') . "', -- last_updated_prices_at
+                " . $last_updated_by_id . ", -- last_updated_by_id
+                '" . $last_updated_by_name . "' -- last_updated_by_name
+            );";
+
+        // echo $query;die();
+        
+        mysqli_query($koneksi, $query);
+    }
+
+    function createDtlQuoShipmentHandlingCostsNext(
+        $koneksi, 
+        $id, 
+        $sales_id, 
+        $vm_id, 
+        $handling_turunan, 
+        $handling_description, 
+        $quantity, 
+        $unit_cost, 
+        $total_cost, 
+        $last_updated_by_id, 
+        $last_updated_by_name
+    )
+    {
+        $query = "INSERT INTO `dtl_quo_shipment_handling_costs`
+            (
+                `hd_quotation_id`,
+                `created_at`,
+                `updated_at`,
+                `sales_id`,
+                `vm_id`,
+                `handling_turunan`,
+                `handling_description`,
+                `quantity`,
+                `unit_cost`,
+                `total_cost`,
+                `last_updated_unit_at`,
+                `last_updated_prices_at`,
+                `last_updated_by_id`,
+                `last_updated_by_name`
+            ) VALUES (
+                " . $id . ", -- hd_quotation_id
+                '" . date('Y-m-d H:i:s') . "', -- created_at
+                '" . date('Y-m-d H:i:s') . "', -- updated_at
+                " . ($sales_id ? "'$sales_id'" : "NULL") . ", -- sales_id
+                " . ($vm_id ? "'$vm_id'" : "NULL") . ", -- vm_id
+                " . ($handling_turunan ? "'$handling_turunan'" : "NULL") . ", -- handling_turunan
+                " . ($handling_description ? "'$handling_description'" : "NULL") . ", -- handling_description
+                " . ($quantity ? "'$quantity'" : "NULL") . ", -- quantity
+                " . ($unit_cost ? "'$unit_cost'" : "NULL") . ", -- unit_cost
+                " . ($total_cost ? "'$total_cost'" : "NULL") . ", -- total_cost
+                '" . date('Y-m-d H:i:s') . "', -- last_updated_unit_at
+                '" . date('Y-m-d H:i:s') . "', -- last_updated_prices_at
+                " . $last_updated_by_id . ", -- last_updated_by_id
+                '" . $last_updated_by_name . "' -- last_updated_by_name
+            );";
+
+        // echo $query;die();
+        
+        mysqli_query($koneksi, $query);
+    }
+
     switch ($_POST['method']) {
         case 'createHdQuoShipments':
             $resp = createHdQuoShipments($koneksi);
