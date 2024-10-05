@@ -174,6 +174,8 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quo Trucking</h6>
             <a class="collapse-item" href="quotation/trucking/index.php">List Quo Trucking</a>
+            <h6 class="collapse-header">Quo Shipment</h6>
+            <a class="collapse-item" href="quotation/shipment/index.php">List Quo Shipment</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>

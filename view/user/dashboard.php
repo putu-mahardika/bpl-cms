@@ -1,9 +1,9 @@
 <?php
-  session_save_path('../../tmp');
+  session_save_path("../../tmp");
 
   session_start();
 
-  include "../../config/koneksi.php";
+  include $base_url."/config/koneksi.php";
   date_default_timezone_set("Asia/Jakarta");
 
   $datetime = date('Y');
@@ -15,7 +15,7 @@
 
   if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
 
-    header("location:../../index.php?pesan=belum_login");
+    header("location:'.$base_url.'/index.php?pesan=belum_login");
 
   }
 

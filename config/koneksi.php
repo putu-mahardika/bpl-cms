@@ -6,7 +6,7 @@
     // $dbname = 'berkahpe_tracking2';
     
     // SETTING HOST UBAH BAGIAN management-tracking-dev
-    $base_url = $_SERVER['HTTP_HOST'] == 'berkahpermatalogistik.com' ? $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/management-tracking-dev' : $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/bpl-cms';
+    $base_url = $_SERVER['HTTP_HOST'] == 'berkahpermatalogistik.com' ? $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/management-tracking-dev' : $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/management-tracking-dev';
     $dbhost = 'srv155.niagahoster.com';
     $dbuser = 'u1732795_berkahpe';
     $dbpass = 'tog57588';
