@@ -299,8 +299,8 @@ $countries = getCountries($koneksi);
                         <div class="col-md-6">
                           <div class="row">
                             <div class="col-md-12">
-                              <label for="item_cescription">Jenis Barang Bawaan (Opsional)</label>
-                              <input type="text" class="form-control" id="item_cescription" name="item_cescription" placeholder="Masukkan jenis barang bawaan...">
+                              <label for="item_description">Jenis Barang Bawaan (Opsional)</label>
+                              <input type="text" class="form-control" id="item_description" name="item_description" placeholder="Masukkan jenis barang bawaan...">
                             </div>
                             <div class="col-md-12">
                               <div class="form-check form-check-inline mt-3">
@@ -746,7 +746,7 @@ $countries = getCountries($koneksi);
         customer_id: $('#customer_id').val(),
         sales_id: $('#sales_id').val(),
         total_container: $('#total_container').val(),
-        item_cescription: $('#item_cescription').val(),
+        item_description: $('#item_description').val(),
         vm_id: null,
         quo_status_id: 1,
         customer_name_temp: $('#customer_name_temp').val(),
@@ -764,38 +764,6 @@ $countries = getCountries($koneksi);
         destination_country_id: $('#destination_country_id').val(),
         pickup_note: $('#pickup_note').val(),
         destination_note: $('#destination_note').val(),
-        // // dtlQuoShipment
-        // vendor_id: null,
-        // costing_first_price: 0,
-        // costing_next_price: 0,
-        // costing_total_price: 0,
-        // budgeting_first_price: 0,
-        // budgeting_next_price: 0,
-        // budgeting_total_price: 0,
-        // pricing_first_price: 0,
-        // pricing_next_price: 0,
-        // pricing_total_price: 0,
-        // // dtlQuoShipmentHandlingCosts
-        // sales_id: null,
-        // vm_id: null,
-        // handling_turunan: null,
-        // handling_description: null,
-        // quantity: 0,
-        // unit_cost: 0,
-        // total_cost: 0,
-        // last_updated_unit_at: null,
-        // unit_budgeting: 0,
-        // total_budgeting: 0,
-        // last_updated_budgeting_at: null,
-        // unit_price: 0,
-        // total_price: 0,
-        // last_updated_prices_at: null,
-        // last_updated_by_id: null,
-        // last_updated_by_name: null,
-        // attribute_1: null,
-        // attribute_2: null,
-        // attribute_3: null,
-        // // dtlQuoShipmentHandlingCosts
       };
 
       console.log(`DATA: ${JSON.stringify(data)}`);
@@ -825,7 +793,7 @@ $countries = getCountries($koneksi);
               title: 'Berhasil',
               text: 'Data berhasil disimpan',
             }).then(() => {
-              window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php';
+              window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
             });
           }
         },

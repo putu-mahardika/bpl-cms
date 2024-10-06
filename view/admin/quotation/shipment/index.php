@@ -11,6 +11,7 @@ date_default_timezone_set("Asia/Jakarta");
 $datetime = date('Y');
 $query = 'select * from master_kota';
 $fetch = mysqli_query($koneksi, $query);
+$roles = 'admin';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,21 +29,21 @@ $fetch = mysqli_query($koneksi, $query);
   <link href="../../../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css">
-  <link href="../../../../css/new-style.css" rel="stylesheet">
+  <link href="<?php echo $base_url ?>/css/new-style.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php?tahun=<?php echo $datetime ?>">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo $base_url ?>/view/<?php echo $roles?>/dashboard-admin.php?tahun=<?php echo $datetime ?>">
         <div class="sidebar-brand-icon">
           <img src="../../../../img/logo-BPL-white-min.png" style="height:130px;">
         </div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="../../dashboard.php?tahun=<?php echo $datetime ?>">
+        <a class="nav-link" href="<?php echo $base_url ?>/view/<?php echo $roles?>/dashboard-admin.php?tahun=<?php echo $datetime ?>">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -322,9 +323,9 @@ $fetch = mysqli_query($koneksi, $query);
         ],
         rowId: 'id',
         stateSave: true,
-        // order: [
-        //   [1, "desc"]
-        // ]
+        order: [
+          [0, "desc"]
+        ]
       });
     });
   </script>
