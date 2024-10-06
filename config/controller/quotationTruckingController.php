@@ -501,6 +501,10 @@
       }
     }
   }
+  elseif (isset($_POST['updateBudgetingQuotationDetailTrucking'])) {
+    $resp = updateBudgetingQuotationDetailTrucking($koneksi, $_POST['hdQuotationId']);
+    echo $resp;
+  }
 
 
   function insertDetailQuo ($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi) {
@@ -581,5 +585,16 @@
       // echo $newStatus;
     }
     return $newStatus;
+  }
+
+  function updateBudgetingQuotationDetailTrucking($koneksi, $hdQuotationId){
+    $stmt = $koneksi->prepare("CALL update_budgeting_quotation_detail_trucking(?)");
+    $stmt->bind_param("i", $hdQuotationId);
+    if (!$stmt->execute()) {
+      die("Stored procedure execution failed: " . $stmt->error);
+    }
+    // $stmt->close();
+    // return json_encode(['status' => 200, 'message' => 'Success']);
+    return json_encode(['status' => 200, 'message' => 'Success']);
   }
 ?>
