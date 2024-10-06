@@ -565,6 +565,10 @@ limit 20;";
                                     <label>Telp</label>
                                     <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer" value="<?php echo $dataForm['PICPhoneTemp'] ?>" readonly>
                                   </div>
+                                  <div class="form-group">
+                                    <label>Payment Term Days</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer" value="<?php echo $dataForm['CustomerTermsPaymentTemp'] ?>" readonly>
+                                  </div>
                                 </div>
                               </div>
                             </div>

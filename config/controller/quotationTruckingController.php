@@ -107,6 +107,7 @@
     $customerAddressTemp = null;
     $customerPicTemp = null;
     $customerPicPhoneTemp = null;
+    $customerPaymentTermsTemp = null;
     $totalArmada = 0;
     $itemType = null;
     $weight = 0;
@@ -130,6 +131,7 @@
       $customerAddressTemp = $_POST['customerAddressTemp'];
       $customerPicTemp = $_POST['customerPicTemp'];
       $customerPicPhoneTemp = $_POST['customerPicPhoneTemp'];
+      $customerPaymentTermsTemp = $_POST['customerPaymentTermsTemp']
     }
     
     $kendaraanId = isset($_POST['kendaraan']) && $_POST['kendaraan'] !== '' ? printf("'".$_POST['kendaraan']."'") : 'null';
@@ -148,9 +150,9 @@
       $detailKotaTujuan = $_POST['detailKotaTujuan1'];
       $tripType = 'multiTrip';
       $query = "INSERT INTO `master_quotation_trucking`
-      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
+      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `CustomerTermsPaymentTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', '$kotaTujuanId2', '$kotaTujuanId3', NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$customerPaymentTermsTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', '$kotaTujuanId2', '$kotaTujuanId3', NULL, NULL, NULL);";
       $save = [
         $customerId, //0
         $customerNameTemp, //1
@@ -170,8 +172,9 @@
         $kotaTujuanId3,  //15
         $detailKotaAsal,  //16
         $detailKotaTujuan,  //17
-        $selectedTab,
-        $deliveryType
+        $selectedTab, //18
+        $deliveryType,  //19
+        $customerPaymentTermsTemp //20
       ];  
     } elseif ($_POST['selectedTab'] == 2) {
       $kotaTujuanId1 = $_POST['kotaTujuan1'];
@@ -204,7 +207,8 @@
         $detailKotaAsal,
         $detailKotaTujuan,
         $selectedTab,
-        $deliveryType
+        $deliveryType,
+        $customerPaymentTermsTemp
       ];
     } else {
       $kotaTujuanId1 = $_POST['kotaTujuan1'];
@@ -235,7 +239,8 @@
         $detailKotaAsal,
         $detailKotaTujuan,
         $selectedTab,
-        $deliveryType
+        $deliveryType,
+        $customerPaymentTermsTemp
       ];
     }
     // print_r($save);
@@ -271,6 +276,7 @@
     $customerAddressTemp = isset($_POST['customerAddressTemp']) && $_POST['customerAddressTemp'] !== '' ? "'" . $_POST['customerAddressTemp'] . "'" : 'null';
     $customerPicTemp = isset($_POST['customerPicTemp']) && $_POST['customerPicTemp'] !== '' ? "'" . $_POST['customerPicTemp'] . "'" : 'null';
     $customerPicPhoneTemp = isset($_POST['customerPicPhoneTemp']) && $_POST['customerPicPhoneTemp'] !== '' ? "'".$_POST['customerPicPhoneTemp']."'" : 'null';
+    $customerPaymentTermsTemp = isset($_POST['customerPaymentTermsTemp']) && $_POST['customerPaymentTermsTemp'] !== '' ? "'".$_POST['customerPaymentTermsTemp']."'" : 'null';
     $totalArmada = isset($_POST['totalArmada']) ? $_POST['totalArmada'] : 0;
     $itemType = isset($_POST['itemType']) ? "'" . $_POST['itemType'] . "'" : 'null';
     $weight = isset($_POST['weight']) ? $_POST['weight'] : 0;
@@ -326,6 +332,7 @@
           CustomerAddressTemp=$customerAddressTemp,
           PICNameTemp=$customerPicTemp,
           PICPhoneTemp=$customerPicPhoneTemp,
+          CustomerTermsPaymentTemp='$customerPaymentTermsTemp',
           TotalArmada='$totalArmada',
           ItemType=$itemType,
           Weight='$weight',
@@ -341,7 +348,7 @@
           LastUpdatedByName='$s_name',
           deliveryTypeName=NULL,
           update_at='$datetime',
-          quoDetailVendorId='$selectedVendor'
+          quoDetailVendorId='$selectedVendor',
           WHERE Id=$quoId
         ";
       } elseif ($selectedTab == 2) {
@@ -351,6 +358,7 @@
           CustomerAddressTemp=$customerAddressTemp,
           PICNameTemp=$customerPicTemp,
           PICPhoneTemp=$customerPicPhoneTemp,
+          CustomerTermsPaymentTemp='$customerPaymentTermsTemp',
           TotalArmada='$totalArmada',
           ItemType=$itemType,
           Weight='$weight',
@@ -376,6 +384,7 @@
           CustomerAddressTemp=$customerAddressTemp,
           PICNameTemp=$customerPicTemp,
           PICPhoneTemp=$customerPicPhoneTemp,
+          CustomerTermsPaymentTemp='$customerPaymentTermsTemp',
           TotalArmada='$totalArmada',
           ItemType=$itemType,
           Weight='$weight',

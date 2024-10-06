@@ -464,6 +464,10 @@
                                     <label>Telp</label>
                                     <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer" value="<?php echo $save[4] ?>">
                                   </div>
+                                  <div class="form-group">
+                                    <label>Payment Term Days</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer" value="<?php echo $save[20] ?>">
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -878,6 +882,10 @@
                                   <div class="form-group">
                                     <label>Telp</label>
                                     <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Payment Term Days</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer">
                                   </div>
                                 </div>
                               </div>
