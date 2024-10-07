@@ -83,23 +83,15 @@
   }
 
   // $fetchLog = mysqli_query($koneksi, "select * from quotation_log where IdQuoTrucking='$quoId' order by created_date desc");
-  $queryLog = "select ql.created_date,
-       ql.IdQuoTrucking,
-       ql.IdQuoShipment,
-       ql.NoQuotation,
-       ql.IdUser,
-       case
-           when mu2.isAdmin = 1 then
-               ql.Note
-           else
-               CONCAT('[ ', mu.nama, ' ] ', ql.Action)
-           end as Action
-from quotation_log ql
-inner join master_user mu on ql.IdUser = mu.UserId
-left join master_user mu2 on mu2.UserId = '".$s_id."'
-where (ql.IdQuoTrucking = '".$quoId."')
-order by ql.created_date desc
-limit 20;";
+  $queryLog = "SELECT 
+        ql.*,
+        DATE_FORMAT(ql.created_date, '%d-%m-%Y %H:%i:%s') as `created_at`,
+        DATE_FORMAT(ql.update_at, '%d-%m-%Y %H:%i:%s') as `updated_at`
+    FROM quotation_log as ql
+    WHERE ql.IdQuoTrucking = $quoId
+    order by ql.created_date desc
+    LIMIT 20;
+  ";
   // print_r($queryLog);
   $fetchLog = mysqli_query($koneksi, $queryLog);
   while($row = $fetchLog->fetch_assoc()) {
@@ -111,7 +103,6 @@ limit 20;";
     $fetchTrucking = mysqli_query($koneksi, "select * from trans_hd where IdQuotation='$quoId'");
     $dataTrucking = mysqli_fetch_assoc($fetchTrucking);
   }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -132,6 +123,7 @@ limit 20;";
   <link href="../../../../../vendor/toastr/build/toastr.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../../../../css/new-style.css" rel="stylesheet">
   <link rel="stylesheet" href="./infocard.css">
   <style>
     .bg-lightGrey {
@@ -157,55 +149,6 @@ limit 20;";
     }
     .pagination {
       justify-content: end !important;
-    }
-    ul.logList {
-      display: flex;
-      flex-direction: column;
-      list-style: none;
-      padding-left: 10px;
-      
-    }
-
-    .logList li {
-      display: block;
-      border-left: 2px solid #bbb;
-      padding-left: 11px;
-      padding-bottom: 10px;
-      font-size: 13px;
-    }
-
-    .logList li.main {
-      font-weight: bold;
-      padding-bottom: 20px;
-      color: #6777ef;
-      font-size: 18px;
-    }
-
-    .logList li::before {
-      content: "";
-      width: 10px;
-      height: 10px;
-      background-color: #bbb;
-      display: inline-block;
-      border-radius: 6px;
-      position: relative;
-      margin-left: -17px;
-      margin-right: 10px;
-      margin-top: 3px;
-    }
-
-    .logList li.main::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      background-color: #6777ef;
-      display: inline-block;
-      border-radius: 15px;
-      position: relative;
-      top: 3px;
-      margin-left: -19px;
-      margin-right: 10px;
-      border: 1px solid #6777ef;
     }
   </style>
 </head>
@@ -1226,27 +1169,33 @@ limit 20;";
                     </div>
                   </form>
                   <div class="mb-3">
-                    <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
-                    <div class="mt-4">
-                      <?php if (count($logArray) > 0) {
-                          printf('<ul class="logList">');
-                          foreach ($logArray as $key => $row) {
-                            if ($key == 0) {
-                              echo '<li class="main">';
-                              echo $row['Action'] .' - ';
-                              echo '<em>' . date('d-m-Y, H:i', strtotime($row['created_date'])) . '</em>';
-                              echo '</li>';
-                            } else {
-                              echo '<li>';
-                              echo $row['Action'] .' - ';
-                              echo '<em>' . date('d-m-Y, H:i', strtotime($row['created_date'])) . '</em>';
-                              echo '</li>';
-                            }
-                          }
-                          echo '</ul>';
-                      } else {
-                          echo 'No log entries found.';
-                      } ?>
+                    <div class="row">
+                      <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="font-weight-bold">Riwayat Perubahan</h5>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <ul class="timeline pl-4">
+                          <?php if (count($logArray) > 0) {?>
+                            <?php foreach ($logArray as $key => $value) {?>
+                              <li class="d-flex timeline-item">
+                                <div class="timeline-box" style="width:unset;">
+                                  <div class="timeline-line" <?php if($key == 0) {?>style="height: 50%; top: 50%"<?php }?> <?php if($key == count($logArray)-1) {?>style="height: 50%"<?php }?>></div>
+                                  <div class="timeline-dots"></div>
+                                </div>
+                                <div class="timeline-content py-2 px-4" <?php if($key == 0) {?>style="color: #6777ef"<?php }?>>
+                                  <div class="font-italic font-weight-bold">
+                                    <?php echo $value['created_at'] ?>
+                                  </div>
+                                  <div><?php echo $value['Note'] ?></div>
+                                  <small><?php echo $value['changes'] ?></small>
+                                </div>
+                              </li>
+                            <?php }?>
+                          <?php } else {?>
+                            <div class="w-full text-center">Belum ada riwayat</div>
+                          <?php }?>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
