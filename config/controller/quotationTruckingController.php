@@ -11,6 +11,7 @@
   $akses = $_SESSION['hak_akses'];
 
   if (isset($_GET['getAllQuo'])) {
+    $tahun = $_GET['year'];
     $array = array();
     $tempArray = array();
     $query = "SELECT
@@ -51,7 +52,8 @@
         LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
         LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
     WHERE
-      mqt.IsDelete = 0
+      mqt.IsDelete = 0 and
+      mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
     ORDER BY 
       mqt.update_at desc";
     $fetch = mysqli_query($koneksi, $query);
@@ -81,6 +83,7 @@
       $array[$i]['status'] = $data['StatusName'];
       $array[$i]['id'] = $data['Id'];
       $array[$i]['statusColor'] = $data['StatusColor'];
+      $array[$i]['hasShipmentQuo'] = $data['hd_shipment_quotation_id'] ? true : false;
       // print_r($data);
     }
 
@@ -131,7 +134,7 @@
       $customerAddressTemp = $_POST['customerAddressTemp'];
       $customerPicTemp = $_POST['customerPicTemp'];
       $customerPicPhoneTemp = $_POST['customerPicPhoneTemp'];
-      $customerPaymentTermsTemp = $_POST['customerPaymentTermsTemp']
+      $customerPaymentTermsTemp = $_POST['customerPaymentTermsTemp'];
     }
     
     $kendaraanId = isset($_POST['kendaraan']) && $_POST['kendaraan'] !== '' ? printf("'".$_POST['kendaraan']."'") : 'null';
@@ -250,11 +253,11 @@
     if ($result) {
       $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
       if ($akses == 'User') {
-        header("location:../../view/user/quotation/trucking/index.php");
+        header("location:../../view/user/quotation/trucking/index.php?tahun=<?php echo $datetime?>");
       } elseif ($akses == 'Admin') {
-        header("location:../../view/admin/quotation/trucking/index.php");
+        header("location:../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime?>");
       } else {
-        header("location:../../view/vm/quotation/trucking/index.php");	
+        header("location:../../view/vm/quotation/trucking/index.php?tahun=<?php echo $datetime?>");	
       }
     } else {
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			

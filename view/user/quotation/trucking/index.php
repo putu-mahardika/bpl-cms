@@ -11,6 +11,7 @@
   $datetime = date('Y');
 	$query = 'select * from master_kota';
 	$fetch = mysqli_query($koneksi,$query);
+  $tahun = $_GET['tahun'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +77,7 @@
         <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quo Trucking</h6>
-            <a class="collapse-item active" href="../../quotation/trucking/index.php">List Quo Trucking</a>
+            <a class="collapse-item active" href="../../quotation/trucking/index.php?tahun=<?php echo $datetime?>?tahun=<?php echo $datetime?>">List Quo Trucking</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -355,6 +356,11 @@
                     </span>
                     <span class="text">Tambah Quo Trucking</span>
                   </a>
+                  <div>
+                    <label>Tahun: </label>
+                    <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
+                    <a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
+                  </div>
 
                 </div>
                 <div class="table-responsive p-3">
@@ -454,9 +460,10 @@
           type: 'get',
           data: {
             getAllQuo: true,
+            year: '<?php echo $tahun; ?>'
           },
           dataType: 'json',
-          dataSrc: ''
+          dataSrc: '',
         },
         columns: [
           { data: 'noQuotation' },
@@ -483,7 +490,12 @@
         rowId: 'id',
         stateSave: true,
         order: [[1, "desc"]]
-      }); 
+      });
+
+      function tahunUbah(){
+        var tahun = document.getElementById("tahun").value;
+        $('#tahunGo').attr("href", "index.php?tahun="+tahun);
+      }
     });
   </script>
 

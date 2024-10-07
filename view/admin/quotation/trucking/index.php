@@ -11,6 +11,7 @@
   $datetime = date('Y');
 	$query = 'select * from master_kota';
 	$fetch = mysqli_query($koneksi,$query);
+  $tahun = $_GET['tahun'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -90,8 +91,9 @@
         <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quo Trucking</h6>
-            <a class="collapse-item active" href="../../quotation/trucking/index.php">List Quo Trucking</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+            <a class="collapse-item active" href="../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
+            <h6 class="collapse-header">Quo Shipment</h6>
+            <a class="collapse-item" href="../../quotation/shipment/index.php">List Quo Shipment</a>
           </div>
         </div>
       </li>
@@ -369,6 +371,11 @@
                     </span>
                     <span class="text">Tambah Quo Trucking</span>
                   </a>
+                  <div>
+                    <label>Tahun: </label>
+                    <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
+                    <a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
+                  </div>
 
                 </div>
                 <div class="table-responsive p-3">
@@ -391,6 +398,7 @@
                         <th>Total Armada</th>
                         <!-- <th>Total Pricing</th> -->
                         <th>Jenis Trip</th>
+                        <th>Shipment</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -459,6 +467,13 @@
   <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
 
   <!-- Page level custom scripts -->
+
+  <script>
+    function tahunUbah(){
+      var tahun = document.getElementById("tahun").value;
+      $('#tahunGo').attr("href", "index.php?tahun="+tahun);
+    }
+  </script>
   <script>
     $(document).ready(function () {
       //$.fn.table.moment('d-M-Y hh:mm:ss');
@@ -468,6 +483,7 @@
           type: 'get',
           data: {
             getAllQuo: true,
+            year: '<?php echo $tahun ?>'
           },
           dataType: 'json',
           dataSrc: ''
@@ -491,13 +507,20 @@
           // { data: 'totalPricing' },
           { data: 'tripType' },
           { render: function (data, type, row, meta) {
+            if (row.hasShipmentQuo) {
+              return `<div class='d-flex justify-content-center mt-1 text-success'><i class='fas fa-check-circle fa-lg'></i></div>`;
+            } else {
+              return `<div class='d-flex justify-content-center mt-1 text-danger'><i class='fas fa-times-circle fa-lg'></i></div>`;
+            }
+          }},
+          { render: function (data, type, row, meta) {
               return `<a href="form/edit.php?id=` + row.id +`" class="btn btn-primary"><i class="fas fa-edit"></i></a>`;
           }}
         ],
         rowId: 'id',
         stateSave: true,
         order: [[1, "desc"]]
-      }); 
+      });
     });
   </script>
 
