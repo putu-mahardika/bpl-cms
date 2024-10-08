@@ -11,6 +11,8 @@
   $datetime = date('Y');
 	$query = 'select * from master_kota';
 	$fetch = mysqli_query($koneksi,$query);
+  $tahun = $_GET['tahun'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -297,7 +299,12 @@
 
             <div class="col-lg-12">
               <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-end">
+                  <div>
+                    <label>Tahun: </label>
+                    <input type="number" style="width:125px;" id="tahun" value="<?php echo $tahun?>" onchange="tahunUbah()">
+                    <a id="tahunGo" href="" class="btn btn-primary btn-sm mb-1">GO</a>
+                  </div>
                 </div>
                 <div class="table-responsive p-3">
 				        <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
@@ -396,6 +403,7 @@
           type: 'get',
           data: {
             getAllQuo: true,
+            year: '<?php echo $tahun; ?>'
           },
           dataType: 'json',
           dataSrc: ''
@@ -425,7 +433,12 @@
         rowId: 'id',
         stateSave: true,
         order: [[1, "desc"]]
-      }); 
+      });
+
+      function tahunUbah(){
+        var tahun = document.getElementById("tahun").value;
+        $('#tahunGo').attr("href", "index.php?tahun="+tahun);
+      }
     });
   </script>
 

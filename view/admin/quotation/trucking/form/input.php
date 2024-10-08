@@ -886,7 +886,7 @@
                                   </div>
                                   <div class="form-group">
                                     <label>Payment Term Days</label>
-                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer">
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer" value="7">
                                   </div>
                                 </div>
                               </div>
