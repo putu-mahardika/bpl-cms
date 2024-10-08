@@ -33,6 +33,7 @@ $roles = 'admin';
 </head>
 
 <body id="page-top">
+<<<<<<< HEAD
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
@@ -46,6 +47,145 @@ $roles = 'admin';
                 <a class="nav-link" href="<?php echo $base_url ?>/view/<?php echo $roles ?>/dashboard-admin.php?tahun=<?php echo $datetime ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
+=======
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo $base_url ?>/view/<?php echo $roles?>/dashboard-admin.php?tahun=<?php echo $datetime ?>">
+        <div class="sidebar-brand-icon">
+          <img src="../../../../img/logo-BPL-white-min.png" style="height:130px;">
+        </div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo $base_url ?>/view/<?php echo $roles?>/dashboard-admin.php?tahun=<?php echo $datetime ?>">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Master
+      </div>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+          aria-controls="collapseForm">
+          <i class="fas fa-fw fa-database"></i>
+          <span>Database</span>
+        </a>
+        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!-- <h6 class="collapse-header">Customer</h6> -->
+            <a class="collapse-item" href="../../customer.php">List Customer</a>
+          </div>
+        </div>
+      </li>
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Transaksi
+      </div>
+      <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQuoTrucking" aria-expanded="true"
+          aria-controls="collapseQuoTrucking">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Quotation</span>
+        </a>
+        <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Quo Trucking</h6>
+            <a class="collapse-item active" href="../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
+            <h6 class="collapse-header">Quo Shipment</h6>
+            <a class="collapse-item active" href="../../quotation/shipment/index.php">List Quo Shipment</a>
+            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../../shipment.php?tahun=<?php echo $datetime ?>">
+          <i class="fas fa-fw fa-ship"></i>
+          <span>Shipment</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../../transaksi.php?tahun=<?php echo $datetime ?>">
+          <i class="fas fa-fw fa-truck"></i>
+          <span>Pergerakan Truck</span>
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Laporan
+      </div>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportTruck" aria-expanded="true"
+          aria-controls="collapseReportTruck">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Laporan Trucking</span>
+        </a>
+        <div id="collapseReportTruck" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Laporan Trucking</h6>
+            <a class="collapse-item" href="../../laporanbarang.php">Laporan Detail</a>
+            <a class="collapse-item" href="../../laporanbarangbiaya.php">Laporan Biaya</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../../laporanShipment.php">
+          <i class="fas fa-fw fa-file-invoice"></i>
+          <span>Laporan Shipment</span>
+        </a>
+      </li>
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Bantuan
+      </div>
+
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.berkahpermatalogistik.com/Howto/index.htm" target="_blank">
+          <i class="fas fa-fw fa-question"></i>
+          <span>Bantuan</span>
+        </a>
+      </li>
+
+      <hr class="sidebar-divider">
+      <!--<div class="version" id="version-ruangadmin"></div>-->
+      <li class="nav-item">
+        <a class="nav-link" type="button" data-toggle="modal" data-target="#logoutModal">
+          <i class="fas fa-fw fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+    <!-- Sidebar -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          <ul class="navbar-nav ml-auto">
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION['nama'] ?></span>
+                <img class="img-profile rounded-circle" src="../../../../img/boy.png" style="max-width: 60px">
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="editPassword.php">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Ubah Password
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+>>>>>>> c3e73cb624809f1190c412eec99fa355ebcabaac
             </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">

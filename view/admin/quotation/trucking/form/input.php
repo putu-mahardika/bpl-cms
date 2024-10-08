@@ -123,8 +123,9 @@
         <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quo Trucking</h6>
-            <a class="collapse-item" href="../../../quotation/trucking/index.php">List Quo Trucking</a>
-            <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
+            <a class="collapse-item" href="../../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
+            <h6 class="collapse-header">Quo Shipment</h6>
+            <a class="collapse-item" href="../../../quotation/shipment/index.php">List Quo Shipment</a>
           </div>
         </div>
       </li>
@@ -463,6 +464,10 @@
                                   <div class="form-group">
                                     <label>Telp</label>
                                     <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer" value="<?php echo $save[4] ?>">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Payment Term Days</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer" value="<?php echo $save[20] ?>">
                                   </div>
                                 </div>
                               </div>
@@ -878,6 +883,10 @@
                                   <div class="form-group">
                                     <label>Telp</label>
                                     <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Payment Term Days</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer">
                                   </div>
                                 </div>
                               </div>

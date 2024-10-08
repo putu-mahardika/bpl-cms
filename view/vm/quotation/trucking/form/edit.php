@@ -83,23 +83,15 @@
   }
 
   // $fetchLog = mysqli_query($koneksi, "select * from quotation_log where IdQuoTrucking='$quoId' order by created_date desc limit 20");
-  $queryLog = "select ql.created_date,
-       ql.IdQuoTrucking,
-       ql.IdQuoShipment,
-       ql.NoQuotation,
-       ql.IdUser,
-       case
-           when mu2.isAdmin = 1 then
-               ql.Note
-           else
-               CONCAT('[ ', mu.nama, ' ] ', ql.Action)
-           end as Action
-from quotation_log ql
-inner join master_user mu on ql.IdUser = mu.UserId
-left join master_user mu2 on mu2.UserId = '".$s_id."'
-where (ql.IdQuoTrucking = '".$quoId."')
-order by ql.created_date desc
-limit 20;";
+  $queryLog = "SELECT 
+        ql.*,
+        DATE_FORMAT(ql.created_date, '%d-%m-%Y %H:%i:%s') as `created_at`,
+        DATE_FORMAT(ql.update_at, '%d-%m-%Y %H:%i:%s') as `updated_at`
+    FROM quotation_log as ql
+    WHERE ql.IdQuoTrucking = $quoId
+    order by ql.created_date desc
+    LIMIT 20;
+  ";
   $fetchLog = mysqli_query($koneksi, $queryLog);
   while($row = $fetchLog->fetch_assoc()) {
     $logArray[] = $row;
@@ -129,6 +121,7 @@ limit 20;";
   <link href="../../../../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
   <link href="../../../../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../../../../css/new-style.css" rel="stylesheet">
   <link rel="stylesheet" href="./infocard.css">
   <style>
     .bg-lightGrey {
@@ -154,55 +147,6 @@ limit 20;";
     }
     .pagination {
       justify-content: end !important;
-    }
-    ul.logList {
-      display: flex;
-      flex-direction: column;
-      list-style: none;
-      padding-left: 10px;
-      
-    }
-
-    .logList li {
-      display: block;
-      border-left: 2px solid #bbb;
-      padding-left: 11px;
-      padding-bottom: 10px;
-      font-size: 13px;
-    }
-
-    .logList li.main {
-      font-weight: bold;
-      padding-bottom: 20px;
-      color: #6777ef;
-      font-size: 18px;
-    }
-
-    .logList li::before {
-      content: "";
-      width: 10px;
-      height: 10px;
-      background-color: #bbb;
-      display: inline-block;
-      border-radius: 6px;
-      position: relative;
-      margin-left: -17px;
-      margin-right: 10px;
-      margin-top: 3px;
-    }
-
-    .logList li.main::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      background-color: #6777ef;
-      display: inline-block;
-      border-radius: 15px;
-      position: relative;
-      top: 3px;
-      margin-left: -19px;
-      margin-right: 10px;
-      border: 1px solid #6777ef;
     }
   </style>
 </head>
@@ -235,7 +179,7 @@ limit 20;";
         <div id="collapseQuoTrucking" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quo Trucking</h6>
-            <a class="collapse-item" href="../../../quotation/trucking/index.php">List Quo Trucking</a>
+            <a class="collapse-item" href="../../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
             <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
           </div>
         </div>
@@ -564,6 +508,10 @@ limit 20;";
                                   <div class="form-group">
                                     <label>Telp</label>
                                     <input type="text" class="form-control form-control-sm mb-3" name="customerPicPhoneTemp" id="customerPicPhoneTemp" placeholder="Masukkan telepon PIC customer" value="<?php echo $dataForm['PICPhoneTemp'] ?>" readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Payment Term Days</label>
+                                    <input type="text" class="form-control form-control-sm mb-3" name="customerPaymentTermsTemp" id="customerPaymentTermsTemp" placeholder="Masukkan payment term days customer" value="<?php echo $dataForm['CustomerTermsPaymentTemp'] ?>" readonly>
                                   </div>
                                 </div>
                               </div>
@@ -971,21 +919,21 @@ limit 20;";
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingFirstPrice'] ?>">
-                                    <input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0">
-                                    <input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingFirstPrice'] ?>" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-first inputmask_currency" style="width: 150px;" name="costingFirst[]" id="costingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingFirstPrice'] ?>">
+                                    <input type="hidden" class="form-control form-control-sm costing-next inputmask_currency" style="width: 150px;" name="costingNext[]" id="costingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-first inputmask_currency" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingFirstPrice'] ?>" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-next inputmask_currency" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingTotalPrice'] ?>" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingTotalPrice'] ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-total inputmask_currency" style="width: 150px;" name="costingTotal[]" id="costingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingTotalPrice'] ?>" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-total inputmask_currency" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingTotalPrice'] ?>" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingFirstPrice'] ?>" readonly>
-                                    <input type="hidden" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingFirstPrice'] ?>" readonly>
+                                    <input type="hidden" class="form-control form-control-sm pricing-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingTotalPrice'] ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingTotalPrice'] ?>" readonly>
                                   </td>
                                   <td>
                                   <!-- <a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a> -->
@@ -1012,21 +960,21 @@ limit 20;";
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-0" placeholder="masukkan nominal" min="0" value="0">
-                                    <input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-first inputmask_currency" style="width: 150px;" name="costingFirst[]" id="costingFirst-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm costing-next inputmask_currency" style="width: 150px;" name="costingNext[]" id="costingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-first inputmask_currency" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-next inputmask_currency" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-total inputmask_currency" style="width: 150px;" name="costingTotal[]" id="costingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-total inputmask_currency" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
-                                    <input type="hidden" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="hidden" class="form-control form-control-sm pricing-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
                                   <!-- <a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a> -->
@@ -1084,25 +1032,25 @@ limit 20;";
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingFirstPrice'] ?>">
-                                    <input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingFirstPrice'] ?>">
+                                    <input type="text" class="form-control form-control-sm costing-first inputmask_currency" style="width: 150px;" name="costingFirst[]" id="costingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingFirstPrice'] ?>">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-first inputmask_currency" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingFirstPrice'] ?>">
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingNextPrice'] ?>">
-                                    <input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingNextPrice'] ?>">
+                                    <input type="text" class="form-control form-control-sm costing-next inputmask_currency" style="width: 150px;" name="costingNext[]" id="costingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingNextPrice'] ?>">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-next inputmask_currency" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingNextPrice'] ?>">
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingTotalPrice'] ?>" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingTotalPrice'] ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-total inputmask_currency" style="width: 150px;" name="costingTotal[]" id="costingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['CostingTotalPrice'] ?>" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-total inputmask_currency" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['BudgetingTotalPrice'] ?>" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingFirstPrice'] ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingFirstPrice'] ?>" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingNextPrice']?>" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingNextPrice']?>" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingTotalPrice'] ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-<?php echo $key ?>" placeholder="masukkan nominal" min="0" value="<?php echo $dataDetail['PricingTotalPrice'] ?>" readonly>
                                   </td>
                                   <td>
                                   <!-- <a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a> -->
@@ -1129,25 +1077,25 @@ limit 20;";
                                     </select>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-0" placeholder="masukkan nominal" min="0" value="0">
-                                    <input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-first inputmask_currency" style="width: 150px;" name="costingFirst[]" id="costingFirst-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-first inputmask_currency" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-0" placeholder="masukkan nominal" min="0" value="0">
-                                    <input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-next inputmask_currency" style="width: 150px;" name="costingNext[]" id="costingNext-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm budgeting-next inputmask_currency" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
-                                    <input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm costing-total inputmask_currency" style="width: 150px;" name="costingTotal[]" id="costingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="hidden" class="form-control form-control-sm budgeting-total inputmask_currency" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm prising-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm prising-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
+                                    <input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
                                   </td>
                                   <td>
                                   <!-- <a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a> -->
@@ -1187,27 +1135,33 @@ limit 20;";
                     </div>
                   </form>
                   <div class="mb-3">
-                    <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
-                    <div class="mt-4">
-                      <?php if (count($logArray) > 0) {
-                          printf('<ul>');
-                          foreach ($logArray as $key => $row) {
-                            if ($key == 0) {
-                              echo '<li class="main">';
-                              echo $row['Action'] .' - ';
-                              echo '<em>' . date('d-m-Y, H:i', strtotime($row['created_date'])) . '</em>';
-                              echo '</li>';
-                            } else {
-                              echo '<li>';
-                              echo $row['Action'] .' - ';
-                              echo '<em>' . date('d-m-Y, H:i', strtotime($row['created_date'])) . '</em>';
-                              echo '</li>';
-                            }
-                          }
-                          echo '</ul>';
-                      } else {
-                          echo 'No log entries found.';
-                      } ?>
+                    <div class="row">
+                      <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="font-weight-bold">Riwayat Perubahan</h5>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <ul class="timeline pl-4">
+                          <?php if (count($logArray) > 0) {?>
+                            <?php foreach ($logArray as $key => $value) {?>
+                              <li class="d-flex timeline-item">
+                                <div class="timeline-box" style="width:unset;">
+                                  <div class="timeline-line" <?php if($key == 0) {?>style="height: 50%; top: 50%"<?php }?> <?php if($key == count($logArray)-1) {?>style="height: 50%"<?php }?>></div>
+                                  <div class="timeline-dots"></div>
+                                </div>
+                                <div class="timeline-content py-2 px-4" <?php if($key == 0) {?>style="color: #6777ef"<?php }?>>
+                                  <div class="font-italic font-weight-bold">
+                                    <?php echo $value['created_at'] ?>
+                                  </div>
+                                  <div><?php echo $value['Note'] ?></div>
+                                  <small><?php echo $value['changes'] ?></small>
+                                </div>
+                              </li>
+                            <?php }?>
+                          <?php } else {?>
+                            <div class="w-full text-center">Belum ada riwayat</div>
+                          <?php }?>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1430,6 +1384,7 @@ limit 20;";
   <script src="../../../../../js/ruang-admin.min.js"></script>
   <script src="../../../../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
   <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+  <script src="../../../../../vendor/inputmask/dist/jquery.inputmask.js"></script>
   <!-- Page level plugins -->
   <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
   <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
@@ -1440,6 +1395,12 @@ limit 20;";
   <!-- Page level custom scripts -->
   <script>
     $(document).ready(function () {
+      $('.inputmask_currency').inputmask('numeric', {
+        digits: 0,
+        groupSeparator: '.',
+        autoUnmask: true,
+        stripLeadingZeroes: false,
+      });
       //$.fn.table.moment('d-M-Y hh:mm:ss');
       // $('.select2-single-placeholder').select2({
       //   placeholder: "Pilih",
@@ -1539,15 +1500,15 @@ limit 20;";
 
           var checkbox = '<input class="form-check-input" style="position: relative; margin-left: revert;" name="checkboxVendor[]" type="checkbox" value="" id="customerCheck" disabled><input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-'+counterRow+'">';
           var actionButton = '<a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a>';
-          var costingFirst = '<input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var costingNext = '<input type="number" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var costingTotal = '<input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly><input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var budgetingFirst = '<input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var budgetingNext = '<input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var budgetingTotal = '<input type="number" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var pricingFirst = '<input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var pricingNext = '<input type="number" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var pricingTotal = '<input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var costingFirst = '<input type="text" class="form-control form-control-sm costing-first inputmask_currency" style="width: 150px;" name="costingFirst[]" id="costingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var costingNext = '<input type="text" class="form-control form-control-sm costing-next inputmask_currency" style="width: 150px;" name="costingNext[]" id="costingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var costingTotal = '<input type="text" class="form-control form-control-sm costing-total inputmask_currency" style="width: 150px;" name="costingTotal[]" id="costingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly><input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var budgetingFirst = '<input type="hidden" class="form-control form-control-sm budgeting-first inputmask_currency" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var budgetingNext = '<input type="hidden" class="form-control form-control-sm budgeting-next inputmask_currency" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var budgetingTotal = '<input type="text" class="form-control form-control-sm budgeting-total inputmask_currency" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var pricingFirst = '<input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var pricingNext = '<input type="text" class="form-control form-control-sm pricing-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var pricingTotal = '<input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
 
           // Add new row to the DataTable
           table.row.add([
@@ -1566,12 +1527,12 @@ limit 20;";
 
           var checkbox = '<input class="form-check-input" style="position: relative; margin-left: revert;" name="checkboxVendor[]" type="checkbox" value="" id="customerCheck" disabled><input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-'+counterRow+'">';
           var actionButton = '<a type="button" class="btn btn-md btn-danger deleteVendor" title="Delete" data-toggle="tooltip"><i class="fas fa-trash" style="color: white;"></i></a>';
-          var costingFirst = '<input type="number" class="form-control form-control-sm costing-first" style="width: 150px;" name="costingFirst[]" id="costingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
-          var costingTotal = '<input type="number" class="form-control form-control-sm costing-total" style="width: 150px;" name="costingTotal[]" id="costingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly><input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var budgetingFirst = '<input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
-          var budgetingTotal = '<input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var pricingFirst = '<input type="number" class="form-control form-control-sm pricing-first" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly><input type="hidden" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
-          var pricingTotal = '<input type="number" class="form-control form-control-sm pricing-total" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var costingFirst = '<input type="text" class="form-control form-control-sm costing-first inputmask_currency" style="width: 150px;" name="costingFirst[]" id="costingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm costing-next" style="width: 150px;" name="costingNext[]" id="costingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-first" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
+          var costingTotal = '<input type="text" class="form-control form-control-sm costing-total inputmask_currency" style="width: 150px;" name="costingTotal[]" id="costingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly><input type="hidden" class="form-control form-control-sm budgeting-total" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var budgetingFirst = '<input type="hidden" class="form-control form-control-sm budgeting-first inputmask_currency" style="width: 150px;" name="budgetingFirst[]" id="budgetingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0"><input type="hidden" class="form-control form-control-sm budgeting-next" style="width: 150px;" name="budgetingNext[]" id="budgetingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0">';
+          var budgetingTotal = '<input type="hidden" class="form-control form-control-sm budgeting-total inputmask_currency" style="width: 150px;" name="budgetingTotal[]" id="budgetingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var pricingFirst = '<input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly><input type="hidden" class="form-control form-control-sm pricing-next" style="width: 150px;" name="pricingNext[]" id="pricingNext-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
+          var pricingTotal = '<input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-'+counterRow+'" placeholder="masukkan nominal" min="0" value="0" readonly>';
 
           // Add new row to the DataTable
           table.row.add([
