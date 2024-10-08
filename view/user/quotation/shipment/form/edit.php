@@ -10,15 +10,22 @@ include '../../../../../config/controller/quotationShipments/quotationShipmentCo
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
+$vendors = getVendors($koneksi);
+$sales = getSales($koneksi);
+$vm = getVm($koneksi);
 $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
 $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 $quotationLog = getQuotationLog($koneksi, $_GET['id']);
 $pricing = updateBudgetingQuotationDetailShipment($koneksi, $_GET['id']);
 
 $totalCosting = 0;
+$totalBudgeting = 0;
+$totalPricing = 0;
 
 foreach ($dataDtlQuoShipment as $key => $value) {
     $totalCosting += $value['costing_total_price'];
+    $totalBudgeting += $value['budgeting_total_price'];
+    $totalPricing += $value['pricing_total_price'];
 }
 
 ?>
@@ -37,7 +44,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
     <link href="../../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <link href="../../../../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
-    <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/toastr/build/toastr.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
@@ -246,7 +253,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     <?php include 'edit-tambahan-biaya-handling.php' ?>
                                     <div class="row">
                                         <div class="col-md-12 mt-3 d-flex">
-                                            <button id="btn_save" class="btn btn-danger w-100 mr-2" data-toggle="modal" data-target="#modal_req_cancel">Pembatalan</button>
+                                            <button id="btn_cancel" class="btn btn-danger w-100 mr-2" data-toggle="modal" data-target="#modal_req_cancel">Pembatalan</button>
                                             <!-- Modal -->
                                             <div class="modal fade" id="modal_req_cancel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -275,7 +282,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button id="btn_save" class="btn btn-primary w-100 ml-2" disabled>Simpan</button>
+                                            <button id="btn_save" class="btn btn-primary w-100 ml-2" <?php if($totalPricing == 0) { ?>disabled<?php }?> onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)">Simpan</button>
                                         </div>
                                         <div class="col-md-12 mt-5">
                                             <?php include 'riwayat-perubahan.php' ?>
@@ -374,7 +381,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                                         <button type="button" class="btn btn-danger col-12" data-dismiss="modal">Batal</button>
                                                     </div>
                                                     <div class="col-12 col-lg-6">
-                                                        <button type="submit" class="btn btn-primary col-12" name="generateTrucking" id="generateTrucking">Simpan</button>
+                                                        <button type="button" class="btn btn-primary col-12" name="generateTrucking" id="generateTrucking">Simpan</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,7 +415,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                                     <button type="button" class="btn btn-danger col-12" data-dismiss="modal">Batal</button>
                                                 </div>
                                                 <div class="col-12 col-lg-6">
-                                                    <button type="button" class="btn btn-primary col-12" id="submitCustomerCodeBtn">Simpan</button>
+                                                    <button type="button" class="btn btn-primary col-12" id="btn_save">Simpan</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -499,6 +506,41 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     stripLeadingZeroes: false,
                 });
 
+                $('.date_single').flatpickr({
+                    defaultDate: new Date(),
+                });
+
+                $('.select2_vendor').select2({
+                    placeholder: 'Pilih Vendor',
+                    width: '100%',
+                });
+
+                $('#table_list_vendor').on('keyup', '.pricing_first_price, .pricing_next_price', function() {
+                    let row = $(this).closest('tr');
+                    let total_container = parseFloat($('#total_container').val());
+                    let pricing_first_price = parseFloat(row.find('.pricing_first_price').val()) || 0;
+                    let pricing_next_price = parseFloat(row.find('.pricing_next_price').val()) || 0;
+                    let total = (total_container - 1) * (pricing_first_price + pricing_next_price);
+                    row.find('.pricing_total_price').val(total);
+
+                    $('#btn_save').prop('disabled', false);
+                });
+
+                calcApplyAllPricing = (state) => {
+                    let apply_pricing_first = parseFloat($('#apply_pricing_first').val()) || 0;
+                    $('.pricing_first_price').val(apply_pricing_first);
+                    let apply_pricing_next = parseFloat($('#apply_pricing_next').val()) || 0;
+                    $('.pricing_next_price').val(apply_pricing_next);
+
+                    let total_container = parseFloat($('#total_container').val());
+                    let pricing_first_price = parseFloat($('.pricing_first_price').val()) || 0;
+                    let pricing_next_price = parseFloat($('.pricing_next_price').val()) || 0;
+                    let total = (total_container - 1) * (pricing_first_price + pricing_next_price);
+                    $('.pricing_total_price').val(total);
+
+                    $('#btn_save').prop('disabled', false);
+                }
+
                 let id = '<?php echo $_GET['id']; ?>';
 
                 getHdQuoShipmentDetails(id);
@@ -536,6 +578,14 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_note').val(resp.destination_note);
                             $('#handling_qty_1').val(resp.total_container);
                             $('#handling_qty_next').val(resp.total_container);
+                            $('#freight_cost').val(resp.freight_cost);
+                            $('#currency_date').val(resp.currency_date);
+                            $('#currency_rate').val(resp.currency_rate);
+                            $('#status_id').val(resp.status_id);
+                            $('#status').text(resp.status);
+                            $('#status').css('background-color', resp.status_color);
+                            $('#old_sales').val(resp.sales_name);
+                            $('#old_vm').val(resp.vm_name);
 
                             if (resp.request_cancel_date != null && resp.rejected_request_date == null) {
                                 $('#modal_info_cancel_requested').modal('show')
@@ -555,6 +605,109 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                     return false;
                 };
+
+                updateHdQuoShipments = (id) => {
+                    let selected_quo_vendor_id = null;
+                    let selected_quo_vendor_costing = 0;
+                    let selected_quo_vendor_budgeting = 0;
+                    let selected_quo_vendor_pricing = 0;
+                    let vendor_data = [];
+
+                    $('#table_list_vendor tbody tr').each(function() {
+                        if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                            let vendor_id = $(this).find('select.vendor_id option:selected').val();
+                            let costing_first_price = $(this).find('.costing_first_price').val();
+                            let costing_next_price = $(this).find('.costing_next_price').val();
+                            let costing_total_price = $(this).find('.costing_total_price').val();
+                            let budgeting_first_price = $(this).find('.budgeting_first_price').val();
+                            let budgeting_next_price = $(this).find('.budgeting_next_price').val();
+                            let budgeting_total_price = $(this).find('.budgeting_total_price').val();
+                            let pricing_first_price = $(this).find('.pricing_first_price').val();
+                            let pricing_next_price = $(this).find('.pricing_next_price').val();
+                            let pricing_total_price = $(this).find('.pricing_total_price').val();
+                            selected_quo_vendor_id = vendor_id;
+                            selected_quo_vendor_costing = costing_total_price;
+                            selected_quo_vendor_budgeting = budgeting_total_price;
+                            selected_quo_vendor_pricing = pricing_total_price;
+                        }
+                        vendor_data.push({
+                            dtl_quo_shipment_id: $(this).find('.dtl_quo_shipment_id').val(),
+                            vendor_id: $(this).find('select.vendor_id option:selected').val(),
+                            costing_first_price: $(this).find('.costing_first_price').val() || 0,
+                            costing_next_price: $(this).find('.costing_next_price').val() || 0,
+                            costing_total_price: $(this).find('.costing_total_price').val() || 0,
+                            budgeting_first_price: $(this).find('.budgeting_first_price').val() || 0,
+                            budgeting_next_price: $(this).find('.budgeting_next_price').val() || 0,
+                            budgeting_total_price: $(this).find('.budgeting_total_price').val() || 0,
+                            pricing_first_price: $(this).find('.pricing_first_price').val() || 0,
+                            pricing_next_price: $(this).find('.pricing_next_price').val() || 0,
+                            pricing_total_price: $(this).find('.pricing_total_price').val() || 0,
+                        });
+                    });
+
+                    let data = {
+                        method: 'updateHdQuoShipments',
+                        // hdQuoShipment
+                        id: id,
+                        quo_status_id: $('#status_id').val() == 4 ? 8 : 4,
+                        sales_id: $('#sales_id').val(),
+                        sales_name: $('#sales_name').val(),
+                        vm_id: $('#vm_id').val(),
+                        handling_id_1: $('#handling_id_1').val(),
+                        handling_name_1: $('#handling_name_1').val(),
+                        handling_qty_1: $('#handling_qty_1').val(),
+                        handling_unit_cost_1: $('#handling_unit_cost_1').val(),
+                        handling_total_cost_1: $('#handling_total_cost_1').val(),
+                        handling_id_next: $('#handling_id_next').val(),
+                        handling_name_next: $('#handling_name_next').val(),
+                        handling_qty_next: $('#handling_qty_next').val(),
+                        handling_unit_cost_next: $('#handling_unit_cost_next').val(),
+                        handling_total_cost_next: $('#handling_total_cost_next').val(),
+                        total_handling_unit_cost: $('#total_handling_unit_cost').val(),
+                        total_handling_cost: $('#total_handling_cost').val(),
+                        vendor_data: vendor_data,
+                    };
+
+                    console.log(`DATA: ${JSON.stringify(data)}`);
+
+                    Swal.fire({
+                        title: "Loading...",
+                        html: "Sedang menyimpan data",
+                        timerProgressBar: true,
+                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    $.ajax({
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log(`RESP: ${response}`);
+                            let resp = JSON.parse(response);
+                            console.log(`RESP: ${resp.data}`);
+                            if (resp.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Data berhasil disimpan',
+                                }).then(() => {
+                                    window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php';
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat menyimpan data',
+                            });
+                        }
+                    });
+                }
 
                 updateHdQuoShipmentsReqCancel = (id) => {
                     if (getValidate()) {

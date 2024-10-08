@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-secondary mt-4 w-100" disabled>Cetak PO</button>
+        <button class="btn btn-secondary mt-4 w-100" disabled>Cetak Quotation</button>
     </div>
     <div class="col-md-4">
         <div class="p-3 card-pricing default rounded w-100" style="height: 120px;">
@@ -25,7 +25,7 @@
                 <h6 class="font-weight-bold title mb-0">Total Budgeting</h6>
             </div>
             <div class="card-pricing-body">
-                <p class="text-primary text-center mb-0">Anda tidak punya hak untuk melihat</p>
+                <p class="text-gray text-center mb-0">Anda tidak punya hak untuk melihat</p>
             </div>
         </div>
         <button class="btn btn-secondary mt-4 w-100" disabled>Customer PO</button>
@@ -39,7 +39,7 @@
                 <h6 class="font-weight-bold title mb-0">Total Pricing</h6>
             </div>
             <div class="card-pricing-body">
-                <p class="text-primary text-center mb-0">Anda tidak punya hak untuk melihat</p>
+                <p class="text-gray text-center mb-0">Anda tidak punya hak untuk melihat</p>
             </div>
         </div>
         <button class="btn btn-secondary mt-4 w-100" disabled>Repeat Order</button>

@@ -6,18 +6,27 @@
         <div class="row">
             <div class="col-md-12 mb-3">
                 <label for="master_unit_id">Jenis Container</label>
-                <input type="hidden" class="form-control" id="master_unit_id" name="master_unit_id">
-                <input type="text" class="form-control" id="master_unit_name" name="master_unit_name" placeholder="Masukkan jenis container..." disabled>
+                <select name="" id="master_unit_id" class="form-control">
+                    <?php foreach ($shipmentContainers as $val) { ?>
+                        <option value="<?php echo $val['id'] ?>"><?php echo strtoupper($val['nama']) ?></option>
+                    <?php } ?>
+                </select>
             </div>
             <div class="col-md-12 mb-3">
                 <label for="shipment_terms_id">Shipment Terms</label>
-                <input type="hidden" class="form-control" id="shipment_terms_id" name="shipment_terms_id">
-                <input type="text" class="form-control" id="shipment_terms_name" name="shipment_terms_name" placeholder="Masukkan shipment terms..." disabled>
+                <select name="" id="shipment_terms_id" class="form-control">
+                    <?php foreach ($shipmentTerms as $val) { ?>
+                        <option value="<?php echo $val['id'] ?>"><?php echo $val['kode'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
             <div class="col-md-12 mb-3">
                 <label for="shipment_load_type_id">Shipment Load Type</label>
-                <input type="hidden" class="form-control" id="shipment_load_type_id" name="shipment_load_type_id">
-                <input type="text" class="form-control" id="shipment_load_type_name" name="shipment_load_type_name" placeholder="Masukkan shipment load type..." disabled>
+                <select name="" id="shipment_load_type_id" class="form-control">
+                    <?php foreach ($shipmentLoadTypes as $val) { ?>
+                        <option value="<?php echo $val['id'] ?>"><?php echo $val['nama'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
         </div>
     </div>

@@ -22,24 +22,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($dataDtlQuoShipmentHandlingCosts as $key => $val) { ?>
-                        <?php if ($val['handling_turunan'] == 1) { ?>
-                            <tr>
-                                <td class="px-3">
-                                    <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description'] ?>">
-                                </td>
-                                <td class="px-3">
-                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
-                                </td>
-                                <td class="px-3">
-                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
-                                </td>
-                                <td class="px-3">
-                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    <?php } ?>
+                    <td class="px-3">
+                        <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling...">
+                    </td>
+                    <td class="px-3">
+                        <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
+                    </td>
+                    <td class="px-3">
+                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0">
+                    </td>
+                    <td class="px-3">
+                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled>
+                    </td>
                 </tbody>
             </table>
         </div>
@@ -68,34 +62,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($dataDtlQuoShipmentHandlingCosts as $key => $val) { ?>
-                        <?php $total_unit_cost += $val['unit_cost'];
-                        $total_cost += $val['total_cost'] ?>
-                        <?php if ($val['handling_turunan'] == 1) { ?>
-                            <tr>
-                                <td class="px-3">
-                                    <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description'] ?>">
-                                </td>
-                                <td class="px-3">
-                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
-                                </td>
-                                <td class="px-3">
-                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
-                                </td>
-                                <td class="px-3">
-                                    <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    <?php } ?>
+                    <td class="px-3">
+                        <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling...">
+                    </td>
+                    <td class="px-3">
+                        <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
+                    </td>
+                    <td class="px-3">
+                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0">
+                    </td>
+                    <td class="px-3">
+                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled>
+                    </td>
                 </tbody>
                 <tfoot>
                     <td class="px-3" colspan="2"></td>
                     <td class="px-3">
-                        <input type="text" class="form-control text-right inputmask_currency" id="total_handling_unit_cost" name="total_handling_unit_cost" placeholder="0" disabled value="<?php echo $total_unit_cost ?>">
+                        <input type="text" class="form-control text-right inputmask_currency" id="total_handling_unit_cost" name="total_handling_unit_cost" placeholder="0" disabled>
                     </td>
                     <td class="px-3">
-                        <input type="text" class="form-control text-right inputmask_currency" id="total_handling_cost" name="total_handling_cost" placeholder="0" disabled value="<?php echo $total_cost ?>">
+                        <input type="text" class="form-control text-right inputmask_currency" id="total_handling_cost" name="total_handling_cost" placeholder="0" disabled>
                     </td>
                 </tfoot>
             </table>

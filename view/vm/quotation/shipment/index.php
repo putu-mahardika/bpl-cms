@@ -191,6 +191,7 @@ $fetch = mysqli_query($koneksi, $query);
                                             <tr>
                                                 <th class="text-nowrap" style="font-size: 14px;">No</th>
                                                 <th class="text-nowrap" style="font-size: 14px;">Tanggal Quo</th>
+                                                <th class="text-nowrap" style="font-size: 14px;">Terakhir Update</th>
                                                 <th class="text-nowrap" style="font-size: 14px;">Status</th>
                                                 <th class="text-nowrap" style="font-size: 14px;">Nomor PO</th>
                                                 <th class="text-nowrap" style="font-size: 14px;">Nama Perusahaan</th>
@@ -278,7 +279,7 @@ $fetch = mysqli_query($koneksi, $query);
                     dataSrc: ''
                 },
                 columnDefs: [{
-                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
                     className: "text-nowrap" // Menambahkan kelas text-nowrap
                 }],
                 columns: [{
@@ -286,6 +287,9 @@ $fetch = mysqli_query($koneksi, $query);
                     },
                     {
                         data: 'created_at'
+                    },
+                    {
+                        data: 'updated_at'
                     },
                     {
                         render: function(data, type, row, meta) {
@@ -326,10 +330,10 @@ $fetch = mysqli_query($koneksi, $query);
                     }
                 ],
                 rowId: 'id',
-                stateSave: true,
-                // order: [
-                //   [1, "desc"]
-                // ]
+                stateSave: false,
+                order: [
+                    [2, "desc"]
+                ]
             });
         });
     </script>

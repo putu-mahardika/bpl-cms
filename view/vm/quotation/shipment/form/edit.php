@@ -11,7 +11,10 @@ date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
 $vendors = getVendors($koneksi);
+$sales = getSales($koneksi);
+$vm = getVm($koneksi);
 $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
+$dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 $quotationLog = getQuotationLog($koneksi, $_GET['id']);
 
 $totalCosting = 0;
@@ -231,22 +234,22 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <?php include 'pricing-card.php' ?>
-                                    <?php include 'input-informasi-quo-shipment.php' ?>
+                                    <?php include 'edit-informasi-quo-shipment.php' ?>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <?php include 'input-informasi-muatan.php' ?>
+                                            <?php include 'edit-informasi-muatan.php' ?>
                                         </div>
                                         <div class="col-md-6">
-                                            <?php include 'input-informasi-biaya-freight.php' ?>
+                                            <?php include 'edit-informasi-biaya-freight.php' ?>
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="note">Note</label>
                                             <textarea name="" id="note" class="form-control" rows="5" placeholder="note"></textarea>
                                         </div>
                                     </div>
-                                    <?php include 'input-permintaan-customer.php' ?>
-                                    <?php include 'input-list-vendor.php' ?>
-                                    <?php include 'input-tambahan-biaya-handling.php' ?>
+                                    <?php include 'edit-permintaan-customer.php' ?>
+                                    <?php include 'edit-list-vendor.php' ?>
+                                    <?php include 'edit-tambahan-biaya-handling.php' ?>
                                     <div class="row">
                                         <div class="col-md-12 mt-3">
                                             <button id="btn_save" class="btn btn-primary w-100" onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)">Simpan</button>
@@ -262,17 +265,17 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="card mb-4">
-                                        <?php include 'input-status.php' ?>
+                                        <?php include 'edit-status.php' ?>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="card mb-4">
-                                        <?php include 'input-informasi-po.php' ?>
+                                        <?php include 'edit-informasi-po.php' ?>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="card mb-4">
-                                        <?php include 'input-perubahan-data-user.php' ?>
+                                        <?php include 'edit-perubahan-data-user.php' ?>
                                     </div>
                                 </div>
                             </div>
@@ -511,13 +514,11 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 });
 
                 calcApplyAllCosting = (state) => {
-                    if(state == 'first') {
-                        let apply_costing_first = parseFloat($('#apply_costing_first').val()) || 0;
-                        $('.costing_first_price').val(apply_costing_first);
-                    } else {
-                        let apply_costing_next = parseFloat($('#apply_costing_next').val()) || 0;
-                        $('.costing_next_price').val(apply_costing_next);
-                    }
+                    let apply_costing_first = parseFloat($('#apply_costing_first').val()) || 0;
+                    $('.costing_first_price').val(apply_costing_first);
+                    let apply_costing_next = parseFloat($('#apply_costing_next').val()) || 0;
+                    $('.costing_next_price').val(apply_costing_next);
+
                     let total_container = parseFloat($('#total_container').val());
                     let costing_first_price = parseFloat($('.costing_first_price').val()) || 0;
                     let costing_next_price = parseFloat($('.costing_next_price').val()) || 0;
@@ -547,10 +548,6 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#item_description').val(resp.item_description);
                             $('#customer_name').val(resp.customer_name);
                             $('#customer_id').val(resp.customer_id);
-                            // $('#customer_name_temp').val();
-                            // $('#customer_address_temp').val();
-                            // $('#pic_name_temp').val();
-                            // $('#pic_phone_temp').val();
                             $('#master_unit_id').val(resp.master_unit_id);
                             $('#master_unit_name').val(resp.master_unit_name);
                             $('#shipment_terms_id').val(resp.shipment_terms_id);
@@ -566,6 +563,9 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_note').val(resp.destination_note);
                             $('#handling_qty_1').val(resp.total_container);
                             $('#handling_qty_next').val(resp.total_container);
+                            $('#status_id').val(resp.status_id);
+                            $('#status').text(resp.status);
+                            $('#status').css('background-color', resp.status_color);
 
                             if (resp.request_cancel_date != null && resp.rejected_request_date == null) {
                                 $('#modal_info_cancel_requested').modal('show')
@@ -657,11 +657,13 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                     $('#table_list_vendor tbody tr').each(function() {
                         let vendor_id = $(this).find('select.vendor_id option:selected').val();
+                        let dtl_quo_shipment_id = $(this).find('.dtl_quo_shipment_id').val();
                         let costing_first_price = $(this).find('.costing_first_price').val();
                         let costing_next_price = $(this).find('.costing_next_price').val();
                         let costing_total_price = $(this).find('.costing_total_price').val();
                         vendor_data.push({
                             vendor_id: vendor_id,
+                            dtl_quo_shipment_id: dtl_quo_shipment_id,
                             costing_first_price: costing_first_price,
                             costing_next_price: costing_next_price,
                             costing_total_price: costing_total_price
@@ -672,13 +674,16 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         method: 'updateHdQuoShipments',
                         // hdQuoShipment
                         id: id,
+                        quo_status_id: $('#status_id').val() == 2 ? 6 : 2,
                         sales_id: $('#sales_id').val(),
                         sales_name: $('#sales_name').val(),
                         vm_id: <?php echo $s_id ?>,
+                        handling_id_1: $('#handling_id_1').val(),
                         handling_name_1: $('#handling_name_1').val(),
                         handling_qty_1: $('#handling_qty_1').val(),
                         handling_unit_cost_1: $('#handling_unit_cost_1').val(),
                         handling_total_cost_1: $('#handling_total_cost_1').val(),
+                        handling_id_next: $('#handling_id_next').val(),
                         handling_name_next: $('#handling_name_next').val(),
                         handling_qty_next: $('#handling_qty_next').val(),
                         handling_unit_cost_next: $('#handling_unit_cost_next').val(),
@@ -694,8 +699,8 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         title: "Loading...",
                         html: "Sedang menyimpan data",
                         timerProgressBar: true,
-                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
-                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                         didOpen: () => {
                             Swal.showLoading();
                         },

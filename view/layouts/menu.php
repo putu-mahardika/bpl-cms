@@ -38,6 +38,7 @@
                 <a class="collapse-item" href="status.php">List Status Trucking</a>
                 <a class="collapse-item" href="statusShipment.php">List Status Shipment</a>
                 <a class="collapse-item" href="shipmentTerms.php">List Shipment Terms</a>
+<a class="collapse-item" href="globalSetting.php">List Global Settings</a>
             </div>
         </div>
     </li>

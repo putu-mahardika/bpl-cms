@@ -11,6 +11,8 @@ date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
 $vendors = getVendors($koneksi);
+$sales = getSales($koneksi);
+$vm = getVm($koneksi);
 $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
 $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 $quotationLog = getQuotationLog($koneksi, $_GET['id']);
@@ -42,7 +44,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
     <link href="../../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <link href="../../../../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
-    <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/toastr/build/toastr.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
@@ -233,22 +235,22 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <?php include 'pricing-card.php' ?>
-                                    <?php include 'input-quo-shipment.php' ?>
+                                    <?php include 'edit-quo-shipment.php' ?>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <?php include 'input-informasi-muatan.php' ?>
+                                            <?php include 'edit-informasi-muatan.php' ?>
                                         </div>
                                         <div class="col-md-6">
-                                            <?php include 'input-informasi-biaya-freight.php' ?>
+                                            <?php include 'edit-informasi-biaya-freight.php' ?>
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="note">Note</label>
                                             <textarea name="" id="note" class="form-control" rows="5" placeholder="note"></textarea>
                                         </div>
                                     </div>
-                                    <?php include 'input-permintaan-customer.php' ?>
-                                    <?php include 'input-list-vendor.php' ?>
-                                    <?php include 'input-tambahan-biaya-handling.php' ?>
+                                    <?php include 'edit-permintaan-customer.php' ?>
+                                    <?php include 'edit-list-vendor.php' ?>
+                                    <?php include 'edit-tambahan-biaya-handling.php' ?>
                                     <div class="row">
                                         <div class="col-md-12 mt-3">
                                             <button id="btn_save" class="btn btn-primary w-100" onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)">Simpan</button>
@@ -264,17 +266,22 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="card mb-4">
-                                        <?php include 'input-status.php' ?>
+                                        <?php include 'edit-status.php' ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-none" id="form_cancel_quotation">
+                                    <div class="card mb-4">
+                                        <?php include 'edit-form-cancel-quotation.php' ?>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="card mb-4">
-                                        <?php include 'input-informasi-po.php' ?>
+                                        <?php include 'edit-informasi-po.php' ?>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="card mb-4">
-                                        <?php include 'input-perubahan-data-user.php' ?>
+                                        <?php include 'edit-perubahan-data-user.php' ?>
                                     </div>
                                 </div>
                             </div>
@@ -438,9 +445,6 @@ foreach ($dataDtlQuoShipment as $key => $value) {
         <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
         <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
         <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-  <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
-
         <!-- Page level custom scripts -->
         <script>
             $(document).ready(function() {
@@ -528,10 +532,6 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#item_description').val(resp.item_description);
                             $('#customer_name').val(resp.customer_name);
                             $('#customer_id').val(resp.customer_id);
-                            // $('#customer_name_temp').val();
-                            // $('#customer_address_temp').val();
-                            // $('#pic_name_temp').val();
-                            // $('#pic_phone_temp').val();
                             $('#master_unit_id').val(resp.master_unit_id);
                             $('#master_unit_name').val(resp.master_unit_name);
                             $('#shipment_terms_id').val(resp.shipment_terms_id);
@@ -547,6 +547,43 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_note').val(resp.destination_note);
                             $('#handling_qty_1').val(resp.total_container);
                             $('#handling_qty_next').val(resp.total_container);
+                            $('#freight_cost').val(resp.freight_cost);
+                            $('#currency_date').val(resp.currency_date);
+                            $('#currency_rate').val(resp.currency_rate);
+                            $('#status_id').val(resp.status_id);
+                            $('#status').text(resp.status);
+                            $('#status').css('background-color', resp.status_color);
+                            $('#old_sales').val(resp.sales_name);
+                            $('#old_vm').val(resp.vm_name);
+                            $('#request_cancel_date').text(resp.request_cancel_date);
+                            $('#request_cancel_sales_name').text(resp.sales_name);
+                            $('#request_cancel_reason').text(resp.reason_request_cancel);
+                            $('#new_sales option').each(function() {
+                                console.log($(this).val())
+                                console.log($(this).val() == resp.sales_id)
+                                if ($(this).val() == resp.sales_id) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+                            $('#new_vm option').each(function() {
+                                console.log($(this).val())
+                                console.log($(this).val() == resp.vm_id)
+                                if ($(this).val() == resp.vm_id) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+                            $('#table_list_vendor tbody tr').each(function() {
+                                let vendor_id = $(this).find('select.vendor_id option:selected').val();
+                                if (vendor_id == resp.selected_quo_vendor_id) {
+                                    $(this).find('input[type="checkbox"]').prop('checked', true);
+                                }
+                            });
+                            if (resp.status_id == 12) {
+                                $('#form_cancel_quotation').addClass('d-block');
+                                $('#btn_save').addClass('d-none');
+                            } else {
+                                $('#form_cancel_quotation').removeClass('d-block');
+                            }
                         },
                         error: function(xhr, status, error) {
 
@@ -776,9 +813,13 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         method: 'updateHdQuoShipmentsAdmin',
                         // hdQuoShipment
                         id: id,
+                        quo_status_id: $('#status_id').val() == 3 ? 7 : 3,
                         sales_id: $('#sales_id').val(),
                         sales_name: $('#sales_name').val(),
                         vm_id: <?php echo $s_id ?>,
+                        freight_cost: $('#freight_cost').val(),
+                        currency_date: $('#currency_date').val(),
+                        currency_rate: $('#currency_rate').val(),
                         handling_name_1: $('#handling_name_1').val(),
                         handling_qty_1: $('#handling_qty_1').val(),
                         handling_unit_cost_1: $('#handling_unit_cost_1').val(),
@@ -822,6 +863,214 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: 'Data berhasil disimpan',
+                                }).then(() => {
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat menyimpan data',
+                            });
+                        }
+                    });
+                }
+
+                setSelectNewSales = () => {
+                    if ($('#new_sales').val() != $('#sales_id').val()) {
+                        $('#btn_update_sales').prop('disabled', false);
+                    } else {
+                        $('#btn_update_sales').prop('disabled', true);
+                    }
+                }
+
+                setSelectNewVM = () => {
+                    if ($('#new_vm').val() != $('#vm_id').val()) {
+                        $('#btn_update_vm').prop('disabled', false);
+                    } else {
+                        $('#btn_update_vm').prop('disabled', true);
+                    }
+                }
+
+                updateSales = (id) => {
+                    let data = {
+                        method: 'updateHdQuoShipmentsSales',
+                        id: id,
+                        sales_id: $('#new_sales').val(),
+                    };
+
+                    console.log(`DATA: ${JSON.stringify(data)}`);
+
+                    Swal.fire({
+                        title: "Loading...",
+                        html: "Sedang menyimpan data",
+                        timerProgressBar: true,
+                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    $.ajax({
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log(`RESP: ${response}`);
+                            let resp = JSON.parse(response);
+                            console.log(`RESP: ${resp.data}`);
+                            if (resp.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Sales telah diubah',
+                                }).then(() => {
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/form/edit.php?id=<?php echo $_GET['id']?>';
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat menyimpan data',
+                            });
+                        }
+                    });
+                }
+
+                updateVM = (id) => {
+                    let data = {
+                        method: 'updateHdQuoShipmentsVM',
+                        id: id,
+                        vm_id: $('#new_vm').val(),
+                    };
+
+                    console.log(`DATA: ${JSON.stringify(data)}`);
+
+                    Swal.fire({
+                        title: "Loading...",
+                        html: "Sedang menyimpan data",
+                        timerProgressBar: true,
+                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    $.ajax({
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log(`RESP: ${response}`);
+                            let resp = JSON.parse(response);
+                            console.log(`RESP: ${resp.data}`);
+                            if (resp.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'VM telah diubah',
+                                }).then(() => {
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/form/edit.php?id=<?php echo $_GET['id']?>';
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat menyimpan data',
+                            });
+                        }
+                    });
+                }
+
+                updateHdQuoShipmentsApproveCancel = (id) => {
+                    let data = {
+                        method: 'updateHdQuoShipmentsApproveCancel',
+                        // hdQuoShipment
+                        id: id,
+                    };
+
+                    console.log(`DATA: ${JSON.stringify(data)}`);
+
+                    Swal.fire({
+                        title: "Loading...",
+                        html: "Sedang melakukan approve",
+                        timerProgressBar: true,
+                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    $.ajax({
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log(`RESP: ${response}`);
+                            let resp = JSON.parse(response);
+                            console.log(`RESP: ${resp.data}`);
+                            if (resp.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Pembatalan berhasil di-approve',
+                                }).then(() => {
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat menyimpan data',
+                            });
+                        }
+                    });
+                }
+
+                updateHdQuoShipmentsRejectCancel = (id) => {
+                    let data = {
+                        method: 'updateHdQuoShipmentsRejectCancel',
+                        // hdQuoShipment
+                        id: id,
+                    };
+
+                    console.log(`DATA: ${JSON.stringify(data)}`);
+
+                    Swal.fire({
+                        title: "Loading...",
+                        html: "Sedang melakukan reject",
+                        timerProgressBar: true,
+                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    $.ajax({
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log(`RESP: ${response}`);
+                            let resp = JSON.parse(response);
+                            console.log(`RESP: ${resp.data}`);
+                            if (resp.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Pembatalan telah di-reject',
                                 }).then(() => {
                                     window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
                                 });

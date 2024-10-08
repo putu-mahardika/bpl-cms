@@ -29,6 +29,48 @@
     color: #71A5B5;
 }
 
+/* PRICING > BUDGETING */
+.card-pricing.success {
+  background-color: #E1EFD9;
+  color: #91B978;
+}
+
+.card-pricing.success > .card-pricing-title > .icon {
+    background-color: #91B978;
+}
+
+.card-pricing.success > .card-pricing-title > .icon > .fas {
+  color: white;
+}
+
+/* PRICING < BUDGETING */
+.card-pricing.warning {
+  background-color: #E8C278;
+  color: #A07F3D;
+}
+
+.card-pricing.warning > .card-pricing-title > .icon {
+    background-color: #A07F3D;
+}
+
+.card-pricing.warning > .card-pricing-title > .icon > .fas {
+  color: white;
+}
+
+/* PRICING < COSTING */
+.card-pricing.danger {
+  background-color: #E57979;
+  color: #9E3E3E;
+}
+
+.card-pricing.danger > .card-pricing-title > .icon {
+    background-color: #9E3E3E;
+}
+
+.card-pricing.danger > .card-pricing-title > .icon > .fas {
+  color: white;
+}
+
 .select2-container--default .select2-selection--single {
   height: calc(1.5em + .75rem + 6px);
   padding: .475rem .375rem;
@@ -77,6 +119,10 @@ table > thead > tr > th, table > tbody > tr > td {
   transform: translateX(-50%);
 }
 
+.timeline-content {
+  width: calc(100% - 40px);
+}
+
 .timeline-dots {
   position: absolute;
   top: 50%;
@@ -92,4 +138,11 @@ table > thead > tr > th, table > tbody > tr > td {
   height: 14px;
   background-color: #cccccc;
   border-radius: 50%;
+}
+
+.timeline li:first-child .timeline-dots {
+  width: 22px;
+  height: 22px;
+  background-color: #FFFFFF;
+  border: 5px solid #6777ef;
 }
