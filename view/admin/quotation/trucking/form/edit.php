@@ -321,7 +321,7 @@
                 <div class="card-body">
                   <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
                   <form role="form" id="quoTruckForm" method="post" action="../../../../../config/controller/quotationTruckingController.php">
-                    <?php if ($dataForm['IdQuoStatus'] >= 10) { ?>
+                    <?php if ($dataForm['IdQuoStatus'] >= 10 && $dataForm['IdQuoStatus'] != 12) { ?>
                     <div class="mb-3" style="color: #6E6E6E; font-size: 18px; font-weight: 700;">Vendor Terpilih : <?php isset($dataForm['quoDetailVendorId']) || $dataForm['quoDetailVendorId'] != 0 ? printf($dataVendor['nama']) : printf('-') ?></div>
                     <?php } ?>
                     <div class="mb-3">
@@ -835,9 +835,11 @@
                                       </span>
                                       <span class="text">Apply All</span>
                                     </button>
+                                    <?php if (!in_array($dataForm['IdQuoStatus'], ['12', '13', '14', '15', '16', '17'])) {?>
                                     <button class="btn btn-secondary ml-3" style="height: 42px;" type="button" onclick="calcAutomate()">
                                       Kalkulasi Otomatis
                                     </button>
+                                    <?php } ?>
                                   </div>
                                 </div>
                               </div>
@@ -1157,7 +1159,7 @@
                           <div class="col-lg-10">
                             <div class="row" style="height: 100%;">
                               <div class="col-lg-4">
-                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Batal</button>
+                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> data-toggle="modal" data-target="#modal_req_cancel" >Pembatalan</button>
                               </div>
                               <div class="col-lg-8">
                                 <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="editQuoTruckingAdmin" id="editQuoTruckingAdmin" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >
@@ -1210,6 +1212,107 @@
                   </div>
                 </div>
               </div>
+              <?php if ($dataForm['IdQuoStatus'] == 12) {?>
+              <div class="card mb-4">
+                <div class="card-body border rounded border-danger" style="background-color: #FCEEEE">
+                  <div class="row">
+                      <div class="col-md-12 mb-3">
+                          <div class="d-flex justify-content-center align-items-center mt-3">
+                              <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background: #fecfcd">
+                                  <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                              </div>
+                          </div>
+                          <div class="text-center mt-4">
+                              <h5 class="text-danger font-weight-bold">Ada pemintaan pembatalan dari Sales</h5>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                          <div class="row">
+                              <div class="col-md-6">Tanggal Permintaan</div>
+                              <div class="col-md-6">
+                                  <div id="request_cancel_date"><?php printf(date("d M Y", strtotime($dataForm['requestCancelDate']))) ?></div>
+                              </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-md-6">Pemohon</div>
+                              <div class="col-md-6">
+                                  <div id="request_cancel_sales_name"><?php echo $dataForm['LastUpdatedByName'] ?></div>
+                              </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-md-6">Alasan Pembatalan</div>
+                              <div class="col-md-6">
+                                  <div id="request_cancel_reason"><?php echo $dataForm['reason_request_cancel'] ?></div>
+                              </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <button class="btn btn-primary w-100 mb-0 mt-3" data-toggle="modal" data-target="#modal_reject_cancel_requested">Reject</button>
+                                  <div class="modal fade" id="modal_reject_cancel_requested" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <a href="javascript:;" data-dismiss="modal" class="close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                  </a>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <div class="d-flex justify-content-center align-items-center">
+                                                      <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background: #F6E7CB">
+                                                          <i class="fas fa-question-circle text-warning fa-3x"></i>
+                                                      </div>
+                                                  </div>
+                                                  <div class="text-center mt-4">
+                                                      <h3 class="text-danger font-weight-bold">Konfirmasi!</h3>
+                                                      <p>Apakah Anda yakin untuk me-reject permintaan pembatalan Quotation ini? Jika Ya, maka Quotation dapat digunakan kembali</p>
+                                                  </div>
+                                              </div>
+                                              <div class="modal-footer d-flex justify-content-center">
+                                                  <button type="button" class="btn btn-danger px-4" data-dismiss="modal">Batal</button>
+                                                  <button type="button" class="btn btn-primary px-4" onclick="updateHdQuoTruckingRejectCancel(<?php echo $id ?>)">Ya, Yakin</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <button class="btn btn-danger w-100 mb-0 mt-3" data-toggle="modal" data-target="#modal_approve_cancel_requested">Approve</button>
+                                  <div class="modal fade" id="modal_approve_cancel_requested" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <a href="javascript:;" data-dismiss="modal" class="close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                  </a>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <div class="d-flex justify-content-center align-items-center">
+                                                      <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background: #F6E7CB">
+                                                          <i class="fas fa-question-circle text-warning fa-3x"></i>
+                                                      </div>
+                                                  </div>
+                                                  <div class="text-center mt-4">
+                                                      <h3 class="text-danger font-weight-bold">Konfirmasi!</h3>
+                                                      <p>Apakah Anda yakin untuk membatalkan Quotation ini? Jika Ya, maka Quotation tidak bisa digunakan kembali</p>
+                                                  </div>
+                                              </div>
+                                              <div class="modal-footer d-flex justify-content-center">
+                                                  <button type="button" class="btn btn-danger px-4" data-dismiss="modal">Batal</button>
+                                                  <button type="button" class="btn btn-primary px-4" onclick="updateHdQuoTruckingApproveCancel(<?php echo $id ?>)">Ya, Yakin</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <?php } ?>
               <div class="card mb-4">
                 <div class="card-body">
                   <div class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Informasi Quo</div>
@@ -1387,6 +1490,35 @@
                       </div>
                     </div>
                     <!-- <a href="../../config/logout.php" class="btn btn-primary">Logout</a> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal cancel quo -->
+          <div class="modal fade" id="modal_req_cancel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title font-weight-bolder" id="exampleModalLabel">Pembatalan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="text-center mb-4 font-italic">Untuk melakukan pengajuan pembatalan, silahkan masukkan alasan Anda terlebih dahulu</p>
+                  <label for="reason_request_cancel">Alasan Pembatalan</label>
+                  <textarea name="reason_request_cancel" id="reason_request_cancel" class="form-control" rows="5" placeholder="Masukkan alasan pembatalan..."></textarea>
+                  <div class="alert alert-warning d-flex mt-3" role="alert">
+                    <i class="fas fa-exclamation-triangle text-white fa-2x mr-3 mt-2"></i>
+                    <div>
+                      Pengajuan yang Anda kirimkan akan di review oleh Admin terlebih dahulu.
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                  <button type="button" class="btn btn-primary" onclick="updateHdQuoTruckingReqCancel(<?php echo $id ?>)">Simpan</button>
                 </div>
               </div>
             </div>
@@ -1937,6 +2069,164 @@
                 text: 'Data berhasil disimpan',
               }).then(() => {
                 window.location.reload();
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
+      }
+
+      getValidateCancelForm = () => {
+        if ($('#reason_request_cancel').val() == '' || $('#reason_request_cancel').val() == null) {
+          toastr.error('Alasan pembatalan harus diisi', 'Required!')
+          return true;
+        }
+
+        return false;
+      };
+
+      updateHdQuoTruckingReqCancel = (id) => {
+        if (getValidateCancelForm()) {
+          return;
+        }
+
+        let data = {
+          method: 'updateHdQuoTruckingReqCancel',
+          // hdQuoShipment
+          id: id,
+          reason_request_cancel: $('#reason_request_cancel').val(),
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan pembatalan",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+              Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan berhasil diajukan',
+              }).then(() => {
+                window.location.href = '../../../../../view/user/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
+      }
+
+      updateHdQuoTruckingApproveCancel = (id) => {
+        let data = {
+          method: 'updateHdQuoTruckingApproveCancel',
+          // hdQuoShipment
+          id: id,
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan approve",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan berhasil di-approve',
+              }).then(() => {
+                window.location.href = '../../../../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
+      }
+
+      updateHdQuoTruckingRejectCancel = (id) => {
+        let data = {
+          method: 'updateHdQuoTruckingRejectCancel',
+          // hdQuoShipment
+          id: id,
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan reject",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan telah di-reject',
+              }).then(() => {
+                window.location.href = '../../../../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
               });
             }
           },

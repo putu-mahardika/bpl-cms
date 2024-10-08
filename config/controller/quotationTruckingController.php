@@ -253,11 +253,11 @@
     if ($result) {
       $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
       if ($akses == 'User') {
-        header("location:../../view/user/quotation/trucking/index.php?tahun=<?php echo $datetime?>");
+        header("location:../../view/user/quotation/trucking/index.php?tahun=$year");
       } elseif ($akses == 'Admin') {
-        header("location:../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime?>");
+        header("location:../../view/admin/quotation/trucking/index.php?tahun=$year");
       } else {
-        header("location:../../view/vm/quotation/trucking/index.php?tahun=<?php echo $datetime?>");	
+        header("location:../../view/vm/quotation/trucking/index.php?tahun=$year");	
       }
     } else {
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
@@ -517,7 +517,18 @@
     $resp = updateBudgetingQuotationDetailTrucking($koneksi, $_POST['hdQuotationId']);
     echo $resp;
   }
-
+  elseif ($_POST['method'] == 'updateHdQuoTruckingReqCancel') {
+    $resp = updateHdQuoTruckingReqCancel($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'updateHdQuoTruckingApproveCancel') {
+    $resp = updateHdQuoTruckingApproveCancel($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'updateHdQuoTruckingRejectCancel') {
+    $resp = updateHdQuoTruckingRejectCancel($koneksi, $_POST['id']);
+    echo $resp;
+  }
 
   function insertDetailQuo ($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi) {
     $newStatus = 5;
@@ -608,5 +619,84 @@
     // $stmt->close();
     // return json_encode(['status' => 200, 'message' => 'Success']);
     return json_encode(['status' => 200, 'message' => 'Success']);
+  }
+
+  function updateHdQuoTruckingReqCancel($koneksi, $hdQuotationId)
+  {
+    $id = $hdQuotationId;
+    $reason_request_cancel = $_POST['reason_request_cancel'];
+    $last_updated_by_id = $_SESSION['id'];
+    $last_updated_by_name = $_SESSION['nama'];
+    // print_r($_POST);die();
+
+    $query = "UPDATE `master_quotation_trucking` SET 
+          `IdQuoStatus` = 12, 
+          `update_at` = '" . date('Y-m-d H:i:s') . "',
+          `requestCancelDate` = '" . date('Y-m-d H:i:s') . "',
+          `reason_request_cancel` = '$reason_request_cancel',
+          `LastUpdatedById` = '$last_updated_by_id',
+          `LastUpdatedByName` = '$last_updated_by_name'
+      WHERE `id` = $id;";
+      // print_r($query);
+      // print_r($query);die();
+      
+      $result = mysqli_query($koneksi, $query);
+      // return json_encode(['query' => $query]);
+    
+    if($result) {
+      return json_encode(['status' => 200, 'message' => 'Success']);
+    } else {
+      return json_encode(['status' => 500, 'message' => 'Failed']);
+    }
+  }
+
+  function updateHdQuoTruckingApproveCancel($koneksi, $hdQuotationId)
+  {
+    $id = $hdQuotationId;
+    $last_updated_by_id = $_SESSION['id'];
+    $last_updated_by_name = $_SESSION['nama'];
+    // print_r($_POST);die();
+
+    $query = "UPDATE `master_quotation_trucking` SET 
+        `IdQuoStatus` = 13, 
+        `update_at` = '" . date('Y-m-d H:i:s') . "',
+        `approved_request_date` = '" . date('Y-m-d H:i:s') . "',
+        `LastUpdatedById` = '$last_updated_by_id',
+        `LastUpdatedByName` = '$last_updated_by_name'
+    WHERE `id` = $id;";
+    // print_r($query);die();
+    
+    $result = mysqli_query($koneksi, $query);
+    
+    if($result) {
+      return json_encode(['status' => 200, 'message' => 'Success']);
+    } else {
+      return json_encode(['status' => 500, 'message' => 'Failed']);
+    }
+  }
+
+  function updateHdQuoTruckingRejectCancel($koneksi, $hdQuotationId)
+  {
+    $id = $hdQuotationId;
+    $last_updated_by_id = $_SESSION['id'];
+    $last_updated_by_name = $_SESSION['nama'];
+    // print_r($_POST);die();
+
+    $query = "UPDATE `master_quotation_trucking` SET 
+          `IdQuoStatus` = 9, 
+          `update_at` = '" . date('Y-m-d H:i:s') . "',
+          `rejectedRequestDate` = '" . date('Y-m-d H:i:s') . "',
+          `LastUpdatedById` = '$last_updated_by_id',
+          `LastUpdatedByName` = '$last_updated_by_name'
+      WHERE `id` = $id;";
+    // print_r($query);die();
+    
+    $result = mysqli_query($koneksi, $query);
+    
+    if($result) {
+      return json_encode(['status' => 200, 'message' => 'Success']);
+    } else {
+      return json_encode(['status' => 500, 'message' => 'Failed']);
+    }
   }
 ?>
