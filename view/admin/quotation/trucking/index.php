@@ -29,6 +29,8 @@
   <link href="../../../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css">
+  <link href="../../../../css/new-style.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -383,23 +385,23 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>No</th>
-                        <th>Tanggal Quo</th>
-                        <!-- <th>Tanggal Last Update</th> -->
-                        <th>Status</th>
-                        <th>No PO</th>
-                        <th>Vendor Terpilih</th>
-                        <th>Nama Perusahaan</th>
-                        <th>PIC</th>
-                        <!-- <th>No Telp PIC</th> -->
-                        <th>Sales</th>
-                        <!-- <th>Jenis Barang</th> -->
-                        <th>Tonase</th>
-                        <th>Total Armada</th>
-                        <!-- <th>Total Pricing</th> -->
-                        <th>Jenis Trip</th>
-                        <th>Shipment</th>
-                        <th>Action</th>
+                        <th class="text-nowrap" style="font-size: 14px;">No</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Tanggal Quo</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">Tanggal Last Update</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Status</th>
+                        <th class="text-nowrap" style="font-size: 14px;">No PO</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Vendor Terpilih</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Nama Perusahaan</th>
+                        <th class="text-nowrap" style="font-size: 14px;">PIC</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">No Telp PIC</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Sales</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">Jenis Barang</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Tonase</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Total Armada</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">Total Pricing</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Jenis Trip</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Shipment</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Action</th>
                       </tr>
                     </thead>
                   
