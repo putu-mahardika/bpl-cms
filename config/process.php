@@ -638,7 +638,7 @@
 
         $k=0;
 
-        while($data = mysqli_fetch_array($fetch_s)){
+        while($data = mysqli_fetch_array($fetch_c)){
             if($id != $data['CustId'] && $nama == $data['nama']){
                 $k=1;
             } elseif($id == $data['CustId'] && $nama == $data['nama']){
@@ -648,7 +648,8 @@
         }
 
         if($k != 1){
-            $query = "update master_customer set kode_customer='$kode', nama=`$nama`, bidang_usaha=`$bidang`, npwp='$npwp', alamat=`$alamat`, telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan=`$keterangan`, aktif='$aktif', last_update='$datetime', UserId='$sales', terms_payment_days='$paymentTerms' where CustId='$id'";
+            $query = "update master_customer set kode_customer='$kode', nama='$nama', bidang_usaha='$bidang', npwp='$npwp', alamat='$alamat', telp='$telp', email='$email', PIC='$pic', PIC_telp='$pic_telp', PIC_email='$pic_email', keterangan='$keterangan', aktif='$aktif', last_update='$datetime', UserId='$sales', terms_payment_days='$paymentTerms' where CustId='$id'";
+            echo $query;
             $result = mysqli_query($koneksi, $query);
             if ($result) {
                 header("location:../view/admin/customer.php");
