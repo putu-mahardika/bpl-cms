@@ -14,48 +14,94 @@
     $tahun = $_GET['year'];
     $array = array();
     $tempArray = array();
-    $query = "SELECT
-        mqt.*,
-        mu.nama AS SalesName,
-        mu1.nama AS VmName,
-        mk.Nama AS VehicleName, 
-        CASE
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
-        END AS CustomerName,
-        CASE 
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
-        END AS Pic,
-        CASE 
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
-        END AS PicPhone,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
-        END AS TotalCosting,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.BudgetingFirstPrice + qdt.BudgetingNextPrice
-        END AS TotalBudgeting,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.PricingFirstPrice + qdt.PricingNextPrice
-        END AS TotalPricing,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
-        END AS VendorName,
-        mqst.name AS StatusName,
-        mqst.color AS StatusColor
-    FROM
-      master_quotation_trucking mqt
-        LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
-        LEFT JOIN master_vendor mv on qdt.IdVendor = mv.Id
-        LEFT JOIN master_quo_status mqst on mqt.IdQuoStatus = mqst.Id
-        LEFT JOIN master_customer mc on mqt.IdCustomer = mc.CustId
-        LEFT JOIN master_user mu on mqt.IdSales = mu.UserId
-        LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
-        LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
-    WHERE
-      mqt.IsDelete = 0 and
-      mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
-    ORDER BY 
-      mqt.update_at desc";
+    if ($akses == 'User') {
+      $query = "SELECT
+          mqt.*,
+          mu.nama AS SalesName,
+          mu1.nama AS VmName,
+          mk.Nama AS VehicleName, 
+          CASE
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
+          END AS CustomerName,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
+          END AS Pic,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
+          END AS PicPhone,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
+          END AS TotalCosting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.BudgetingFirstPrice + qdt.BudgetingNextPrice
+          END AS TotalBudgeting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.PricingFirstPrice + qdt.PricingNextPrice
+          END AS TotalPricing,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
+          END AS VendorName,
+          mqst.name AS StatusName,
+          mqst.color AS StatusColor
+      FROM
+        master_quotation_trucking mqt
+          LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
+          LEFT JOIN master_vendor mv on qdt.IdVendor = mv.Id
+          LEFT JOIN master_quo_status mqst on mqt.IdQuoStatus = mqst.Id
+          LEFT JOIN master_customer mc on mqt.IdCustomer = mc.CustId
+          LEFT JOIN master_user mu on mqt.IdSales = mu.UserId
+          LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
+          LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
+      WHERE
+        mqt.IsDelete = 0 and
+        mqt.IdSales = ".$s_id."
+        mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
+      ORDER BY 
+        mqt.update_at desc";
+    } else {
+      $query = "SELECT
+          mqt.*,
+          mu.nama AS SalesName,
+          mu1.nama AS VmName,
+          mk.Nama AS VehicleName, 
+          CASE
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
+          END AS CustomerName,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
+          END AS Pic,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
+          END AS PicPhone,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
+          END AS TotalCosting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.BudgetingFirstPrice + qdt.BudgetingNextPrice
+          END AS TotalBudgeting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.PricingFirstPrice + qdt.PricingNextPrice
+          END AS TotalPricing,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
+          END AS VendorName,
+          mqst.name AS StatusName,
+          mqst.color AS StatusColor
+      FROM
+        master_quotation_trucking mqt
+          LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
+          LEFT JOIN master_vendor mv on qdt.IdVendor = mv.Id
+          LEFT JOIN master_quo_status mqst on mqt.IdQuoStatus = mqst.Id
+          LEFT JOIN master_customer mc on mqt.IdCustomer = mc.CustId
+          LEFT JOIN master_user mu on mqt.IdSales = mu.UserId
+          LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
+          LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
+      WHERE
+        mqt.IsDelete = 0 and
+        mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
+      ORDER BY 
+        mqt.update_at desc";
+    }
     $fetch = mysqli_query($koneksi, $query);
     // $datas = mysqli_fetch_array($fetch);
     while($row = $fetch->fetch_assoc()) {
@@ -529,6 +575,15 @@
     $resp = updateHdQuoTruckingRejectCancel($koneksi, $_POST['id']);
     echo $resp;
   }
+  elseif ($_POST['method'] == 'changeQuoTruckingSales') {
+    $resp = updateHdQuoTruckingSales($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'changeQuoTruckingVm') {
+    $resp = updateHdQuoTruckingVm($koneksi, $_POST['id']);
+    echo $resp;
+  }
+
 
   function insertDetailQuo ($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi) {
     $newStatus = 5;
@@ -644,6 +699,11 @@
       // return json_encode(['query' => $query]);
     
     if($result) {
+      $stmt = $koneksi->prepare("CALL sp_manage_request_cancel_quotation(?,?,?,?,?)");
+      $stmt->bind_param("sssii", "T", "Q", $reason_request_cancel, $s_id, $hdQuotationId);
+      if (!$stmt->execute()) {
+        die("Stored procedure execution failed: " . $stmt->error);
+      }
       return json_encode(['status' => 200, 'message' => 'Success']);
     } else {
       return json_encode(['status' => 500, 'message' => 'Failed']);
@@ -655,6 +715,7 @@
     $id = $hdQuotationId;
     $last_updated_by_id = $_SESSION['id'];
     $last_updated_by_name = $_SESSION['nama'];
+    $note = $_POST['note'];
     // print_r($_POST);die();
 
     $query = "UPDATE `master_quotation_trucking` SET 
@@ -669,6 +730,11 @@
     $result = mysqli_query($koneksi, $query);
     
     if($result) {
+      $stmt = $koneksi->prepare("CALL sp_manage_request_cancel_quotation(?,?,?,?,?)");
+      $stmt->bind_param("sssii", "T", "A", $note, $s_id, $hdQuotationId);
+      if (!$stmt->execute()) {
+        die("Stored procedure execution failed: " . $stmt->error);
+      }
       return json_encode(['status' => 200, 'message' => 'Success']);
     } else {
       return json_encode(['status' => 500, 'message' => 'Failed']);
@@ -680,6 +746,7 @@
     $id = $hdQuotationId;
     $last_updated_by_id = $_SESSION['id'];
     $last_updated_by_name = $_SESSION['nama'];
+    $note = $_POST['note'];
     // print_r($_POST);die();
 
     $query = "UPDATE `master_quotation_trucking` SET 
@@ -694,9 +761,64 @@
     $result = mysqli_query($koneksi, $query);
     
     if($result) {
+      $stmt = $koneksi->prepare("CALL sp_manage_request_cancel_quotation(?,?,?,?,?)");
+      $stmt->bind_param("sssii", "T", "R", $note, $s_id, $hdQuotationId);
+      if (!$stmt->execute()) {
+        die("Stored procedure execution failed: " . $stmt->error);
+      }
       return json_encode(['status' => 200, 'message' => 'Success']);
     } else {
       return json_encode(['status' => 500, 'message' => 'Failed']);
     }
   }
+
+  function updateHdQuoTruckingSales($koneksi, $hdQuotationId)
+    {
+      $id = $hdQuotationId;
+      $sales_id = $_POST['newSalesId'];
+      $last_updated_by_id = $_SESSION['id'];
+      $last_updated_by_name = $_SESSION['nama'];
+      // print_r($_POST);die();
+
+      $query = "UPDATE `master_quotation_trucking` SET 
+            `IdSales` = '$sales_id', 
+            `update_at` = '" . date('Y-m-d H:i:s') . "',
+            `LastUpdatedById` = '$last_updated_by_id',
+            `LastUpdatedByName` = '$last_updated_by_name'
+        WHERE `Id` = $id;";
+      // print_r($query);die();
+      
+      $result = mysqli_query($koneksi, $query);
+      
+      if($result) {
+        return json_encode(['status' => 200, 'message' => 'Success']);
+      } else {
+        return json_encode(['status' => 500, 'message' => 'Failed']);
+      }
+    }
+
+    function updateHdQuoTruckingVM($koneksi, $hdQuotationId)
+    {
+      $id = $hdQuotationId;
+      $vm_id = $_POST['newVmId'];
+      $last_updated_by_id = $_SESSION['id'];
+      $last_updated_by_name = $_SESSION['nama'];
+      // print_r($_POST);die();
+
+      $query = "UPDATE `master_quotation_trucking` SET 
+            `IdVM` = '$vm_id', 
+            `update_at` = '" . date('Y-m-d H:i:s') . "',
+            `LastUpdatedById` = '$last_updated_by_id',
+            `LastUpdatedByName` = '$last_updated_by_name'
+        WHERE `Id` = $id;";
+      // print_r($query);die();
+      
+      $result = mysqli_query($koneksi, $query);
+      
+      if($result) {
+        return json_encode(['status' => 200, 'message' => 'Success']);
+      } else {
+        return json_encode(['status' => 500, 'message' => 'Failed', 'query' => $query]);
+      }
+    }
 ?>

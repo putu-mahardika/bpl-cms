@@ -313,7 +313,7 @@
                       <tr>
                         <th class="text-nowrap" style="font-size: 14px;">No</th>
                         <th class="text-nowrap" style="font-size: 14px;">Tanggal Quo</th>
-                        <!-- <th class="text-nowrap" style="font-size: 14px;">Tanggal Last Update</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Terakhir Update</th>
                         <th class="text-nowrap" style="font-size: 14px;">Status</th>
                         <th class="text-nowrap" style="font-size: 14px;">No PO</th>
                         <th class="text-nowrap" style="font-size: 14px;">Vendor Terpilih</th>
@@ -410,7 +410,7 @@
         },
         columns: [
           { data: 'noQuotation' },
-          // { data: 'createDate' },
+          { data: 'createDate' },
           { data: 'lastUpdate' },
           { render: function (data, type, row, meta) {
               return `<div style="font-size: 12px; padding:5px 10px;border-radius:10px;color:white;background:`+row.statusColor+`">`+ row.status +`</div>`;
