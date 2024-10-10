@@ -113,7 +113,7 @@
                     <tr>
                         <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
                             <div class="custom-control custom-checkbox" style="padding-left: 2rem">
-                                <input type="checkbox" class="custom-control-input checked_vendor" id="customCheck">
+                                <input type="checkbox" class="custom-control-input checked_vendor" id="customCheck" <?php if($totalPricing == 0) {?> disabled <?php }?>>
                                 <label class="custom-control-label" for="customCheck"></label>
                             </div>
                         </td>

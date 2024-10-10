@@ -122,9 +122,9 @@
                     <?php foreach ($dataDtlQuoShipment as $key => $val) { ?>
                         <tr>
                             <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
-                                <div class="custom-control custom-checkbox" style="padding-left: 2rem">
-                                    <input type="checkbox" class="custom-control-input checked_vendor" id="customCheck<?php echo $key ?>">
-                                    <label class="custom-control-label" for="customCheck<?php echo $key ?>"></label>
+                                <div class="custom-control custom-radio" style="padding-left: 2rem">
+                                    <input type="radio" class="custom-control-input selected_quo_vendor_id" name="selected_quo_vendor_id" id="selected_quo_vendor_id<?php echo $key ?>" value="<?php echo $val['vendor_id'] ?>" <?php if($totalPricing == 0) {?> disabled <?php }?>>
+                                    <label class="custom-control-label" for="selected_quo_vendor_id<?php echo $key ?>"></label>
                                 </div>
                             </td>
                             <td class="px-3 text-nowrap" style="font-size: 14px; min-width: 250px !important">

@@ -128,7 +128,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         <h6 class="collapse-header">Quo Trucking</h6>
                         <a class="collapse-item" href="../../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
                         <h6 class="collapse-header">Quo Shipment</h6>
-                        <a class="collapse-item" href="../../../quotation/shipment/index.php">List Quo Shipment</a>
+                        <a class="collapse-item" href="../../../quotation/shipment/index.php?tahun=<?php echo $datetime?>">List Quo Shipment</a>
                         <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
                     </div>
                 </div>
@@ -429,7 +429,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <a href="<?php echo $base_url; ?>/view/vm/quotation/shipment/index.php" class="close">
+                        <a href="<?php echo $base_url; ?>/view/vm/quotation/shipment/index.php?tahun=<?php echo $datetime?>" class="close">
                             <span aria-hidden="true">&times;</span>
                         </a>
                     </div>
@@ -445,7 +445,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <a href="<?php echo $base_url; ?>/view/vm/quotation/shipment/index.php" class="btn btn-danger">Tutup</a>
+                        <a href="<?php echo $base_url; ?>/view/vm/quotation/shipment/index.php?tahun=<?php echo $datetime?>" class="btn btn-danger">Tutup</a>
                     </div>
                 </div>
             </div>
@@ -486,13 +486,15 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 });
 
                 let row = $(this).closest('tr');
+
+                // COSTING
                 $('#table_handling_1').on('keyup', '#handling_unit_cost_1', function() {
                     let row = $(this).closest('tr');
                     let handling_unit_cost_1 = parseFloat(row.find('#handling_unit_cost_1').val()) || 0;
                     let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
                     let total = handling_unit_cost_1 * handling_qty_1;
                     row.find('#handling_total_cost_1').val(total);
-                    setCalcTotalHandling();
+                    calcTotalHandling();
                 });
 
                 $('#table_handling_next').on('keyup', '#handling_unit_cost_next', function() {
@@ -501,7 +503,45 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
                     let total = handling_unit_cost_next * handling_qty_next;
                     row.find('#handling_total_cost_next').val(total);
-                    setCalcTotalHandling();
+                    calcTotalHandling();
+                });
+
+                // BUDGETING
+                $('#table_handling_1').on('keyup', '#handling_unit_budgeting_1', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_budgeting_1 = parseFloat(row.find('#handling_unit_budgeting_1').val()) || 0;
+                    let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
+                    let total = handling_unit_budgeting_1 * handling_qty_1;
+                    row.find('#handling_total_budgeting_1').val(total);
+                    calcTotalHandling();
+                });
+
+                $('#table_handling_next').on('keyup', '#handling_unit_budgeting_next', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_budgeting_next = parseFloat(row.find('#handling_unit_budgeting_next').val()) || 0;
+                    let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
+                    let total = handling_unit_budgeting_next * handling_qty_next;
+                    row.find('#handling_total_budgeting_next').val(total);
+                    calcTotalHandling();
+                });
+
+                // PRICING
+                $('#table_handling_1').on('keyup', '#handling_unit_price_1', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_price_1 = parseFloat(row.find('#handling_unit_price_1').val()) || 0;
+                    let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
+                    let total = handling_unit_price_1 * handling_qty_1;
+                    row.find('#handling_total_price_1').val(total);
+                    calcTotalHandling();
+                });
+
+                $('#table_handling_next').on('keyup', '#handling_unit_price_next', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_price_next = parseFloat(row.find('#handling_unit_price_next').val()) || 0;
+                    let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
+                    let total = handling_unit_price_next * handling_qty_next;
+                    row.find('#handling_total_price_next').val(total);
+                    calcTotalHandling();
                 });
 
                 $('#table_list_vendor').on('keyup', '.costing_first_price, .costing_next_price', function() {
@@ -563,13 +603,46 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_note').val(resp.destination_note);
                             $('#handling_qty_1').val(resp.total_container);
                             $('#handling_qty_next').val(resp.total_container);
+                            $('#freight_cost').val(resp.freight_cost);
+                            $('#currency_date').val(resp.currency_date);
+                            $('#currency_rate').val(resp.currency_rate);
                             $('#status_id').val(resp.status_id);
                             $('#status').text(resp.status);
                             $('#status').css('background-color', resp.status_color);
-
+                            $('#old_sales').val(resp.sales_name);
+                            $('#old_vm_id').val(resp.vm_id);
+                            $('#old_vm').val(resp.vm_name);
+                            $('#request_cancel_date').text(resp.request_cancel_date);
+                            $('#request_cancel_sales_name').text(resp.sales_name);
+                            $('#request_cancel_reason').text(resp.reason_request_cancel);
+                            $('#new_sales option').each(function() {
+                                console.log($(this).val())
+                                console.log($(this).val() == resp.sales_id)
+                                if ($(this).val() == resp.sales_id) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+                            $('#new_vm option').each(function() {
+                                console.log($(this).val())
+                                console.log($(this).val() == resp.vm_id)
+                                if ($(this).val() == resp.vm_id) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+                            $('#table_list_vendor tbody tr').each(function() {
+                                let vendor_id = $(this).find('select.vendor_id option:selected').val();
+                                if (vendor_id == resp.selected_quo_vendor_id) {
+                                    $(this).find('input[type="radio"]').prop('checked', true);
+                                }
+                            });
+                            if (resp.status_id == 12) {
+                                $('#form_cancel_quotation').addClass('d-block');
+                                $('#btn_save').addClass('d-none');
+                            } else {
+                                $('#form_cancel_quotation').removeClass('d-block');
+                            }
                             if (resp.request_cancel_date != null && resp.rejected_request_date == null) {
                                 $('#modal_info_cancel_requested').modal('show')
-                                $('input, textarea').attr('disabled', true);
                             }
                         },
                         error: function(xhr, status, error) {
@@ -597,8 +670,16 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 };
                 // Function to add a new row to the table
                 addRow = () => {
+                    let lastIndex = $('#table_list_vendor tbody tr').length;
+
                     let newRow = `
                         <tr>
+                            <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                                <div class="custom-control custom-radio" style="padding-left: 2rem">
+                                    <input type="radio" class="custom-control-input selected_quo_vendor_id" name="selected_quo_vendor_id" id="selected_quo_vendor_id${lastIndex}" value="<?php echo $val['vendor_id'] ?>" <?php if($totalPricing == 0) {?> disabled <?php }?>>
+                                    <label class="custom-control-label" for="selected_quo_vendor_id${lastIndex}"></label>
+                                </div>
+                            </td>
                             <td>
                                 <select name="vendor_id" class="form-control vendor_id">
                                 <?php foreach ($vendors as $val) { ?>
@@ -639,13 +720,28 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
                 }
 
-                setCalcTotalHandling = () => {
+                calcTotalHandling = () => {
+                    // COSTING
                     let handling_total_cost_1 = parseFloat($('#handling_total_cost_1').val())
                     let handling_unit_cost_1 = parseFloat($('#handling_unit_cost_1').val())
                     let handling_unit_cost_next = parseFloat($('#handling_unit_cost_next').val())
                     let handling_total_cost_next = parseFloat($('#handling_total_cost_next').val())
                     $('#total_handling_cost').val(handling_total_cost_1 + handling_total_cost_next);
                     $('#total_handling_unit_cost').val(handling_unit_cost_1 + handling_unit_cost_next);
+                    // BUDGETING
+                    let handling_total_budgeting_1 = parseFloat($('#handling_total_budgeting_1').val())
+                    let handling_unit_budgeting_1 = parseFloat($('#handling_unit_budgeting_1').val())
+                    let handling_unit_budgeting_next = parseFloat($('#handling_unit_budgeting_next').val())
+                    let handling_total_budgeting_next = parseFloat($('#handling_total_budgeting_next').val())
+                    $('#total_handling_budgeting').val(handling_total_budgeting_1 + handling_total_budgeting_next);
+                    $('#total_handling_unit_budgeting').val(handling_unit_budgeting_1 + handling_unit_budgeting_next);
+                    // PRICING
+                    let handling_total_price_1 = parseFloat($('#handling_total_price_1').val())
+                    let handling_unit_price_1 = parseFloat($('#handling_unit_price_1').val())
+                    let handling_unit_price_next = parseFloat($('#handling_unit_price_next').val())
+                    let handling_total_price_next = parseFloat($('#handling_total_price_next').val())
+                    $('#total_handling_price').val(handling_total_price_1 + handling_total_price_next);
+                    $('#total_handling_unit_price').val(handling_unit_price_1 + handling_unit_price_next);
                 }
 
                 updateHdQuoShipments = (id) => {
@@ -653,25 +749,46 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         return;
                     }
 
+                    let selected_quo_vendor_id = null;
+                    let selected_quo_vendor_costing = 0;
+                    let selected_quo_vendor_budgeting = 0;
+                    let selected_quo_vendor_pricing = 0;
                     let vendor_data = [];
 
                     $('#table_list_vendor tbody tr').each(function() {
-                        let vendor_id = $(this).find('select.vendor_id option:selected').val();
-                        let dtl_quo_shipment_id = $(this).find('.dtl_quo_shipment_id').val();
-                        let costing_first_price = $(this).find('.costing_first_price').val();
-                        let costing_next_price = $(this).find('.costing_next_price').val();
-                        let costing_total_price = $(this).find('.costing_total_price').val();
+                        if ($(this).find('input[type="radio"]').is(':checked')) {
+                            let vendor_id = $(this).find('select.vendor_id option:selected').val();
+                            let costing_first_price = $(this).find('.costing_first_price').val();
+                            let costing_next_price = $(this).find('.costing_next_price').val();
+                            let costing_total_price = $(this).find('.costing_total_price').val();
+                            let budgeting_first_price = $(this).find('.budgeting_first_price').val();
+                            let budgeting_next_price = $(this).find('.budgeting_next_price').val();
+                            let budgeting_total_price = $(this).find('.budgeting_total_price').val();
+                            let pricing_first_price = $(this).find('.pricing_first_price').val();
+                            let pricing_next_price = $(this).find('.pricing_next_price').val();
+                            let pricing_total_price = $(this).find('.pricing_total_price').val();
+                            selected_quo_vendor_id = vendor_id;
+                            selected_quo_vendor_costing = costing_total_price;
+                            selected_quo_vendor_budgeting = budgeting_total_price;
+                            selected_quo_vendor_pricing = pricing_total_price;
+                        }
                         vendor_data.push({
-                            vendor_id: vendor_id,
-                            dtl_quo_shipment_id: dtl_quo_shipment_id,
-                            costing_first_price: costing_first_price,
-                            costing_next_price: costing_next_price,
-                            costing_total_price: costing_total_price
+                            dtl_quo_shipment_id: $(this).find('.dtl_quo_shipment_id').val(),
+                            vendor_id: $(this).find('select.vendor_id option:selected').val(),
+                            costing_first_price: $(this).find('.costing_first_price').val() || 0,
+                            costing_next_price: $(this).find('.costing_next_price').val() || 0,
+                            costing_total_price: $(this).find('.costing_total_price').val() || 0,
+                            budgeting_first_price: $(this).find('.budgeting_first_price').val() || 0,
+                            budgeting_next_price: $(this).find('.budgeting_next_price').val() || 0,
+                            budgeting_total_price: $(this).find('.budgeting_total_price').val() || 0,
+                            pricing_first_price: $(this).find('.pricing_first_price').val() || 0,
+                            pricing_next_price: $(this).find('.pricing_next_price').val() || 0,
+                            pricing_total_price: $(this).find('.pricing_total_price').val() || 0,
                         });
                     });
 
                     let data = {
-                        method: 'updateHdQuoShipments',
+                        method: 'updateFormHdQuoShipmentsVM',
                         // hdQuoShipment
                         id: id,
                         quo_status_id: $('#status_id').val() == 2 ? 6 : 2,
@@ -681,16 +798,28 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         handling_id_1: $('#handling_id_1').val(),
                         handling_name_1: $('#handling_name_1').val(),
                         handling_qty_1: $('#handling_qty_1').val(),
-                        handling_unit_cost_1: $('#handling_unit_cost_1').val(),
-                        handling_total_cost_1: $('#handling_total_cost_1').val(),
+                        handling_unit_cost_1: $('#handling_unit_cost_1').val() || 0,
+                        handling_total_cost_1: $('#handling_total_cost_1').val() || 0,
+                        handling_unit_budgeting_1: $('#handling_unit_budgeting_1').val() || 0,
+                        handling_total_budgeting_1: $('#handling_total_budgeting_1').val() || 0,
+                        handling_unit_price_1: $('#handling_unit_price_1').val() || 0,
+                        handling_total_price_1: $('#handling_total_price_1').val() || 0,
                         handling_id_next: $('#handling_id_next').val(),
                         handling_name_next: $('#handling_name_next').val(),
                         handling_qty_next: $('#handling_qty_next').val(),
-                        handling_unit_cost_next: $('#handling_unit_cost_next').val(),
-                        handling_total_cost_next: $('#handling_total_cost_next').val(),
+                        handling_unit_cost_next: $('#handling_unit_cost_next').val() || 0,
+                        handling_total_cost_next: $('#handling_total_cost_next').val() || 0,
+                        handling_unit_budgeting_next: $('#handling_unit_budgeting_next').val() || 0,
+                        handling_total_budgeting_next: $('#handling_total_budgeting_next').val() || 0,
+                        handling_unit_price_next: $('#handling_unit_price_next').val() || 0,
+                        handling_total_price_next: $('#handling_total_price_next').val() || 0,
                         total_handling_unit_cost: $('#total_handling_unit_cost').val(),
                         total_handling_cost: $('#total_handling_cost').val(),
-                        vendor_data: vendor_data
+                        selected_quo_vendor_id: selected_quo_vendor_id,
+                        selected_quo_vendor_costing: selected_quo_vendor_costing,
+                        selected_quo_vendor_budgeting: selected_quo_vendor_budgeting,
+                        selected_quo_vendor_pricing: selected_quo_vendor_pricing,
+                        vendor_data: vendor_data,
                     };
 
                     console.log(`DATA: ${JSON.stringify(data)}`);

@@ -90,7 +90,7 @@ date_default_timezone_set("Asia/Jakarta");
                         <h6 class="collapse-header">Quo Trucking</h6>
                         <a class="collapse-item" href="quotation/trucking/index.php">List Quo Trucking</a>
                         <h6 class="collapse-header">Quo Shipment</h6>
-                        <a class="collapse-item" href="quotation/shipment/index.php">List Quo Shipment</a>
+                        <a class="collapse-item" href="quotation/shipment/index.php?tahun=<?php echo $datetime?>">List Quo Shipment</a>
                         <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
                     </div>
                 </div>

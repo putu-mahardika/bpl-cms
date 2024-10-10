@@ -25,7 +25,10 @@
                 <h6 class="font-weight-bold title mb-0">Total Budgeting</h6>
             </div>
             <div class="card-pricing-body">
-                <p class="text-gray text-center mb-0">Anda tidak punya hak untuk melihat</p>
+                <div class="text-left">
+                    <small>IDR</small>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalBudgeting ?></span>
+                </div>
             </div>
         </div>
         <button class="btn btn-secondary mt-4 w-100" disabled>Customer PO</button>

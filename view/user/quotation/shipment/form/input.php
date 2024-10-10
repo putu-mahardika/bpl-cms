@@ -16,7 +16,7 @@ $shipmentTerms = getShipmentTerms($koneksi);
 $shipmentLoadTypes = getShipmentLoadTypes($koneksi);
 $shipmentContainers = getShipmentContainers($koneksi);
 $countries = getCountries($koneksi);
-// print_r(json_encode($shipmentTerms));die();
+// print_r($customers);die();
 
 ?>
 <!DOCTYPE html>
@@ -99,7 +99,7 @@ $countries = getCountries($koneksi);
 						<h6 class="collapse-header">Quo Trucking</h6>
 						<a class="collapse-item" href="../../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
 						<h6 class="collapse-header">Quo Shipment</h6>
-						<a class="collapse-item" href="../../../quotation/shipment/index.php">List Quo Shipment</a>
+						<a class="collapse-item" href="../../../quotation/shipment/index.php?tahun=<?php echo $datetime?>">List Quo Shipment</a>
 						<!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
 					</div>
 				</div>
@@ -514,7 +514,7 @@ $countries = getCountries($koneksi);
 			}
 
 			let data = {
-				method: 'createHdQuoShipments',
+				method: 'createHdQuoShipmentsSales',
 				// hdQuoShipment
 				customer_id: $('#customer_id').val(),
 				sales_id: $('#sales_id').val(),

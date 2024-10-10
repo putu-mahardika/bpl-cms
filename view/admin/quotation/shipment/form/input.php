@@ -105,7 +105,7 @@ $totalPricing = 0;
                         <h6 class="collapse-header">Quo Trucking</h6>
                         <a class="collapse-item" href="../../../quotation/trucking/index.php">List Quo Trucking</a>
                         <h6 class="collapse-header">Quo Shipment</h6>
-                        <a class="collapse-item" href="../../../quotation/shipment/index.php">List Quo Shipment</a>
+                        <a class="collapse-item" href="../../../quotation/shipment/index.php?tahun=<?php echo $datetime?>">List Quo Shipment</a>
                         <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
                     </div>
                 </div>
@@ -392,6 +392,8 @@ $totalPricing = 0;
             });
     
             let row = $(this).closest('tr');
+            
+            // COSTING
             $('#table_handling_1').on('keyup', '#handling_unit_cost_1', function() {
                 let row = $(this).closest('tr');
                 let handling_unit_cost_1 = parseFloat(row.find('#handling_unit_cost_1').val()) || 0;
@@ -400,13 +402,51 @@ $totalPricing = 0;
                 row.find('#handling_total_cost_1').val(total);
                 calcTotalHandling();
             });
-    
+
             $('#table_handling_next').on('keyup', '#handling_unit_cost_next', function() {
                 let row = $(this).closest('tr');
                 let handling_unit_cost_next = parseFloat(row.find('#handling_unit_cost_next').val()) || 0;
                 let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
                 let total = handling_unit_cost_next * handling_qty_next;
                 row.find('#handling_total_cost_next').val(total);
+                calcTotalHandling();
+            });
+
+            // BUDGETING
+            $('#table_handling_1').on('keyup', '#handling_unit_budgeting_1', function() {
+                let row = $(this).closest('tr');
+                let handling_unit_budgeting_1 = parseFloat(row.find('#handling_unit_budgeting_1').val()) || 0;
+                let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
+                let total = handling_unit_budgeting_1 * handling_qty_1;
+                row.find('#handling_total_budgeting_1').val(total);
+                calcTotalHandling();
+            });
+
+            $('#table_handling_next').on('keyup', '#handling_unit_budgeting_next', function() {
+                let row = $(this).closest('tr');
+                let handling_unit_budgeting_next = parseFloat(row.find('#handling_unit_budgeting_next').val()) || 0;
+                let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
+                let total = handling_unit_budgeting_next * handling_qty_next;
+                row.find('#handling_total_budgeting_next').val(total);
+                calcTotalHandling();
+            });
+
+            // PRICING
+            $('#table_handling_1').on('keyup', '#handling_unit_price_1', function() {
+                let row = $(this).closest('tr');
+                let handling_unit_price_1 = parseFloat(row.find('#handling_unit_price_1').val()) || 0;
+                let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
+                let total = handling_unit_price_1 * handling_qty_1;
+                row.find('#handling_total_price_1').val(total);
+                calcTotalHandling();
+            });
+
+            $('#table_handling_next').on('keyup', '#handling_unit_price_next', function() {
+                let row = $(this).closest('tr');
+                let handling_unit_price_next = parseFloat(row.find('#handling_unit_price_next').val()) || 0;
+                let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
+                let total = handling_unit_price_next * handling_qty_next;
+                row.find('#handling_total_price_next').val(total);
                 calcTotalHandling();
             });
     
@@ -451,7 +491,7 @@ $totalPricing = 0;
                 <tr>
                     <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
                         <div class="custom-control custom-checkbox" style="padding-left: 2rem">
-                        <input type="checkbox" class="custom-control-input" id="customCheck${lastIndex}">
+                        <input type="checkbox" class="custom-control-input" id="customCheck${lastIndex}" disabled>
                         <label class="custom-control-label" for="customCheck${lastIndex}"></label>
                         </div>
                     </td>
@@ -511,13 +551,28 @@ $totalPricing = 0;
             });
         }
 
-        setCalcTotalHandling = () => {
+        calcTotalHandling = () => {
+            // COSTING
             let handling_total_cost_1 = parseFloat($('#handling_total_cost_1').val())
             let handling_unit_cost_1 = parseFloat($('#handling_unit_cost_1').val())
             let handling_unit_cost_next = parseFloat($('#handling_unit_cost_next').val())
             let handling_total_cost_next = parseFloat($('#handling_total_cost_next').val())
             $('#total_handling_cost').val(handling_total_cost_1 + handling_total_cost_next);
             $('#total_handling_unit_cost').val(handling_unit_cost_1 + handling_unit_cost_next);
+            // BUDGETING
+            let handling_total_budgeting_1 = parseFloat($('#handling_total_budgeting_1').val())
+            let handling_unit_budgeting_1 = parseFloat($('#handling_unit_budgeting_1').val())
+            let handling_unit_budgeting_next = parseFloat($('#handling_unit_budgeting_next').val())
+            let handling_total_budgeting_next = parseFloat($('#handling_total_budgeting_next').val())
+            $('#total_handling_budgeting').val(handling_total_budgeting_1 + handling_total_budgeting_next);
+            $('#total_handling_unit_budgeting').val(handling_unit_budgeting_1 + handling_unit_budgeting_next);
+            // PRICING
+            let handling_total_price_1 = parseFloat($('#handling_total_price_1').val())
+            let handling_unit_price_1 = parseFloat($('#handling_unit_price_1').val())
+            let handling_unit_price_next = parseFloat($('#handling_unit_price_next').val())
+            let handling_total_price_next = parseFloat($('#handling_total_price_next').val())
+            $('#total_handling_price').val(handling_total_price_1 + handling_total_price_next);
+            $('#total_handling_unit_price').val(handling_unit_price_1 + handling_unit_price_next);
         }
         
         getValidate = () => {
@@ -573,6 +628,20 @@ $totalPricing = 0;
             if ($('#destination_country_id').val() == '' || $('#destination_country_id').val() == null) {
                 toastr.error('Country Origin harus dipilih', 'Required!')
                 return true;
+            }
+
+            if ($('#handling_qty_1').val() > 0) {
+                if ($('#handling_name_1').val() == '' || $('#handling_name_1').val() == null) {
+                    toastr.error('Nama biaya handling 1 harus diisi', 'Required!')
+                    return true;
+                }
+            }
+
+            if ($('#handling_qty_next').val() > 0) {
+                if ($('#handling_name_next').val() == '' || $('#handling_name_next').val() == null) {
+                    toastr.error('Nama biaya handling next harus diisi', 'Required!')
+                    return true;
+                }
             }
 
             return false;
@@ -669,7 +738,7 @@ $totalPricing = 0;
             });
 
             let data = {
-                method: 'createHdQuoShipments',
+                method: 'createHdQuoShipmentsAdmin',
                 // hdQuoShipment
                 customer_id: $('#customer_id').val(),
                 sales_id: <?php echo $s_id ?>,
@@ -697,12 +766,20 @@ $totalPricing = 0;
                 destination_note: $('#destination_note').val(),
                 handling_name_1: $('#handling_name_1').val(),
                 handling_qty_1: $('#handling_qty_1').val(),
-                handling_unit_cost_1: $('#handling_unit_cost_1').val(),
-                handling_total_cost_1: $('#handling_total_cost_1').val(),
+                handling_unit_cost_1: $('#handling_unit_cost_1').val() || 0,
+                handling_total_cost_1: $('#handling_total_cost_1').val() || 0,
+                handling_unit_budgeting_1: $('#handling_unit_budgeting_1').val() || 0,
+                handling_total_budgeting_1: $('#handling_total_budgeting_1').val() || 0,
+                handling_unit_price_1: $('#handling_unit_price_1').val() || 0,
+                handling_total_price_1: $('#handling_total_price_1').val() || 0,
                 handling_name_next: $('#handling_name_next').val(),
                 handling_qty_next: $('#handling_qty_next').val(),
-                handling_unit_cost_next: $('#handling_unit_cost_next').val(),
-                handling_total_cost_next: $('#handling_total_cost_next').val(),
+                handling_unit_cost_next: $('#handling_unit_cost_next').val() || 0,
+                handling_total_cost_next: $('#handling_total_cost_next').val() || 0,
+                handling_unit_budgeting_next: $('#handling_unit_budgeting_next').val() || 0,
+                handling_total_budgeting_next: $('#handling_total_budgeting_next').val() || 0,
+                handling_unit_price_next: $('#handling_unit_price_next').val() || 0,
+                handling_total_price_next: $('#handling_total_price_next').val() || 0,
                 total_handling_unit_cost: $('#total_handling_unit_cost').val(),
                 total_handling_cost: $('#total_handling_cost').val(),
                 selected_quo_vendor_id: selected_quo_vendor_id,
@@ -714,16 +791,16 @@ $totalPricing = 0;
 
             console.log(`DATA: ${JSON.stringify(data)}`);
 
-            // Swal.fire({
-            //     title: "Loading...",
-            //     html: "Sedang menyimpan data",
-            //     timerProgressBar: true,
-            //     allowOutsideClick: false,
-            //     allowEscapeKey: false,
-            //     didOpen: () => {
-            //         Swal.showLoading();
-            //     },
-            // });
+            Swal.fire({
+                title: "Loading...",
+                html: "Sedang menyimpan data",
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
 
             $.ajax({
                 url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',

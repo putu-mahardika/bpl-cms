@@ -9,9 +9,16 @@ include '../../../../config/koneksi.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $datetime = date('Y');
-$query = 'select * from master_kota';
-$fetch = mysqli_query($koneksi, $query);
 $roles = 'admin';
+
+$yearNow = date('Y');
+
+$years = [];
+
+for ($i=2020; $i < $yearNow+1; $i++) { 
+    array_unshift($years, $i);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +34,11 @@ $roles = 'admin';
     <link href="../../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../css/ruang-admin.min.css" rel="stylesheet">
-    <link href="../../../../vendor/datatables1/datatables.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css">
+    <!-- <link href="../../../../vendor/datatables1/datatables.min.css" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css"> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
     <link href="<?php echo $base_url ?>/css/new-style.css" rel="stylesheet">
 </head>
 
@@ -78,9 +88,9 @@ $roles = 'admin';
                 <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Quo Trucking</h6>
-                        <a class="collapse-item active" href="../../quotation/trucking/index.php">List Quo Trucking</a>
+                        <a class="collapse-item active" href="../../quotation/trucking/index.php?tahun=<?php echo $yearNow?>">List Quo Trucking</a>
                         <h6 class="collapse-header">Quo Shipment</h6>
-                        <a class="collapse-item active" href="../../quotation/shipment/index.php">List Quo Shipment</a>
+                        <a class="collapse-item active" href="../../quotation/shipment/index.php?tahun=<?php echo $yearNow?>">List Quo Shipment</a>
                         <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
                     </div>
                 </div>
@@ -191,27 +201,31 @@ $roles = 'admin';
                                         </span>
                                         <span class="text">Tambah Quo Shipment</span>
                                     </a>
-
+                                    <div class="d-flex align-items-center">
+                                        <label for="year" class="mt-1 mr-2">Tahun</label>
+                                        <select name="year" id="year" class="form-control" style="width: fit-content; height: 38px">
+                                            <?php foreach ($years as $key => $value) {?>
+                                                <option value="<?php echo $value?>" <?php if($value == $_GET['tahun']) {?>selected<?php }?>><?php echo $value?></option>
+                                            <?php }?>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="table-responsive p-3">
-                                    <?php if (isset($_SESSION['pesan'])) { ?><?php echo $_SESSION['pesan'];
-                                                                                unset($_SESSION['pesan']);
-                                                                            } ?>
-                                    <table class="table align-items-center table-bordered" id="dataQuoShipment">
-                                        <thead class="thead-light">
+                                <div class="table-responsive py-3 px-2">
+                                    <table class="table align-items-center table-bordered my-3" id="datatable_quo_shipment">
+                                        <thead>
                                             <tr>
-                                                <th class="text-nowrap" style="font-size: 14px;">No</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Tanggal Quo</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Terakhir Update</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Status</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Nomor PO</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Nama Perusahaan</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">PIC</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">No. Telp PIC</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Country Origin</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Jenis Container</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Trucking</th>
-                                                <th class="text-nowrap" style="font-size: 14px;">Action</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Tanggal Quo</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">No. Quo</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Nama Perusahaan</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Telepon</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Total Container</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Jenis Container</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Trucking</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Sales</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">VM</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Status</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Last Update</th>
+                                                <th class="bg-gray-200" style="font-size: 14px;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -272,80 +286,90 @@ $roles = 'admin';
     <script src="../../../../js/ruang-admin.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
-    <script src="../../../../vendor/datatables1/datatables.min.js"></script>
+    <!-- <script src="../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
+    <script src="../../../../vendor/datatables1/datatables.min.js"></script> -->
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script>
-        $(document).ready(function() {
-            //$.fn.table.moment('d-M-Y hh:mm:ss');
-            $('#dataQuoShipment').DataTable({
-                ajax: {
-                    url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
-                    type: 'GET',
-                    data: {
-                        method: 'getHdQuoShipments',
-                    },
-                    dataType: 'json',
-                    dataSrc: ''
+        $('#datatable_quo_shipment').DataTable({
+            scrollX: true,
+            fixedColumns: {
+                left: 0,
+                right: 3,
+            },
+            ajax: {
+                url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                type: 'GET',
+                data: {
+                    method: 'getHdQuoShipments',
+                    tahun: '<?php echo $_GET['tahun'] ?>',
                 },
-                columnDefs: [{
-                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-                    className: "text-nowrap" // Menambahkan kelas text-nowrap
-                }],
-                columns: [{
-                        data: 'no_quotation'
-                    },
-                    {
-                        data: 'created_at'
-                    },
-                    {
-                        data: 'updated_at'
-                    },
-                    {
-                        render: function(data, type, row, meta) {
-                            return `<div class='badge badge-primary px-2 py-2' style="background:` + row.status_color + `">` + row.status + `</div>`;
-                        }
-                    },
-                    {
-                        data: 'nomor_po'
-                    },
-                    {
-                        data: 'customer_name'
-                    },
-                    {
-                        data: 'pic_name_temp'
-                    },
-                    {
-                        data: 'pic_phone_temp'
-                    },
-                    {
-                        data: 'origin_country_name'
-                    },
-                    {
-                        data: 'jenis_container'
-                    },
-                    {
-                        render: function(data, type, row, meta) {
-                            if (row.is_need_trucking == 0) {
-                                return `<div class='d-flex justify-content-center mt-1 text-success'><i class='fas fa-check-circle fa-lg'></i></div>`;
-                            } else {
-                                return `<div class='d-flex justify-content-center mt-1 text-danger'><i class='fas fa-times-circle fa-lg'></i></div>`;
-                            };
-                        }
-                    },
-                    {
-                        render: function(data, type, row, meta) {
-                            return `<a href="form/edit.php?id=` + row.id + `" class="btn btn-primary"><i class="fas fa-fw fa-edit"></i></a>`;
-                        }
+                dataType: 'json',
+                dataSrc: ''
+            },
+            columnDefs: [{
+                targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                className: "text-nowrap"
+            }],
+            columns: [
+                {data: 'created_at'},
+                {
+                    data: 'no_quotation',
+                    render: function(data, type, row, meta) {
+                        return `<div style="color:black; font-weight: bold">${row.no_quotation}</div>`;
                     }
-                ],
-                rowId: 'id',
-                stateSave: false,
-                order: [
-                    [2, "desc"]
-                ]
-            });
+                },
+                {data: 'customer_name'},
+                {data: 'customer_phone'},
+                {data: 'total_container'},
+                {data: 'master_unit_name'},
+                {
+                    data: 'is_need_trucking',
+                    render: function(data, type, row, meta) {
+                        if (row.is_need_trucking == 0) {
+                            return `<div class='d-flex justify-content-center mt-1 text-success'><i class='fas fa-check-circle fa-lg'></i></div>`;
+                        } else {
+                            return `<div class='d-flex justify-content-center mt-1 text-danger'><i class='fas fa-times-circle fa-lg'></i></div>`;
+                        };
+                    }
+                },
+                {data: 'sales_name'},
+                {data: 'vm_name'},
+                {
+                    data: 'status',
+                    render: function(data, type, row, meta) {
+                        return `<div class='badge badge-primary px-2 py-2' style="background:${row.status_color}">${row.status}</div>`;
+                    }
+                },
+                {data: 'updated_at'},
+                {
+                    data: null,
+                    render: function(data, type, row, meta) {
+                        return `
+                            <div class="d-flex">
+                                <a href="form/edit.php?id=${row.id}" class="btn btn-primary mr-1"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-secondary ml-1"><i class="fas fa-eye"></i></button>
+                            </div>
+                        `;
+                    }
+                }
+            ],
+            rowId: 'id',
+            stateSave: false,
+            order: [
+                [10, "desc"]
+            ]
+        });
+
+        let year = $('#year').val();
+
+        $('#year').on('change', function() {
+            year = $(this).val();            
+            window.location.href = `index.php?tahun=${year}`;
+            $('#datatable_quo_shipment').DataTable().ajax.url('<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php?method=getHdQuoShipments&year=' + year).load();
         });
     </script>
 

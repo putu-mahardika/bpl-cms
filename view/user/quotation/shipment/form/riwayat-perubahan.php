@@ -8,7 +8,7 @@
                 <li class="d-flex timeline-item">
                     <div class="timeline-box">
                         <div class="timeline-line" <?php if($key == 0) {?>style="height: 50%; top: 50%"<?php }?> <?php if($key == count($quotationLog)-1) {?>style="height: 50%"<?php }?>></div>
-                        <div class="timeline-dots" <?php if($key == 0) {?>style="background-color: #6777ef;"<?php }?> ></div>
+                        <div class="timeline-dots"></div>
                     </div>
                     <div class="timeline-content ml-2 py-2" <?php if($key == 0) {?>style="color: #6777ef"<?php }?>>
                         <div class="font-italic font-weight-bold">

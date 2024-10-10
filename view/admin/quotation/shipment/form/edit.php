@@ -129,7 +129,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         <h6 class="collapse-header">Quo Trucking</h6>
                         <a class="collapse-item" href="../../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
                         <h6 class="collapse-header">Quo Shipment</h6>
-                        <a class="collapse-item" href="../../../quotation/shipment/index.php">List Quo Shipment</a>
+                        <a class="collapse-item" href="../../../quotation/shipment/index.php?tahun=<?php echo $datetime?>">List Quo Shipment</a>
                         <!--<a class="collapse-item" href="datatables.html">DataTables</a>-->
                     </div>
                 </div>
@@ -252,7 +252,36 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     <?php include 'edit-list-vendor.php' ?>
                                     <?php include 'edit-tambahan-biaya-handling.php' ?>
                                     <div class="row">
-                                        <div class="col-md-12 mt-3">
+                                        <div class="col-md-12 mt-3 d-flex">
+                                            <button id="btn_cancel" class="btn btn-danger w-100 mr-2" data-toggle="modal" data-target="#modal_req_cancel">Pembatalan</button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="modal_req_cancel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bolder" id="exampleModalLabel">Pembatalan</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p class="text-center mb-4 font-italic">Untuk melakukan pengajuan pembatalan, silahkan masukkan alasan Anda terlebih dahulu</p>
+                                                            <label for="reason_request_cancel">Alasan Pembatalan</label>
+                                                            <textarea name="reason_request_cancel" id="reason_request_cancel" class="form-control" rows="5" placeholder="Masukkan alasan pembatalan..."></textarea>
+                                                            <div class="alert alert-warning d-flex mt-3" role="alert">
+                                                                <i class="fas fa-exclamation-triangle text-white fa-2x mr-3 mt-2"></i>
+                                                                <div>
+                                                                    Pengajuan yang Anda kirimkan akan di review oleh Admin terlebih dahulu.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer d-flex justify-content-center">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                            <button type="button" class="btn btn-primary" onclick="updateHdQuoShipmentsReqCancel(<?php echo $_GET['id'] ?>)">Simpan</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <button id="btn_save" class="btn btn-primary w-100" onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)">Simpan</button>
                                         </div>
                                         <div class="col-md-12 mt-5">
@@ -465,6 +494,8 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 });
 
                 let row = $(this).closest('tr');
+
+                // COSTING
                 $('#table_handling_1').on('keyup', '#handling_unit_cost_1', function() {
                     let row = $(this).closest('tr');
                     let handling_unit_cost_1 = parseFloat(row.find('#handling_unit_cost_1').val()) || 0;
@@ -480,6 +511,44 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
                     let total = handling_unit_cost_next * handling_qty_next;
                     row.find('#handling_total_cost_next').val(total);
+                    calcTotalHandling();
+                });
+
+                // BUDGETING
+                $('#table_handling_1').on('keyup', '#handling_unit_budgeting_1', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_budgeting_1 = parseFloat(row.find('#handling_unit_budgeting_1').val()) || 0;
+                    let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
+                    let total = handling_unit_budgeting_1 * handling_qty_1;
+                    row.find('#handling_total_budgeting_1').val(total);
+                    calcTotalHandling();
+                });
+
+                $('#table_handling_next').on('keyup', '#handling_unit_budgeting_next', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_budgeting_next = parseFloat(row.find('#handling_unit_budgeting_next').val()) || 0;
+                    let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
+                    let total = handling_unit_budgeting_next * handling_qty_next;
+                    row.find('#handling_total_budgeting_next').val(total);
+                    calcTotalHandling();
+                });
+
+                // PRICING
+                $('#table_handling_1').on('keyup', '#handling_unit_price_1', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_price_1 = parseFloat(row.find('#handling_unit_price_1').val()) || 0;
+                    let handling_qty_1 = parseFloat(row.find('#handling_qty_1').val()) || 0;
+                    let total = handling_unit_price_1 * handling_qty_1;
+                    row.find('#handling_total_price_1').val(total);
+                    calcTotalHandling();
+                });
+
+                $('#table_handling_next').on('keyup', '#handling_unit_price_next', function() {
+                    let row = $(this).closest('tr');
+                    let handling_unit_price_next = parseFloat(row.find('#handling_unit_price_next').val()) || 0;
+                    let handling_qty_next = parseFloat(row.find('#handling_qty_next').val()) || 0;
+                    let total = handling_unit_price_next * handling_qty_next;
+                    row.find('#handling_total_price_next').val(total);
                     calcTotalHandling();
                 });
 
@@ -554,20 +623,17 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#status').text(resp.status);
                             $('#status').css('background-color', resp.status_color);
                             $('#old_sales').val(resp.sales_name);
+                            $('#old_vm_id').val(resp.vm_id);
                             $('#old_vm').val(resp.vm_name);
                             $('#request_cancel_date').text(resp.request_cancel_date);
                             $('#request_cancel_sales_name').text(resp.sales_name);
                             $('#request_cancel_reason').text(resp.reason_request_cancel);
                             $('#new_sales option').each(function() {
-                                console.log($(this).val())
-                                console.log($(this).val() == resp.sales_id)
                                 if ($(this).val() == resp.sales_id) {
                                     $(this).prop('selected', true);
                                 }
                             });
                             $('#new_vm option').each(function() {
-                                console.log($(this).val())
-                                console.log($(this).val() == resp.vm_id)
                                 if ($(this).val() == resp.vm_id) {
                                     $(this).prop('selected', true);
                                 }
@@ -575,7 +641,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#table_list_vendor tbody tr').each(function() {
                                 let vendor_id = $(this).find('select.vendor_id option:selected').val();
                                 if (vendor_id == resp.selected_quo_vendor_id) {
-                                    $(this).find('input[type="checkbox"]').prop('checked', true);
+                                    $(this).find('input[type="radio"]').prop('checked', true);
                                 }
                             });
                             if (resp.status_id == 12) {
@@ -715,12 +781,27 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 }
 
                 calcTotalHandling = () => {
+                    // COSTING
                     let handling_total_cost_1 = parseFloat($('#handling_total_cost_1').val())
                     let handling_unit_cost_1 = parseFloat($('#handling_unit_cost_1').val())
                     let handling_unit_cost_next = parseFloat($('#handling_unit_cost_next').val())
                     let handling_total_cost_next = parseFloat($('#handling_total_cost_next').val())
                     $('#total_handling_cost').val(handling_total_cost_1 + handling_total_cost_next);
                     $('#total_handling_unit_cost').val(handling_unit_cost_1 + handling_unit_cost_next);
+                    // BUDGETING
+                    let handling_total_budgeting_1 = parseFloat($('#handling_total_budgeting_1').val())
+                    let handling_unit_budgeting_1 = parseFloat($('#handling_unit_budgeting_1').val())
+                    let handling_unit_budgeting_next = parseFloat($('#handling_unit_budgeting_next').val())
+                    let handling_total_budgeting_next = parseFloat($('#handling_total_budgeting_next').val())
+                    $('#total_handling_budgeting').val(handling_total_budgeting_1 + handling_total_budgeting_next);
+                    $('#total_handling_unit_budgeting').val(handling_unit_budgeting_1 + handling_unit_budgeting_next);
+                    // PRICING
+                    let handling_total_price_1 = parseFloat($('#handling_total_price_1').val())
+                    let handling_unit_price_1 = parseFloat($('#handling_unit_price_1').val())
+                    let handling_unit_price_next = parseFloat($('#handling_unit_price_next').val())
+                    let handling_total_price_next = parseFloat($('#handling_total_price_next').val())
+                    $('#total_handling_price').val(handling_total_price_1 + handling_total_price_next);
+                    $('#total_handling_unit_price').val(handling_unit_price_1 + handling_unit_price_next);
                 }
 
                 calcAutomate = () => {
@@ -778,7 +859,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     let vendor_data = [];
 
                     $('#table_list_vendor tbody tr').each(function() {
-                        if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                        if ($(this).find('input[type="radio"]').is(':checked')) {
                             let vendor_id = $(this).find('select.vendor_id option:selected').val();
                             let costing_first_price = $(this).find('.costing_first_price').val();
                             let costing_next_price = $(this).find('.costing_next_price').val();
@@ -810,24 +891,34 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     let data = {
-                        method: 'updateHdQuoShipmentsAdmin',
+                        method: 'updateFormHdQuoShipmentsAdmin',
                         // hdQuoShipment
                         id: id,
                         quo_status_id: $('#status_id').val() == 3 ? 7 : 3,
                         sales_id: $('#sales_id').val(),
                         sales_name: $('#sales_name').val(),
-                        vm_id: <?php echo $s_id ?>,
+                        vm_id: $('#old_vm_id').val(),
                         freight_cost: $('#freight_cost').val(),
                         currency_date: $('#currency_date').val(),
                         currency_rate: $('#currency_rate').val(),
+                        handling_id_1: $('#handling_id_1').val(),
                         handling_name_1: $('#handling_name_1').val(),
                         handling_qty_1: $('#handling_qty_1').val(),
-                        handling_unit_cost_1: $('#handling_unit_cost_1').val(),
-                        handling_total_cost_1: $('#handling_total_cost_1').val(),
+                        handling_unit_cost_1: $('#handling_unit_cost_1').val() || 0,
+                        handling_total_cost_1: $('#handling_total_cost_1').val() || 0,
+                        handling_unit_budgeting_1: $('#handling_unit_budgeting_1').val() || 0,
+                        handling_total_budgeting_1: $('#handling_total_budgeting_1').val() || 0,
+                        handling_unit_price_1: $('#handling_unit_price_1').val() || 0,
+                        handling_total_price_1: $('#handling_total_price_1').val() || 0,
+                        handling_id_next: $('#handling_id_next').val(),
                         handling_name_next: $('#handling_name_next').val(),
                         handling_qty_next: $('#handling_qty_next').val(),
-                        handling_unit_cost_next: $('#handling_unit_cost_next').val(),
-                        handling_total_cost_next: $('#handling_total_cost_next').val(),
+                        handling_unit_cost_next: $('#handling_unit_cost_next').val() || 0,
+                        handling_total_cost_next: $('#handling_total_cost_next').val() || 0,
+                        handling_unit_budgeting_next: $('#handling_unit_budgeting_next').val() || 0,
+                        handling_total_budgeting_next: $('#handling_total_budgeting_next').val() || 0,
+                        handling_unit_price_next: $('#handling_unit_price_next').val() || 0,
+                        handling_total_price_next: $('#handling_total_price_next').val() || 0,
                         total_handling_unit_cost: $('#total_handling_unit_cost').val(),
                         total_handling_cost: $('#total_handling_cost').val(),
                         selected_quo_vendor_id: selected_quo_vendor_id,
@@ -843,8 +934,8 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         title: "Loading...",
                         html: "Sedang menyimpan data",
                         timerProgressBar: true,
-                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
-                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                         didOpen: () => {
                             Swal.showLoading();
                         },
@@ -977,6 +1068,59 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     text: 'VM telah diubah',
                                 }).then(() => {
                                     window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/form/edit.php?id=<?php echo $_GET['id']?>';
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Terjadi kesalahan saat menyimpan data',
+                            });
+                        }
+                    });
+                }
+
+                updateHdQuoShipmentsReqCancel = (id) => {
+                    if (getValidate()) {
+                        return;
+                    }
+
+                    let data = {
+                        method: 'updateHdQuoShipmentsReqCancel',
+                        // hdQuoShipment
+                        id: id,
+                        reason_request_cancel: $('#reason_request_cancel').val(),
+                    };
+
+                    console.log(`DATA: ${JSON.stringify(data)}`);
+
+                    Swal.fire({
+                        title: "Loading...",
+                        html: "Sedang melakukan pembatalan",
+                        timerProgressBar: true,
+                        allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+                        allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    $.ajax({
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log(`RESP: ${response}`);
+                            let resp = JSON.parse(response);
+                            console.log(`RESP: ${resp.data}`);
+                            if (resp.status == 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Pembatalan berhasil diajukan',
+                                }).then(() => {
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
                                 });
                             }
                         },

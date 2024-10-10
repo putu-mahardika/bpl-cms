@@ -25,6 +25,7 @@
     <div class="row">
         <div class="col-md-12 mb-3">
             <label for="old_vm">VM Shipment</label>
+            <input type="hidden" class="form-control" id="old_vm_id" name="old_vm_id" disabled>
             <input type="text" class="form-control" id="old_vm" name="old_vm" placeholder="John Doe" disabled>
         </div>
         <div class="col-md-12 mb-3">
