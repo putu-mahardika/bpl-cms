@@ -16,6 +16,14 @@
   $vendorArray=[];
   $detailArray=[];
   $logArray=[];
+  $salesArray=[];
+  $vmArray=[];
+
+  $queryMasterUserSales = 'select * from master_user where aktif=1 and atr1=0 and (isAdmin=1 or isSales=1)';
+  $fetchMasterUserSales = mysqli_query($koneksi, $queryMasterUserSales);
+
+  $queryMasterUserVm = 'select * from master_user where aktif=1 and atr1=0 and (isAdmin=1 or isVmTrucking=1)';
+  $fetchMasterUserVm = mysqli_query($koneksi, $queryMasterUserVm);
 
   $queryMasterCustomer = 'select * from master_customer where aktif=1';
   $fetchMasterCustomer = mysqli_query($koneksi, $queryMasterCustomer);
@@ -28,6 +36,14 @@
 
   $queryMasterVendor = 'select * from master_vendor where isActive=1 and isDelete=0';
   $fetchMasterVendor = mysqli_query($koneksi, $queryMasterVendor);
+
+  while($row = $fetchMasterUserSales->fetch_assoc()) {
+    $salesArray[] = $row;
+  }
+
+  while($row = $fetchMasterUserVm->fetch_assoc()) {
+    $vmArray[] = $row;
+  }
 
   while($row = $fetchMasterKota->fetch_assoc()) {
     $cityArray[] = $row;
@@ -312,7 +328,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-            <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <a href="../index.php?tahun=<?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
             <h1 class="h3 mb-0 text-gray-800">Form Quotation trucking</h1>
           </div>
           <div class="row mb-3">
@@ -321,7 +337,7 @@
                 <div class="card-body">
                   <?php if(isset($_SESSION['pesan'])){?><?php echo $_SESSION['pesan']; unset($_SESSION['pesan']);}?>
                   <form role="form" id="quoTruckForm" method="post" action="../../../../../config/controller/quotationTruckingController.php">
-                    <?php if ($dataForm['IdQuoStatus'] >= 10) { ?>
+                    <?php if ($dataForm['IdQuoStatus'] >= 10 && $dataForm['IdQuoStatus'] != 12) { ?>
                     <div class="mb-3" style="color: #6E6E6E; font-size: 18px; font-weight: 700;">Vendor Terpilih : <?php isset($dataForm['quoDetailVendorId']) || $dataForm['quoDetailVendorId'] != 0 ? printf($dataVendor['nama']) : printf('-') ?></div>
                     <?php } ?>
                     <div class="mb-3">
@@ -835,9 +851,11 @@
                                       </span>
                                       <span class="text">Apply All</span>
                                     </button>
+                                    <?php if (!in_array($dataForm['IdQuoStatus'], ['12', '13', '14', '15', '16', '17'])) {?>
                                     <button class="btn btn-secondary ml-3" style="height: 42px;" type="button" onclick="calcAutomate()">
                                       Kalkulasi Otomatis
                                     </button>
+                                    <?php } ?>
                                   </div>
                                 </div>
                               </div>
@@ -1157,7 +1175,7 @@
                           <div class="col-lg-10">
                             <div class="row" style="height: 100%;">
                               <div class="col-lg-4">
-                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Batal</button>
+                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> data-toggle="modal" data-target="#modal_req_cancel" >Pembatalan</button>
                               </div>
                               <div class="col-lg-8">
                                 <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="editQuoTruckingAdmin" id="editQuoTruckingAdmin" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >
@@ -1210,6 +1228,113 @@
                   </div>
                 </div>
               </div>
+              <?php if ($dataForm['IdQuoStatus'] == 12) {?>
+              <div class="card mb-4">
+                <div class="card-body border rounded border-danger" style="background-color: #FCEEEE">
+                  <div class="row">
+                      <div class="col-md-12 mb-3">
+                          <div class="d-flex justify-content-center align-items-center mt-3">
+                              <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background: #fecfcd">
+                                  <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                              </div>
+                          </div>
+                          <div class="text-center mt-4">
+                              <h5 class="text-danger font-weight-bold">Ada pemintaan pembatalan dari Sales</h5>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                          <div class="row">
+                              <div class="col-md-6">Tanggal Permintaan</div>
+                              <div class="col-md-6">
+                                  <div id="request_cancel_date"><?php printf(date("d M Y", strtotime($dataForm['requestCancelDate']))) ?></div>
+                              </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-md-6">Pemohon</div>
+                              <div class="col-md-6">
+                                  <div id="request_cancel_sales_name"><?php echo $dataForm['LastUpdatedByName'] ?></div>
+                              </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-md-6">Alasan Pembatalan</div>
+                              <div class="col-md-6">
+                                  <div id="request_cancel_reason"><?php echo $dataForm['reason_request_cancel'] ?></div>
+                              </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <button class="btn btn-primary w-100 mb-0 mt-3" data-toggle="modal" data-target="#modal_reject_cancel_requested">Reject</button>
+                                  <div class="modal fade" id="modal_reject_cancel_requested" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <a href="javascript:;" data-dismiss="modal" class="close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                  </a>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <div class="d-flex justify-content-center align-items-center">
+                                                      <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background: #F6E7CB">
+                                                          <i class="fas fa-question-circle text-warning fa-3x"></i>
+                                                      </div>
+                                                  </div>
+                                                  <div class="text-center mt-4">
+                                                      <h3 class="text-danger font-weight-bold">Konfirmasi!</h3>
+                                                      <p>Apakah Anda yakin untuk me-reject permintaan pembatalan Quotation ini? Jika Ya, maka Quotation dapat digunakan kembali</p>
+                                                  </div>
+                                                  <div class="mt-3">
+                                                    <textarea name="reason_reject_request_cancel" id="reason_reject_request_cancel" class="form-control" rows="5" placeholder="Masukkan alasan..."></textarea>
+                                                  </div>
+                                              </div>
+                                              <div class="modal-footer d-flex justify-content-center">
+                                                  <button type="button" class="btn btn-danger px-4" data-dismiss="modal">Batal</button>
+                                                  <button type="button" class="btn btn-primary px-4" onclick="updateHdQuoTruckingRejectCancel(<?php echo $id ?>)">Ya, Yakin</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <button class="btn btn-danger w-100 mb-0 mt-3" data-toggle="modal" data-target="#modal_approve_cancel_requested">Approve</button>
+                                  <div class="modal fade" id="modal_approve_cancel_requested" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <a href="javascript:;" data-dismiss="modal" class="close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                  </a>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <div class="d-flex justify-content-center align-items-center">
+                                                      <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background: #F6E7CB">
+                                                          <i class="fas fa-question-circle text-warning fa-3x"></i>
+                                                      </div>
+                                                  </div>
+                                                  <div class="text-center mt-4">
+                                                      <h3 class="text-danger font-weight-bold">Konfirmasi!</h3>
+                                                      <p>Apakah Anda yakin untuk membatalkan Quotation ini? Jika Ya, maka Quotation tidak bisa digunakan kembali</p>
+                                                  </div>
+                                                  <div class="mt-3">
+                                                    <textarea name="reason_approve_request_cancel" id="reason_approve_request_cancel" class="form-control" rows="5" placeholder="Masukkan alasan..."></textarea>
+                                                  </div>
+                                              </div>
+                                              <div class="modal-footer d-flex justify-content-center">
+                                                  <button type="button" class="btn btn-danger px-4" data-dismiss="modal">Batal</button>
+                                                  <button type="button" class="btn btn-primary px-4" onclick="updateHdQuoTruckingApproveCancel(<?php echo $id ?>)">Ya, Yakin</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <?php } ?>
               <div class="card mb-4">
                 <div class="card-body">
                   <div class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Informasi Quo</div>
@@ -1219,8 +1344,30 @@
                   </div>
                   <div class="mb-3">
                     <div class="form-group">
-                      <div class="mb-1">Nama Sales</div>
+                      <div class="d-flex justify-content-between">
+                        <div class="mb-1">Nama Sales</div>
+                        <a type="button" onclick="changeSalesButton()" title="ganti Sales" class="editsales"><i class="fas fa-edit"></i></a>
+                      </div>
                       <div class="sideInfo"><?php echo $dataSales['nama']?></div>
+                      <input type="hidden" id="oldSales" value="<?php echo $dataSales['UserId'] ?>" />
+                    </div>
+                    <div class="hidden" id="changeSalesForm">
+                      <div class="form-group">
+                        <div class="mb-1">Nama Sales Baru</div>
+                        <select class="select2-single-placeholder form-control" name="newSales" id="newSales">
+                          <option value="" disabled selected>Pilih</option>
+                          <?php
+                            foreach($salesArray as $data){
+                          ?>
+                          <option value="<?php echo $data['UserId'];?>"><?php echo $data['nama'];?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Keterangan :</label>
+                        <textarea type="text" class="form-control form-control-sm mb-3" name="changeSalesNote" id="changeSalesNote" row="3" maxlength="50"></textarea>
+                      </div>
+                      <input type="button" value="Simpan" name="changeSales" onclick="changeSalesAct(<?php echo $id ?>)" class="btn btn-md btn-primary btn-block">
                     </div>
                   </div>
                 </div>
@@ -1233,8 +1380,32 @@
                     <div class="sideInfo"><?php isset($dataForm['CostingDate']) ? printf(date("d M Y", strtotime($dataForm['CostingDate']))) : printf('-') ?></div>
                   </div>
                   <div class="mb-3">
-                    <div class="mb-1">Nama VM</div>
-                    <div class="sideInfo"><?php isset($dataForm['IdVM']) && $dataForm['IdVM'] != 0 && $dataForm['IdVM'] != '' && $dataForm['IdVM'] != null ? printf($dataVM['nama']) : printf('-') ?></div>
+                    <div class="form-group">
+                      <div class="d-flex justify-content-between">
+                        <div class="mb-1">Nama VM</div>
+                        <a type="button" onclick="changeVmButton()" title="ganti VM" class="editvm"><i class="fas fa-edit"></i></a>
+                      </div>
+                      <div class="sideInfo"><?php isset($dataForm['IdVM']) && $dataForm['IdVM'] != 0 && $dataForm['IdVM'] != '' && $dataForm['IdVM'] != null ? printf($dataVM['nama']) : printf('-') ?></div>
+                      <input type="hidden" id="oldVm" value="<?php echo $dataVM['UserId'] ?>" />
+                    </div>
+                    <div class="hidden" id="changeVmForm">
+                      <div class="form-group">
+                        <div class="mb-1">Nama VM Baru</div>
+                        <select class="select2-single-placeholder form-control" name="newVm" id="newVm">
+                          <option value="" disabled selected>Pilih</option>
+                          <?php
+                            foreach($vmArray as $data){
+                          ?>
+                          <option value="<?php echo $data['UserId'];?>"><?php echo $data['nama'];?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Keterangan :</label>
+                        <textarea type="text" class="form-control form-control-sm mb-3" name="changeVmNote" id="changeVmNote" row="3" maxlength="50"></textarea>
+                      </div>
+                      <input type="button" value="Simpan" name="changeVm" onclick="changeVmAct(<?php echo $id ?>)" class="btn btn-md btn-primary btn-block">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1387,6 +1558,35 @@
                       </div>
                     </div>
                     <!-- <a href="../../config/logout.php" class="btn btn-primary">Logout</a> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal cancel quo -->
+          <div class="modal fade" id="modal_req_cancel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title font-weight-bolder" id="exampleModalLabel">Pembatalan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="text-center mb-4 font-italic">Untuk melakukan pengajuan pembatalan, silahkan masukkan alasan Anda terlebih dahulu</p>
+                  <label for="reason_request_cancel">Alasan Pembatalan</label>
+                  <textarea name="reason_request_cancel" id="reason_request_cancel" class="form-control" rows="5" placeholder="Masukkan alasan pembatalan..."></textarea>
+                  <div class="alert alert-warning d-flex mt-3" role="alert">
+                    <i class="fas fa-exclamation-triangle text-white fa-2x mr-3 mt-2"></i>
+                    <div>
+                      Pengajuan yang Anda kirimkan akan di review oleh Admin terlebih dahulu.
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                  <button type="button" class="btn btn-primary" onclick="updateHdQuoTruckingReqCancel(<?php echo $id ?>)">Simpan</button>
                 </div>
               </div>
             </div>
@@ -1949,6 +2149,334 @@
           }
         });
       }
+
+      getValidateCancelForm = () => {
+        if ($('#reason_request_cancel').val() == '' || $('#reason_request_cancel').val() == null) {
+          toastr.error('Alasan pembatalan harus diisi', 'Required!')
+          return true;
+        }
+        return false;
+      };
+
+      updateHdQuoTruckingReqCancel = (id) => {
+        if (getValidateCancelForm()) {
+          return;
+        }
+
+        let data = {
+          method: 'updateHdQuoTruckingReqCancel',
+          // hdQuoShipment
+          id: id,
+          reason_request_cancel: $('#reason_request_cancel').val(),
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan pembatalan",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+              Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan berhasil diajukan',
+              }).then(() => {
+                window.location.href = '../../../../../view/user/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
+      }
+
+      getValidateApproveCancelForm = () => {
+        if ($('#reason_approve_request_cancel').val() == '' || $('#reason_approve_request_cancel').val() == null) {
+          toastr.error('Alasan harus diisi', 'Required!')
+          return true;
+        }
+        return false;
+      };
+      updateHdQuoTruckingApproveCancel = (id) => {
+        if (getValidateApproveCancelForm()) {
+          return;
+        }
+        let data = {
+          method: 'updateHdQuoTruckingApproveCancel',
+          id: id,
+          note: $('#reason_approve_request_cancel').val()
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan approve",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan berhasil di-approve',
+              }).then(() => {
+                window.location.href = '../../../../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
+      }
+
+
+      getValidateRejectCancelForm = () => {
+        if ($('#reason_reject_request_cancel').val() == '' || $('#reason_reject_request_cancel').val() == null) {
+          toastr.error('Alasan harus diisi', 'Required!')
+          return true;
+        }
+        return false;
+      };
+      updateHdQuoTruckingRejectCancel = (id) => {
+        if (getValidateRejectCancelForm()) {
+          return;
+        }
+        let data = {
+          method: 'updateHdQuoTruckingRejectCancel',
+          id: id,
+          note: $('#reason_reject_request_cancel').val()
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan reject",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan telah di-reject',
+              }).then(() => {
+                window.location.href = '../../../../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
+      }
+
+      getValidateChangeSalesForm = () => {
+        if ($('#newSales').val() == '' || $('#newSales').val() == null) {
+          toastr.error('Sales Baru harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#changeSalesNote').val() == '' || $('#changeSalesNote').val() == null) {
+          toastr.error('Keterangan Ganti Sales Baru harus diisi', 'Required!')
+          return true;
+        }
+        return false;
+      };
+      changeSalesAct = (QuoId) => {
+        if (getValidateChangeSalesForm()) {
+          return;
+        }
+
+        let data = {
+          method: 'changeQuoTruckingSales',
+          id: QuoId,
+          oldSalesId: $('#oldSales').val(),
+          newSalesId: $('#newSales').val(),
+          note: $('#changeSalesNote').val()
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan pergantian sales",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Sales berhasil diubah',
+              }).then(() => {
+                window.location.href = `../../../../../view/admin/quotation/trucking/form/edit.php?id=${QuoId}`;
+              });
+            } else{
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Terjadi kesalahan saat menyimpan data',
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        })
+      }
+
+
+      getValidateChangeVmForm = () => {
+        if ($('#newVm').val() == '' || $('#newVm').val() == null) {
+          toastr.error('Vm Baru harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#changeVmNote').val() == '' || $('#changeVmNote').val() == null) {
+          toastr.error('Keterangan Ganti Vm Baru harus diisi', 'Required!')
+          return true;
+        }
+        return false;
+      };
+      changeVmAct = (QuoId) => {
+        if (getValidateChangeVmForm()) {
+          return;
+        }
+
+        let data = {
+          method: 'changeQuoTruckingVm',
+          id: QuoId,
+          oldVmId: $('#oldVm').val(),
+          newVmId: $('#newVm').val(),
+          note: $('#changeVmNote').val()
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan pergantian VM",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'VM berhasil diubah',
+              }).then(() => {
+                window.location.href = `../../../../../view/admin/quotation/trucking/form/edit.php?id=${QuoId}`;
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Terjadi kesalahan saat menyimpan data',
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        })
+      }
+
+      changeSalesButton = () => {
+        $('#changeSalesForm').toggleClass('hidden');
+      }
+      changeVmButton = () => {
+        $('#changeVmForm').toggleClass('hidden');
+      } 
 
     });
 

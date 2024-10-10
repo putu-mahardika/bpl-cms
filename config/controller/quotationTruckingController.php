@@ -14,48 +14,94 @@
     $tahun = $_GET['year'];
     $array = array();
     $tempArray = array();
-    $query = "SELECT
-        mqt.*,
-        mu.nama AS SalesName,
-        mu1.nama AS VmName,
-        mk.Nama AS VehicleName, 
-        CASE
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
-        END AS CustomerName,
-        CASE 
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
-        END AS Pic,
-        CASE 
-          WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
-        END AS PicPhone,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
-        END AS TotalCosting,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.BudgetingFirstPrice + qdt.BudgetingNextPrice
-        END AS TotalBudgeting,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.PricingFirstPrice + qdt.PricingNextPrice
-        END AS TotalPricing,
-        CASE 
-          WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
-        END AS VendorName,
-        mqst.name AS StatusName,
-        mqst.color AS StatusColor
-    FROM
-      master_quotation_trucking mqt
-        LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
-        LEFT JOIN master_vendor mv on qdt.IdVendor = mv.Id
-        LEFT JOIN master_quo_status mqst on mqt.IdQuoStatus = mqst.Id
-        LEFT JOIN master_customer mc on mqt.IdCustomer = mc.CustId
-        LEFT JOIN master_user mu on mqt.IdSales = mu.UserId
-        LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
-        LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
-    WHERE
-      mqt.IsDelete = 0 and
-      mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
-    ORDER BY 
-      mqt.update_at desc";
+    if ($akses == 'User') {
+      $query = "SELECT
+          mqt.*,
+          mu.nama AS SalesName,
+          mu1.nama AS VmName,
+          mk.Nama AS VehicleName, 
+          CASE
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
+          END AS CustomerName,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
+          END AS Pic,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
+          END AS PicPhone,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
+          END AS TotalCosting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.BudgetingFirstPrice + qdt.BudgetingNextPrice
+          END AS TotalBudgeting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.PricingFirstPrice + qdt.PricingNextPrice
+          END AS TotalPricing,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
+          END AS VendorName,
+          mqst.name AS StatusName,
+          mqst.color AS StatusColor
+      FROM
+        master_quotation_trucking mqt
+          LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
+          LEFT JOIN master_vendor mv on qdt.IdVendor = mv.Id
+          LEFT JOIN master_quo_status mqst on mqt.IdQuoStatus = mqst.Id
+          LEFT JOIN master_customer mc on mqt.IdCustomer = mc.CustId
+          LEFT JOIN master_user mu on mqt.IdSales = mu.UserId
+          LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
+          LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
+      WHERE
+        mqt.IsDelete = 0 and
+        mqt.IdSales = ".$s_id."
+        mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
+      ORDER BY 
+        mqt.update_at desc";
+    } else {
+      $query = "SELECT
+          mqt.*,
+          mu.nama AS SalesName,
+          mu1.nama AS VmName,
+          mk.Nama AS VehicleName, 
+          CASE
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.CustomerNameTemp ELSE mc.nama
+          END AS CustomerName,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICNameTemp ELSE mc.PIC
+          END AS Pic,
+          CASE 
+            WHEN mqt.IdCustomer IS NULL OR mqt.IdCustomer = '0' THEN mqt.PICPhoneTemp ELSE mc.PIC_telp
+          END AS PicPhone,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.CostingFirstPrice + qdt.CostingNextPrice
+          END AS TotalCosting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.BudgetingFirstPrice + qdt.BudgetingNextPrice
+          END AS TotalBudgeting,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE qdt.PricingFirstPrice + qdt.PricingNextPrice
+          END AS TotalPricing,
+          CASE 
+            WHEN mqt.quoDetailVendorId IS NULL THEN NULL ELSE mv.nama
+          END AS VendorName,
+          mqst.name AS StatusName,
+          mqst.color AS StatusColor
+      FROM
+        master_quotation_trucking mqt
+          LEFT JOIN quotation_detail_trucking qdt on mqt.quoDetailVendorId = qdt.Id
+          LEFT JOIN master_vendor mv on qdt.IdVendor = mv.Id
+          LEFT JOIN master_quo_status mqst on mqt.IdQuoStatus = mqst.Id
+          LEFT JOIN master_customer mc on mqt.IdCustomer = mc.CustId
+          LEFT JOIN master_user mu on mqt.IdSales = mu.UserId
+          LEFT JOIN master_user mu1 on mqt.IdVM = mu1.UserId
+          LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
+      WHERE
+        mqt.IsDelete = 0 and
+        mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
+      ORDER BY 
+        mqt.update_at desc";
+    }
     $fetch = mysqli_query($koneksi, $query);
     // $datas = mysqli_fetch_array($fetch);
     while($row = $fetch->fetch_assoc()) {
@@ -187,9 +233,9 @@
       $tripType = $_POST['deliveryType'];
       $deliveryType = $_POST['deliveryType'];
       $query = "INSERT INTO `master_quotation_trucking`
-      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
+      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `CustomerTermsPaymentTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, '$deliveryType', $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$customerPaymentTermsTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, '$deliveryType', $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
       $save = [
         $customerId,
         $customerNameTemp,
@@ -219,9 +265,9 @@
       $detailKotaTujuan = $_POST['detailKotaTujuan0'];
       $tripType = 'singleTrip';
       $query = "INSERT INTO `master_quotation_trucking`
-      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
+      (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `CustomerTermsPaymentTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
       VALUES
-      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
+      (NULL, NULL, '$customerId', '$s_id', '$itemType', '$weight', '$note', '$qty', '$totalArmada', '$tripType', NULL, '1', '$customerNameTemp', '$customerAddressTemp', '$customerPicTemp', '$customerPicPhoneTemp', '$customerPaymentTermsTemp', '$datetime', '$datetime', '1', '0', NULL, NULL, NULL, NULL, $kendaraanId, '$kotaAsalId', '$detailKotaAsal', '$detailKotaTujuan', '$s_id', '$s_name', '$kotaTujuanId1', NULL, NULL, NULL, NULL, NULL);";
       $save = [
         $customerId,
         $customerNameTemp,
@@ -253,11 +299,11 @@
     if ($result) {
       $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
       if ($akses == 'User') {
-        header("location:../../view/user/quotation/trucking/index.php?tahun=<?php echo $datetime?>");
+        header("location:../../view/user/quotation/trucking/index.php?tahun=$year");
       } elseif ($akses == 'Admin') {
-        header("location:../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime?>");
+        header("location:../../view/admin/quotation/trucking/index.php?tahun=$year");
       } else {
-        header("location:../../view/vm/quotation/trucking/index.php?tahun=<?php echo $datetime?>");	
+        header("location:../../view/vm/quotation/trucking/index.php?tahun=$year");	
       }
     } else {
       $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
@@ -335,7 +381,7 @@
           CustomerAddressTemp=$customerAddressTemp,
           PICNameTemp=$customerPicTemp,
           PICPhoneTemp=$customerPicPhoneTemp,
-          CustomerTermsPaymentTemp='$customerPaymentTermsTemp',
+          CustomerTermsPaymentTemp=$customerPaymentTermsTemp,
           TotalArmada='$totalArmada',
           ItemType=$itemType,
           Weight='$weight',
@@ -361,7 +407,7 @@
           CustomerAddressTemp=$customerAddressTemp,
           PICNameTemp=$customerPicTemp,
           PICPhoneTemp=$customerPicPhoneTemp,
-          CustomerTermsPaymentTemp='$customerPaymentTermsTemp',
+          CustomerTermsPaymentTemp=$customerPaymentTermsTemp,
           TotalArmada='$totalArmada',
           ItemType=$itemType,
           Weight='$weight',
@@ -387,7 +433,7 @@
           CustomerAddressTemp=$customerAddressTemp,
           PICNameTemp=$customerPicTemp,
           PICPhoneTemp=$customerPicPhoneTemp,
-          CustomerTermsPaymentTemp='$customerPaymentTermsTemp',
+          CustomerTermsPaymentTemp=$customerPaymentTermsTemp,
           TotalArmada='$totalArmada',
           ItemType=$itemType,
           Weight='$weight',
@@ -517,6 +563,26 @@
     $resp = updateBudgetingQuotationDetailTrucking($koneksi, $_POST['hdQuotationId']);
     echo $resp;
   }
+  elseif ($_POST['method'] == 'updateHdQuoTruckingReqCancel') {
+    $resp = updateHdQuoTruckingReqCancel($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'updateHdQuoTruckingApproveCancel') {
+    $resp = updateHdQuoTruckingApproveCancel($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'updateHdQuoTruckingRejectCancel') {
+    $resp = updateHdQuoTruckingRejectCancel($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'changeQuoTruckingSales') {
+    $resp = updateHdQuoTruckingSales($koneksi, $_POST['id']);
+    echo $resp;
+  }
+  elseif ($_POST['method'] == 'changeQuoTruckingVm') {
+    $resp = updateHdQuoTruckingVm($koneksi, $_POST['id']);
+    echo $resp;
+  }
 
 
   function insertDetailQuo ($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi) {
@@ -544,7 +610,7 @@
     print_r($vendor);
     $newStatus = $statusId;
     if (count($vendor) > 0) {
-      $statusTemp = null;
+      $statusTemp = $statusId;
       foreach ($vendor as $key => $data) {
         $statusTempTemp = null;
         $queryCheck = "SELECT * FROM quotation_detail_trucking WHERE Id='$idDetailQuo[$key]' LIMIT 1";
@@ -582,19 +648,19 @@
         } else {
           $statusTempTemp = $statusId;
         }
-        echo $statusTempTemp;
+        // echo $statusTempTemp;
 
-        echo $statusTemp;
+        // echo $statusTemp;
 
 
         $query = "UPDATE quotation_detail_trucking SET IdVendor='$data', CostingFirstPrice='$costingFirst[$key]', CostingNextPrice='$costingNext[$key]', CostingTotalPrice=fn_sum_calculation('$quoId', '$costingFirst[$key]', '$costingNext[$key]', FALSE), BudgetingFirstPrice='$budgetingFirst[$key]', BudgetingNextPrice='$budgetingNext[$key]', BudgetingTotalPrice='$budgetingTotal[$key]', PricingFirstPrice='$pricingFirst[$key]', PricingNextPrice='$pricingNext[$key]', PricingTotalPrice=fn_sum_calculation('$quoId', '$pricingFirst[$key]', '$pricingNext[$key]', FALSE), LastUpdatedById='$s_id' WHERE Id='$idDetailQuo[$key]'";
-        echo $query;
+        // echo $query;
         // print_r($query);
         $result = mysqli_query($koneksi, $query);
         
       }
       $newStatus = $statusTemp;
-      // echo $newStatus;
+      echo $newStatus;
     }
     return $newStatus;
   }
@@ -609,4 +675,150 @@
     // return json_encode(['status' => 200, 'message' => 'Success']);
     return json_encode(['status' => 200, 'message' => 'Success']);
   }
+
+  function updateHdQuoTruckingReqCancel($koneksi, $hdQuotationId)
+  {
+    $id = $hdQuotationId;
+    $reason_request_cancel = $_POST['reason_request_cancel'];
+    $last_updated_by_id = $_SESSION['id'];
+    $last_updated_by_name = $_SESSION['nama'];
+    // print_r($_POST);die();
+
+    $query = "UPDATE `master_quotation_trucking` SET 
+          `IdQuoStatus` = 12, 
+          `update_at` = '" . date('Y-m-d H:i:s') . "',
+          `requestCancelDate` = '" . date('Y-m-d H:i:s') . "',
+          `reason_request_cancel` = '$reason_request_cancel',
+          `LastUpdatedById` = '$last_updated_by_id',
+          `LastUpdatedByName` = '$last_updated_by_name'
+      WHERE `id` = $id;";
+      // print_r($query);
+      // print_r($query);die();
+      
+      $result = mysqli_query($koneksi, $query);
+      // return json_encode(['query' => $query]);
+    
+    if($result) {
+      $stmt = $koneksi->prepare("CALL sp_manage_request_cancel_quotation(?,?,?,?,?)");
+      $stmt->bind_param("sssii", "T", "Q", $reason_request_cancel, $s_id, $hdQuotationId);
+      if (!$stmt->execute()) {
+        die("Stored procedure execution failed: " . $stmt->error);
+      }
+      return json_encode(['status' => 200, 'message' => 'Success']);
+    } else {
+      return json_encode(['status' => 500, 'message' => 'Failed']);
+    }
+  }
+
+  function updateHdQuoTruckingApproveCancel($koneksi, $hdQuotationId)
+  {
+    $id = $hdQuotationId;
+    $last_updated_by_id = $_SESSION['id'];
+    $last_updated_by_name = $_SESSION['nama'];
+    $note = $_POST['note'];
+    // print_r($_POST);die();
+
+    $query = "UPDATE `master_quotation_trucking` SET 
+        `IdQuoStatus` = 13, 
+        `update_at` = '" . date('Y-m-d H:i:s') . "',
+        `approved_request_date` = '" . date('Y-m-d H:i:s') . "',
+        `LastUpdatedById` = '$last_updated_by_id',
+        `LastUpdatedByName` = '$last_updated_by_name'
+    WHERE `id` = $id;";
+    // print_r($query);die();
+    
+    $result = mysqli_query($koneksi, $query);
+    
+    if($result) {
+      $stmt = $koneksi->prepare("CALL sp_manage_request_cancel_quotation(?,?,?,?,?)");
+      $stmt->bind_param("sssii", "T", "A", $note, $s_id, $hdQuotationId);
+      if (!$stmt->execute()) {
+        die("Stored procedure execution failed: " . $stmt->error);
+      }
+      return json_encode(['status' => 200, 'message' => 'Success']);
+    } else {
+      return json_encode(['status' => 500, 'message' => 'Failed']);
+    }
+  }
+
+  function updateHdQuoTruckingRejectCancel($koneksi, $hdQuotationId)
+  {
+    $id = $hdQuotationId;
+    $last_updated_by_id = $_SESSION['id'];
+    $last_updated_by_name = $_SESSION['nama'];
+    $note = $_POST['note'];
+    // print_r($_POST);die();
+
+    $query = "UPDATE `master_quotation_trucking` SET 
+          `IdQuoStatus` = 9, 
+          `update_at` = '" . date('Y-m-d H:i:s') . "',
+          `rejectedRequestDate` = '" . date('Y-m-d H:i:s') . "',
+          `LastUpdatedById` = '$last_updated_by_id',
+          `LastUpdatedByName` = '$last_updated_by_name'
+      WHERE `id` = $id;";
+    // print_r($query);die();
+    
+    $result = mysqli_query($koneksi, $query);
+    
+    if($result) {
+      $stmt = $koneksi->prepare("CALL sp_manage_request_cancel_quotation(?,?,?,?,?)");
+      $stmt->bind_param("sssii", "T", "R", $note, $s_id, $hdQuotationId);
+      if (!$stmt->execute()) {
+        die("Stored procedure execution failed: " . $stmt->error);
+      }
+      return json_encode(['status' => 200, 'message' => 'Success']);
+    } else {
+      return json_encode(['status' => 500, 'message' => 'Failed']);
+    }
+  }
+
+  function updateHdQuoTruckingSales($koneksi, $hdQuotationId)
+    {
+      $id = $hdQuotationId;
+      $sales_id = $_POST['newSalesId'];
+      $last_updated_by_id = $_SESSION['id'];
+      $last_updated_by_name = $_SESSION['nama'];
+      // print_r($_POST);die();
+
+      $query = "UPDATE `master_quotation_trucking` SET 
+            `IdSales` = '$sales_id', 
+            `update_at` = '" . date('Y-m-d H:i:s') . "',
+            `LastUpdatedById` = '$last_updated_by_id',
+            `LastUpdatedByName` = '$last_updated_by_name'
+        WHERE `Id` = $id;";
+      // print_r($query);die();
+      
+      $result = mysqli_query($koneksi, $query);
+      
+      if($result) {
+        return json_encode(['status' => 200, 'message' => 'Success']);
+      } else {
+        return json_encode(['status' => 500, 'message' => 'Failed']);
+      }
+    }
+
+    function updateHdQuoTruckingVM($koneksi, $hdQuotationId)
+    {
+      $id = $hdQuotationId;
+      $vm_id = $_POST['newVmId'];
+      $last_updated_by_id = $_SESSION['id'];
+      $last_updated_by_name = $_SESSION['nama'];
+      // print_r($_POST);die();
+
+      $query = "UPDATE `master_quotation_trucking` SET 
+            `IdVM` = '$vm_id', 
+            `update_at` = '" . date('Y-m-d H:i:s') . "',
+            `LastUpdatedById` = '$last_updated_by_id',
+            `LastUpdatedByName` = '$last_updated_by_name'
+        WHERE `Id` = $id;";
+      // print_r($query);die();
+      
+      $result = mysqli_query($koneksi, $query);
+      
+      if($result) {
+        return json_encode(['status' => 200, 'message' => 'Success']);
+      } else {
+        return json_encode(['status' => 500, 'message' => 'Failed', 'query' => $query]);
+      }
+    }
 ?>

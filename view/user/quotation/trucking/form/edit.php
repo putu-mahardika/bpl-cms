@@ -126,6 +126,9 @@
   <link href="../../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
   <link href="../../../../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../../../vendor/toastr/build/toastr.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../../../vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../../../../css/new-style.css" rel="stylesheet">
   <link rel="stylesheet" href="./infocard.css">
@@ -459,7 +462,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-start mb-4">
-            <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+            <a href="../index.php?tahun=<?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
             <h1 class="h3 mb-0 text-gray-800">Form Quotation trucking</h1>
             <!--<ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
@@ -1180,7 +1183,7 @@
                           <div class="col-lg-10">
                             <div class="row" style="height: 100%;">
                               <div class="col-lg-4">
-                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >Batal</button>
+                                <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> data-toggle="modal" data-target="#modal_req_cancel" >Pembatalan</button>
                               </div>
                               <div class="col-lg-8">
                                 <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="editQuoTruckingAdmin" id="editQuoTruckingAdmin" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >
@@ -1414,6 +1417,36 @@
               </div>
             </div>
           </div>
+
+          <!-- Modal cancel quo -->
+          <div class="modal fade" id="modal_req_cancel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title font-weight-bolder" id="exampleModalLabel">Pembatalan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="text-center mb-4 font-italic">Untuk melakukan pengajuan pembatalan, silahkan masukkan alasan Anda terlebih dahulu</p>
+                  <label for="reason_request_cancel">Alasan Pembatalan</label>
+                  <textarea name="reason_request_cancel" id="reason_request_cancel" class="form-control" rows="5" placeholder="Masukkan alasan pembatalan..."></textarea>
+                  <div class="alert alert-warning d-flex mt-3" role="alert">
+                    <i class="fas fa-exclamation-triangle text-white fa-2x mr-3 mt-2"></i>
+                    <div>
+                      Pengajuan yang Anda kirimkan akan di review oleh Admin terlebih dahulu.
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                  <button type="button" class="btn btn-primary" onclick="updateHdQuoTruckingReqCancel(<?php echo $id ?>)">Simpan</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
         <!---Container Fluid-->
       </div>
@@ -1454,6 +1487,9 @@
   <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
   <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
   <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+  <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
+  <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
   <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
 
@@ -1885,6 +1921,68 @@
         sumBudgeting = maxCosting + (maxCosting*0.15);
         $(".budgeting-first").val(sumBudgeting);
         $(".budgeting-total").val(sumBudgeting);
+      }
+
+      getValidateCancelForm = () => {
+        if ($('#reason_request_cancel').val() == '' || $('#reason_request_cancel').val() == null) {
+          toastr.error('Alasan pembatalan harus diisi', 'Required!')
+          return true;
+        }
+
+        return false;
+      };
+
+      updateHdQuoTruckingReqCancel = (id) => {
+        if (getValidateCancelForm()) {
+          return;
+        }
+
+        let data = {
+          method: 'updateHdQuoTruckingReqCancel',
+          // hdQuoShipment
+          id: id,
+          reason_request_cancel: $('#reason_request_cancel').val(),
+        };
+
+        console.log(`DATA: ${JSON.stringify(data)}`);
+
+        Swal.fire({
+          title: "Loading...",
+          html: "Sedang melakukan pembatalan",
+          timerProgressBar: true,
+          allowOutsideClick: false, // Tidak bisa ditutup dengan mengklik di luar
+          allowEscapeKey: false, // Tidak bisa ditutup dengan tombol Escape
+          didOpen: () => {
+              Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          url: '../../../../../config/controller/quotationTruckingController.php',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            console.log(`RESP: ${response}`);
+            let resp = JSON.parse(response);
+            console.log(`RESP: ${resp.data}`);
+            if (resp.status == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Pembatalan berhasil diajukan',
+              }).then(() => {
+                window.location.href = '../../../../../view/user/quotation/trucking/index.php?tahun=<?php echo $datetime?>';
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        });
       }
 
     });

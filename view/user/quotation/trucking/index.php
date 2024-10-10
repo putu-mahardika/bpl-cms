@@ -29,6 +29,7 @@
   <link href="../../../../css/ruang-admin.min.css" rel="stylesheet">
   <link href="../../../../vendor/datatables1/datatables.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css">
+  <link href="../../../../css/new-style.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -77,9 +78,9 @@
         <div id="collapseQuoTrucking" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quo Trucking</h6>
-            <a class="collapse-item active" href="../../quotation/trucking/index.php?tahun=<?php echo $datetime?>?tahun=<?php echo $datetime?>">List Quo Trucking</a>
+            <a class="collapse-item active" href="../../quotation/trucking/index.php?tahun=<?php echo $datetime?>">List Quo Trucking</a>
             <h6 class="collapse-header">Quo Shipment</h6>
-            <a class="collapse-item active" href="../../quotation/shipment/index.php?tahun=<?php echo $yearNow?>">List Quo Shipment</a>
+            <a class="collapse-item active" href="../../quotation/shipment/index.php?tahun=<?php echo $datetime?>">List Quo Shipment</a>
           </div>
         </div>
       </li>
@@ -369,22 +370,22 @@
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
-                        <th>No</th>
-                        <th>Tanggal Quo</th>
-                        <!-- <th>Tanggal Last Update</th> -->
-                        <th>Status</th>
-                        <th>No PO</th>
-                        <th>Vendor Terpilih</th>
-                        <th>Nama Perusahaan</th>
-                        <th>PIC</th>
-                        <!-- <th>No Telp PIC</th> -->
-                        <th>Sales</th>
-                        <!-- <th>Jenis Barang</th> -->
-                        <th>Tonase</th>
-                        <th>Total Armada</th>
-                        <!-- <th>Total Pricing</th> -->
-                        <th>Jenis Trip</th>
-                        <th>Action</th>
+                        <th class="text-nowrap" style="font-size: 14px;">No</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Tanggal Quo</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Terakhir Update</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Status</th>
+                        <th class="text-nowrap" style="font-size: 14px;">No PO</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Vendor Terpilih</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Nama Perusahaan</th>
+                        <th class="text-nowrap" style="font-size: 14px;">PIC</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">No Telp PIC</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Sales</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">Jenis Barang</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Tonase</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Total Armada</th>
+                        <!-- <th class="text-nowrap" style="font-size: 14px;">Total Pricing</th> -->
+                        <th class="text-nowrap" style="font-size: 14px;">Jenis Trip</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Action</th>
                       </tr>
                     </thead>
                   
@@ -468,7 +469,7 @@
         },
         columns: [
           { data: 'noQuotation' },
-          // { data: 'createDate' },
+          { data: 'createDate' },
           { data: 'lastUpdate' },
           { render: function (data, type, row, meta) {
               return `<div style="font-size: 12px; padding:5px 10px;border-radius:10px;color:white;background:`+row.statusColor+`">`+ row.status +`</div>`;
