@@ -54,7 +54,7 @@
           LEFT JOIN master_kendaraan mk on mqt.IdKendaraan = mk.Id
       WHERE
         mqt.IsDelete = 0 and
-        mqt.IdSales = ".$s_id."
+        mqt.IdSales = ".$s_id." and
         mqt.create_date between '".$tahun."-01-01 00:00:00' and '".$tahun."-12-31 23:59:59'
       ORDER BY 
         mqt.update_at desc";
@@ -102,6 +102,7 @@
       ORDER BY 
         mqt.update_at desc";
     }
+    // echo $query;
     $fetch = mysqli_query($koneksi, $query);
     // $datas = mysqli_fetch_array($fetch);
     while($row = $fetch->fetch_assoc()) {
@@ -149,8 +150,8 @@
     // print_r($array);
     echo json_encode($array);
   }
-  else if (isset($_POST['inputQuoTrucking'])) {
-    print_r($_POST);
+  else if ($_POST['method'] == 'inputQuoTrucking') {
+    // print_r($_POST);
     $customerId = null;
     $customerNameTemp = null;
     $customerAddressTemp = null;
@@ -183,7 +184,7 @@
       $customerPaymentTermsTemp = $_POST['customerPaymentTermsTemp'];
     }
     
-    $kendaraanId = isset($_POST['kendaraan']) && $_POST['kendaraan'] !== '' ? printf("'".$_POST['kendaraan']."'") : 'null';
+    $kendaraanId = isset($_POST['kendaraan']) && $_POST['kendaraan'] !== '' ? $_POST['kendaraan'] : 'null';
     $kotaAsalId = $_POST['kotaAsal'];
     $note = $_POST['keterangan'];
     $weight = $_POST['weight'];
@@ -192,11 +193,11 @@
     $selectedTab = $_POST['selectedTab'];
 
     if ($_POST['selectedTab'] == 1) {
-      $kotaTujuanId1 = $_POST['kotaTujuan1'];
+      $kotaTujuanId1 = $_POST['kotaTujuan'];
       $kotaTujuanId2 = $_POST['kotaTujuan2'];
       $kotaTujuanId3 = $_POST['kotaTujuan3'];
-      $detailKotaAsal = $_POST['detailKotaAsal1'];
-      $detailKotaTujuan = $_POST['detailKotaTujuan1'];
+      $detailKotaAsal = $_POST['detailKotaAsal'];
+      $detailKotaTujuan = $_POST['detailKotaTujuan'];
       $tripType = 'multiTrip';
       $query = "INSERT INTO `master_quotation_trucking`
       (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `CustomerTermsPaymentTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
@@ -226,10 +227,10 @@
         $customerPaymentTermsTemp //20
       ];  
     } elseif ($_POST['selectedTab'] == 2) {
-      $kotaTujuanId1 = $_POST['kotaTujuan1'];
+      $kotaTujuanId1 = $_POST['kotaTujuan'];
       $qty = $_POST['qty'];
-      $detailKotaAsal = $_POST['detailKotaAsal2'];
-      $detailKotaTujuan = $_POST['detailKotaTujuan2'];
+      $detailKotaAsal = $_POST['detailKotaAsal'];
+      $detailKotaTujuan = $_POST['detailKotaTujuan'];
       $tripType = $_POST['deliveryType'];
       $deliveryType = $_POST['deliveryType'];
       $query = "INSERT INTO `master_quotation_trucking`
@@ -260,9 +261,9 @@
         $customerPaymentTermsTemp
       ];
     } else {
-      $kotaTujuanId1 = $_POST['kotaTujuan1'];
-      $detailKotaAsal = $_POST['detailKotaAsal0'];
-      $detailKotaTujuan = $_POST['detailKotaTujuan0'];
+      $kotaTujuanId1 = $_POST['kotaTujuan'];
+      $detailKotaAsal = $_POST['detailKotaAsal'];
+      $detailKotaTujuan = $_POST['detailKotaTujuan'];
       $tripType = 'singleTrip';
       $query = "INSERT INTO `master_quotation_trucking`
       (`Id`, `NoQuotation`, `IdCustomer`, `IdSales`, `ItemType`, `Weight`, `note`, `qty`, `TotalArmada`, `TripType`, `IdVM`, `IdQuoStatus`, `CustomerNameTemp`, `CustomerAddressTemp`, `PICNameTemp`, `PICPhoneTemp`, `CustomerTermsPaymentTemp`, `create_date`, `update_at`, `IsActive`, `IsDelete`, `delete_at`, `budgeting_date`, `quoDetailVendorId`, `deliveryTypeName`, `IdKendaraan`, `IdPickupCity`, `PickupNote`, `DestinationNote`, `LastUpdatedById`, `LastUpdatedByName`, `IdDestinationCity1`, `IdDestinationCity2`, `IdDestinationCity3`, `IdDestinationCity4`, `IdDestinationCity5`, `IdDestinationCity6`)
@@ -293,28 +294,33 @@
       ];
     }
     // print_r($save);
-    echo $query;
+    // echo $query;
     $result = mysqli_query($koneksi, $query);
     // echo $result;
-    if ($result) {
-      $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
-      if ($akses == 'User') {
-        header("location:../../view/user/quotation/trucking/index.php?tahun=$year");
-      } elseif ($akses == 'Admin') {
-        header("location:../../view/admin/quotation/trucking/index.php?tahun=$year");
-      } else {
-        header("location:../../view/vm/quotation/trucking/index.php?tahun=$year");	
-      }
+    // if ($result) {
+    //   $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';		
+    //   if ($akses == 'User') {
+    //     header("location:../../view/user/quotation/trucking/index.php?tahun=$year");
+    //   } elseif ($akses == 'Admin') {
+    //     header("location:../../view/admin/quotation/trucking/index.php?tahun=$year");
+    //   } else {
+    //     header("location:../../view/vm/quotation/trucking/index.php?tahun=$year");	
+    //   }
+    // } else {
+    //   $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
+    //   $_SESSION['id_pesan1'] = $save;
+    //   if ($akses == 'User') {
+    //     header("location:../../view/user/quotation/trucking/form/input.php");
+    //   } elseif ($akses == 'Admin') {
+    //     header("location:../../view/admin/quotation/trucking/form/input.php");
+    //   } else {
+    //     header("location:../../view/vm/quotation/trucking/form/input.php");
+    //   }
+    // }
+    if($result) {
+      echo json_encode(['status' => 200, 'message' => 'Success']);
     } else {
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal ditambahkan !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';			
-      $_SESSION['id_pesan1'] = $save;
-      if ($akses == 'User') {
-        header("location:../../view/user/quotation/trucking/form/input.php");
-      } elseif ($akses == 'Admin') {
-        header("location:../../view/admin/quotation/trucking/form/input.php");
-      } else {
-        header("location:../../view/vm/quotation/trucking/form/input.php");
-      }
+      echo json_encode(['status' => 500, 'message' => 'Failed']);
     }
   }
 

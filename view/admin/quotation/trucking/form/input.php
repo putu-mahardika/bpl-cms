@@ -50,7 +50,11 @@
   <link href="../../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
   <link href="../../../../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../../../vendor/toastr/build/toastr.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../../../vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css">
   <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../../../../../css/new-style.css" rel="stylesheet">
   <style>
     .bg-lightGrey {
       background-color: #f1f1f1;
@@ -476,21 +480,21 @@
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label>Jumlah Armada</label>
-                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $save[5] ?>" required>
+                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" id="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $save[5] ?>" required>
                             </div>
                             <div class="form-group">
                               <label>Jenis Barang Bawaan</label>
-                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $save[6] ?>" required>
+                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" id="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $save[6] ?>" required>
                             </div>
                             <div class="form-group">
                               <label>Total Berat (Kg) KGM/CBM</label>
-                              <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $save[7] ?>" required>
+                              <input type="number" class="form-control form-control-sm mb-3" name="weight" id="weight" placeholder="Masukkan total berat" min="1" value="<?php echo $save[7] ?>" required>
                             </div>
                           </div>
                         </div>
                         <div class="form-group">
                           <label>Keterangan :</label>
-                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"><?php echo $save[8] ?></textarea>
+                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" minlength="10" maxlength="100"><?php echo $save[8] ?></textarea>
                         </div>
                       </div>
                       <div class="mb-3">
@@ -528,7 +532,7 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                          <select class="form-control" name="kendaraan" id="kendaraan1">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($kendaraanArray as $data){
@@ -546,7 +550,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal1">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -582,10 +586,10 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>    
                                         </td>
                                       </tr>
                                     </tbody>
@@ -610,7 +614,7 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                          <select class="form-control" name="kendaraan" id="kendaraan2">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($kendaraanArray as $data){
@@ -628,7 +632,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal2">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -646,7 +650,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan2-1">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -664,7 +668,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2">
+                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2-2">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -682,7 +686,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan3">
+                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan2-3">
                                           <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -700,10 +704,10 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>    
                                         </td>
                                       </tr>
                                     </tbody>
@@ -724,7 +728,7 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="deliveryType" id="kendaraan">
+                                          <select class="form-control" name="deliveryType" id="deliveryType">
                                             <option value="" disabled <?php $save[19] == '' ? printf('selected') : printf('') ?>>Pilih</option>
                                             <option value="kgm" <?php $save[19] == 'kgm' ? printf('selected') : printf('') ?>>KGM</option>
                                             <option value="cbm" <?php $save[19] == 'cbm' ? printf('selected') : printf('') ?>>CBM</option>
@@ -734,7 +738,7 @@
                                           <input type="number" class="form-control form-control-sm mb-3" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $save[11] ?>">
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal3">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -752,7 +756,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan3">
                                             <option value="" disabled>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -770,10 +774,10 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal2" id="detailKotaAsal3" minlength="3" maxlength="100"><?php echo $save[16] ?></textarea>    
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan2" id="detailKotaTujuan3" minlength="3" maxlength="100"><?php echo $save[17] ?></textarea>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -796,7 +800,7 @@
                                 <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button">Batal</button>
                               </div>
                               <div class="col-lg-8">
-                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="inputQuoTrucking" >
+                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="button" value="Simpan" name="inputQuoTrucking" onclick="onSubmit()" >
                               </div>
                             </div>
                           </div>
@@ -895,21 +899,21 @@
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label>Jumlah Armada</label>
-                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" required>
+                              <input type="number" class="form-control form-control-sm mb-3" name="totalArmada" id="totalArmada" placeholder="Masukkan jumlah armada" min="1" required>
                             </div>
                             <div class="form-group">
                               <label>Jenis Barang Bawaan</label>
-                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" required>
+                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" id="itemType" placeholder="Masukkan jenis barang bawaan" required>
                             </div>
                             <div class="form-group">
                               <label>Total Berat (Kg) KGM/CBM</label>
-                              <input type="number" class="form-control form-control-sm mb-3" name="weight" placeholder="Masukkan total berat" min="1" required>
+                              <input type="number" class="form-control form-control-sm mb-3" name="weight" id="weight" placeholder="Masukkan total berat" min="1" required>
                             </div>
                           </div>
                         </div>
                         <div class="form-group">
                           <label>Keterangan :</label>
-                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"></textarea>
+                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" minlength="3" maxlength="100"></textarea>
                         </div>
                       </div>
                       <div class="mb-3">
@@ -947,7 +951,7 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                          <select class="form-control" name="kendaraan" id="kendaraan1">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($kendaraanArray as $data){
@@ -962,7 +966,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal1">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -992,10 +996,10 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal0" id="detailKotaAsal1" minlength="3" maxlength="100"></textarea>    
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan0" id="detailKotaTujuan1" minlength="3" maxlength="100"></textarea>    
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1020,7 +1024,7 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="kendaraan" id="kendaraan">
+                                          <select class="form-control" name="kendaraan" id="kendaraan2">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($kendaraanArray as $data){
@@ -1035,7 +1039,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal2">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -1050,7 +1054,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan2-1">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -1065,7 +1069,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2">
+                                          <select class="form-control" name="kotaTujuan2" id="kotaTujuan2-2">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -1080,7 +1084,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan3">
+                                          <select class="form-control" name="kotaTujuan3" id="kotaTujuan2-3">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -1095,10 +1099,10 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal1" id="detailKotaAsal2" minlength="3" maxlength="100"></textarea>    
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan1" id="detailKotaTujuan2" minlength="3" maxlength="100"></textarea>    
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1119,7 +1123,7 @@
                                     <tbody>
                                       <tr>
                                         <td>
-                                          <select class="form-control" name="deliveryType" id="kendaraan" style="width: 150px;">
+                                          <select class="form-control" name="deliveryType" id="deliveryType" style="width: 150px;">
                                             <option value="" disabled selected>Pilih</option>
                                             <option value="kgm">KGM</option>
                                             <option value="cbm">CBM</option>
@@ -1129,7 +1133,7 @@
                                           <input type="number" class="form-control form-control-sm mb-3" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="0">
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaAsal" id="kotaAsal">
+                                          <select class="form-control" name="kotaAsal" id="kotaAsal3">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -1144,7 +1148,7 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan1">
+                                          <select class="form-control" name="kotaTujuan1" id="kotaTujuan3">
                                             <option value="" disabled selected>Pilih</option>
                                             <?php
                                               foreach($cityArray as $data){
@@ -1159,10 +1163,10 @@
                                           </select>
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"></textarea>    
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaAsal3" id="detailKotaAsal3" minlength="3" maxlength="100"></textarea>    
                                         </td>
                                         <td>
-                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"></textarea>
+                                          <textarea type="text" class="form-control form-control-sm mb-3" name="detailKotaTujuan3" id="detailKotaTujuan3" minlength="3" maxlength="100"></textarea>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1185,7 +1189,7 @@
                                 <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button">Batal</button>
                               </div>
                               <div class="col-lg-8">
-                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="inputQuoTrucking" >
+                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="button" value="Simpan" name="inputQuoTrucking" onclick="onSubmit()">
                               </div>
                             </div>
                           </div>
@@ -1193,17 +1197,6 @@
                       </div>
                     </div>
                   </form>
-                  <!-- <div class="mb-3">
-                    <p class="mb-3" style="font-size: 18px; font-weight: 700; color: #6E6E6E;">Riwayat Perubahan</p>
-                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                      <thead class="thead-light">
-                        <tr>
-                          <th style="width: 300px;">Tanggal</th>
-                          <th>Keterangan</th>
-                        </tr>
-                      </thead>
-                    </table>
-                  </div> -->
                 </div>
                 <?php } ?>
               </div>
@@ -1312,6 +1305,9 @@
   <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
   <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
   <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+  <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
+  <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
   <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
 
@@ -1371,6 +1367,177 @@
         }
       })
     });
+
+    validateForm = () => {
+      if ($('#customerCheck').is(':checked')) {
+        if ($('#customerTempName').val() == '') {
+          toastr.error('Nama Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerAddressTemp').val() == '') {
+          toastr.error('Alamat Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerPicTemp').val() == '') {
+          toastr.error('PIC Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerPicPhoneTemp').val() == '') {
+          toastr.error('Telp PIC Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerPcustomerPaymentTermsTempicPhoneTemp').val() == '') {
+          toastr.error('Payment Terms Customer harus diisi', 'Required!')
+          return true;
+        }
+      } else {
+        if ($('#customer').val() == '' || $('#customer').val() == null) {
+          toastr.error('Customer harus dipilih', 'Required!')
+          return true;
+        }
+      }
+
+      if ($('#totalArmada').val() == '' || $('#totalArmada').val() == 0) {
+        toastr.error('Total Armada harus diisi', 'Required!')
+        return true;
+      }
+      if ($('#itemType').val() == '') {
+        toastr.error('Jenis Barang Bawaan harus diisi', 'Required!')
+        return true;
+      }
+      if ($('#weight').val() == '' || $('#weight').val() == 0) {
+        toastr.error('Total Berat harus diisi', 'Required!')
+        return true;
+      }
+      if ($('#keterangan').val() == '') {
+        toastr.error('Keterangan harus diisi', 'Required!')
+        return true;
+      }
+
+      if ($('#selectedTab').val() != '' || !$('#selectedTab') != null) { 
+        if ($('#selectedTab').val() == 0) {
+          console.log('xxx');
+          
+          if ($('#kendaraan1').val() == '' || $('#kendaraan1').val() == null) {
+            toastr.error('Jenis Kendaraan harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaAsal1').val() == '' || $('#kotaAsal1').val() == null) {
+            toastr.error('Kota Asal harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaTujuan1').val() == '' || $('#kotaTujuan1').val() == null) {
+            toastr.error('Kota Tujuan harus dipilih', 'Required!')
+            return true;
+          }
+        } else if ($('#selectedTab').val() == 1) {
+          console.log('yyy');
+          if ($('#kendaraan2').val() == '' || $('#kendaraan2').val() == null) {
+            toastr.error('Jenis Kendaraan harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaAsal2').val() == '' || $('#kotaAsal2').val() == null) {
+            toastr.error('Kota Asal harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaTujuan2-1').val() == '' || $('#kotaTujuan2-1').val() == null) {
+            toastr.error('Kota Tujuan harus dipilih', 'Required!')
+            return true;
+          }
+        } else if ($('#selectedTab').val() == 2) {
+          console.log('zzz');
+          if ($('#deliveryType').val() == '' || $('#deliveryType').val() == null) {
+            toastr.error('Jenis Kendaraan harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#qty').val() == '' || $('#qty').val() == 0) {
+            toastr.error('Qty First harus diisi', 'Required!')
+            return true;
+          }
+          if ($('#kotaAsal3').val() == '' || $('#kotaAsal3').val() == null) {
+            toastr.error('Kota Asal harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaTujuan3').val() == '' || $('#kotaTujuan3').val() == null) {
+            toastr.error('Kota Tujuan harus dipilih', 'Required!')
+            return true;
+          }
+        }
+      }
+      
+    }
+
+    onSubmit = () => {
+      console.log('tab', $('#selectedTab').val());
+      
+      if (validateForm()) {
+        return;
+      }
+
+      let data = {
+        method: 'inputQuoTrucking',
+        customer: $('#customer').val(),
+        customerNameTemp: $('#customerTempName').val(),
+        customerAddressTemp: $('#customerAddressTemp').val(),
+        customerPicTemp: $('#customerPicTemp').val(),
+        customerPicPhoneTemp: $('#customerPicPhoneTemp').val(),
+        customerPaymentTermsTemp: $('#customerPaymentTermsTemp').val(),
+        totalArmada: $('#totalArmada').val(),
+        itemType: $('#itemType').val(),
+        weight: $('#weight').val(),
+        keterangan: $('#keterangan').val(),
+        selectedTab: $('#selectedTab').val(),
+        kendaraan: $('#selectedTab').val() == 0 ? $('#kendaraan1').val() : $('#selectedTab').val() == 1 ? $('#kendaraan2').val() : null,
+        deliveryType: $('#selectedTab').val() == 2 ? $('#deliveryType').val() : null,
+        qty: $('#qty').val(),
+        kotaAsal: $('#selectedTab').val() == 0 ? $('#kotaAsal1').val() : $('#selectedTab').val() == 1 ? $('#kotaAsal2').val() : $('#kotaAsal3').val(),
+        kotaTujuan: $('#selectedTab').val() == 0 ? $('#kotaTujuan1').val() : $('#selectedTab').val() == 1 ? $('#kotaTujuan2-1').val() : $('#kotaTujuan3').val(),
+        kotaTujuan2: $('#selectedTab').val() == 1 ? $('#kotaTujuan2-2').val() : null,
+        kotaTujuan3: $('#selectedTab').val() == 1 ? $('#kotaTujuan2-3').val() : null,
+        detailKotaAsal: $('#selectedTab').val() == 0 ? $('#detailKotaAsal1').val() : $('#selectedTab').val() == 1 ? $('#detailKotaAsal2-1').val() : $('#detailKotaAsal3').val(),
+        detailKotaTujuan: $('#selectedTab').val() == 0 ? $('#detailKotaTujuan1').val() : $('#selectedTab').val() == 1 ? $('#detailKotaTujuan2-1').val() : $('#detailKotaTujuan3').val(),
+      }
+      console.log('data', data);
+      
+      
+      Swal.fire({
+        title: "Loading...",
+        html: "Sedang menyimpan data",
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      $.ajax({
+        url: '../../../../../config/controller/quotationTruckingController.php',
+        type: 'POST',
+        data: data,
+        success: function(response) {
+          console.log(`RESP: ${response}`);
+          let resp = JSON.parse(response);
+          console.log(`RESP: ${resp.data}`);
+          if (resp.status == 200) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: 'Data berhasil disimpan',
+            }).then(() => {
+              window.location.href = '../../../../../view/admin/quotation/trucking/index.php?tahun=<?php echo $datetime ?>';
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Terjadi kesalahan saat menyimpan data',
+          });
+        }
+      });
+    }
   </script>
 
 </body>

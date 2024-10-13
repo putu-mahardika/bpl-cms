@@ -385,6 +385,7 @@
                         <th class="text-nowrap" style="font-size: 14px;">Total Armada</th>
                         <!-- <th class="text-nowrap" style="font-size: 14px;">Total Pricing</th> -->
                         <th class="text-nowrap" style="font-size: 14px;">Jenis Trip</th>
+                        <th class="text-nowrap" style="font-size: 14px;">Shipment</th>
                         <th class="text-nowrap" style="font-size: 14px;">Action</th>
                       </tr>
                     </thead>
@@ -485,6 +486,13 @@
           { data: 'totalArmada' },
           // { data: 'totalPricing' },
           { data: 'tripType' },
+          { render: function (data, type, row, meta) {
+            if (row.hasShipmentQuo) {
+              return `<div class='d-flex justify-content-center mt-1 text-success'><i class='fas fa-check-circle fa-lg'></i></div>`;
+            } else {
+              return `<div class='d-flex justify-content-center mt-1 text-danger'><i class='fas fa-times-circle fa-lg'></i></div>`;
+            }
+          }},
           { render: function (data, type, row, meta) {
               return `<a href="form/edit.php?id=` + row.id +`" class="btn btn-primary"><i class="fas fa-edit"></i></a>`;
           }}
