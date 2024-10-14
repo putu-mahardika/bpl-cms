@@ -6,7 +6,7 @@ if ($_SESSION['hak_akses'] == "") {
     header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
-include '../../../../../config/controller/quotationShipments/quotationShipmentController.php';
+include '../../../../../config/controller/quotationShipmentController.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
@@ -174,7 +174,7 @@ $countries = getCountries($koneksi);
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                        <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+                        <a href="../index.php?tahun=<?php echo date('Y') ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
                         <h1 class="h3 mb-0 text-gray-800">Form Quotation Shipment</h1>
                     </div>
                     <div class="row mb-3">
@@ -368,24 +368,24 @@ $countries = getCountries($koneksi);
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <select name="" id="origin_country_id" class="form-control select2">
                                                                 <?php foreach ($countries as $val) { ?>
                                                                     <option value="<?php echo $val['Id'] ?>"><?php echo $val['Nama'] ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <select name="" id="destination_country_id" class="form-control select2">
                                                                 <?php foreach ($countries as $val) { ?>
                                                                     <option value="<?php echo $val['Id'] ?>"><?php echo $val['Nama'] ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control" id="pickup_note" name="pickup_note" placeholder="Masukkan keterangan pickup...">
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control" id="destination_note" name="destination_note" placeholder="Masukkan keterangan destination...">
                                                         </td>
                                                     </tbody>
@@ -417,16 +417,16 @@ $countries = getCountries($koneksi);
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control" id="handling1Name" name="handling1Name" placeholder="Masukkan nama biaya handling..." disabled>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control text-right inputmask_currency" id="handling1Qty" name="handling1Qty" placeholder="0" disabled>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control text-right inputmask_currency" id="handling1Budgeting" name="handling1Budgeting" placeholder="0" disabled>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control text-right inputmask_currency" id="handling1Pricing" name="handling1Pricing" placeholder="0" disabled>
                                                         </td>
                                                     </tbody>
@@ -457,16 +457,16 @@ $countries = getCountries($koneksi);
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control" id="handlingNextName" name="handlingNextName" placeholder="Masukkan nama biaya handling..." disabled>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control text-right inputmask_currency" id="handlingNextQty" name="handlingNextQty" placeholder="0" disabled>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control text-right inputmask_currency" id="handlingNextBudgeting" name="handlingNextBudgeting" placeholder="0" disabled>
                                                         </td>
-                                                        <td class="px-3">
+                                                        <td class="px-2">
                                                             <input type="text" class="form-control text-right inputmask_currency" id="handlingNextPricing" name="handlingNextPricing" placeholder="0" disabled>
                                                         </td>
                                                     </tbody>
@@ -814,7 +814,7 @@ $countries = getCountries($koneksi);
             });
 
             $.ajax({
-                url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                 type: 'POST',
                 data: data,
                 success: function(response) {

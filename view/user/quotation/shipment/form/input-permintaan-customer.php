@@ -13,24 +13,24 @@
                 </tr>
             </thead>
             <tbody>
-                <td class="px-3">
+                <td class="px-2">
                     <select name="" id="origin_country_id" class="form-control select2">
                         <?php foreach ($countries as $val) { ?>
                             <option value="<?php echo $val['Id'] ?>"><?php echo $val['Nama'] ?></option>
                         <?php } ?>
                     </select>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <select name="" id="destination_country_id" class="form-control select2">
                         <?php foreach ($countries as $val) { ?>
                             <option value="<?php echo $val['Id'] ?>"><?php echo $val['Nama'] ?></option>
                         <?php } ?>
                     </select>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control" id="pickup_note" name="pickup_note" placeholder="Masukkan keterangan pickup...">
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control" id="destination_note" name="destination_note" placeholder="Masukkan keterangan destination...">
                 </td>
             </tbody>

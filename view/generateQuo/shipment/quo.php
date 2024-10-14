@@ -5,7 +5,7 @@
     $year = date('Y', strtotime($datetime));
     session_save_path('../../../tmp');
     session_start();
-    include '../../../config/controller/quotationShipments/quotationShipmentController.php';
+    include '../../../config/controller/quotationShipmentController.php';
     //$s_username = $_SESSION['username'];
     $s_id = $_SESSION['id'];
     $s_name = $_SESSION['nama'];
@@ -88,7 +88,7 @@
                         <th>Origin Country</th>
                         <th>Destination Country</th>
                         <th>Biaya Penanganan</th>
-                        <th>Total Biaya</th>
+                        <th>Biaya</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,10 +99,16 @@
                         <td><?php echo $data['shipment_load_type_name'] ?></td>
                         <td><?php echo $data['origin_country_name'] ?></td>
                         <td><?php echo $data['destination_country_name'] ?></td>
-                        <td><?php echo number_format($data['total_handling_unit'], 0, ',', '.') ?></td>
                         <td><?php echo number_format($data['total_handling_price'], 0, ',', '.') ?></td>
+                        <td><?php echo number_format($data['dtl_quo_shipment_pricing_total_price'], 0, ',', '.') ?></td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7" style="text-align: right; font-weight: bold">Grand Total</td>
+                        <td style="font-weight: bold"><?php echo number_format(($data['dtl_quo_shipment_pricing_total_price'] + $data['total_handling_price']), 0, ',', '.') ?></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
 
@@ -115,7 +121,7 @@
 
         <div class="note-section">
             <ol>
-                <li>Pembayaran atas tagihan selambat-lambatnya <?php echo $data['customer_terms_payment_temp'] ?> hari dari diterimanya dokumen lengkap (Invoice, Faktur Pajak dan Surat Jalan).</li>
+                <li>Pembayaran atas tagihan selambat-lambatnya <strong><?php echo $data['customer_terms_payment_temp'] ?> hari</strong> dari diterimanya dokumen lengkap (Invoice, Faktur Pajak dan Surat Jalan).</li>
                 <li>Harga tidak termasuk Biaya LSM, PPN 11%, PPH, Asuransi, Biaya Bongkar, dan Biaya Muat.</li>
                 <li>Pemilik barang wajib mengasuransikan barang yang akan dikirim.</li>
                 <li>PT Berkah Permata Logistik berhak menolak untuk memuat barang yang tidak memenuhi standar kendaraan, keselamatan maupun medan jalan yang akan dilalui dalam proses mobilisasi.</li>

@@ -6,13 +6,16 @@ if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "User") {
     header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
-include '../../../../../config/controller/quotationShipments/quotationShipmentController.php';
+include '../../../../../config/controller/quotationShipmentController.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
+
+$customers = getCustomers($koneksi, $s_id);
 $vendors = getVendors($koneksi);
 $sales = getSales($koneksi);
 $vm = getVm($koneksi);
+$data = getHdQuoShipmentsPrint($koneksi);
 $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
 $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 $quotationLog = getQuotationLog($koneksi, $_GET['id']);
@@ -26,6 +29,11 @@ foreach ($dataDtlQuoShipment as $key => $value) {
     $totalCosting += $value['costing_total_price'];
     $totalBudgeting += $value['budgeting_total_price'];
     $totalPricing += $value['pricing_total_price'];
+}
+
+$isDisabled = '';
+if($data['status_id'] == 10) {
+    $isDisabled = 'disabled';
 }
 
 ?>
@@ -227,7 +235,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                        <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+                        <a href="../index.php?tahun=<?php echo date('Y') ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
                         <h1 class="h3 mb-0 text-gray-800">Form Quotation Shipment</h1>
                     </div>
                     <div class="row mb-3">
@@ -245,7 +253,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="note">Note</label>
-                                            <textarea name="" id="note" class="form-control" rows="5" placeholder="note" disabled></textarea>
+                                            <textarea name="" id="note" class="form-control" rows="5" placeholder="note" <?php echo $isDisabled ?>></textarea>
                                         </div>
                                     </div>
                                     <?php include 'edit-permintaan-customer.php' ?>
@@ -253,7 +261,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     <?php include 'edit-tambahan-biaya-handling.php' ?>
                                     <div class="row">
                                         <div class="col-md-12 mt-3 d-flex">
-                                            <button id="btn_cancel" class="btn btn-danger w-100 mr-2" data-toggle="modal" data-target="#modal_req_cancel">Pembatalan</button>
+                                            <button id="btn_cancel" class="btn btn-danger w-100 mr-2" data-toggle="modal" data-target="#modal_req_cancel" <?php if ($data['status_id'] == 10) { ?>disabled<?php }?>>Pembatalan</button>
                                             <!-- Modal -->
                                             <div class="modal fade" id="modal_req_cancel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -282,7 +290,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button id="btn_save" class="btn btn-primary w-100 ml-2" <?php if($totalPricing == 0) { ?>disabled<?php }?> onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)">Simpan</button>
+                                            <button id="btn_save" class="btn btn-primary w-100 ml-2" onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)" <?php if ($data['status_id'] == 10) { ?>disabled<?php }?>>Simpan</button>
                                         </div>
                                         <div class="col-md-12 mt-5">
                                             <?php include 'riwayat-perubahan.php' ?>
@@ -414,6 +422,17 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     stripLeadingZeroes: false,
                 });
 
+                $('.inputmask_qty').inputmask('numeric', {
+                    digits: 0,
+                    autoUnmask: true,
+                    stripLeadingZeroes: false,
+                });
+
+                $('.inputmask_phone').inputmask({
+                    'mask': '9999-9999-9999',
+                    'autoUnmask': true
+                });
+
                 $('.date_single').flatpickr({
                     defaultDate: new Date(),
                 });
@@ -422,6 +441,35 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     placeholder: 'Pilih Vendor',
                     width: '100%',
                 });
+
+                $('#checkboxNewCustomer').change(function() {
+                    if ($(this).is(':checked')) {
+                        $('#customer_select').hide();
+                        $('#customer_form').show();
+                        $('#customer_id').val(null).trigger('change');
+                    } else {
+                        $('#customer_select').show();
+                        $('#customer_form').hide();
+                        $('#customer_id').val($('#customer_id').val() || null).trigger('change');
+                        $('#customer_name_temp').val(null);
+                        $('#customer_address_temp').val(null);
+                        $('#pic_name_temp').val(null);
+                        $('#pic_phone_temp').val(null);
+                    }
+                });
+
+                $('#customer_id').select2({
+                    placeholder: 'Pilih Customer',
+                    width: '100%',
+                }).val($('#customer_id').val() || null).trigger('change');
+
+                showModalConfirmationIsNeedTrucking = () => {
+                    $('#modal_confirmation_is_need_trucking').modal('show')
+                }
+
+                cancelIsNeedTrucking = () => {
+                    $('#is_need_trucking').prop('checked', false)
+                }
 
                 let row = $(this).closest('tr');
 
@@ -538,7 +586,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                 function getHdQuoShipmentDetails(id) {
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'GET',
                         data: {
                             method: 'getHdQuoShipmentDetails',
@@ -552,8 +600,12 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#no_quo_shipment').val(resp.no_quotation);
                             $('#total_container').val(resp.total_container);
                             $('#item_description').val(resp.item_description);
-                            $('#customer_name').val(resp.customer_name);
                             $('#customer_id').val(resp.customer_id);
+                            $('#customer_name').val(resp.customer_name);
+                            $('#customer_name_temp').val(resp.customer_name);
+                            $('#customer_address_temp').val(resp.customer_address_temp);
+                            $('#pic_name_temp').val(resp.pic_name_temp);
+                            $('#pic_phone_temp').val(resp.pic_phone_temp);
                             $('#master_unit_id').val(resp.master_unit_id);
                             $('#master_unit_name').val(resp.master_unit_name);
                             $('#shipment_terms_id').val(resp.shipment_terms_id);
@@ -567,8 +619,6 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_country_name').val(resp.destination_country_name);
                             $('#pickup_note').val(resp.pickup_note);
                             $('#destination_note').val(resp.destination_note);
-                            $('#handling_qty_1').val(resp.total_container);
-                            $('#handling_qty_next').val(resp.total_container);
                             $('#freight_cost').val(resp.freight_cost);
                             $('#currency_date').val(resp.currency_date);
                             $('#currency_rate').val(resp.currency_rate);
@@ -601,6 +651,12 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     $(this).find('input[type="radio"]').prop('checked', true);
                                 }
                             });
+                            
+                            if (resp.customer_id == null) {
+                                $('#checkboxNewCustomer').prop('checked', resp.customer_id ? true : false);
+                                $('#checkboxNewCustomer').click();
+                            }
+
                             if (resp.status_id == 12) {
                                 $('#form_cancel_quotation').addClass('d-block');
                                 $('#btn_save').addClass('d-none');
@@ -623,10 +679,38 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         return true;
                     }
 
+                    if ($('#handling_qty_1').val() > 0) {
+                        if ($('#handling_name_1').val() == '' || $('#handling_name_1').val() == null) {
+                            toastr.error('Nama biaya handling 1 harus diisi', 'Required!')
+                            return true;
+                        }
+                        if (parseFloat($('#handling_qty_1').val()) > parseFloat($('#total_container').val())) {
+                            toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
+                            return true;
+                        }
+                    }
+
+                    if ($('#handling_qty_next').val() > 0) {
+                        if ($('#handling_name_next').val() == '' || $('#handling_name_next').val() == null) {
+                            toastr.error('Nama biaya handling next harus diisi', 'Required!')
+                            return true;
+                        }
+                        if (parseFloat($('#handling_qty_next').val()) > parseFloat($('#total_container').val())) {
+                            toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
+                            return true;
+                        }
+                    }
+
                     return false;
                 };
 
                 updateHdQuoShipments = (id) => {
+                    let is_filled_pricing = false;
+
+                    if ($('.costing_total_price').filter(function() { return parseFloat($(this).val()) > 0; }).length > 0) {
+                        is_filled_pricing = true;
+                    }
+
                     let selected_quo_vendor_id = null;
                     let selected_quo_vendor_costing = 0;
                     let selected_quo_vendor_budgeting = 0;
@@ -665,14 +749,29 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         });
                     });
 
+                    let count_vendor = '<?php count($dataDtlQuoShipment) ?>'
+
                     let data = {
                         method: 'updateFormHdQuoShipmentsSales',
                         // hdQuoShipment
                         id: id,
-                        quo_status_id: $('#status_id').val() == 4 ? 8 : 4,
+                        quo_status_id: (function() {
+                            if ($('#status_id').val() == 8) return 8;
+                            if ($('#status_id').val() == 4) return 8;
+                            if (is_filled_pricing) return 4;
+                            return count_vendor > 0 ? ($('#status_id').val() == 4 ? 8 : 4) : 5;
+                        })(),
                         sales_id: $('#sales_id').val(),
                         sales_name: $('#sales_name').val(),
                         vm_id: $('#old_vm_id').val(),
+                        total_container: $('#total_container').val(),
+                        item_description: $('#item_description').val(),
+                        customer_id: $('#customer_id').val(),
+                        customer_name_temp: $('#customer_name_temp').val(),
+                        customer_address_temp: $('#customer_address_temp').val(),
+                        customer_terms_payment_temp: $('#customer_terms_payment_temp').val(),
+                        pic_name_temp: $('#pic_name_temp').val(),
+                        pic_phone_temp: $('#pic_phone_temp').val(),
                         handling_id_1: $('#handling_id_1').val(),
                         handling_name_1: $('#handling_name_1').val(),
                         handling_qty_1: $('#handling_qty_1').val(),
@@ -710,7 +809,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -723,7 +822,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Data berhasil disimpan',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },
@@ -763,7 +862,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -776,7 +875,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Pembatalan berhasil diajukan',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },
@@ -818,7 +917,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'GET',
                         data: data,
                         success: function(response) {

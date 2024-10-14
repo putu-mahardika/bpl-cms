@@ -44,8 +44,10 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-check form-check-inline mt-3">
-                            <input class="form-check-input" type="checkbox" id="is_need_trucking">
-                            <label class="form-check-label" for="is_need_trucking">Membutuhkan Trucking</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="is_need_trucking" disabled>
+                                <label class="custom-control-label" for="is_need_trucking">Membutuhkan Trucking</label>
+                            </div>
                         </div>
                     </div>
                 </div>

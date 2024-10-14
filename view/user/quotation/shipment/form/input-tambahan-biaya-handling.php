@@ -21,16 +21,16 @@
                 </tr>
             </thead>
             <tbody>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control" id="handling1Name" name="handling1Name" placeholder="Masukkan nama biaya handling..." disabled>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control text-right inputmask_currency" id="handling1Qty" name="handling1Qty" placeholder="0" disabled>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control text-right inputmask_currency" id="handling1Budgeting" name="handling1Budgeting" placeholder="0" disabled>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control text-right inputmask_currency" id="handling1Pricing" name="handling1Pricing" placeholder="0" disabled>
                 </td>
             </tbody>
@@ -61,16 +61,16 @@
                 </tr>
             </thead>
             <tbody>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control" id="handlingNextName" name="handlingNextName" placeholder="Masukkan nama biaya handling..." disabled>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control text-right inputmask_currency" id="handlingNextQty" name="handlingNextQty" placeholder="0" disabled>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control text-right inputmask_currency" id="handlingNextBudgeting" name="handlingNextBudgeting" placeholder="0" disabled>
                 </td>
-                <td class="px-3">
+                <td class="px-2">
                     <input type="text" class="form-control text-right inputmask_currency" id="handlingNextPricing" name="handlingNextPricing" placeholder="0" disabled>
                 </td>
             </tbody>

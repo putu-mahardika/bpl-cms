@@ -28,13 +28,15 @@
     <div class="row mb-3">
         <div class="col-md-6">
             <div class="row">
-                <div class="col-md-6 pt-4">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="checkboxNewCustomer" value="option1">
-                        <label class="custom-control-label" for="checkboxNewCustomer">Customer Baru</label>
+                <div class="col-md-12">
+                    <div class="border border-gray-300 px-3 rounded d-flex align-items-center" style="height: 44px; margin-top: 31px; border-color: #d1d3e2 !important">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="checkboxNewCustomer" value="option1">
+                            <label class="custom-control-label" for="checkboxNewCustomer">Customer Baru</label>
+                        </div>
                     </div>
                 </div>
-                <div id="customer_select" class="col-md-6">
+                <div id="customer_select" class="col-md-12 mt-3">
                     <label for="jumlahContainer">Customer</label>
                     <select name="" id="customer_id" class="form-control">
                         <?php foreach ($customers as $val) { ?>
@@ -76,8 +78,10 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-check form-check-inline mt-3">
-                        <input class="form-check-input" type="checkbox" id="is_need_trucking">
-                        <label class="form-check-label" for="is_need_trucking">Membutuhkan Trucking</label>
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="is_need_trucking" disabled>
+                            <label class="custom-control-label" for="is_need_trucking">Membutuhkan Trucking</label>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -292,7 +292,7 @@ for ($i=2020; $i < $yearNow+1; $i++) {
                 right: 3,
             },
             ajax: {
-                url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                 type: 'GET',
                 data: {
                     method: 'getHdQuoShipments',
@@ -360,7 +360,7 @@ for ($i=2020; $i < $yearNow+1; $i++) {
         $('#year').on('change', function() {
             year = $(this).val();            
             window.location.href = `index.php?tahun=${year}`;
-            $('#datatable_quo_shipment').DataTable().ajax.url('<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php?method=getHdQuoShipments&year=' + year).load();
+            $('#datatable_quo_shipment').DataTable().ajax.url('<?php echo $base_url; ?>/config/controller/quotationShipmentController.php?method=getHdQuoShipments&year=' + year).load();
         });
     </script>
 

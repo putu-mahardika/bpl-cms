@@ -1,3 +1,9 @@
+<?php 
+    $isDisabled = '';
+    if($data['status_id'] == 10) {
+        $isDisabled = 'disabled';
+    }
+?>
 <div class="row mt-5">
     <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
         <h5 class="font-weight-bold">Informasi Biaya Freight</h5>
@@ -10,7 +16,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text bg-primary text-white px-2">US$</div>
                     </div>
-                    <input type="text" class="form-control text-right inputmask_currency" id="freight_cost" name="freight_cost" placeholder="0">
+                    <input type="text" class="form-control text-right inputmask_currency" id="freight_cost" name="freight_cost" placeholder="0" <?php echo $isDisabled ?>>
                 </div>
             </div>
             <div class="col-md-12 mb-3">
@@ -28,7 +34,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text bg-primary text-white px-2">IDR</div>
                     </div>
-                    <input type="text" class="form-control text-right inputmask_currency" id="currency_rate" name="currency_rate" placeholder="0">
+                    <input type="text" class="form-control text-right inputmask_currency" id="currency_rate" name="currency_rate" placeholder="0" <?php echo $isDisabled ?>>
                 </div>
             </div>
         </div>

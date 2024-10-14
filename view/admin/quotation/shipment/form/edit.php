@@ -6,26 +6,23 @@ if ($_SESSION['hak_akses'] == "" || $_SESSION['hak_akses'] != "Admin") {
     header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
-include '../../../../../config/controller/quotationShipments/quotationShipmentController.php';
+include '../../../../../config/controller/quotationShipmentController.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
+$customers = getCustomers($koneksi, $s_id);
 $vendors = getVendors($koneksi);
 $sales = getSales($koneksi);
 $vm = getVm($koneksi);
+$data = getHdQuoShipmentsPrint($koneksi);
 $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
 $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 $quotationLog = getQuotationLog($koneksi, $_GET['id']);
 $pricing = updateBudgetingQuotationDetailShipment($koneksi, $_GET['id']);
 
-$totalCosting = 0;
-$totalBudgeting = 0;
-$totalPricing = 0;
-
-foreach ($dataDtlQuoShipment as $key => $value) {
-    $totalCosting += $value['costing_total_price'];
-    $totalBudgeting += $value['budgeting_total_price'];
-    $totalPricing += $value['pricing_total_price'];
+$isDisabled = '';
+if($data['status_id'] == 10) {
+    $isDisabled = 'disabled';
 }
 
 ?>
@@ -79,6 +76,20 @@ foreach ($dataDtlQuoShipment as $key => $value) {
             justify-content: end !important;
         }
     </style>
+    <script src="../../../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../../../../js/ruang-admin.min.js"></script>
+    <script src="../../../../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+    <script src="../../../../../vendor/inputmask/dist/jquery.inputmask.js"></script>
+    <!-- Page level plugins -->
+    <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
+    <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
+    <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+    <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
+    <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -227,7 +238,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                        <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+                        <a href="../index.php?tahun=<?php echo date('Y') ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
                         <h1 class="h3 mb-0 text-gray-800">Form Quotation Shipment</h1>
                     </div>
                     <div class="row mb-3">
@@ -235,7 +246,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <?php include 'pricing-card.php' ?>
-                                    <?php include 'edit-quo-shipment.php' ?>
+                                    <?php include 'edit-informasi-quo-shipment.php' ?>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <?php include 'edit-informasi-muatan.php' ?>
@@ -245,7 +256,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="note">Note</label>
-                                            <textarea name="" id="note" class="form-control" rows="5" placeholder="note"></textarea>
+                                            <textarea name="" id="note" class="form-control" rows="5" placeholder="note" <?php echo $isDisabled ?>></textarea>
                                         </div>
                                     </div>
                                     <?php include 'edit-permintaan-customer.php' ?>
@@ -460,20 +471,6 @@ foreach ($dataDtlQuoShipment as $key => $value) {
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <script src="../../../../../vendor/jquery/jquery.min.js"></script>
-        <script src="../../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
-        <script src="../../../../../js/ruang-admin.min.js"></script>
-        <script src="../../../../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-        <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
-        <script src="../../../../../vendor/inputmask/dist/jquery.inputmask.js"></script>
-        <!-- Page level plugins -->
-        <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
-        <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
-        <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
-        <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
-        <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
-        <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
         <!-- Page level custom scripts -->
         <script>
             $(document).ready(function() {
@@ -492,6 +489,27 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     placeholder: 'Pilih Vendor',
                     width: '100%',
                 });
+
+                $('#checkboxNewCustomer').change(function() {
+                    if ($(this).is(':checked')) {
+                        $('#customer_select').hide();
+                        $('#customer_form').show();
+                        $('#customer_id').val(null).trigger('change');
+                    } else {
+                        $('#customer_select').show();
+                        $('#customer_form').hide();
+                        $('#customer_id').val($('#customer_id').val() || null).trigger('change');
+                        $('#customer_name_temp').val(null);
+                        $('#customer_address_temp').val(null);
+                        $('#pic_name_temp').val(null);
+                        $('#pic_phone_temp').val(null);
+                    }
+                });
+
+                $('#customer_id').select2({
+                    placeholder: 'Pilih Customer',
+                    width: '100%',
+                }).val($('#customer_id').val() || null).trigger('change');
 
                 let row = $(this).closest('tr');
 
@@ -585,7 +603,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                 function getHdQuoShipmentDetails(id) {
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'GET',
                         data: {
                             method: 'getHdQuoShipmentDetails',
@@ -599,8 +617,12 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#no_quo_shipment').val(resp.no_quotation);
                             $('#total_container').val(resp.total_container);
                             $('#item_description').val(resp.item_description);
-                            $('#customer_name').val(resp.customer_name);
                             $('#customer_id').val(resp.customer_id);
+                            $('#customer_name').val(resp.customer_name);
+                            $('#customer_name_temp').val(resp.customer_name);
+                            $('#customer_address_temp').val(resp.customer_address_temp);
+                            $('#pic_name_temp').val(resp.pic_name_temp);
+                            $('#pic_phone_temp').val(resp.pic_phone_temp);
                             $('#master_unit_id').val(resp.master_unit_id);
                             $('#master_unit_name').val(resp.master_unit_name);
                             $('#shipment_terms_id').val(resp.shipment_terms_id);
@@ -614,8 +636,8 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_country_name').val(resp.destination_country_name);
                             $('#pickup_note').val(resp.pickup_note);
                             $('#destination_note').val(resp.destination_note);
-                            $('#handling_qty_1').val(resp.total_container);
-                            $('#handling_qty_next').val(resp.total_container);
+                            $('#handling_qty_1').val(0);
+                            $('#handling_qty_next').val(0);
                             $('#freight_cost').val(resp.freight_cost);
                             $('#currency_date').val(resp.currency_date);
                             $('#currency_rate').val(resp.currency_rate);
@@ -644,6 +666,10 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     $(this).find('input[type="radio"]').prop('checked', true);
                                 }
                             });
+                            if (resp.customer_id == null) {
+                                $('#checkboxNewCustomer').prop('checked', resp.customer_id ? true : false);
+                                $('#checkboxNewCustomer').click();
+                            }
                             if (resp.status_id == 12) {
                                 $('#form_cancel_quotation').addClass('d-block');
                                 $('#btn_save').addClass('d-none');
@@ -663,11 +689,19 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             toastr.error('Nama biaya handling 1 harus diisi', 'Required!')
                             return true;
                         }
+                        if (parseFloat($('#handling_qty_1').val()) > parseFloat($('#total_container').val())) {
+                            toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
+                            return true;
+                        }
                     }
 
                     if ($('#handling_qty_next').val() > 0) {
                         if ($('#handling_name_next').val() == '' || $('#handling_name_next').val() == null) {
                             toastr.error('Nama biaya handling next harus diisi', 'Required!')
+                            return true;
+                        }
+                        if (parseFloat($('#handling_qty_next').val()) > parseFloat($('#total_container').val())) {
+                            toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
                             return true;
                         }
                     }
@@ -680,44 +714,44 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                     let newRow = `
                         <tr>
-                            <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
-                                <div class="custom-control custom-checkbox" style="padding-left: 2rem">
-                                <input type="checkbox" class="custom-control-input" id="customCheck${lastIndex}">
-                                <label class="custom-control-label" for="customCheck${lastIndex}"></label>
+                            <td class="px-2 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                                <div class="custom-control custom-radio" style="padding-left: 2rem">
+                                    <input type="radio" class="custom-control-input selected_quo_vendor_id" name="selected_quo_vendor_id" id="selected_quo_vendor_id${lastIndex}" disabled>
+                                    <label class="custom-control-label" for="selected_quo_vendor_id${lastIndex}"></label>
                                 </div>
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 50px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 50px !important">
                                 <select name="vendor_id" class="form-control vendor_id">
                                 <?php foreach ($vendors as $val) { ?>
                                     <option value="<?php echo $val['Id'] ?>"><?php echo $val['nama'] ?></option>
                                 <?php } ?>
                                 </select>
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right costing_first_price inputmask_currency" placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right costing_next_price inputmask_currency" placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right costing_total_price inputmask_currency" disabled placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right budgeting_first_price inputmask_currency" placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right budgeting_next_price inputmask_currency" placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right budgeting_total_price inputmask_currency" disabled placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right pricing_first_price inputmask_currency" placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right pricing_next_price inputmask_currency" placeholder="0">
                             </td>
-                            <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                            <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                                 <input type="text" class="form-control text-right pricing_total_price inputmask_currency" disabled placeholder="0">
                             </td>
                         </tr>
@@ -817,7 +851,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: {
                             method: 'updateBudgetingQuotationDetailShipment',
@@ -894,7 +928,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         method: 'updateFormHdQuoShipmentsAdmin',
                         // hdQuoShipment
                         id: id,
-                        quo_status_id: $('#status_id').val() == 3 ? 7 : 3,
+                        quo_status_id: $('#status_id').val() == 3 ? 7 : ($('#status_id').val() == 7 ? 7 : 3),
                         sales_id: $('#sales_id').val(),
                         sales_name: $('#sales_name').val(),
                         vm_id: $('#old_vm_id').val(),
@@ -942,7 +976,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -955,7 +989,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Data berhasil disimpan',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },
@@ -1006,7 +1040,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -1054,7 +1088,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -1107,7 +1141,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -1120,7 +1154,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Pembatalan berhasil diajukan',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },
@@ -1155,7 +1189,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -1168,7 +1202,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Pembatalan berhasil di-approve',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },
@@ -1203,7 +1237,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -1216,7 +1250,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Pembatalan telah di-reject',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },

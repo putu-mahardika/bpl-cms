@@ -1,19 +1,19 @@
 <?php 
     $color = '';
 
-    if ($totalPricing > $totalBudgeting) {
+    if ($data['total_pricing'] > $data['total_budgeting']) {
         $color = 'success';
     }
 
-    if ($totalPricing > 0 && $totalPricing < $totalBudgeting) {
+    if ($data['total_pricing'] > 0 && $data['total_pricing'] < $data['total_budgeting']) {
         $color = 'warning';
     }
 
-    if ($totalPricing > 0 && $totalPricing < $totalCosting) {
+    if ($data['total_pricing'] > 0 && $data['total_pricing'] < $data['total_costing']) {
         $color = 'danger';
     }
 
-    if ($totalPricing == 0) {
+    if ($data['total_pricing'] == 0) {
         $color = 'neutral';
     }
 ?>
@@ -30,7 +30,7 @@
                 <p class="text-primary text-center mb-0">Anda tidak punya hak untuk melihat</p>
             </div>
         </div>
-        <a class="btn btn-primary mt-4 w-100" target="_blank" href="../../../../generateQuo/shipment/quo.php?id=<?php echo $_GET['id'] ?>">Cetak Quotation</a>
+        <a class="btn btn-primary mt-4 w-100" <?php if($data['total_pricing'] == 0) {?>href="javascript:;"<?php } else {?>href="../../../../generateQuo/shipment/quo.php?id=<?php echo $_GET['id'] ?>" target="_blank"<?php }?>>Cetak Quotation</a>
     </div>
     <div class="col-md-4">
         <div class="p-3 card-pricing default rounded w-100" style="height: 120px;">
@@ -43,11 +43,11 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalBudgeting ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $data['total_budgeting'] ?></span>
                 </div>
             </div>
         </div>
-        <button class="btn btn-warning mt-4 w-100" data-toggle="modal" data-target="#modal_form_customer_code" <?php if($totalPricing == 0) {?>disabled<?php }?>>Customer PO</button>
+        <button class="btn btn-warning mt-4 w-100" data-toggle="modal" data-target="#modal_form_customer_code" <?php if($data['total_pricing'] == 0) {?>disabled<?php }?>>Customer PO</button>
         <!-- Modal Submit CustomerCode Form -->
         <div class="modal fade" id="modal_form_customer_code" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modal_form_customer_code" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -147,7 +147,7 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalPricing ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $data['total_pricing'] ?></span>
                 </div>
             </div>
         </div>

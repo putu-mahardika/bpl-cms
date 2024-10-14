@@ -1,3 +1,22 @@
+<?php 
+    $color = '';
+
+    if ($data['total_pricing'] > $data['total_budgeting']) {
+        $color = 'success';
+    }
+
+    if ($data['total_pricing'] > 0 && $data['total_pricing'] < $data['total_budgeting']) {
+        $color = 'warning';
+    }
+
+    if ($data['total_pricing'] > 0 && $data['total_pricing'] < $data['total_costing']) {
+        $color = 'danger';
+    }
+
+    if ($data['total_pricing'] == 0) {
+        $color = 'neutral';
+    }
+?>
 <div class="row">
     <div class="col-md-4">
         <div class="p-3 card-pricing rounded w-100" style="height: 120px;">
@@ -10,11 +29,10 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalCosting ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $data['total_costing'] ?? 0 ?></span>
                 </div>
             </div>
         </div>
-        <button class="btn btn-secondary mt-4 w-100" disabled>Cetak Quotation</button>
     </div>
     <div class="col-md-4">
         <div class="p-3 card-pricing default rounded w-100" style="height: 120px;">
@@ -27,11 +45,10 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalBudgeting ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $data['total_budgeting'] ?? 0 ?></span>
                 </div>
             </div>
         </div>
-        <button class="btn btn-secondary mt-4 w-100" disabled>Customer PO</button>
     </div>
     <div class="col-md-4">
         <div class="p-3 card-pricing neutral rounded w-100" style="height: 120px;">
@@ -45,6 +62,5 @@
                 <p class="text-gray text-center mb-0">Anda tidak punya hak untuk melihat</p>
             </div>
         </div>
-        <button class="btn btn-secondary mt-4 w-100" disabled>Repeat Order</button>
     </div>
 </div>
