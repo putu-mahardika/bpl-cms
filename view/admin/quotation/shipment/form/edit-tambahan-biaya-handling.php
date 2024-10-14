@@ -34,66 +34,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($dataDtlQuoShipmentHandlingCosts) > 0) { ?>
-                        <?php foreach ($dataDtlQuoShipmentHandlingCosts as $key => $val) { ?>
-                            <?php if ($val['handling_turunan'] == 1) { ?>
-                                <tr>
-                                    <td class="px-3">
-                                        <input type="hidden" class="form-control" id="handling_id_1" name="handling_id_1" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['id'] ?>">
-                                        <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_budgeting_1" name="handling_unit_budgeting_1" placeholder="0" value="<?php echo $val['unit_budgeting'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_budgeting_1" name="handling_total_budgeting_1" placeholder="0" disabled value="<?php echo $val['total_budgeting'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_price_1" name="handling_unit_price_1" placeholder="0" value="<?php echo $val['unit_price'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_price_1" name="handling_total_price_1" placeholder="0" disabled value="<?php echo $val['total_price'] ?>">
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        <?php } ?>
+                    <?php if ($data['status_id'] == 10) { ?>
+                        <?php include 'edit-tambahan-biaya-handling-first-disabled.php' ?>
                     <?php } else {?>
-                        <tr>
-                            <td class="px-3">
-                                <input type="hidden" class="form-control" id="handling_id_1" name="handling_id_1" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['id'] ?>">
-                                <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_budgeting_1" name="handling_unit_budgeting_1" placeholder="0" value="<?php echo $val['unit_budgeting'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_total_budgeting_1" name="handling_total_budgeting_1" placeholder="0" disabled value="<?php echo $val['total_budgeting'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_price_1" name="handling_unit_price_1" placeholder="0" value="<?php echo $val['unit_price'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_total_price_1" name="handling_total_price_1" placeholder="0" disabled value="<?php echo $val['total_price'] ?>">
-                            </td>
-                        </tr>
+                        <?php if (count($dataDtlQuoShipmentHandlingCosts) > 0) { ?>
+                            <?php include 'edit-tambahan-biaya-handling-first-edit.php' ?>
+                        <?php } else {?>
+                            <?php include 'edit-tambahan-biaya-handling-first-create.php' ?>
+                        <?php } ?>
                     <?php } ?>
                 </tbody>
             </table>
@@ -131,76 +79,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($dataDtlQuoShipmentHandlingCosts) > 0) { ?>
-                        <?php foreach ($dataDtlQuoShipmentHandlingCosts as $key => $val) { ?>
-                            <?php $total_unit_cost += $val['unit_cost'];
-                            $total_cost += $val['total_cost'] ?>
-                            <?php if ($val['handling_turunan'] == 2) { ?>
-                                <tr>
-                                    <td class="px-3">
-                                        <input type="hidden" class="form-control" id="handling_id_next" name="handling_id_next" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['id'] ?>">
-                                        <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_budgeting_next" name="handling_unit_budgeting_next" placeholder="0" value="<?php echo $val['unit_budgeting'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_budgeting_next" name="handling_total_budgeting_next" placeholder="0" disabled value="<?php echo $val['total_budgeting'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_price_next" name="handling_unit_price_next" placeholder="0" value="<?php echo $val['unit_price'] ?>">
-                                    </td>
-                                    <td class="px-3">
-                                        <input type="text" class="form-control text-right inputmask_currency" id="handling_total_price_next" name="handling_total_price_next" placeholder="0" disabled value="<?php echo $val['total_price'] ?>">
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        <?php } ?>
+                    <?php if ($data['status_id'] == 10) { ?>
+                        <?php include 'edit-tambahan-biaya-handling-next-disabled.php' ?>
                     <?php } else {?>
-                        <tr>
-                            <td class="px-3">
-                                <input type="hidden" class="form-control" id="handling_id_next" name="handling_id_next" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['id'] ?>">
-                                <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling..." value="<?php echo $val['handling_description'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_budgeting_next" name="handling_unit_budgeting_next" placeholder="0" value="<?php echo $val['unit_budgeting'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_total_budgeting_next" name="handling_total_budgeting_next" placeholder="0" disabled value="<?php echo $val['total_budgeting'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_price_next" name="handling_unit_price_next" placeholder="0" value="<?php echo $val['unit_price'] ?>">
-                            </td>
-                            <td class="px-3">
-                                <input type="text" class="form-control text-right inputmask_currency" id="handling_total_price_next" name="handling_total_price_next" placeholder="0" disabled value="<?php echo $val['total_price'] ?>">
-                            </td>
-                        </tr>
+                        <?php if (count($dataDtlQuoShipmentHandlingCosts) > 0) { ?>
+                            <?php include 'edit-tambahan-biaya-handling-next-edit.php' ?>
+                        <?php } else {?>
+                            <?php include 'edit-tambahan-biaya-handling-next-create.php' ?>
+                        <?php } ?>
                     <?php } ?>
                 </tbody>
                 <!-- <tfoot>
-                    <td class="px-3" colspan="2"></td>
-                    <td class="px-3">
+                    <td class="px-2" colspan="2"></td>
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="total_handling_unit_cost" name="total_handling_unit_cost" placeholder="0" disabled value="<?php echo $total_unit_cost ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="total_handling_cost" name="total_handling_cost" placeholder="0" disabled value="<?php echo $total_cost ?>">
                     </td>
                 </tfoot> -->

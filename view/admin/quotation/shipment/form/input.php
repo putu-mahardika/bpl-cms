@@ -6,7 +6,7 @@ if ($_SESSION['hak_akses'] == "") {
     header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
-include '../../../../../config/controller/quotationShipments/quotationShipmentController.php';
+include '../../../../../config/controller/quotationShipmentController.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
@@ -178,7 +178,7 @@ $totalPricing = 0;
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                        <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+                        <a href="../index.php?tahun=<?php echo date('Y') ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
                         <h1 class="h3 mb-0 text-gray-800">Form Quotation Shipment</h1>
                     </div>
                     <div class="row mb-3">
@@ -489,44 +489,44 @@ $totalPricing = 0;
 
             let newRow = `
                 <tr>
-                    <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                    <td class="px-2 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
                         <div class="custom-control custom-checkbox" style="padding-left: 2rem">
                         <input type="checkbox" class="custom-control-input" id="customCheck${lastIndex}" disabled>
                         <label class="custom-control-label" for="customCheck${lastIndex}"></label>
                         </div>
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 50px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 50px !important">
                         <select name="vendor_id" class="form-control vendor_id">
                         <?php foreach ($vendors as $val) { ?>
                             <option value="<?php echo $val['Id'] ?>"><?php echo $val['nama'] ?></option>
                         <?php } ?>
                         </select>
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right costing_first_price inputmask_currency" placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right costing_next_price inputmask_currency" placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right costing_total_price inputmask_currency" disabled placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right budgeting_first_price inputmask_currency" placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right budgeting_next_price inputmask_currency" placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right budgeting_total_price inputmask_currency" disabled placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right pricing_first_price inputmask_currency" placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right pricing_next_price inputmask_currency" placeholder="0">
                     </td>
-                    <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                    <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                         <input type="text" class="form-control text-right pricing_total_price inputmask_currency" disabled placeholder="0">
                     </td>
                     <td class="text-center"><button type="button" class="btn btn-danger remove-row" onclick="removeRow()"><i class="fas fa-trash"></i></button></td>
@@ -635,11 +635,19 @@ $totalPricing = 0;
                     toastr.error('Nama biaya handling 1 harus diisi', 'Required!')
                     return true;
                 }
+                if (parseFloat($('#handling_qty_1').val()) > parseFloat($('#total_container').val())) {
+                    toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
+                    return true;
+                }
             }
 
             if ($('#handling_qty_next').val() > 0) {
                 if ($('#handling_name_next').val() == '' || $('#handling_name_next').val() == null) {
                     toastr.error('Nama biaya handling next harus diisi', 'Required!')
+                    return true;
+                }
+                if (parseFloat($('#handling_qty_next').val()) > parseFloat($('#total_container').val())) {
+                    toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
                     return true;
                 }
             }
@@ -803,7 +811,7 @@ $totalPricing = 0;
             });
 
             $.ajax({
-                url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                 type: 'POST',
                 data: data,
                 success: function(response) {
@@ -816,7 +824,7 @@ $totalPricing = 0;
                             title: 'Berhasil',
                             text: 'Data berhasil disimpan',
                         }).then(() => {
-                            window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php';
+                            window.location.href = '<?php echo $base_url; ?>/view/admin/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                         });
                     }
                 },

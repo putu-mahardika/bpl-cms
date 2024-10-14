@@ -34,28 +34,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control" id="handling_name_1" name="handling_name_1" placeholder="Masukkan nama biaya handling...">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_1" name="handling_qty_1" placeholder="0">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_1" name="handling_unit_cost_1" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_1" name="handling_total_cost_1" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_budgeting_1" name="handling_unit_budgeting_1" placeholder="0" value="<?php echo $val['unit_budgeting'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_total_budgeting_1" name="handling_total_budgeting_1" placeholder="0" disabled value="<?php echo $val['total_budgeting'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_price_1" name="handling_unit_price_1" placeholder="0" value="<?php echo $val['unit_price'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_total_price_1" name="handling_total_price_1" placeholder="0" disabled value="<?php echo $val['total_price'] ?>">
                     </td>
                 </tbody>
@@ -94,37 +94,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control" id="handling_name_next" name="handling_name_next" placeholder="Masukkan nama biaya handling...">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_qty_next" name="handling_qty_next" placeholder="0">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_cost_next" name="handling_unit_cost_next" placeholder="0" value="<?php echo $val['unit_cost'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_total_cost_next" name="handling_total_cost_next" placeholder="0" disabled value="<?php echo $val['total_cost'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_budgeting_next" name="handling_unit_budgeting_next" placeholder="0" value="<?php echo $val['unit_budgeting'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_total_budgeting_next" name="handling_total_budgeting_next" placeholder="0" disabled value="<?php echo $val['total_budgeting'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_unit_price_next" name="handling_unit_price_next" placeholder="0" value="<?php echo $val['unit_price'] ?>">
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="handling_total_price_next" name="handling_total_price_next" placeholder="0" disabled value="<?php echo $val['total_price'] ?>">
                     </td>
                 </tbody>
                 <tfoot>
-                    <td class="px-3" colspan="2"></td>
-                    <td class="px-3">
+                    <td class="px-2" colspan="2"></td>
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="total_handling_unit_cost" name="total_handling_unit_cost" placeholder="0" disabled>
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control text-right inputmask_currency" id="total_handling_cost" name="total_handling_cost" placeholder="0" disabled>
                     </td>
                 </tfoot>

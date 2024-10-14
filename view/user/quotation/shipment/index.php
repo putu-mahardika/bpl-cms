@@ -279,11 +279,13 @@ for ($i=2020; $i < $yearNow+1; $i++) {
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <?php include 'modal/modal_detail_quotation.php' ?>
+
     <script src="../../../../vendor/jquery/jquery.min.js"></script>
     <script src="../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../../../../js/ruang-admin.min.js"></script>
-
+    <script src="../../../../../vendor/inputmask/dist/jquery.inputmask.js"></script>
     <!-- Page level plugins -->
     <!-- <script src="../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
     <script src="../../../../vendor/datatables1/datatables.min.js"></script> -->
@@ -293,6 +295,15 @@ for ($i=2020; $i < $yearNow+1; $i++) {
 
     <!-- Page level custom scripts -->
     <script>
+        $(document).ready(function() {
+            $('.inputmask_currency').inputmask('numeric', {
+                digits: 0,
+                groupSeparator: '.',
+                autoUnmask: true,
+                stripLeadingZeroes: false,
+            });
+        });
+        
         $('#datatable_quo_shipment').DataTable({
             scrollX: true,
             fixedColumns: {
@@ -300,7 +311,7 @@ for ($i=2020; $i < $yearNow+1; $i++) {
                 right: 3,
             },
             ajax: {
-                url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                 type: 'GET',
                 data: {
                     method: 'getHdQuoShipments',
@@ -350,7 +361,7 @@ for ($i=2020; $i < $yearNow+1; $i++) {
                         return `
                             <div class="d-flex">
                                 <a href="form/edit.php?id=${row.id}" class="btn btn-primary mr-1"><i class="fas fa-edit"></i></a>
-                                <button class="btn btn-secondary ml-1"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-secondary ml-1" onclick="getDetailQuotation(${row.id})"><i class="fas fa-eye"></i></button>
                             </div>
                         `;
                     }
@@ -368,8 +379,84 @@ for ($i=2020; $i < $yearNow+1; $i++) {
         $('#year').on('change', function() {
             year = $(this).val();            
             window.location.href = `index.php?tahun=${year}`;
-            $('#datatable_quo_shipment').DataTable().ajax.url('<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php?method=getHdQuoShipments&year=' + year).load();
+            $('#datatable_quo_shipment').DataTable().ajax.url('<?php echo $base_url; ?>/config/controller/quotationShipmentController.php?method=getHdQuoShipments&year=' + year).load();
         });
+
+        getDetailQuotation = (id) => {
+            $.ajax({
+                url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
+                type: 'GET',
+                data: {
+                    method: 'getHdQuoShipmentDetails',
+                    id: id,
+                },
+                success: function(response) {
+                    console.log(`RESP: ${response}`);
+                    let resp = JSON.parse(response);
+                    $('#no_quotation').text(resp.no_quotation);
+                    $('#total_costing').text(resp.total_costing);
+                    $('#total_budgeting').text(resp.total_budgeting);
+                    $('#total_pricing').text(resp.total_pricing);
+                    $('#sales_name').val(resp.sales_name);
+                    $('#sales_id').val(resp.sales_id);
+                    $('#total_container').val(resp.total_container);
+                    $('#item_description').val(resp.item_description);
+                    $('#customer_name').val(resp.customer_name);
+                    $('#customer_id').val(resp.customer_id);
+                    $('#master_unit_id').val(resp.master_unit_id);
+                    $('#master_unit_name').val(resp.master_unit_name);
+                    $('#shipment_terms_id').val(resp.shipment_terms_id);
+                    $('#shipment_terms_name').val(resp.shipment_terms_name);
+                    $('#shipment_load_type_id').val(resp.shipment_load_type_id);
+                    $('#shipment_load_type_name').val(resp.shipment_load_type_name);
+                    $('#note').val();
+                    $('#origin_country_id').val(resp.origin_country_id);
+                    $('#origin_country_name').val(resp.origin_country_name);
+                    $('#destination_country_id').val(resp.destination_country_id);
+                    $('#destination_country_name').val(resp.destination_country_name);
+                    $('#pickup_note').val(resp.pickup_note);
+                    $('#destination_note').val(resp.destination_note);
+                    $('#handling_qty_1').val(resp.total_container);
+                    $('#handling_qty_next').val(resp.total_container);
+                    $('#freight_cost').val(resp.freight_cost);
+                    $('#currency_date').val(resp.currency_date);
+                    $('#currency_rate').val(resp.currency_rate);
+                    $('#status_id').val(resp.status_id);
+                    $('#status').text(resp.status);
+                    $('#status').css('background-color', resp.status_color);
+                    $('#old_sales').val(resp.sales_name);
+                    $('#old_vm_id').val(resp.vm_id);
+                    $('#old_vm').val(resp.vm_name);
+                    $('#request_cancel_date').text(resp.request_cancel_date);
+                    $('#request_cancel_sales_name').text(resp.sales_name);
+                    $('#request_cancel_reason').text(resp.reason_request_cancel);
+                    $('#new_sales option').each(function() {
+                        console.log($(this).val())
+                        console.log($(this).val() == resp.sales_id)
+                        if ($(this).val() == resp.sales_id) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+                    $('#new_vm option').each(function() {
+                        console.log($(this).val())
+                        console.log($(this).val() == resp.vm_id)
+                        if ($(this).val() == resp.vm_id) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+                    $('#table_list_vendor tbody tr').each(function() {
+                        let vendor_id = $(this).find('select.vendor_id option:selected').val();
+                        if (vendor_id == resp.selected_quo_vendor_id) {
+                            $(this).find('input[type="radio"]').prop('checked', true);
+                        }
+                    });
+                    $('#modal_detail_quotation').modal('show')
+                },
+                error: function(xhr, status, error) {
+
+                }
+            });
+        }
     </script>
 
 </body>

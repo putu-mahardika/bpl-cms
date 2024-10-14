@@ -14,18 +14,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <td class="px-3">
+                    <td class="px-2" style="width: 150px !important">
                         <input type="hidden" class="form-control" id="origin_country_id" name="origin_country_id" placeholder="Masukkan origin country..." disabled>
                         <input type="text" class="form-control" id="origin_country_name" name="origin_country_name" placeholder="Masukkan origin country..." disabled>
                     </td>
-                    <td class="px-3">
+                    <td class="px-2" style="width: 150px !important">
                         <input type="hidden" class="form-control" id="destination_country_id" name="destination_country_id" placeholder="Masukkan destination country..." disabled>
                         <input type="text" class="form-control" id="destination_country_name" name="destination_country_name" placeholder="Masukkan destination country..." disabled>
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control" id="pickup_note" name="pickup_note" placeholder="Masukkan keterangan pickup..." disabled>
                     </td>
-                    <td class="px-3">
+                    <td class="px-2">
                         <input type="text" class="form-control" id="destination_note" name="destination_note" placeholder="Masukkan keterangan destination..." disabled>
                     </td>
                 </tbody>

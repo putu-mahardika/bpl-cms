@@ -6,7 +6,7 @@ if ($_SESSION['hak_akses'] == "") {
 	header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
-include '../../../../../config/controller/quotationShipments/quotationShipmentController.php';
+include '../../../../../config/controller/quotationShipmentController.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
@@ -172,7 +172,7 @@ $countries = getCountries($koneksi);
 				<!-- Container Fluid-->
 				<div class="container-fluid" id="container-wrapper">
 					<div class="d-sm-flex align-items-center justify-content-start mb-4">
-						<a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+						<a href="../index.php?tahun=<?php echo date('Y') ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
 						<h1 class="h3 mb-0 text-gray-800">Form Quotation Shipment</h1>
 					</div>
 					<div class="row mb-3">
@@ -586,7 +586,7 @@ $countries = getCountries($koneksi);
 			});
 
 			$.ajax({
-				url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+				url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
 				type: 'POST',
 				data: data,
 				success: function(response) {
@@ -599,7 +599,7 @@ $countries = getCountries($koneksi);
 							title: 'Berhasil',
 							text: 'Data berhasil disimpan',
 						}).then(() => {
-							window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php';
+							window.location.href = '<?php echo $base_url; ?>/view/user/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
 						});
 					}
 				},

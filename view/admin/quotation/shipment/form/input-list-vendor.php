@@ -111,13 +111,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                        <td class="px-2 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
                             <div class="custom-control custom-checkbox" style="padding-left: 2rem">
                                 <input type="checkbox" class="custom-control-input checked_vendor" id="customCheck" <?php if($totalPricing == 0) {?> disabled <?php }?>>
                                 <label class="custom-control-label" for="customCheck"></label>
                             </div>
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; min-width: 250px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; min-width: 250px !important">
                             <input type="hidden" class="form-control text-right dtl_quo_shipment_id" value="<?php echo $val['id'] ?>">
                             <select name="vendor_id" class="form-control vendor_id">
                                 <?php foreach ($vendors as $valVendor) { ?>
@@ -126,31 +126,31 @@
                             </select>
                         </td>
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right costing_first_price inputmask_currency" placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right costing_next_price inputmask_currency" placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right costing_total_price inputmask_currency" disabled placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right budgeting_first_price inputmask_currency" placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right budgeting_next_price inputmask_currency" placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right budgeting_total_price inputmask_currency" disabled placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right pricing_first_price inputmask_currency" placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right pricing_next_price inputmask_currency" placeholder="0">
                         </td>
-                        <td class="px-3 text-nowrap" style="font-size: 14px; width: 180px !important">
+                        <td class="px-2 text-nowrap" style="font-size: 14px; width: 180px !important">
                             <input type="text" class="form-control text-right pricing_total_price inputmask_currency" disabled placeholder="0">
                         </td>
                         <td class="text-center"><button type="button" class="btn btn-danger remove-row" onclick="removeRow()"><i class="fas fa-trash"></i></button></td>

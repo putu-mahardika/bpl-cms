@@ -6,25 +6,21 @@ if ($_SESSION['hak_akses'] == "" || ($_SESSION['hak_akses'] != "VmTrucking" && $
     header("location:../../../../../index.php?pesan=belum_login");
 }
 include '../../../../../config/koneksi.php';
-include '../../../../../config/controller/quotationShipments/quotationShipmentController.php';
+include '../../../../../config/controller/quotationShipmentController.php';
 date_default_timezone_set("Asia/Jakarta");
 
 $s_id = $_SESSION['id'];
 $vendors = getVendors($koneksi);
 $sales = getSales($koneksi);
 $vm = getVm($koneksi);
+$data = getHdQuoShipmentsPrint($koneksi);
 $dataDtlQuoShipment = getDtlQuoShipment($koneksi, $_GET['id']);
 $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $_GET['id']);
 $quotationLog = getQuotationLog($koneksi, $_GET['id']);
 
-$totalCosting = 0;
-$totalBudgeting = 0;
-$totalPricing = 0;
-
-foreach ($dataDtlQuoShipment as $key => $value) {
-    $totalCosting += $value['costing_total_price'];
-    $totalBudgeting += $value['budgeting_total_price'];
-    $totalPricing += $value['pricing_total_price'];
+$isDisabled = '';
+if($data['status_id'] == 10) {
+    $isDisabled = 'disabled';
 }
 
 ?>
@@ -43,7 +39,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
     <link href="../../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <link href="../../../../../vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
-    <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../../../../vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/toastr/build/toastr.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../vendor/flatpickr/dist/flatpickr.min.css" rel="stylesheet" type="text/css">
     <link href="../../../../../css/ruang-admin.min.css" rel="stylesheet">
@@ -78,6 +74,21 @@ foreach ($dataDtlQuoShipment as $key => $value) {
             justify-content: end !important;
         }
     </style>
+    <script src="../../../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../../../../js/ruang-admin.min.js"></script>
+    <script src="../../../../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+    <script src="../../../../../vendor/inputmask/dist/jquery.inputmask.js"></script>
+    <!-- Page level plugins -->
+    <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
+    <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
+    <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
+    <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
+    <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
+    <!-- Page level custom scripts -->
 </head>
 
 <body id="page-top">
@@ -226,7 +237,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                        <a href="../index.php?php echo $datetime ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
+                        <a href="../index.php?tahun=<?php echo date('Y') ?>" style="margin-right:20px;"><i class="far fa-arrow-alt-circle-left fa-2x" title="kembali"></i></a>
                         <h1 class="h3 mb-0 text-gray-800">Form Quotation Shipment</h1>
                     </div>
                     <div class="row mb-3">
@@ -244,7 +255,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="note">Note</label>
-                                            <textarea name="" id="note" class="form-control" rows="5" placeholder="note"></textarea>
+                                            <textarea name="" id="note" class="form-control" rows="5" placeholder="note" <?php echo $isDisabled ?>></textarea>
                                         </div>
                                     </div>
                                     <?php include 'edit-permintaan-customer.php' ?>
@@ -252,7 +263,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     <?php include 'edit-tambahan-biaya-handling.php' ?>
                                     <div class="row">
                                         <div class="col-md-12 mt-3">
-                                            <button id="btn_save" class="btn btn-primary w-100" onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)">Simpan</button>
+                                            <button id="btn_save" class="btn btn-primary w-100" onclick="updateHdQuoShipments(<?php echo $_GET['id'] ?>)" <?php if ($data['status_id'] == 10) { ?>disabled<?php }?>>Simpan</button>
                                         </div>
                                         <div class="col-md-12 mt-5">
                                             <?php include 'riwayat-perubahan.php' ?>
@@ -450,23 +461,6 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 </div>
             </div>
         </div>
-
-        <script src="../../../../../vendor/jquery/jquery.min.js"></script>
-        <script src="../../../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../../../../vendor/jquery-easing/jquery.easing.min.js"></script>
-        <script src="../../../../../js/ruang-admin.min.js"></script>
-        <script src="../../../../../vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-        <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
-        <script src="../../../../../vendor/inputmask/dist/jquery.inputmask.js"></script>
-        <!-- Page level plugins -->
-        <script src="../../../../../vendor/datatables1/jquery.dataTables.min.js"></script>
-        <script src="../../../../../vendor/datatables1/datatables.min.js"></script>
-        <script src="../../../../../vendor/select2/dist/js/select2.min.js"></script>
-        <script src="../../../../../vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
-        <script src="../../../../../vendor/toastr/build/toastr.min.js"></script>
-        <script src="../../../../../vendor/flatpickr/dist/flatpickr.min.js"></script>
-
-        <!-- Page level custom scripts -->
         <script>
             $(document).ready(function() {
                 $('.inputmask_currency').inputmask('numeric', {
@@ -572,7 +566,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                 function getHdQuoShipmentDetails(id) {
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'GET',
                         data: {
                             method: 'getHdQuoShipmentDetails',
@@ -601,8 +595,8 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#destination_country_name').val(resp.destination_country_name);
                             $('#pickup_note').val(resp.pickup_note);
                             $('#destination_note').val(resp.destination_note);
-                            $('#handling_qty_1').val(resp.total_container);
-                            $('#handling_qty_next').val(resp.total_container);
+                            $('#handling_qty_1').val(0);
+                            $('#handling_qty_next').val(0);
                             $('#freight_cost').val(resp.freight_cost);
                             $('#currency_date').val(resp.currency_date);
                             $('#currency_rate').val(resp.currency_rate);
@@ -615,16 +609,14 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                             $('#request_cancel_date').text(resp.request_cancel_date);
                             $('#request_cancel_sales_name').text(resp.sales_name);
                             $('#request_cancel_reason').text(resp.reason_request_cancel);
+                            $('#total_costing').text(resp.total_costing);
+                            $('#total_budgeting').text(resp.total_budgeting);
                             $('#new_sales option').each(function() {
-                                console.log($(this).val())
-                                console.log($(this).val() == resp.sales_id)
                                 if ($(this).val() == resp.sales_id) {
                                     $(this).prop('selected', true);
                                 }
                             });
                             $('#new_vm option').each(function() {
-                                console.log($(this).val())
-                                console.log($(this).val() == resp.vm_id)
                                 if ($(this).val() == resp.vm_id) {
                                     $(this).prop('selected', true);
                                 }
@@ -652,9 +644,19 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                 }
 
                 getValidate = () => {
+                    // console.log($('.costing_total_price').filter(function() { return parseFloat($(this).val()) <= 0; }).length > 0)
+                    if ($('.costing_total_price').filter(function() { return parseFloat($(this).val()) <= 0; }).length > 0) {
+                        toastr.error('Total costing price harus lebih besar dari 0', 'Required!');
+                        return true;
+                    }
+                    
                     if ($('#handling_qty_1').val() > 0) {
                         if ($('#handling_name_1').val() == '' || $('#handling_name_1').val() == null) {
                             toastr.error('Nama biaya handling 1 harus diisi', 'Required!')
+                            return true;
+                        }
+                        if (parseFloat($('#handling_qty_1').val()) > parseFloat($('#total_container').val())) {
+                            toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
                             return true;
                         }
                     }
@@ -662,6 +664,10 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     if ($('#handling_qty_next').val() > 0) {
                         if ($('#handling_name_next').val() == '' || $('#handling_name_next').val() == null) {
                             toastr.error('Nama biaya handling next harus diisi', 'Required!')
+                            return true;
+                        }
+                        if (parseFloat($('#handling_qty_next').val()) > parseFloat($('#total_container').val())) {
+                            toastr.error('Kuantitas tidak boleh lebih besar dari total container', 'Required!')
                             return true;
                         }
                     }
@@ -674,26 +680,26 @@ foreach ($dataDtlQuoShipment as $key => $value) {
 
                     let newRow = `
                         <tr>
-                            <td class="px-3 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
+                            <td class="px-2 text-nowrap align-middle" style="font-size: 14px; width: 50px !important">
                                 <div class="custom-control custom-radio" style="padding-left: 2rem">
                                     <input type="radio" class="custom-control-input selected_quo_vendor_id" name="selected_quo_vendor_id" id="selected_quo_vendor_id${lastIndex}" value="<?php echo $val['vendor_id'] ?>" <?php if($totalPricing == 0) {?> disabled <?php }?>>
                                     <label class="custom-control-label" for="selected_quo_vendor_id${lastIndex}"></label>
                                 </div>
                             </td>
-                            <td>
+                            <td class="px-2">
                                 <select name="vendor_id" class="form-control vendor_id">
                                 <?php foreach ($vendors as $val) { ?>
                                     <option value="<?php echo $val['Id'] ?>"><?php echo $val['nama'] ?></option>
                                 <?php } ?>
                                 </select>
                             </td>
-                            <td class="px-3">
+                            <td class="px-2">
                                 <input type="text" class="form-control text-right costing_first_price inputmask_currency" name="costing_first_price" placeholder="0">
                             </td>
-                            <td class="px-3">
+                            <td class="px-2">
                                 <input type="text" class="form-control text-right costing_next_price inputmask_currency" name="costing_next_price" placeholder="0">
                             </td>
-                            <td class="px-3">
+                            <td class="px-2">
                                 <input type="text" class="form-control text-right costing_total_price inputmask_currency" name="costing_total_price" placeholder="0" disabled>
                             </td>
                             <td class="text-center">
@@ -791,7 +797,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                         method: 'updateFormHdQuoShipmentsVM',
                         // hdQuoShipment
                         id: id,
-                        quo_status_id: $('#status_id').val() == 2 ? 6 : 2,
+                        quo_status_id: $('#status_id').val() == 2 ? 6 : ($('#status_id').val() == 6 ? 6 : 2),
                         sales_id: $('#sales_id').val(),
                         sales_name: $('#sales_name').val(),
                         vm_id: <?php echo $s_id ?>,
@@ -836,7 +842,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                     });
 
                     $.ajax({
-                        url: '<?php echo $base_url; ?>/config/controller/quotationShipments/quotationShipmentController.php',
+                        url: '<?php echo $base_url; ?>/config/controller/quotationShipmentController.php',
                         type: 'POST',
                         data: data,
                         success: function(response) {
@@ -849,7 +855,7 @@ foreach ($dataDtlQuoShipment as $key => $value) {
                                     title: 'Berhasil',
                                     text: 'Data berhasil disimpan',
                                 }).then(() => {
-                                    window.location.href = '<?php echo $base_url; ?>/view/vm/quotation/shipment/index.php';
+                                    window.location.href = '<?php echo $base_url; ?>/view/vm/quotation/shipment/index.php?tahun=<?php echo date('Y') ?>';
                                 });
                             }
                         },

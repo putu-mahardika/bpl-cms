@@ -1,19 +1,19 @@
 <?php 
     $color = '';
 
-    if ($totalPricing > $totalBudgeting) {
+    if ($data['total_pricing'] > $data['total_budgeting']) {
         $color = 'success';
     }
 
-    if ($totalPricing > 0 && $totalPricing < $totalBudgeting) {
+    if ($data['total_pricing'] > 0 && $data['total_pricing'] < $data['total_budgeting']) {
         $color = 'warning';
     }
 
-    if ($totalPricing > 0 && $totalPricing < $totalCosting) {
+    if ($data['total_pricing'] > 0 && $data['total_pricing'] < $data['total_costing']) {
         $color = 'danger';
     }
 
-    if ($totalPricing == 0) {
+    if ($data['total_pricing'] == 0) {
         $color = 'neutral';
     }
 ?>
@@ -29,7 +29,7 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalCosting ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency" id="total_costing"><?php echo $data['total_costing'] ?></span>
                 </div>
             </div>
         </div>
@@ -46,11 +46,11 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalBudgeting ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency" id="total_budgeting"><?php echo $data['total_budgeting'] ?></span>
                 </div>
             </div>
         </div>
-        <button class="btn btn-warning mt-4 w-100" <?php if($totalPricing == 0) {?>disabled<?php }?>>Customer PO</button>
+        <button class="btn btn-warning mt-4 w-100" <?php if($data['total_pricing'] == 0) {?>disabled<?php }?>>Customer PO</button>
     </div>
     <div class="col-md-4">
         <div class="p-3 card-pricing <?php echo $color ?> rounded w-100" style="height: 120px;">
@@ -63,7 +63,7 @@
             <div class="card-pricing-body">
                 <div class="text-left">
                     <small>IDR</small>
-                    <span style="font-size: 1.5rem;" class="inputmask_currency"><?php echo $totalPricing ?></span>
+                    <span style="font-size: 1.5rem;" class="inputmask_currency" id="total_pricing"><?php echo $data['total_pricing'] ?></span>
                 </div>
             </div>
         </div>

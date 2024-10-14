@@ -1,9 +1,9 @@
 <?php
-    include '../../koneksi.php';
+    include '../koneksi.php';
     date_default_timezone_set("Asia/Jakarta");
     $datetime = date('Y-m-d H:i:s');
     $year = date('Y', strtotime($datetime));
-    session_save_path('../../../tmp');
+    session_save_path('../../tmp');
     session_start();
     //$s_username = $_SESSION['username'];
     $s_id = $_SESSION['id'];
@@ -12,7 +12,17 @@
 
     function getCustomers($koneksi, $s_id)
     {
-        $query = "SELECT * FROM master_customer where UserId = '{$s_id}' ";
+        session_save_path('../../tmp');
+        session_start();
+        //$s_username = $_SESSION['username'];
+        $s_id = $_SESSION['id'];
+        $akses = $_SESSION['hak_akses'];
+
+        if ($akses == 'Admin') {
+            $query = "SELECT * FROM master_customer";
+        } else {
+            $query = "SELECT * FROM master_customer where UserId = '{$s_id}' ";
+        }
         
         $result = mysqli_query($koneksi, $query);
         
@@ -30,7 +40,7 @@
 
     function getVendors($koneksi)
     {
-        $query = "SELECT * FROM master_vendor where type = 'ALL' or type = 'Shipment'";
+        $query = "SELECT * FROM master_vendor where delivery_type = 'All' or delivery_type = 'Shipment' ORDER BY id DESC";
         $result = mysqli_query($koneksi, $query);
         
         if (!$result) {
@@ -152,7 +162,7 @@
 
     function getHdQuoShipments($koneksi)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
         //$s_username = $_SESSION['username'];
         $s_id = $_SESSION['id'];
@@ -304,7 +314,10 @@
                 mst.id as `shipment_terms_id`,
                 mst.nama as `shipment_terms_name`,
                 mlt.id as `shipment_load_type_id`,
-                mlt.nama as `shipment_load_type_name`
+                mlt.nama as `shipment_load_type_name`,
+                dqs.costing_total_price,
+                dqs.budgeting_total_price,
+                dqs.pricing_total_price
             FROM hd_quo_shipments as hqs
             LEFT JOIN master_quo_status as mqs ON hqs.quo_status_id = mqs.id
             LEFT JOIN master_negara as mn_o ON hqs.origin_country_id = mn_o.id
@@ -315,6 +328,7 @@
             LEFT JOIN master_user as mvm on hqs.vm_id = mvm.UserId
             LEFT JOIN master_shipment_terms as mst on hqs.shipment_terms_id = mst.id
             LEFT JOIN master_load_type as mlt on hqs.shipment_load_type_id = mlt.id
+            LEFT JOIN dtl_quo_shipment as dqs on dqs.vendor_id = hqs.selected_quo_vendor_id
             WHERE hqs.id = $id;
         ";
 
@@ -335,6 +349,9 @@
         $data['dtl_quo_shipment'] = $dataDtlQuoShipment;
         $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $id);
         $data['dtl_quo_shipment_handling_costs'] = $dataDtlQuoShipmentHandlingCosts;
+        $data['total_costing'] = $data['costing_total_price'] ?? 0;
+        $data['total_budgeting'] = $data['budgeting_total_price'] ?? 0;
+        $data['total_pricing'] = $data['pricing_total_price'] ?? 0;
 
         echo json_encode($data);
     }
@@ -371,7 +388,16 @@
                 mst.id as `shipment_terms_id`,
                 mst.nama as `shipment_terms_name`,
                 mlt.id as `shipment_load_type_id`,
-                mlt.nama as `shipment_load_type_name`
+                mlt.nama as `shipment_load_type_name`,
+                dqs.costing_first_price,
+                dqs.costing_next_price,
+                dqs.costing_total_price,
+                dqs.budgeting_first_price,
+                dqs.budgeting_next_price,
+                dqs.budgeting_total_price,
+                dqs.pricing_first_price,
+                dqs.pricing_next_price,
+                dqs.pricing_total_price
             FROM hd_quo_shipments as hqs
             LEFT JOIN master_quo_status as mqs ON hqs.quo_status_id = mqs.id
             LEFT JOIN master_negara as mn_o ON hqs.origin_country_id = mn_o.id
@@ -382,6 +408,7 @@
             LEFT JOIN master_user as mvm on hqs.vm_id = mvm.UserId
             LEFT JOIN master_shipment_terms as mst on hqs.shipment_terms_id = mst.id
             LEFT JOIN master_load_type as mlt on hqs.shipment_load_type_id = mlt.id
+            LEFT JOIN dtl_quo_shipment as dqs on dqs.vendor_id = hqs.selected_quo_vendor_id
             WHERE hqs.id = $id;
         ";
 
@@ -403,10 +430,58 @@
         $dataDtlQuoShipmentHandlingCosts = getDtlQuoShipmentHandlingCosts($koneksi, $id);
         $data['dtl_quo_shipment_handling_costs'] = $dataDtlQuoShipmentHandlingCosts;
 
+        foreach ($dataDtlQuoShipment as $key => $value) {
+            if ($value['vendor_id'] == $data['selected_quo_vendor_id']) {
+                $data['dtl_quo_shipment_id'] = $value['id'];
+                $data['dtl_quo_shipment_vendor_id'] = $value['vendor_id'];
+                $data['dtl_quo_shipment_costing_first_price'] = $value['costing_first_price'] ?? 0;
+                $data['dtl_quo_shipment_costing_next_price'] = $value['costing_next_price'] ?? 0;
+                $data['dtl_quo_shipment_costing_total_price'] = $value['costing_total_price'] ?? 0;
+                $data['dtl_quo_shipment_budgeting_first_price'] = $value['budgeting_first_price'] ?? 0;
+                $data['dtl_quo_shipment_budgeting_next_price'] = $value['budgeting_next_price'] ?? 0;
+                $data['dtl_quo_shipment_budgeting_total_price'] = $value['budgeting_total_price'] ?? 0;
+                $data['dtl_quo_shipment_pricing_first_price'] = $value['pricing_first_price'] ?? 0;
+                $data['dtl_quo_shipment_pricing_next_price'] = $value['pricing_next_price'] ?? 0;
+                $data['dtl_quo_shipment_pricing_total_price'] = $value['pricing_total_price'] ?? 0;
+            }
+
+            $data['unselect_costing_total_price'] +=  $value['costing_total_price'] ?? 0;
+            $data['unselect_budgeting_total_price'] +=  $value['budgeting_total_price'] ?? 0;
+            $data['unselect_pricing_total_price'] +=  $value['pricing_total_price'] ?? 0;
+        }
+
         foreach ($dataDtlQuoShipmentHandlingCosts as $key => $value) {
             $data['total_handling_unit'] += $value['unit_price'];
             $data['total_handling_price'] += $value['total_price'];
+            if ($value['handling_turunan'] == 1) {
+                $data['handling_id_1'] = $value['id'];
+                $data['handling_name_1'] = $value['handling_description'];
+                $data['handling_qty_1'] = $value['quantity'];
+                $data['handling_unit_cost_1'] = $value['unit_cost'];
+                $data['handling_total_cost_1'] = $value['total_cost'];
+                $data['handling_unit_budgeting_1'] = $value['unit_budgeting'];
+                $data['handling_total_budgeting_1'] = $value['total_budgeting'];
+                $data['handling_unit_price_1'] = $value['unit_price'];
+                $data['handling_total_price_1'] = $value['total_price'];
+            }
+            if ($value['handling_turunan'] == 2) {
+                $data['handling_id_next'] = $value['id'];
+                $data['handling_name_next'] = $value['handling_description'];
+                $data['handling_qty_next'] = $value['quantity'];
+                $data['handling_unit_cost_next'] = $value['unit_cost'];
+                $data['handling_total_cost_next'] = $value['total_cost'];
+                $data['handling_unit_budgeting_next'] = $value['unit_budgeting'];
+                $data['handling_total_budgeting_next'] = $value['total_budgeting'];
+                $data['handling_unit_price_next'] = $value['unit_price'];
+                $data['handling_total_price_next'] = $value['total_price'];
+            }
         }
+        $data['unselect_costing_total_price'] = $data['unselect_costing_total_price'];
+        $data['unselect_budgeting_total_price'] = $data['unselect_budgeting_total_price'];
+        $data['unselect_pricing_total_price'] = $data['unselect_pricing_total_price'];
+        $data['total_costing'] = $data['costing_total_price'] ?? 0;
+        $data['total_budgeting'] = $data['budgeting_total_price'] ?? 0;;
+        $data['total_pricing'] = $data['pricing_total_price'] ?? 0;
 
         return $data;
     }
@@ -526,7 +601,7 @@
 
     function createHdQuoShipmentsSales($koneksi)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $last_updated_by_id = $_SESSION['id'];
@@ -545,27 +620,27 @@
         
         $lastInsertedId = createHdQuoShipments($koneksi, $last_updated_by_id, $last_updated_by_name);
 
-        if (count($vendor_data) > 0) {
-            foreach ($vendor_data as $key => $value) {
-                if ($value['vendor_id'] != NULL) {
-                    createDtlQuoShipment(
-                        $koneksi, 
-                        $lastInsertedId, 
-                        $value['vendor_id'], 
-                        $value['costing_first_price'] ?? 0, 
-                        $value['costing_next_price'] ?? 0, 
-                        $value['costing_total_price'] ?? 0, 
-                        $value['budgeting_first_price'] ?? 0, 
-                        $value['budgeting_next_price'] ?? 0, 
-                        $value['budgeting_total_price'] ?? 0, 
-                        $value['pricing_first_price'] ?? 0, 
-                        $value['pricing_next_price'] ?? 0, 
-                        $value['pricing_total_price'] ?? 0, 
-                        $last_updated_by_id
-                    );
-                }
-            }
-        }
+        // if (count($vendor_data) > 0) {
+        //     foreach ($vendor_data as $key => $value) {
+        //         if ($value['vendor_id'] != NULL) {
+        //             createDtlQuoShipment(
+        //                 $koneksi, 
+        //                 $lastInsertedId, 
+        //                 $value['vendor_id'], 
+        //                 $value['costing_first_price'] ?? 0, 
+        //                 $value['costing_next_price'] ?? 0, 
+        //                 $value['costing_total_price'] ?? 0, 
+        //                 $value['budgeting_first_price'] ?? 0, 
+        //                 $value['budgeting_next_price'] ?? 0, 
+        //                 $value['budgeting_total_price'] ?? 0, 
+        //                 $value['pricing_first_price'] ?? 0, 
+        //                 $value['pricing_next_price'] ?? 0, 
+        //                 $value['pricing_total_price'] ?? 0, 
+        //                 $last_updated_by_id
+        //             );
+        //         }
+        //     }
+        // }
 
         if ($handling_qty_1 > 0) {
             createDtlQuoShipmentHandlingCostsSales(
@@ -603,7 +678,7 @@
 
     function createHdQuoShipmentsAdmin($koneksi)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $last_updated_by_id = $_SESSION['id'];
@@ -1050,13 +1125,20 @@
 
     function updateFormHdQuoShipmentsSales($koneksi)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
         $sales_id = $_POST['sales_id'];
         $quo_status_id = $_POST['quo_status_id'];
         $vm_id = $_POST['vm_id'];
+        $total_container = $_POST['total_container'];
+        $item_description = $_POST['item_description'];
+        $customer_id = $_POST['customer_id'];
+        $customer_name_temp = $_POST['customer_name_temp'];
+        $customer_address_temp = $_POST['customer_address_temp'];
+        $pic_name_temp = $_POST['pic_name_temp'];
+        $pic_phone_temp = $_POST['pic_phone_temp'];
         $handling_id_1 = $_POST['handling_id_1'];
         $handling_name_1 = $_POST['handling_name_1'];
         $handling_qty_1 = $_POST['handling_qty_1'];
@@ -1072,13 +1154,38 @@
         $vendor_data = $_POST['vendor_data'];
         // print_r($_POST);die();
 
-        $query = "UPDATE `hd_quo_shipments` SET 
-                `quo_status_id` = '{$quo_status_id}', 
-                `vm_id` = '{$vm_id}', 
-                `updated_at` = '" . date('Y-m-d H:i:s') . "',
-                `last_updated_by_id` = '$last_updated_by_id',
-                `last_updated_by_name` = '$last_updated_by_name'
-            WHERE `id` = $id;";
+        if ($_POST['customer_id'] == null) {
+            $query = "UPDATE `hd_quo_shipments` SET 
+                    `quo_status_id` = '{$quo_status_id}', 
+                    `vm_id` = '{$vm_id}', 
+                    `total_container` = $total_container, 
+                    `item_description` = '{$item_description}', 
+                    `customer_id` = NULL, 
+                    `customer_name_temp` = '{$customer_name_temp}', 
+                    `customer_address_temp` = '{$customer_address_temp}', 
+                    `pic_name_temp` = '{$pic_name_temp}', 
+                    `pic_phone_temp` = '{$pic_phone_temp}', 
+                    `updated_at` = '" . date('Y-m-d H:i:s') . "',
+                    `last_updated_by_id` = '{$last_updated_by_id}',
+                    `last_updated_by_name` = '{$last_updated_by_name}'
+                WHERE `id` = $id;";
+        } else {
+            $query = "UPDATE `hd_quo_shipments` SET 
+                    `quo_status_id` = '{$quo_status_id}', 
+                    `vm_id` = '{$vm_id}', 
+                    `total_container` = $total_container, 
+                    `item_description` = '{$item_description}', 
+                    `customer_id` = '{$customer_id}', 
+                    `customer_name_temp` = NULL, 
+                    `customer_address_temp` = NULL, 
+                    `pic_name_temp` = NULL, 
+                    `pic_phone_temp` = NULL, 
+                    `updated_at` = '" . date('Y-m-d H:i:s') . "',
+                    `last_updated_by_id` = '{$last_updated_by_id}',
+                    `last_updated_by_name` = '{$last_updated_by_name}'
+                WHERE `id` = $id;";
+        }
+
         // print_r($query);die();
         
         $result = mysqli_query($koneksi, $query);
@@ -1187,7 +1294,7 @@
 
     function updateFormHdQuoShipmentsVM($koneksi)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
@@ -1330,7 +1437,7 @@
 
     function updateFormHdQuoShipmentsAdmin($koneksi)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
@@ -1625,7 +1732,7 @@
 
     function updateHdQuoShipmentsReqCancel($koneksi, $hdQuotationId)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
@@ -1658,7 +1765,7 @@
 
     function updateHdQuoShipmentsSales($koneksi, $hdQuotationId)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
@@ -1688,7 +1795,7 @@
 
     function updateHdQuoShipmentsVM($koneksi, $hdQuotationId)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
@@ -1718,7 +1825,7 @@
 
     function updateHdQuoShipmentsApproveCancel($koneksi, $hdQuotationId)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
@@ -1749,7 +1856,7 @@
 
     function updateHdQuoShipmentsRejectCancel($koneksi, $hdQuotationId)
     {
-        session_save_path('../../../tmp');
+        session_save_path('../../tmp');
         session_start();
 
         $id = $_POST['id'];
