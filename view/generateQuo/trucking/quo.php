@@ -101,6 +101,44 @@
 
     // print_r($data);
 
-    echo $template;
+    // echo $template;
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS tambahan untuk merapikan tabel agar muat dalam satu layar */
+        .container {
+            max-width: 1000px; /* Lebar maksimal diperbesar */
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        table {
+            font-size: 13px; /* Ukuran font sedikit diperkecil agar lebih muat */
+        }
+        th, td {
+            padding: 8px; /* Padding dikurangi untuk menjaga jarak */
+            text-align: center; /* Teks rata tengah untuk tampilan yang lebih simetris */
+        }
+        th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        .notes {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <?php echo $template ?>
+</body>
+</html>
 

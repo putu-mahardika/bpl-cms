@@ -324,7 +324,7 @@
     }
   }
 
-  elseif (isset($_POST['editQuoTruckingAdmin'])) {
+  elseif ($_POST['method'] == 'editQuoTrucking') {
     // print_r($_POST);
     $customerId = isset($_POST['customer']) ? $_POST['customer'] : 'null';
     $customerNameTemp = isset($_POST['customerTempName']) && $_POST['customerTempName'] !== '' ? "'" . $_POST['customerTempName'] . "'" : 'null';
@@ -342,11 +342,11 @@
     $kendaraanId= isset($_POST['kendaraan']) ? $_POST['kendaraan'] : 'null';
     $qty = isset($_POST['qty']) ? $_POST['qty'] : 0;
     $kotaAsalId = isset($_POST['kotaAsal']) ? $_POST['kotaAsal'] : 'null';
-    $kotaTujuanId1 = isset($_POST['kotaTujuan1']) ? $_POST['kotaTujuan1'] : 'null';
+    $kotaTujuanId1 = isset($_POST['kotaTujuan']) ? $_POST['kotaTujuan'] : 'null';
     $kotaTujuanId2 = isset($_POST['kotaTujuan2']) && $_POST['kotaTujuan2'] !== "" ? $_POST['kotaTujuan2'] : 'null';
     $kotaTujuanId3 = isset($_POST['kotaTujuan3']) && $_POST['kotaTujuan3'] !== "" ? $_POST['kotaTujuan3'] : 'null';
-    $detailKotaAsal = isset($_POST['detailKotaAsal0']) ? "'".$_POST['detailKotaAsal0']."'" : 'null';
-    $detailKotaTujuan = isset($_POST['detailKotaTujuan0']) ? "'".$_POST['detailKotaTujuan0']."'" : 'null';
+    $detailKotaAsal = isset($_POST['detailKotaAsal']) ? "'".$_POST['detailKotaAsal']."'" : 'null';
+    $detailKotaTujuan = isset($_POST['detailKotaTujuan']) ? "'".$_POST['detailKotaTujuan']."'" : 'null';
     $vendor = isset($_POST['vendor']) ? $_POST['vendor'] : [];
     $idDetailQuo = isset($_POST['idDetailQuo']) ? $_POST['idDetailQuo'] : [];
     $costingFirst = isset($_POST['costingFirst']) ? $_POST['costingFirst'] : [];
@@ -362,12 +362,11 @@
     $quoId = isset($_POST['quoTruckingId']) ? $_POST['quoTruckingId'] : 'null';
     $statusId = isset($_POST['statusId']) ? $_POST['statusId'] : 'null';
     $vmId = isset($_POST['vmIdOld']) ? $_POST['vmIdOld'] : 'null';
-    $selectedVendor = isset($_POST['checkboxVendor']) ? $_POST['checkboxVendor'] : 'null';
+    $selectedVendor = $_POST['checkboxVendor'] == '' ? 'null' : $_POST['checkboxVendor'];
 
     $note = str_replace(["\r\n", "\n", "\r"],"%%", $note);
     $detailKotaAsal = str_replace(["\r\n", "\n", "\r"],"%%", $detailKotaAsal);
     $detailKotaTujuan = str_replace(["\r\n", "\n", "\r"],"%%", $detailKotaTujuan);
-
 
     if ($selectedTab == 1) {
       $tripType = 'multiTrip';
@@ -378,7 +377,7 @@
       $tripType = 'singleTrip';
     }
 
-    // print_r($_POST['checkboxVendor']);
+    // print_r($_POST['vendor']);
     try {
       if ($selectedTab == 1) {
         $query = "UPDATE master_quotation_trucking SET
@@ -460,11 +459,13 @@
         ";
       }
 
-      // echo $query;
+      // print_r($idDetailQuo);
       $result = mysqli_query($koneksi, $query);
       if ($result) {
         // header("location:../../view/admin/quotation/trucking/index.php");
+        // echo $statusId;
         if ($statusId == 1) {
+          // echo 'xxxx';
           $statusId = insertDetailQuo($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi);
           $vmId = $s_id;
           $queryd = "UPDATE master_quotation_trucking SET IdVM='$vmId', IdQuoStatus='$statusId', CostingDate='$datetime' WHERE Id=$quoId";
@@ -483,34 +484,38 @@
           }
         }
         // insertDetailQuo($vendor, $costingFirst, $costingNext, $costingTotal, $quoId, $s_id, $koneksi);
+        
+        echo json_encode(['status' => 200, 'message' => 'Success']);
 
-        $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-        if ($akses == 'User') {
-          header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
-        } elseif ($akses == 'Admin') {
-          header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
-        } else {
-          header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
-        }
+        // $_SESSION['pesan'] = '<p><div class="alert alert-success">Data berhasil diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        // if ($akses == 'User') {
+        //   header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
+        // } elseif ($akses == 'Admin') {
+        //   header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+        // } else {
+        //   header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
+        // }
       } else {
-        $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
-        if ($akses == 'User') {
-          header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
-        } elseif ($akses == 'Admin') {
-          header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
-        } else {
-          header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
-        }
+        // $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';				
+        // if ($akses == 'User') {
+        //   header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
+        // } elseif ($akses == 'Admin') {
+        //   header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+        // } else {
+        //   header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
+        // }
+        echo json_encode(['status' => 500, 'message' => 'Failed']);
       }
     } catch (\Throwable $th) {
-      $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
-      if ($akses == 'User') {
-        header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
-      } elseif ($akses == 'Admin') {
-        header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
-      } else {
-        header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
-      }
+      // $_SESSION['pesan'] = '<p><div class="alert alert-warning">Data gagal diubah !<a class="close" data-dismiss="alert" href="#">x</a></div></p>';
+      // if ($akses == 'User') {
+      //   header("location:../../view/user/quotation/trucking/form/edit.php?id=$quoId");
+      // } elseif ($akses == 'Admin') {
+      //   header("location:../../view/admin/quotation/trucking/form/edit.php?id=$quoId");
+      // } else {
+      //   header("location:../../view/vm/quotation/trucking/form/edit.php?id=$quoId");
+      // }
+      echo json_encode(['status' => 500, 'message' => 'Failed']);
     }
 
   }
@@ -543,7 +548,7 @@
     $query = "INSERT INTO trans_hd (`CustId`, `UserId`, `NoPO`, `tgl_po`, `NoSPK`, `tgl_spk`, `total_armada`, `kota_kirim_id`, `kota_kirim`, `kota_tujuan_id`, `kota_tujuan`, `Barang`, `OnClose`, `create_date`, `last_update`, `IdQuotation`)
     VALUES ('$customerId', '$s_id', '$poNumber', '$tglpo1', '$spkNumber', '$tglspk1', '$totalArmada', '$originCity', '$originCityDesc', '$destinationCity', '$destinationCityDesc', '$item', 0, '$datetime', '$datetime', '$idQuo')";
 
-    echo $query;
+    // echo $query;
     $result = mysqli_query($koneksi, $query);
     if ($result) {
       $queryQuo = "UPDATE master_quotation_trucking SET IdQuoStatus=14 WHERE Id='$idQuo'";
@@ -565,8 +570,8 @@
       }
     }
   }
-  elseif (isset($_POST['updateBudgetingQuotationDetailTrucking'])) {
-    $resp = updateBudgetingQuotationDetailTrucking($koneksi, $_POST['hdQuotationId']);
+  elseif ($_POST['method'] == 'updateBudgetingQuotationDetailTrucking') {
+    $resp = updateBudgetingQuotationDetailTrucking($koneksi, $_POST['hdQuotationId'], $s_id, $s_name);
     echo $resp;
   }
   elseif ($_POST['method'] == 'updateHdQuoTruckingReqCancel') {
@@ -603,7 +608,7 @@
       }
       $queryValues = implode(', ', $queryArray);
       $query = "INSERT INTO quotation_detail_trucking (`IdQuotation`, `IdVendor`, `CostingFirstPrice`, `CostingNextPrice`, `CostingTotalPrice`, `LastUpdatedById`) VALUES $queryValues;";
-      printf($query);
+      // printf($query);
       $result = mysqli_query($koneksi, $query);
       $newStatus = 2;
       return $newStatus;
@@ -613,7 +618,7 @@
   }
 
   function updateDetailQuo ($vendor, $statusId, $idDetailQuo, $costingFirst, $costingNext, $costingTotal, $budgetingFirst, $budgetingNext, $budgetingTotal, $pricingFirst, $pricingNext, $pricingTotal, $quoId, $s_id, $koneksi) {
-    print_r($vendor);
+    // print_r($vendor);
     $newStatus = $statusId;
     if (count($vendor) > 0) {
       $statusTemp = $statusId;
@@ -634,7 +639,7 @@
         if ($dataCheck['PricingFirstPrice'] !== $pricingFirst[$key] || $dataCheck['PricingNextPrice'] !== $pricingNext[$key]) {
           array_push($arrayCheck, 'c');
         }
-        print_r($arrayCheck);
+        // print_r($arrayCheck);
         if (count($arrayCheck) == 1 && $statusTemp !== 5) {
           if ($arrayCheck[0] == 'a') {
             $statusTempTemp = 6;
@@ -644,7 +649,7 @@
             $statusTempTemp = 8;
           }
 
-          if ($statusTemp == null) {
+          if ($statusTemp == null || $statusTemp == 3) {
             $statusTemp = $statusTempTemp;
           } elseif ($statusTemp && $statusTemp !== $statusTempTemp) {
             $statusTemp = 5;
@@ -666,17 +671,29 @@
         
       }
       $newStatus = $statusTemp;
-      echo $newStatus;
+      // echo $newStatus;
     }
     return $newStatus;
   }
 
-  function updateBudgetingQuotationDetailTrucking($koneksi, $hdQuotationId){
+  function updateBudgetingQuotationDetailTrucking($koneksi, $hdQuotationId, $s_id, $s_name){
     $stmt = $koneksi->prepare("CALL update_budgeting_quotation_detail_trucking(?)");
     $stmt->bind_param("i", $hdQuotationId);
     if (!$stmt->execute()) {
       die("Stored procedure execution failed: " . $stmt->error);
     }
+    $query = "UPDATE `master_quotation_trucking` SET 
+          `IdQuoStatus` = 3, 
+          `update_at` = '" . date('Y-m-d H:i:s') . "',
+          `budgeting_date` = '" . date('Y-m-d H:i:s') . "',
+          `LastUpdatedById` = '$s_id',
+          `LastUpdatedByName` = '$s_name'
+          WHERE `id` = $hdQuotationId;";
+          // print_r($query);
+          // print_r($query);die();
+          
+      // echo $query;
+      $result = mysqli_query($koneksi, $query);
     // $stmt->close();
     // return json_encode(['status' => 200, 'message' => 'Success']);
     return json_encode(['status' => 200, 'message' => 'Success']);

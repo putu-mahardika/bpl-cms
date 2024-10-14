@@ -119,6 +119,8 @@
     $fetchTrucking = mysqli_query($koneksi, "select * from trans_hd where IdQuotation='$quoId'");
     $dataTrucking = mysqli_fetch_assoc($fetchTrucking);
   }
+
+  // print_r($dataForm);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -471,11 +473,11 @@
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label>Jumlah Armada</label>
-                              <input type="number" class="form-control form-control-sm mb-3" id="totalArmada" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $dataForm['TotalArmada'] ?>" required>
+                              <input type="number" class="form-control form-control-sm mb-3" id="totalArmada" id="totalArmada" name="totalArmada" placeholder="Masukkan jumlah armada" min="1" value="<?php echo $dataForm['TotalArmada'] ?>" required>
                             </div>
                             <div class="form-group">
                               <label>Jenis Barang Bawaan</label>
-                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $dataForm['ItemType'] ?>" required>
+                              <input type="text" class="form-control form-control-sm mb-3" name="itemType" id="itemType" placeholder="Masukkan jenis barang bawaan" value="<?php echo $dataForm['ItemType'] ?>" required>
                             </div>
                             <div class="form-group">
                               <label>Total Berat (Kg) KGM/CBM</label>
@@ -485,7 +487,7 @@
                         </div>
                         <div class="form-group">
                           <label>Keterangan :</label>
-                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" minlength="10" maxlength="100"><?php echo $dataForm['note'] ?></textarea>
+                          <textarea type="text" class="form-control form-control-sm mb-3" name="keterangan" id="keterangan" minlength="10" maxlength="100"><?php echo $dataForm['note'] ?></textarea>
                         </div>
                       </div>
                       <div class="mb-3">
@@ -524,7 +526,7 @@
                                       <tbody>
                                         <tr>
                                           <td>
-                                            <select class="form-control" name="kendaraan" id="kendaraan" style="width: 200px;">
+                                            <select class="form-control" name="kendaraan" id="kendaraan1" style="width: 200px;">
                                               <option value="" disabled>Pilih</option>
                                               <?php
                                                 foreach($kendaraanArray as $data){
@@ -542,7 +544,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
+                                            <select class="form-control" name="kotaAsal" id="kotaAsal1" style="width: 200px;">
                                               <option value="" disabled>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -578,10 +580,10 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal0" id="detailKotaAsal0" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal0" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
                                           </td>
                                           <td>
-                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan0" id="detailKotaTujuan0" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan0" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
                                           </td>
                                         </tr>
                                       </tbody>
@@ -608,7 +610,7 @@
                                       <tbody>
                                         <tr>
                                           <td>
-                                            <select class="form-control" name="kendaraan" id="kendaraan" style="width: 200px;">
+                                            <select class="form-control" name="kendaraan" id="kendaraan2" style="width: 200px;">
                                               <option value="" disabled>Pilih</option>
                                               <?php
                                                 foreach($kendaraanArray as $data){
@@ -626,7 +628,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
+                                            <select class="form-control" name="kotaAsal" id="kotaAsal2" style="width: 200px;">
                                               <option value="" disabled>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -644,7 +646,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan1" style="width: 200px;">
+                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan2-1" style="width: 200px;">
                                               <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity1']) ? printf('selected') : printf('') ?>>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -662,7 +664,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaTujuan2" id="kotaTujuan2" style="width: 200px;">
+                                            <select class="form-control" name="kotaTujuan2" id="kotaTujuan2-2" style="width: 200px;">
                                               <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity2']) ? printf('selected') : printf('') ?>>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -680,7 +682,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaTujuan3" id="kotaTujuan3" style="width: 200px;">
+                                            <select class="form-control" name="kotaTujuan3" id="kotaTujuan2-3" style="width: 200px;">
                                               <option value="" disabled <?php !isset($dataFrom ['IdDestinationCity3']) ? printf('selected') : printf('') ?>>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -698,10 +700,10 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal1" id="detailKotaAsal1" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal1" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
                                           </td>
                                           <td>
-                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan1" id="detailKotaTujuan1" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan1" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>    
                                           </td>
                                         </tr>
                                       </tbody>
@@ -724,17 +726,17 @@
                                       <tbody>
                                         <tr>
                                           <td>
-                                            <select class="form-control" name="deliveryType" id="kendaraan" style="width: 150px;">
+                                            <select class="form-control" name="deliveryType" id="deliveryType" style="width: 150px;">
                                               <option value="" disabled <?php !isset($dataFrom ['deliveryTypeName']) ? printf('selected') : printf('') ?>>Pilih</option>
                                               <option value="kgm" <?php $dataForm['TripType'] == 'kgm' ? printf('selected') : printf('') ?>>KGM</option>
                                               <option value="cbm" <?php $dataForm['TripType'] == 'cbm' ? printf('selected') : printf('') ?>>CBM</option>
                                             </select>
                                           </td>
                                           <td>
-                                            <input type="number" class="form-control form-control-sm mb-3" style="width: 100px;" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $dataForm[36] ?>">
+                                            <input type="number" class="form-control form-control-sm mb-3" style="width: 100px;" name="qty" id="qty" placeholder="masukkan jumlah barang" min="0" value="<?php echo $dataForm['qty'] ?>">
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaAsal" id="kotaAsal" style="width: 200px;">
+                                            <select class="form-control" name="kotaAsal" id="kotaAsal3" style="width: 200px;">
                                               <option value="" disabled selected>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -752,7 +754,7 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan1" style="width: 200px;">
+                                            <select class="form-control" name="kotaTujuan1" id="kotaTujuan3" style="width: 200px;">
                                               <option value="" disabled>Pilih</option>
                                               <?php
                                                 foreach($cityArray as $data){
@@ -770,10 +772,10 @@
                                             </select>
                                           </td>
                                           <td>
-                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal2" id="detailKotaAsal2" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaAsal2" id="detailKotaAsal3" minlength="3" maxlength="100"><?php echo $dataForm['PickupNote'] ?></textarea>    
                                           </td>
                                           <td>
-                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan2" id="detailKotaTujuan2" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>
+                                            <textarea type="text" class="form-control form-control-sm mb-3" style="width: 150px;" name="detailKotaTujuan2" id="detailKotaTujuan3" minlength="3" maxlength="100"><?php echo $dataForm['DestinationNote'] ?></textarea>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -902,7 +904,7 @@
                           </div>
                           <?php if ($dataForm['TripType'] === 'singleTrip') { ?>
                           <div class="table-responsive">
-                            <table class="table align-items-center table-flush table-hover vendorTable">
+                            <table class="table align-items-center table-flush table-hover vendorTable" id="tableVendor">
                               <thead class="thead-light">
                                 <tr>
                                   <th rowspan="2">Pilih</th>
@@ -927,11 +929,11 @@
                                 ?>
                                 <tr>
                                   <td>
-                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor" value="<?php echo $dataDetail['Id']?>" id="vendorCheck" <?php $dataForm['quoDetailVendorId'] == $dataDetail['Id'] ? printf('checked') : '' ?> <?php $dataForm['IdQuoStatus'] == 8 && $dataDetail['PricingTotalPrice'] > 0 ? printf('') : printf('disabled') ?>>
-                                    <input name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
+                                    <input class="form-check-input checkboxVendor" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor" value="<?php echo $dataDetail['Id']?>" id="vendorCheck" <?php $dataForm['quoDetailVendorId'] == $dataDetail['Id'] ? printf('checked') : '' ?> <?php $dataForm['IdQuoStatus'] == 8 && $dataDetail['PricingTotalPrice'] > 0 ? printf('') : printf('disabled') ?>>
+                                    <input class="idDetailQuo" name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
                                   </td>
                                   <td>
-                                    <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
+                                    <select class="form-control vendor" name="vendor[]" id="vendor-0" style="width: 200px;">
                                       <option value="" <?php isset($dataDetail['IdVendor']) ? printf('') : printf('selected') ?> disabled> Pilih </option>
                                       <?php
                                         foreach($vendorArray as $key => $data){
@@ -976,11 +978,11 @@
                                 <?php } } else {?>
                                 <tr>
                                   <td>
-                                    <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor-0" value="" id="customerCheck" disabled>
-                                    <input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
+                                    <input class="form-check-input checkboxVendor" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor-0" value="" id="customerCheck" disabled>
+                                    <input class="idDetailQuo" name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
                                   </td>
                                   <td>
-                                    <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
+                                    <select class="form-control vendor" name="vendor[]" id="vendor-0" style="width: 200px;">
                                       <option value="" disabled selected>Pilih</option>
                                       <?php
                                         foreach($vendorArray as $data){
@@ -1009,7 +1011,7 @@
                                   </td>
                                   <td>
                                     <input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0">
-                                    <input type="hidden" class="form-control form-control-sm prising-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="hidden" class="form-control form-control-sm pricing-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0">
                                   </td>
                                   <td>
                                     <input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
@@ -1024,7 +1026,7 @@
                           </div>
                           <?php } else { ?>
                           <div class="table-responsive">
-                            <table class="table align-items-center table-flush table-hover vendorTable">
+                            <table class="table align-items-center table-flush table-hover vendorTable" id="tableVendor">
                               <thead class="thead-light">
                                 <tr>
                                   <th rowspan="2">Pilih</th>
@@ -1053,10 +1055,10 @@
                                 <tr>
                                   <td>
                                     <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor" value="<?php echo $dataDetail['Id']?>" id="vendorCheck" <?php $dataForm['quoDetailVendorId'] == $dataDetail['Id'] ? printf('checked') : '' ?> <?php $dataForm['IdQuoStatus'] == 8 && $dataDetail['PricingTotalPrice'] > 0 ? printf('') : printf('disabled') ?>>
-                                    <input name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
+                                    <input class="idDetailQuo" name="idDetailQuo[]" type="hidden" value="<?php echo $dataDetail['Id']?>" id="idDetailQuo-<?php echo $key ?>" readonly>
                                   </td>
                                   <td>
-                                    <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
+                                    <select class="form-control vendor" name="vendor[]" id="vendor-0" style="width: 200px;">
                                       <option value="" <?php isset($dataDetail['IdVendor']) ? printf('') : printf('selected') ?> disabled> Pilih </option>
                                       <?php
                                         foreach($vendorArray as $key => $data){
@@ -1108,10 +1110,10 @@
                                 <tr>
                                   <td>
                                     <input class="form-check-input" type="checkbox" style="position: relative; margin-left: revert;" name="checkboxVendor-0" value="" id="customerCheck" disabled>
-                                    <input name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
+                                    <input class="idDetailQuo" name="idDetailQuo[]" type="hidden" value="" id="idDetailQuo-0" readonly>
                                   </td>
                                   <td>
-                                    <select class="form-control" name="vendor[]" id="vendor-0" style="width: 200px;">
+                                    <select class="form-control vendor" name="vendor[]" id="vendor-0" style="width: 200px;">
                                       <option value="" disabled selected>Pilih</option>
                                       <?php
                                         foreach($vendorArray as $data){
@@ -1146,7 +1148,7 @@
                                     <input type="text" class="form-control form-control-sm pricing-first inputmask_currency" style="width: 150px;" name="pricingFirst[]" id="pricingFirst-0" placeholder="masukkan nominal" min="0" value="0">
                                   </td>
                                   <td>
-                                    <input type="text" class="form-control form-control-sm prising-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0">
+                                    <input type="text" class="form-control form-control-sm pricing-next inputmask_currency" style="width: 150px;" name="pricingNext[]" id="pricingNext-0" placeholder="masukkan nominal" min="0" value="0">
                                   </td>
                                   <td>
                                     <input type="text" class="form-control form-control-sm pricing-total inputmask_currency" style="width: 150px;" name="pricingTotal[]" id="pricingTotal-0" placeholder="masukkan nominal" min="0" value="0" readonly>
@@ -1162,10 +1164,10 @@
                           <?php } ?>
                         </div>
                       </div>
-                      <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="statusId" value="<?php echo $dataForm['IdQuoStatus']?>" readonly>
-                      <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="quoTruckingId" value="<?php echo $dataForm['Id']?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="statusId" id="statusId" value="<?php echo $dataForm['IdQuoStatus']?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="quoTruckingId" id="quoTruckingId" value="<?php echo $dataForm['Id']?>" readonly>
                       <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="counterTableVendor" id="counterTableVendor" value="1" readonly>
-                      <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="vmIdOld" id="counterTableVendor" value="<?php echo $dataForm['IdVM'] ?>" readonly>
+                      <input type="hidden" class="form-control form-control-sm" style="width: 150px;" name="vmIdOld" id="vmIdOld" value="<?php echo $dataForm['IdVM'] ?>" readonly>
                       <div class="mb-3">
                         <div class="row">
                           <div class="col-lg-2">
@@ -1178,7 +1180,7 @@
                                 <button class="btn btn-primary" style="width: 100%; height:100%; background-color:#EA8E8E; border-color:#EA8E8E;" type="button" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> data-toggle="modal" data-target="#modal_req_cancel" >Pembatalan</button>
                               </div>
                               <div class="col-lg-8">
-                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="submit" value="Simpan" name="editQuoTruckingAdmin" id="editQuoTruckingAdmin" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> >
+                                <input class="btn btn-primary" style="width: 100%; height:100%;" type="button" value="Simpan" name="editQuoTruckingAdmin" id="editQuoTruckingAdmin" <?php if($dataForm['IdQuoStatus'] == 13 || $dataForm['IdQuoStatus'] == 14 ? printf('disabled') : '') ?> onclick="onSubmit(<?php echo $id ?>)" >
                               </div>
                             </div>
                           </div>
@@ -1727,7 +1729,7 @@
         counterRow++;
         getDataVendor(function(vendor) {
         <?php if ($dataForm['TripType'] !== 'singleTrip') { ?>
-          var dropdown = '<select class="form-control" style="width: 200px;" name="vendor[]" id="vendor-'+counterRow+'">';
+          var dropdown = '<select class="form-control vendor" style="width: 200px;" name="vendor[]" id="vendor-'+counterRow+'">';
           dropdown += '<option value="" disabled selected>Pilih</option>';
           vendor.forEach(function(p) {
             dropdown += '<option value="' + p.Id + '">' + p.nama + '</option>';
@@ -1755,7 +1757,7 @@
             actionButton
           ]).draw(false);
         <?php } else { ?>
-          var dropdown = '<select class="form-control" style="width: 200px;" name="vendor[]" id="vendor-'+counterRow+'">';
+          var dropdown = '<select class="form-control vendor" style="width: 200px;" name="vendor[]" id="vendor-'+counterRow+'">';
           dropdown += '<option value="" disabled selected>Pilih</option>';
           vendor.forEach(function(p) {
             dropdown += '<option value="' + p.Id + '">' + p.nama + '</option>';
@@ -1932,38 +1934,38 @@
           $('#nominalPricing').html(new Intl.NumberFormat('id-ID').format(pricingTotal))
 
           if (pricingTotal < costingTotal) {
-            $('#pricing-card').toggleClass('below-costing');
+            $('#pricing-card').addClass('below-costing');
             if ($('#pricing-card').hasClass('below-budget')) {
-              $('#pricing-card').toggleClass('below-budget');
+              $('#pricing-card').removeClass('below-budget');
             }
             if ($('#pricing-card').hasClass('above')) {
-              $('#pricing-card').toggleClass('above');
+              $('#pricing-card').removeClass('above');
             }
           } else if (pricingTotal < budgetingTotal) {
-            $('#pricing-card').toggleClass(' below-budget');
+            $('#pricing-card').addClass(' below-budget');
             if ($('#pricing-card').hasClass('below-costing')) {
-              $('#pricing-card').toggleClass('below-costing');
+              $('#pricing-card').removeClass('below-costing');
             }
             if ($('#pricing-card').hasClass('above')) {
-              $('#pricing-card').toggleClass('above');
+              $('#pricing-card').removeClass('above');
             }
           } else if (pricingTotal > costingTotal) {
-            $('#pricing-card').toggleClass('above');
+            $('#pricing-card').addClass('above');
             if ($('#pricing-card').hasClass('below-budget')) {
-              $('#pricing-card').toggleClass('below-budget');
+              $('#pricing-card').removeClass('below-budget');
             }
             if ($('#pricing-card').hasClass('below-costing')) {
-              $('#pricing-card').toggleClass('below-costing');
+              $('#pricing-card').removeClass('below-costing');
             }
           } else {
             if ($('#pricing-card').hasClass('above')) {
-              $('#pricing-card').toggleClass('above');
+              $('#pricing-card').removeClass('above');
             }
             if ($('#pricing-card').hasClass('below-budget')) {
-              $('#pricing-card').toggleClass('below-budget');
+              $('#pricing-card').removeClass('below-budget');
             }
             if ($('#pricing-card').hasClass('below-costing')) {
-              $('#pricing-card').toggleClass('below-costing');
+              $('#pricing-card').removeClass('below-costing');
             }
           }
           
@@ -2123,7 +2125,7 @@
           url: '../../../../../config/controller/quotationTruckingController.php',
           type: 'POST',
           data: {
-            updateBudgetingQuotationDetailTrucking: true,
+            method: 'updateBudgetingQuotationDetailTrucking',
             hdQuotationId: '<?php echo $id ?>',
           },
           success: function(response) {
@@ -2476,10 +2478,229 @@
       }
       changeVmButton = () => {
         $('#changeVmForm').toggleClass('hidden');
-      } 
+      }
 
     });
 
+    validateForm = () => {
+      if ($('#customerCheck').is(':checked')) {
+        if ($('#customerTempName').val() == '') {
+          toastr.error('Nama Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerAddressTemp').val() == '') {
+          toastr.error('Alamat Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerPicTemp').val() == '') {
+          toastr.error('PIC Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerPicPhoneTemp').val() == '') {
+          toastr.error('Telp PIC Customer harus diisi', 'Required!')
+          return true;
+        }
+        if ($('#customerPcustomerPaymentTermsTempicPhoneTemp').val() == '') {
+          toastr.error('Payment Terms Customer harus diisi', 'Required!')
+          return true;
+        }
+      } else {
+        if ($('#customer').val() == '' || $('#customer').val() == null) {
+          toastr.error('Customer harus dipilih', 'Required!')
+          return true;
+        }
+      }
+
+      if ($('#totalArmada').val() == '' || $('#totalArmada').val() == 0) {
+        toastr.error('Total Armada harus diisi', 'Required!')
+        return true;
+      }
+      if ($('#itemType').val() == '') {
+        toastr.error('Jenis Barang Bawaan harus diisi', 'Required!')
+        return true;
+      }
+      if ($('#weight').val() == '' || $('#weight').val() == 0) {
+        toastr.error('Total Berat harus diisi', 'Required!')
+        return true;
+      }
+      if ($('#keterangan').val() == '') {
+        toastr.error('Keterangan harus diisi', 'Required!')
+        return true;
+      }
+
+      if ($('#selectedTab').val() != '' || !$('#selectedTab') != null) { 
+        if ($('#selectedTab').val() == 0) {
+          console.log('xxx');
+          
+          if ($('#kendaraan1').val() == '' || $('#kendaraan1').val() == null) {
+            toastr.error('Jenis Kendaraan harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaAsal1').val() == '' || $('#kotaAsal1').val() == null) {
+            toastr.error('Kota Asal harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaTujuan1').val() == '' || $('#kotaTujuan1').val() == null) {
+            toastr.error('Kota Tujuan harus dipilih', 'Required!')
+            return true;
+          }
+        } else if ($('#selectedTab').val() == 1) {
+          console.log('yyy');
+          if ($('#kendaraan2').val() == '' || $('#kendaraan2').val() == null) {
+            toastr.error('Jenis Kendaraan harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaAsal2').val() == '' || $('#kotaAsal2').val() == null) {
+            toastr.error('Kota Asal harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaTujuan2-1').val() == '' || $('#kotaTujuan2-1').val() == null) {
+            toastr.error('Kota Tujuan harus dipilih', 'Required!')
+            return true;
+          }
+        } else if ($('#selectedTab').val() == 2) {
+          console.log('zzz');
+          if ($('#deliveryType').val() == '' || $('#deliveryType').val() == null) {
+            toastr.error('Jenis Kendaraan harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#qty').val() == '' || $('#qty').val() == 0) {
+            toastr.error('Qty First harus diisi', 'Required!')
+            return true;
+          }
+          if ($('#kotaAsal3').val() == '' || $('#kotaAsal3').val() == null) {
+            toastr.error('Kota Asal harus dipilih', 'Required!')
+            return true;
+          }
+          if ($('#kotaTujuan3').val() == '' || $('#kotaTujuan3').val() == null) {
+            toastr.error('Kota Tujuan harus dipilih', 'Required!')
+            return true;
+          }
+        }
+      }
+      
+    }
+
+    onSubmit = (QuoId) => {
+
+      if (validateForm()) {
+        return;
+      }
+
+      let selectedVendor = null;
+      let vendorArray = [];
+      let costingFirstArray = [];
+      let costingNextArray = [];
+      let costingTotalArray = [];
+      let budgetingFirstArray = [];
+      let budgetingNextArray = [];
+      let budgetingTotalArray = [];
+      let pricingFirstArray = [];
+      let pricingNextArray = [];
+      let pricingTotalArray = [];
+      let idDetailQuoArray = [];
+
+      $('#tableVendor tbody tr').each(function() {
+        idDetailQuoArray.push($(this).find('.idDetailQuo').val());
+        vendorArray.push($(this).find('select.vendor option:selected').val());
+        costingFirstArray.push($(this).find('.costing-first').val());
+        costingNextArray.push($(this).find('.costing-next').val());
+        costingTotalArray.push($(this).find('.costing-total').val());
+        budgetingFirstArray.push($(this).find('.budgeting-first').val())
+        budgetingNextArray.push($(this).find('.budgeting-next').val())
+        budgetingTotalArray.push($(this).find('.budgeting-total').val())
+        pricingFirstArray.push($(this).find('.pricing-first').val());
+        pricingNextArray.push($(this).find('.pricing-next').val());
+        pricingTotalArray.push($(this).find('.pricing-total').val());
+      });
+      selectedVendor = $('input.checkboxVendor:checked').val() ?? null;
+
+      let data = {
+        method: 'editQuoTrucking',
+        customer: $('#customer').val(),
+        customerNameTemp: $('#customerTempName').val(),
+        customerAddressTemp: $('#customerAddressTemp').val(),
+        customerPicTemp: $('#customerPicTemp').val(),
+        customerPicPhoneTemp: $('#customerPicPhoneTemp').val(),
+        customerPaymentTermsTemp: $('#customerPaymentTermsTemp').val(),
+        totalArmada: $('#totalArmada').val(),
+        itemType: $('#itemType').val(),
+        weight: $('#weight').val(),
+        keterangan: $('#keterangan').val(),
+        selectedTab: $('#selectedTab').val(),
+        statusId: $('#statusId').val(),
+        quoTruckingId: $('#quoTruckingId').val(),
+        counterTableVendor: $('#counterTableVendor').val(),
+        vmIdOld: $('#vmIdOld').val(),
+        kendaraan: $('#selectedTab').val() == 0 ? $('#kendaraan1').val() : $('#selectedTab').val() == 1 ? $('#kendaraan2').val() : null,
+        deliveryType: $('#selectedTab').val() == 2 ? $('#deliveryType').val() : null,
+        qty: $('#qty').val(),
+        kotaAsal: $('#selectedTab').val() == 0 ? $('#kotaAsal1').val() : $('#selectedTab').val() == 1 ? $('#kotaAsal2').val() : $('#kotaAsal3').val(),
+        kotaTujuan: $('#selectedTab').val() == 0 ? $('#kotaTujuan1').val() : $('#selectedTab').val() == 1 ? $('#kotaTujuan2-1').val() : $('#kotaTujuan3').val(),
+        kotaTujuan2: $('#selectedTab').val() == 1 ? $('#kotaTujuan2-2').val() : null,
+        kotaTujuan3: $('#selectedTab').val() == 1 ? $('#kotaTujuan2-3').val() : null,
+        detailKotaAsal: $('#selectedTab').val() == 0 ? $('#detailKotaAsal1').val() : $('#selectedTab').val() == 1 ? $('#detailKotaAsal2-1').val() : $('#detailKotaAsal3').val(),
+        detailKotaTujuan: $('#selectedTab').val() == 0 ? $('#detailKotaTujuan1').val() : $('#selectedTab').val() == 1 ? $('#detailKotaTujuan2-1').val() : $('#detailKotaTujuan3').val(),
+        idDetailQuo: idDetailQuoArray,
+        vendor: vendorArray,
+        costingFirst: costingFirstArray,
+        costingNext: costingNextArray,
+        costingTotalX: costingTotalArray,
+        budgetingFirst: budgetingFirstArray,
+        budgetingNext: budgetingNextArray,
+        budgetingTotal: budgetingTotalArray,
+        pricingFirst: pricingFirstArray,
+        pricingNext: pricingNextArray,
+        pricingTotal: pricingTotalArray,
+        checkboxVendor: selectedVendor
+      }
+      console.log('data', data);
+      
+      
+      Swal.fire({
+        title: "Loading...",
+        html: "Sedang menyimpan data",
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      $.ajax({
+        url: '../../../../../config/controller/quotationTruckingController.php',
+        type: 'POST',
+        data: data,
+        success: function(response) {
+          console.log(`RESP: ${response}`);
+          let resp = JSON.parse(response);
+          console.log(`RESP: ${resp.data}`);
+          if (resp.status == 200) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: 'Data berhasil disimpan',
+            }).then(() => {
+              window.location.href = `../../../../../view/admin/quotation/trucking/form/edit.php?id=${QuoId}`;
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Terjadi kesalahan saat menyimpan data',
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Terjadi kesalahan saat menyimpan data',
+          });
+        }
+      });
+    }
   </script>
 
 </body>
